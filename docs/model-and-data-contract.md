@@ -2,6 +2,8 @@
 
 日期：2026-10-14。前半部分描述当前原型协议；后半部分是后续可编辑世界模型的设计，不代表已实现。
 
+后续迭代已实现独立的 [H100 规模数据流教学模型](traffic-model.md)：明确的请求/响应、逐跳运输和无界 FCFS 排队，契约扩展为 `trafficSchemaVersion: 1`。下文有限 buffer、credit/backpressure 等仍是后续目标，不能用已有排队动画宣称已实现。
+
 ## 当前 trace v1
 
 JSON 顶层包含 `schemaVersion: 1`、`meta`、`components`、`events` 和 `metrics`。规范化与验证实现位于 [lib/trace.js](../lib/trace.js)。事件原始时序从不为动画改写。

@@ -1,5 +1,6 @@
 // Native SVG isometric scenery. The package floorplan is illustrative; highlights,
 // counters and progress marks are derived exclusively from source event intervals.
+import {createTrafficOverlay, TRAFFIC_OVERLAY_CSS, FLOW_COLORS} from "./traffic-overlay.js?v=traffic-1";
 const NS = "http://www.w3.org/2000/svg";
 const PALETTES = {
   sm: {top: "#254951", left: "#122a35", right: "#173943", edge: "#72e2d1", dim: "#3e8d87"},
@@ -73,7 +74,67 @@ export const GPU_BOX_SCENE_CSS = `
 @media(max-width:600px){.gpu-box-native-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0 4px 7px}.gpu-box-native-item{padding:10px}.gpu-box-native-item .gpu-box-native-head{font-size:12px}.gpu-box-native-item .gpu-box-native-state{font-size:11px;gap:5px}.gpu-box-caption{margin-top:0;padding:5px 5px 12px;font-size:10px}.gpu-box-caption span:last-child{display:none}.gpu-box-missing{margin-left:4px;margin-right:4px;font-size:10px;display:block}.gpu-box-missing span{display:block;margin-top:2px}.gpu-box-sm-cta-label{margin-left:5px}.gpu-world.gpu-box-mode .gpu-scene{padding:9px 4px}.gpu-world.gpu-box-mode .gpu-layout-label{padding:0 5px;font-size:10px}.gpu-box-visual{min-height:180px}.gpu-box-svg{min-width:0;height:auto}.gpu-box-component .gpu-box-label{font-size:28px}.gpu-box-component .gpu-box-count{font-size:21px}.gpu-box-static-label{font-size:24px}.gpu-box-static-note{font-size:20px}}
 .gpu-world:fullscreen .gpu-box-svg{height:clamp(360px,56vh,620px)}
 @media(prefers-reduced-motion:reduce){.gpu-box-scene *{animation:none!important;transition:none!important}}
+${TRAFFIC_OVERLAY_CSS}
+.gpu-box-full .gpu-box-svg{height:clamp(300px,43vh,460px)}.gpu-box-full .gpu-box-visual{background:radial-gradient(ellipse at 48% 32%,#183f4b88,transparent 65%)}.gpu-box-full .gpu-box-caption{margin-top:0;padding-top:3px;font-size:11px}.gpu-box-sm-micro{cursor:pointer;outline:none}.gpu-box-sm-micro .gpu-box-sm-roof{fill:#16373e;stroke:#4b8e91;stroke-width:1}.gpu-box-sm-micro .gpu-box-sm-wall{fill:#0b202c;stroke:#31545d;stroke-width:.7}.gpu-box-sm-micro text{font:600 14px ui-monospace,monospace;fill:#a2c9cd;pointer-events:none}.gpu-box-sm-micro:hover .gpu-box-sm-roof,.gpu-box-sm-micro:focus-visible .gpu-box-sm-roof{fill:#285a60;stroke:#c6f8f3;stroke-width:2}.gpu-box-sm-micro.gpu-running .gpu-box-sm-roof{fill:#226257;stroke:#78ffda;stroke-width:1.8;filter:drop-shadow(0 0 4px #5ee2c380)}.gpu-box-sm-micro.gpu-running text{fill:#e1fff6}.gpu-box-sm-micro.gpu-selected .gpu-box-sm-roof{stroke:#f1ffff;stroke-width:2.5}.gpu-box-sm-micro.gpu-configured-only .gpu-box-sm-roof{fill:#122732;stroke:#3b5664;stroke-dasharray:3 2}.gpu-box-sm-micro.gpu-configured-only text{fill:#536f7d}.gpu-box-sm-micro.gpu-configured-only{cursor:help}.gpu-box-infra{cursor:pointer;outline:none}.gpu-box-infra:hover .gpu-box-infra-top,.gpu-box-infra:focus-visible .gpu-box-infra-top{stroke:#dbf7ff;stroke-width:2}.gpu-box-infra.gpu-running .gpu-box-infra-top{filter:brightness(1.35);stroke:#d2b4ff;stroke-width:1.8}.gpu-box-infra-title{fill:#c0dde5;font:600 14px ui-monospace,monospace;pointer-events:none}.gpu-box-model-label{fill:#7da5b5;font:11px ui-monospace,monospace}.gpu-box-group-title{fill:#80adb9;font:11px ui-monospace,monospace;letter-spacing:1px}.gpu-box-fabric{fill:#12313d;stroke:#447887;stroke-width:1.2}.gpu-box-sm-count{font:600 15px ui-monospace,monospace;fill:#bbecdf}.gpu-box-full .gpu-box-missing{font-size:10px}.gpu-box-native-picker{display:flex;gap:7px;align-items:center;margin:0 10px 9px;font:11px ui-monospace,monospace;color:#86aebe}.gpu-box-native-picker select{background:#122d3a;border:1px solid #3b6374;border-radius:4px;color:#c7e6ea;padding:5px 8px;max-width:190px;font:inherit}.gpu-box-native-picker button{padding:5px 10px;border:1px solid #426b7b;background:#193b47;color:#c8efec;border-radius:4px;font:inherit;cursor:pointer}.gpu-box-native-picker span{margin-left:auto;color:#7296a6}.gpu-box-map-mobile-note{display:none}
+@media(max-width:600px){.gpu-box-full .gpu-box-svg{height:360px;min-width:540px}.gpu-box-full .gpu-box-visual{overflow:auto;scrollbar-color:#466b7c #0c1c27}.gpu-box-full .gpu-box-caption{font-size:10px}.gpu-box-native-picker{margin-left:4px;margin-right:4px;font-size:10px}.gpu-box-native-picker span{display:none}.gpu-box-map-mobile-note{display:block;font:10px/1.5 ui-monospace,monospace;color:#7fa7b8;margin:0 5px 8px}}
+.gpu-world:fullscreen .gpu-box-full .gpu-box-svg{height:clamp(480px,66vh,800px)}.gpu-box-flat .gpu-box-sm-wall{display:none}.gpu-box-flat .gpu-box-sm-roof{fill:#102b38}.gpu-box-flat .gpu-box-infra-top{opacity:.9}
+.gpu-box-full .gpu-traffic-evidence,.gpu-box-full .gpu-traffic-legend,.gpu-box-full .gpu-box-native-picker{font-size:calc(11px * var(--gpu-readable-scale,1))}
 `;
+
+/** Display configured SMs without adding components or activity to a trace. */
+export function sceneSmComponents(components = [], configuredSms = null) {
+  const count = Number.isInteger(configuredSms) && configuredSms >= components.length ? configuredSms : components.length;
+  const numbered = new Map(), remainder = [];
+  for (const component of components) {
+    const match = /^sm[-:]?(\d+)$/i.exec(component.id), number = Number.isInteger(component.smId) ? component.smId : match ? Number(match[1]) : null;
+    if (number !== null && number >= 0 && number < count && !numbered.has(number)) numbered.set(number, component);
+    else remainder.push(component);
+  }
+  const result = [];
+  for (let number = 0; number < count; number++) {
+    const component = numbered.get(number) ?? remainder.shift();
+    result.push(component ? {...component, sceneNumber: number} : {id: `__configured-sm-${number}`, label: `SM ${number}`, kind: "sm", configuredOnly: true, sceneNumber: number});
+  }
+  return result;
+}
+
+/** Coordinates are a logical, readable floorplan, never a measured die map. */
+export function trafficCityLayout(sms, topology) {
+  const positions = new Map(), shapes = new Map(), topologyRouters = (topology?.nodes ?? []).filter(node => node.kind === "router");
+  const columns = topologyRouters.length || Math.min(12, Math.max(1, Math.ceil(Math.sqrt(sms.length * 1.18)))), rows = Math.max(1, Math.ceil(sms.length / columns));
+  const left = 85, right = 1015, top = 108, bottom = 306, dx = (right - left) / columns, dy = (bottom - top) / rows;
+  const nativeNodes = new Map((topology?.nodes ?? []).filter(node => node.kind === "sm").map(node => [node.componentId ?? node.id, node])), groupRows = new Map();
+  for (const [index, sm] of sms.entries()) {
+    const group = nativeNodes.get(sm.id)?.clusterId, nativeColumn = topologyRouters.findIndex(node => node.id === group);
+    const column = nativeColumn >= 0 ? nativeColumn : Math.floor(index / rows), row = nativeColumn >= 0 ? groupRows.get(group) ?? 0 : index % rows;
+    if (nativeColumn >= 0) groupRows.set(group, row + 1);
+    const x = left + column * dx, y = top + row * dy;
+    const width = dx - 12, height = Math.min(19, dy - 6);
+    shapes.set(sm.id, {x, y, width, height}); positions.set(sm.id, {x: x + width / 2, y: y + height + 4});
+  }
+  const nodes = topology?.nodes ?? [], categories = kind => nodes.filter(node => node.kind === kind);
+  for (const [kind, y, margin] of [["router", 325, 115], ["l2", 398, 115], ["hbm", 450, 175]]) {
+    const values = categories(kind);
+    values.forEach((node, index) => positions.set(node.id, {x: kind === "router" ? left + index * dx + (dx - 12) / 2 : values.length === 1 ? 550 : margin + index * (1100 - 2 * margin) / (values.length - 1), y}));
+  }
+  for (const node of nodes) if (node.kind === "fabric" || /noc/i.test(node.kind)) positions.set(node.id, {x: 550, y: 354});
+  for (const node of nodes) if (node.kind === "sm" && node.componentId && positions.has(node.componentId)) positions.set(node.id, positions.get(node.componentId));
+  const byId = new Map(nodes.map(node => [node.id, node])), routes = new Map();
+  for (const link of topology?.links ?? []) {
+    const from = positions.get(link.sourceId), to = positions.get(link.targetId); if (!from || !to) continue;
+    const a = byId.get(link.sourceId)?.kind, b = byId.get(link.targetId)?.kind;
+    let route;
+    if (a === "sm" || b === "sm") {
+      const sm = a === "sm" ? from : to, router = a === "sm" ? to : from, node = byId.get(a === "sm" ? link.sourceId : link.targetId), shape = shapes.get(node?.componentId ?? node?.id);
+      const corridor = shape ? shape.x + shape.width + 6 : sm.x + 24;
+      route = [sm, {x: corridor, y: sm.y}, {x: corridor, y: router.y - 12}, {x: router.x, y: router.y - 12}, router]; if (a !== "sm") route.reverse();
+    }
+    else if (a === "fabric" || b === "fabric") {route = [from, {x: a === "fabric" ? to.x : from.x, y: 354}, to];}
+    else {const middle = (from.y + to.y) / 2; route = [from, {x: from.x, y: middle}, {x: to.x, y: middle}, to];}
+    routes.set(link.id, route);
+  }
+  return {positions, shapes, routes, columns, rows};
+}
 
 function makePrism(group, shape, palette, {texture = false, layers = 0, projection} = {}) {
   const geometry = prismGeometry(shape, projection);
@@ -116,10 +177,112 @@ function attachActivation(node, action) {
   });
 }
 
+function createFullGpuCity({components, configuredSms, trace, topology = trace?.meta?.topology, events = trace?.events ?? [], title, flat = false,
+  onSelectComponent, onSelectEvent = () => {}}) {
+  const root = html("section", `gpu-box-scene gpu-box-full${flat ? " gpu-box-flat" : ""}`), visual = html("div", "gpu-box-visual");
+  const sms = sceneSmComponents(components, configuredSms), layout = trafficCityLayout(sms, topology);
+  const graphic = svg("svg", {viewBox: "0 0 1100 490", class: "gpu-box-svg", role: "group", "aria-label": `${title}，${sms.length} 个 SM 与显式数据路径`});
+  graphic.append(svg("desc", {}, "全部配置 SM 的逻辑盒子地图；布局不是实际芯片位置。虚线盒子仅为配置占位。数据包只来自有端点、链路和起止时间的 transfer 事件，等待计数只来自 queue 事件。可用下方选择器进入 SM。"));
+  graphic.append(svg("path", {d: "M45 85H1040L1065 103V296L1040 312H45L25 296V103Z", fill: "#0d2631", stroke: "#345362", "stroke-width": 1.5}),
+    svg("path", {d: "M45 312H1040L1065 296V304L1040 320H45L25 304V296Z", fill: "#081820", stroke: "#2b4655"}));
+  graphic.append(svg("text", {x: 46, y: 38, fill: "#c7f0e7", "font-size": 21, "font-weight": 600}, title ?? "GPU COMPUTE CITY"),
+    svg("text", {x: 46, y: 59, class: "gpu-box-model-label"}, "LOGICAL DATAFLOW MAP / 逻辑互连布局 · 非芯片实测布线"),
+    svg("text", {x: 1045, y: 37, "text-anchor": "end", class: "gpu-box-sm-count", "data-gpu-rendered-sm-count": sms.length}, `${sms.length} SM`));
+  const omitted = sms.filter(sm => sm.configuredOnly).length;
+  graphic.append(svg("text", {x: 1045, y: 58, "text-anchor": "end", class: "gpu-box-model-label"}, omitted ? `${components.length} 已记录 · ${omitted} 仅配置` : "全部原生 SM · 点击进入"));
+  graphic.append(svg("text", {x: 47, y: 99, class: "gpu-box-group-title"}, "SM COMPUTE DISTRICTS"));
+  const evidence = html("div", "gpu-traffic-evidence"), evidenceText = html("div", "gpu-traffic-detail"), inspectButton = html("button", "", "查看事件");
+  inspectButton.type = "button"; inspectButton.hidden = true; evidence.append(evidenceText, inspectButton);
+  let byId = new Map(), selectedComponentId = null, inspectedEvent = null;
+  const sourceEvents = new Map(events.map(event => [event.id, event]));
+  inspectButton.addEventListener("click", () => {if (inspectedEvent) onSelectEvent(inspectedEvent.id);});
+  function inspectComponent(component) {
+    inspectedEvent = null; inspectButton.hidden = true; evidenceText.replaceChildren();
+    const value = byId.get(component.id);
+    evidenceText.append(html("strong", "", component.label ?? component.id), document.createTextNode(component.configuredOnly
+      ? " · 仅配置 SM，占位不表示空闲，也没有可推断的任务或流量。"
+      : ` · ${component.id} · ${value?.active ?? 0} 个进行中区间 / ${value?.completed ?? 0} 个已结束区间。点击进入 SM。`));
+  }
+  function inspectFlow(event) {
+    inspectedEvent = event; inspectButton.hidden = false; evidenceText.replaceChildren();
+    const flow = event.args.flow ?? event.args, link = topology?.links?.find(link => link.id === (event.args.linkId ?? event.componentId));
+    const title = html("strong", "", `${flow.kind ?? event.args.operation ?? "memory"}${flow.bytes == null ? "" : ` · ${flow.bytes} bytes`} · ${event.args.stage}`);
+    evidenceText.append(title, document.createTextNode(` · ${link ? `${link.sourceId} → ${link.targetId}` : event.componentId}`),
+      html("span", "gpu-traffic-request", `${flow.requestId ?? event.id}${flow.packetId ? ` / ${flow.packetId}` : ""}${flow.dataKey ? ` · ${flow.dataKey}` : ""}${flow.shared ? ` · 共享输入${trace?.meta?.config?.coalesceShared ? "（合并后逐目标分发）" : ""}` : ""}`),
+      html("span", "gpu-traffic-hint", `${event.start} → ${event.end} ${trace?.meta?.timeUnit ?? "cycle"}${link ? ` · ${link.bytesPerCycle} bytes/cycle · ${link.latencyCycles} cycle 延迟` : ""} · 点击包高亮同一请求的路径`));
+  }
+  function defaultEvidence() {
+    evidenceText.replaceChildren(html("strong", "", topology ? "显式数据流仿真" : "原始 Trace 结构视图"),
+      document.createTextNode(topology ? " · 悬停 SM 或数据包查看证据；点击光包追踪 request，点击 SM 进入内部。" : " · 当前源未提供 HBM / NoC 传输事件，因此不显示推测车流。虚线 SM 仅来自配置数量。"));
+  }
+  const smNodes = [];
+  for (const component of sms) {
+    const shape = layout.shapes.get(component.id), {x, y, width, height} = shape;
+    const group = svg("g", {class: `gpu-box-sm-micro${component.configuredOnly ? " gpu-configured-only" : ""}`, role: component.configuredOnly ? "img" : "button", tabindex: 0,
+      [component.configuredOnly ? "data-gpu-configured-sm-id" : "data-gpu-component-id"]: component.id, "aria-label": `${component.label}${component.configuredOnly ? "，仅配置，未记录活动" : "，进入 SM 城市"}`});
+    group.append(svg("path", {d: `M${x} ${y + height}h${width}l7 -5v7l-7 5H${x}Z`, class: "gpu-box-sm-wall"}),
+      svg("path", {d: flat ? `M${x} ${y}h${width}v${height}H${x}Z` : `M${x} ${y}h${width}l7 -5H${x + 7}Z M${x} ${y}h${width}v${height}H${x}Z`, class: "gpu-box-sm-roof"}),
+      svg("text", {x: x + width / 2, y: y + height / 2 + 4, "text-anchor": "middle"}, String(component.sceneNumber)),
+      svg("title", {}, `${component.label} · ${component.id}${component.configuredOnly ? "\n仅配置占位，未提供活动状态" : "\n点击进入 SM 内部，原始组件 ID 保持不变"}`));
+    group.addEventListener("pointerenter", () => inspectComponent(component)); group.addEventListener("focus", () => inspectComponent(component));
+    if (!component.configuredOnly) attachActivation(group, () => onSelectComponent(component.id));
+    graphic.append(group); smNodes.push({component, group});
+  }
+  const infraNodes = [], topologyNodes = topology?.nodes ?? [
+    {id: "__illustration-fabric", kind: "fabric", label: "NoC / 未观测"}, {id: "__illustration-l2", kind: "l2", label: "L2 / 未观测"},
+    {id: "__illustration-hbm-left", kind: "hbm", label: "HBM / 未观测"}, {id: "__illustration-hbm-right", kind: "hbm", label: "HBM / 未观测"},
+  ];
+  const infraLayout = topology ? layout : trafficCityLayout(sms, {nodes: topologyNodes, links: []});
+  for (const node of topologyNodes.filter(node => node.kind !== "sm")) {
+    const position = infraLayout.positions.get(node.id); if (!position) continue;
+    const isFabric = node.kind === "fabric" || /noc/i.test(node.kind), isRouter = node.kind === "router", isHbm = node.kind === "hbm";
+    const width = isFabric ? 900 : isRouter ? 42 : isHbm ? 102 : 94, height = isFabric ? 30 : isRouter ? 13 : isHbm ? 39 : 23;
+    const x = position.x - width / 2, y = position.y - height / 2, color = isHbm ? "#435975" : isRouter ? "#284756" : "#25635f";
+    const group = svg("g", {class: "gpu-box-infra", role: topology ? "button" : "img", tabindex: 0, "data-gpu-topology-node": node.id});
+    group.append(svg("path", {d: `M${x} ${y + height}h${width}l8 -6v9l-8 6H${x}Z`, fill: "#10202d", stroke: "#355562", "stroke-width": .8}),
+      svg("path", {d: `M${x} ${y}h${width}l8 -6H${x + 8}Z M${x} ${y}h${width}v${height}H${x}Z`, fill: isFabric ? "#153c49" : color, stroke: isHbm ? "#839dc8" : "#70b6b1", "stroke-width": 1.2, class: "gpu-box-infra-top"}));
+    if (isHbm) for (let layer = 1; layer < 5; layer++) group.append(svg("line", {x1: x + 2, x2: x + width - 2, y1: y + layer * height / 5, y2: y + layer * height / 5, stroke: "#95afce", "stroke-width": .8, opacity: .45}));
+    const name = node.label ?? (isFabric ? "NoC SHARED FABRIC" : isRouter ? `R${node.id.split("-").at(-1)}` : isHbm ? `HBM ${node.stackId ?? node.id.split("-").at(-1)}` : `L2 ${node.bankId ?? node.id.split("-").at(-1)}`);
+    group.append(svg("text", {x: position.x, y: position.y + (isHbm ? -29 : 4), "text-anchor": "middle", class: "gpu-box-infra-title", style: isRouter ? "font-size:10px" : ""}, name),
+      svg("title", {}, `${node.id} · ${node.kind}\n${topology ? "简化模型的原生服务/路由节点；空间位置为逻辑布局" : "结构示意；本 trace 没有该组件的访问记录"}`));
+    group.addEventListener("pointerenter", () => {inspectedEvent = null; inspectButton.hidden = true; evidenceText.replaceChildren(html("strong", "", name), document.createTextNode(topology ? ` · 模型节点 ${node.id} / ${node.kind}，仅显示来源 service/queue 区间；逻辑 router 分组不等同于物理 GPC。` : " · 结构示意，未提供实际流量或服务记录。"));});
+    if (topology) attachActivation(group, () => onSelectComponent(node.componentId ?? node.id));
+    graphic.append(group); infraNodes.push({node, group});
+  }
+  graphic.append(svg("text", {x: 46, y: 340, class: "gpu-box-group-title"}, topology ? "LOGICAL ROUTERS / 模型分组" : ""),
+    svg("text", {x: 46, y: 381, class: "gpu-box-group-title"}, "L2 SHARED LOGISTICS"),
+    svg("text", {x: 46, y: 425, class: "gpu-box-group-title"}, "HBM MEMORY SERVICE"));
+  const traffic = topology ? createTrafficOverlay({graphic, topology, events, positions: layout.positions, routes: layout.routes, onSelectEvent, onInspect: inspectFlow}) : null;
+  visual.append(graphic); root.append(visual, html("p", "gpu-box-map-mobile-note", "手机可左右滑动地图，或使用 + 放大；下方可直接选择全部 SM。"));
+  const legend = html("div", "gpu-traffic-legend");
+  for (const [name, color] of [["读请求", FLOW_COLORS["read-request"]], ["响应数据", FLOW_COLORS["read-response"]], ["共享输入分发", FLOW_COLORS.shared], ["写回", FLOW_COLORS.writeback], ["显式队列", "#ffd18a"]]) {
+    const item = html("span"), swatch = html("i"); swatch.style.setProperty("--packet-color", color); item.append(swatch, document.createTextNode(name)); legend.append(item);
+  }
+  const summary = html("span", "gpu-traffic-summary"); legend.append(summary); if (traffic) root.append(legend);
+  defaultEvidence(); root.append(evidence);
+  const picker = html("div", "gpu-box-native-picker"), label = html("label", "", "进入 SM"), select = html("select"); select.setAttribute("aria-label", "选择全部原生 SM");
+  for (const component of sms.filter(sm => !sm.configuredOnly)) {const option = html("option", "", `${component.label} · ${component.id}`); option.value = component.id; select.append(option);}
+  const open = html("button", "", "进入 →"); open.type = "button"; open.disabled = !components.length; open.addEventListener("click", () => onSelectComponent(select.value));
+  picker.append(label, select, open, html("span", "", `${sms.length} 个 SM 全部绘制 · ${traffic ? "光包按源区间移动" : "未提供流量不造车流"}`)); root.append(picker);
+  if (omitted) {const note = html("div", "gpu-box-missing"); note.append(html("b", "", `${omitted} 个虚线 SM 仅为配置占位`), html("span", "", "未记录 ≠ 空闲；不推断工作负载或链路流量")); root.append(note);}
+  function animate({time = 0, selectedEventId = null} = {}) {
+    if (traffic) {const state = traffic.update({time, selectedEventId}); summary.textContent = `${state.renderedTransfers} 跳传输 / ${state.queues.length} 等待区间 / ${state.services.length} 服务区间`;}
+  }
+  return {element: root, animate, update({byId: nextById = new Map(), time = 0, selectedComponentId: nextSelection = null, selectedEventId = null} = {}) {
+    byId = nextById; selectedComponentId = nextSelection;
+    for (const {component, group} of smNodes) {const value = byId.get(component.id); group.classList.toggle("gpu-running", !component.configuredOnly && value?.active > 0); group.classList.toggle("gpu-selected", selectedComponentId === component.id); group.setAttribute("aria-pressed", String(selectedComponentId === component.id));}
+    for (const {node, group} of infraNodes) group.classList.toggle("gpu-running", byId.get(node.componentId ?? node.id)?.active > 0);
+    animate({time, selectedEventId});
+    if (selectedComponentId && components.some(component => component.id === selectedComponentId)) select.value = selectedComponentId;
+    if (selectedEventId) {const selected = sourceEvents.get(selectedEventId); if (selected && (selected.args?.flow || ["queue", "service"].includes(selected.args?.stage)) && inspectedEvent !== selected) inspectFlow(selected);}
+  }, destroy() {traffic?.destroy();}};
+}
+
 /** The SVG is paired with ordinary HTML controls for readable labels at all sizes.
  * No resource routes animate: source spans advance only their own roof markers. */
 export function createGpuBoxScene({components = [], eventsById = new Map(), level = "gpu", title = "GPU", configuredSms = null,
-  onSelectComponent = () => {}} = {}) {
+  trace = null, topology = trace?.meta?.topology, events = trace?.events ?? [], flat = false, onSelectComponent = () => {}, onSelectEvent = () => {}} = {}) {
+  if (level === "gpu") return createFullGpuCity({components, configuredSms, trace, topology, events, title, flat, onSelectComponent, onSelectEvent});
   const root = html("section", "gpu-box-scene");
   const visual = html("div", "gpu-box-visual");
   const graphic = svg("svg", {viewBox: "0 0 1100 650", class: "gpu-box-svg", role: "group", "aria-label": `${title} 等距盒子结构示意；实线盒子可选择，虚线与外围仓库未观测`});

@@ -6,9 +6,9 @@
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#070d16" />
     <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
-    <title>GPU City · 两级仿真工作台</title>
-    <link rel="stylesheet" href="./style.css?v=boxes-1" />
-    <link rel="stylesheet" href="./multiscale.css" />
+    <title>GPU City · GPU 数据流城市</title>
+    <link rel="stylesheet" href="./style.css?v=traffic-1" />
+    <link rel="stylesheet" href="./multiscale.css?v=traffic-1" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
@@ -18,29 +18,40 @@
         <div><p class="eyebrow">GPU CITY <span class="brand-divider">/</span> 计算城市</p><h1>GPU 计算城市 <span class="version-tag">ALPHA</span></h1></div>
       </div>
       <div class="file-actions" aria-label="文件操作">
-        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
+        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="traffic">H100 SXM · 132 SM 数据流</option><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
         <button id="load-example" type="button" title="重新加载所选示例">加载示例</button>
         <button id="import-trace" type="button" class="accent-button">导入 Trace</button>
         <details class="file-menu"><summary>工作区与导出 <span aria-hidden="true">⌄</span></summary><div class="file-menu-content"><button id="export-trace" type="button" disabled>导出 Trace JSON</button><button id="import-workspace" type="button">打开工作区</button><button id="save-workspace" type="button" disabled>保存工作区</button></div></details>
       </div>
     </header>
 
-    <div id="status" class="status" role="status" aria-live="polite">正在加载默认示例…</div>
+    <div id="status" class="status" role="status" aria-live="polite">正在仿真 132 座 SM 城市的数据流…</div>
     <section class="trace-summary" aria-label="执行记录来源">
       <div class="trace-identification"><p class="eyebrow trace-eyebrow">当前实验 <span class="live-dot" aria-hidden="true"></span></p><h2 id="trace-title">选择一份 Trace 开始</h2><span id="evidence-badge" class="evidence-badge">尚未加载执行记录</span></div>
       <dl id="trace-facts" class="facts"></dl>
-      <details class="source-notes"><summary>来源与建模边界</summary><p id="trace-description" class="muted">支持统一 JSON，以及转换器支持的原始格式。文件在浏览器中处理，不上传。</p><p class="control-help">架构位置用于探索；时间与依赖来自执行记录。未记录的硬件状态与传输路径不作推断。</p></details>
+      <details class="source-notes"><summary>来源与建模边界</summary><p id="trace-description" class="muted">支持统一 JSON，以及转换器支持的原始格式。文件在浏览器中处理，不上传。</p><p id="source-boundary" class="control-help">架构位置用于探索；时间与依赖来自执行记录。</p></details>
     </section>
 
     <main id="workspace" tabindex="-1">
       <section class="scale-bar" aria-label="两级仿真与运行管理">
         <div class="scale-tabs" aria-label="观察尺度">
-          <button id="macro-view" type="button" class="scale-tab" aria-pressed="true"><span class="scale-index">01</span><span><strong>GPU 全景</strong><small>GTSim · Tile 粒度</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
+          <button id="macro-view" type="button" class="scale-tab" aria-pressed="true"><span class="scale-index">01</span><span><strong>GPU 全景</strong><small id="macro-backend">教学模型 · 数据包 / Tile</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
           <span class="scale-connector" aria-hidden="true">→</span>
           <button id="micro-view" type="button" class="scale-tab" aria-pressed="false"><span class="scale-index">02</span><span><strong>SM 内部</strong><small id="micro-backend">指令粒度 · 待载入</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
         </div>
         <div class="run-clock"><span id="run-granularity">Tile 操作</span><span class="run-separator" aria-hidden="true">/</span><span>仿真耗时 <b id="simulation-runtime">未记录</b></span><span id="clock-scope" class="clock-scope">独立仿真时钟</span></div>
         <button id="import-detail" type="button" class="detail-import">载入指令运行 <span aria-hidden="true">＋</span></button>
+        <details class="traffic-experiment">
+          <summary><span>数据流实验</span><span id="traffic-config-label">H100 SXM · 132 SM</span><span aria-hidden="true">⌄</span></summary>
+          <form id="traffic-config" class="traffic-config">
+            <div class="traffic-preset"><span>下一次仿真的架构</span><strong>H100 SXM · 132 SM</strong><small>教学互连，非 NVIDIA 物理拓扑</small></div>
+            <label for="noc-bandwidth">NoC 链路带宽<select id="noc-bandwidth"><option value="16">16 B / cycle</option><option value="32">32 B / cycle</option><option value="64" selected>64 B / cycle</option><option value="128">128 B / cycle</option><option value="256">256 B / cycle</option></select></label>
+            <label for="hbm-bandwidth">HBM 通道带宽<select id="hbm-bandwidth"><option value="64">64 B / cycle</option><option value="128" selected>128 B / cycle</option><option value="256">256 B / cycle</option><option value="512">512 B / cycle</option></select></label>
+            <label class="traffic-merge" for="coalesce-shared"><input id="coalesce-shared" type="checkbox" checked /><span>合并共享读取<small>合并相同数据的请求后分发</small></span></label>
+            <button id="simulate-traffic" type="submit" class="accent-button">重新仿真</button>
+            <p id="traffic-config-note" class="traffic-config-note">参数只用于下一次仿真；当前记录的时间不会改变。</p>
+          </form>
+        </details>
       </section>
       <p id="run-context" class="run-context">两级视图分别读取各自的仿真记录。</p>
       <div class="workbench">
@@ -52,7 +63,8 @@
         </details>
 
         <section class="panel world-panel" aria-labelledby="world-heading">
-          <div class="panel-heading world-heading"><div><p class="section-kicker">GPU WORLD</p><h2 id="world-heading">进入计算城市</h2></div><div class="world-heading-tools"><span id="world-level-tag" class="subtle-tag">全景 / TILE</span><label class="view-mode-control"><input id="immersive-view" type="checkbox" checked /><span class="view-mode-switch" aria-hidden="true"></span><span>城市优先</span></label></div></div>
+          <div class="panel-heading world-heading"><div><p class="section-kicker">GPU WORLD</p><h2 id="world-heading">进入计算城市</h2></div><div class="world-heading-tools"><span id="world-level-tag" class="subtle-tag">GPU / DATA FLOW</span><button id="traffic-play" type="button" class="primary" disabled>开始数据流</button><label class="view-mode-control"><input id="immersive-view" type="checkbox" checked /><span class="view-mode-switch" aria-hidden="true"></span><span>城市优先</span></label></div></div>
+          <div id="traffic-counters" class="traffic-counters" hidden aria-label="当前运行的数据包状态"><span><b id="packets-moving">0</b> 在途</span><span title="已发出且尚未送达，正在排队、等待路由或服务的数据包"><b id="packets-waiting">0</b> 等待</span><span><b id="packets-completed">0</b> 已送达</span><span class="traffic-gain"><b id="shared-read-savings">0</b><span>次 HBM 读取节省<small id="shared-gain-detail">整次运行的合并与缓存复用</small></span></span></div>
           <div id="gpu-world"><div class="world-loading"><span class="loading-chip" aria-hidden="true"></span><p>正在构建 GPU 视图…</p></div></div>
           <div class="world-footnote"><span>滚轮深入 · 点选城市 / 任务 · 查看执行证据</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
         </section>
@@ -77,6 +89,6 @@
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
     <input id="detail-file" type="file" accept=".json,.log,.txt,application/json,text/plain" hidden />
-    <script type="module" src="./app.js?v=two-level-1"></script>
+    <script type="module" src="./app.js?v=traffic-1"></script>
   </body>
 </html>

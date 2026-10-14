@@ -1,8 +1,9 @@
 import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
-import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js";
+import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=traffic-1";
 import {normalizeDetailedTrace, normalizeFlashGpuLog} from "../lib/detailed-trace.js";
-import { createGpuWorld } from "./gpu-world.js?v=two-level-1";
+import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=traffic-1";
+import { createGpuWorld } from "./gpu-world.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
 const PAGE_SIZE = 80;
@@ -38,6 +39,38 @@ let visibleEvents = [];
 let descendantIds = null;
 let loadSequence = 0;
 let timelineRange = {start:0,end:0};
+let trafficPackets = [];
+
+function isTraffic(trace = state.trace) {
+  return trace?.meta?.backend === 'GPU City Traffic Model';
+}
+
+function runInfo(trace) {
+  return describeRun(trace);
+}
+
+function trafficConfig() {
+  return {...DEFAULT_TRAFFIC_CONFIG, numSms: 132,
+    nocBytesPerCycle: Number($('noc-bandwidth').value),
+    hbmBytesPerCycle: Number($('hbm-bandwidth').value),
+    coalesceShared: $('coalesce-shared').checked};
+}
+
+function showTrafficConfig(config) {
+  if (!config) return;
+  for (const [id, key] of [['noc-bandwidth','nocBytesPerCycle'],['hbm-bandwidth','hbmBytesPerCycle']]) {
+    const control = $(id), value = String(config[key]);
+    control.querySelector('option[data-imported]')?.remove();
+    if (![...control.options].some(option => option.value === value)) {
+      const option = new Option(`${value} B / cycle`, value);
+      option.dataset.imported = 'true'; control.add(option);
+    }
+    control.value = value;
+  }
+  $('coalesce-shared').checked = config.coalesceShared !== false;
+  $('traffic-config-label').textContent = `${config.numSms === 132 && config.hbmStacks === 5 ? 'H100 SXM' : '教学变体'} · ${number(config.numSms)} SM · NoC ${number(config.nocBytesPerCycle)} B/cycle`;
+  $('traffic-config-note').textContent = '参数只用于下一次仿真；当前记录的时间不会改变。';
+}
 
 function normalizeImported(input) {
   return normalizeRun(input);
@@ -54,28 +87,33 @@ function rememberRun() {
 }
 
 function playbackDuration() {
+  if (isTraffic()) return observationLevel === 'sm' ? 120000 : 90000;
   return activeRun === 'detail' || state.scope?.threadBlockId != null ? 60000 : observationLevel === 'sm' ? 30000 : 15000;
 }
 
 function renderRunBar() {
   if (!state.trace) return;
-  const info = describeRun(state.trace), detail = activeRun === 'detail';
+  const info = runInfo(state.trace), detail = activeRun === 'detail', traffic = isTraffic();
   $('macro-view').setAttribute('aria-pressed', String(!detail && observationLevel === 'gpu'));
   $('micro-view').setAttribute('aria-pressed', String(detail || observationLevel === 'sm'));
   $('macro-view').disabled = !runs.macro && detail;
   const detailedInfo = runs.detail && describeRun(runs.detail.trace);
+  const macroInfo = runs.macro && runInfo(runs.macro.trace);
+  $('macro-backend').textContent = macroInfo ? `${isTraffic(runs.macro.trace) ? '教学模型' : macroInfo.backend} · ${macroInfo.granularity}` : '宏观运行 · 待载入';
   $('micro-backend').textContent = detailedInfo ? `${detailedInfo.backend} · ${detailedInfo.granularity}` : '指令粒度 · 待载入';
   $('run-granularity').textContent = info.granularity;
   $('simulation-runtime').textContent = info.wallTimeSeconds === null ? '未记录' : `${number(info.wallTimeSeconds)} s`;
   $('simulation-runtime').title = info.timingScope ?? '来源未记录仿真墙钟耗时；播放速度不代表仿真吞吐。';
   $('clock-scope').textContent = detail ? '详细运行 · 独立时钟' : '宏观运行 · 独立时钟';
   $('clock-scope').title = info.timeDomain;
-  $('world-level-tag').textContent = detail ? 'SM / INSTRUCTION' : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
+  $('world-level-tag').textContent = detail ? 'SM / INSTRUCTION' : traffic ? `${observationLevel === 'sm' ? 'SM' : 'GPU'} / DATA FLOW` : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
   $('playback-scope').textContent = `${detail ? '指令慢放' : observationLevel === 'sm' ? 'SM 慢放' : '全景'} · ${number(playbackDuration() / 1000 / state.rate)}s / 遍`;
   $('run-context').textContent = detail
-    ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。与 GTSim 分别运行；各自保留时间与选择，不自动对齐 SM / CTA 或拼接 cycle。`
+    ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。与宏观模型分别运行，各自保留时钟与选择；不自动对齐或拼接 cycle。`
+    : traffic
+      ? `GPU City 教学模型 · ${state.trace.meta.config.numSms === 132 && state.trace.meta.config.hbmStacks === 5 ? 'H100 SXM 132 SM 配置' : `${number(state.trace.meta.config.numSms)} SM 教学变体`}，非真实芯片时序。HBM → L2 → NoC → SM 按离散事件运输；${state.trace.meta.config.coalesceShared ? '共享读取先合并，再向请求者分发。' : '共享读取逐请求访问 HBM，用于关闭合并的对照。'}`
     : observationLevel === 'sm'
-      ? '当前 SM 展示 GTSim 原生 Tile 操作。载入详细运行后，可查看真实指令观测；两份运行独立保存。'
+      ? `当前 SM 展示 ${info.backend} 的 ${info.granularity}。载入详细运行后可查看指令观测；两份运行独立保存。`
       : '外层观察 Tile 任务在 SM 上的执行与依赖；点击 SM 进入内部。详细后端单独运行，回放速度与仿真耗时分别显示。';
 }
 
@@ -85,7 +123,7 @@ function activateRun(slot) {
     ++loadSequence;
     const next = runs[slot];
     setTrace(next.trace, next.view, slot);
-    announce(`已切换到${slot === 'detail' ? '详细指令' : '宏观 Tile'}运行，恢复它自己的时钟与观察位置。`);
+    announce(`已切换到${slot === 'detail' ? '详细指令' : '宏观'}运行，恢复它自己的时钟与观察位置。`);
   }
   return true;
 }
@@ -128,6 +166,10 @@ function categoryName(event) { return String(event.category ?? "uncategorized");
 function activeAt(event) { return event.start <= state.time && state.time < event.end; }
 function categoryColor(category) {
   const key = category.toLowerCase();
+  if (key.includes('queue')) return '#e4b368';
+  if (key.includes('response') || key.includes('fanout')) return '#48e2c0';
+  if (key.includes('request') || key.includes('noc') || key.includes('hbm')) return '#57b9e9';
+  if (key === 'transfer') return '#57b9e9';
   if (key.includes('tensor') || key.includes('mma')) return '#a78bfa';
   if (key === 'ld' || key.includes('memory')) return '#57b9e9';
   if (key === 'st') return '#48c9ae';
@@ -152,11 +194,18 @@ function filteredEvents() {
   if (!state.trace) return [];
   const query = state.query.toLocaleLowerCase();
   return state.trace.events.filter((event) =>
-    (!descendantIds || descendantIds.has(event.componentId)) &&
+    eventInComponent(event) &&
     eventInScope(event, state.scope) &&
     (!state.category || categoryName(event) === state.category) &&
     (!query || `${event.id} ${event.name} ${componentName(event.componentId)}`.toLocaleLowerCase().includes(query))
   );
+}
+
+function eventInComponent(event) {
+  if (!descendantIds || descendantIds.has(event.componentId)) return true;
+  const component = componentById.get(state.selectedComponentId);
+  // Packet intervals belong to links, while their task ownership remains on the SM.
+  return isTraffic() && component?.kind === 'sm' && event.args?.smId === component.smId;
 }
 
 function indexTrace() {
@@ -181,6 +230,17 @@ function indexTrace() {
   startTime = boundaries[0] ?? 0;
   totalTime = boundaries.at(-1) ?? 0;
   descendantIds = descendants(state.selectedComponentId);
+  const packets = new Map();
+  if (isTraffic()) for (const event of state.trace.events) {
+    const packetId = event.args?.flow?.packetId;
+    if (!packetId) continue;
+    if (!packets.has(packetId)) packets.set(packetId, {start: event.start, end: event.end, transfers: []});
+    const packet = packets.get(packetId);
+    packet.start = Math.min(packet.start, event.start);
+    packet.end = Math.max(packet.end, event.end);
+    if (event.args.stage === 'transfer') packet.transfers.push(event);
+  }
+  trafficPackets = [...packets.values()];
 }
 
 function setTrace(input, savedView = null, slot = null, remember = true) {
@@ -230,7 +290,9 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   $("time-input").value = String(state.time);
   const sampleSelect = $("sample-select");
   sampleSelect.querySelector('option[value="custom"]')?.remove();
-  if (/GTSim/.test(trace.meta.producer) && trace.meta.config?.M === 256 && trace.meta.config?.N === 256 && trace.meta.config?.K === 128) {
+  if (isTraffic(trace)) {
+    sampleSelect.value = 'traffic'; showTrafficConfig(trace.meta.config);
+  } else if (/GTSim/.test(trace.meta.producer) && trace.meta.config?.M === 256 && trace.meta.config?.N === 256 && trace.meta.config?.K === 128) {
     sampleSelect.value = trace.meta.config.l2BandwidthBytesPerCycle === 128 ? 'slow-l2' : 'standard';
   } else {
     const custom = new Option('自定义导入', 'custom'); custom.disabled = true;
@@ -259,6 +321,12 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   $("time-input").disabled = !trace.events.length;
   $("seek-time").disabled = !trace.events.length;
   $("timeline-zoom").disabled = totalTime === startTime;
+  $('traffic-play').hidden = !isTraffic();
+  $('traffic-play').disabled = totalTime === startTime;
+  $('traffic-counters').hidden = !isTraffic();
+  const traffic = trace.metrics?.traffic;
+  $('shared-read-savings').textContent = number(traffic?.sharedReadSavings ?? 0);
+  $('shared-gain-detail').textContent = `整次运行：合并 ${number(traffic?.mergedMisses ?? 0)} · 命中 ${number(traffic?.l2Hits ?? 0)}`;
   renderRunBar();
 }
 
@@ -266,10 +334,13 @@ function renderSummary() {
   const { meta, events, components, metrics } = state.trace;
   $("trace-title").textContent = meta.title || "未命名执行记录";
   $("trace-description").textContent = meta.description || "这份记录未提供描述。点击事件查看原始字段。";
+  $('source-boundary').textContent = isTraffic()
+    ? '132 SM 对应 H100 SXM 的公开规格；互连拓扑、带宽参数、缓存与传输时序由教学模型定义。共享读取按请求合并并分发，不声称真实 HBM 广播协议。'
+    : '时间与依赖来自执行记录；未记录的硬件状态与传输路径不作推断。不同后端的运行分别保存。';
   const measured = meta.evidenceKind === "measurement";
   $("evidence-badge").textContent = measured
     ? `${meta.producer} · 测量记录（以来源说明为准）`
-    : `${meta.producer} ${meta.evidenceKind === "illustration" ? "示意模型" : "仿真"} · 非实机 profile`;
+    : isTraffic() ? 'GPU City 教学模型 · 非真实芯片时序' : `${meta.producer} ${meta.evidenceKind === "illustration" ? "示意模型" : "仿真"} · 非实机 profile`;
   $("evidence-badge").classList.toggle("measurement", measured);
   const facts = $("trace-facts");
   facts.replaceChildren();
@@ -365,15 +436,16 @@ function renderComponentInfo() {
   panel.replaceChildren();
   if (!state.trace) return;
   const component = componentById.get(state.selectedComponentId);
-  const scopeLabel = state.scope ? ['smId','threadBlockId','warpId'].filter(key => state.scope[key] != null).map(key => `${({smId:'SM',threadBlockId:'CTA',warpId:'Warp'})[key]} ${state.scope[key]}`).join(' / ') : null;
+  const scopeLabel = state.scope ? ['smId','threadBlockId','warpId'].filter(key => state.scope[key] != null).map(key => `${({smId:'SM',threadBlockId:isTraffic() ? '模型 CTA ID' : 'CTA',warpId:'Warp'})[key]} ${state.scope[key]}`).join(' / ') : null;
   panel.append(el('h3', scopeLabel || component?.label || 'GPU 全局观察', 'detail-title'));
-  const scopeEvents = state.trace.events.filter(event => (!descendantIds || descendantIds.has(event.componentId)) && eventInScope(event,state.scope));
+  const scopeEvents = state.trace.events.filter(event => eventInComponent(event) && eventInScope(event,state.scope));
   const active = scopeEvents.filter(activeAt).length;
   const completed = scopeEvents.filter(event => event.end <= state.time).length;
   panel.append(el('p', `${number(scopeEvents.length)} 个任务区间 · ${number(active)} 进行中 · ${number(completed)} 已完成`, 'muted'));
   if (/GTSim/i.test(state.trace.meta.producer)) panel.append(el('p', '当前后端：GTSim tile 操作图。CTA / warp 按任务归属查看；进行中区间数不等于硬件利用率。', 'muted'));
+  else panel.append(el('p', `当前后端：${runInfo(state.trace).backend} · ${runInfo(state.trace).granularity}。${isTraffic() ? '运输、排队与计算均来自本次教学仿真。' : '按来源记录展示。'}`, 'muted'));
   if (state.scope) {
-    const clear = el('button','清除 CTA / warp 范围'); clear.type='button';
+    const clear = el('button',isTraffic() ? '清除任务范围' : '清除 CTA / warp 范围'); clear.type='button';
     clear.addEventListener('click',()=>selectScope(null)); panel.append(clear);
   }
 }
@@ -507,7 +579,11 @@ function renderDetails() {
   panel.append(el("h3", event.name, "detail-title"));
   const facts = el("dl", undefined, "detail-facts");
   for (const [label, value] of [["ID", event.id], ["组件", `${componentName(event.componentId)} (${event.componentId})`], ["类别", categoryName(event)], ["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]]) facts.append(el("dt", label), el("dd", value));
-  for (const [key,label] of [['smId','SM'],['threadBlockId','CTA'],['warpId','Warp'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage','观测阶段'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
+  for (const [key,label] of [['smId','SM'],['threadBlockId',isTraffic() ? '模型 CTA ID' : 'CTA'],['round','任务轮次'],['warpId','Warp'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage','观测阶段'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
+  if (event.args?.flow) for (const [key, label] of [['packetId','数据包'],['requestId','请求'],['kind','运输类型'],['sourceId','本跳起点'],['targetId','本跳终点'],['bytes','字节数'],['dataKey','数据标识']]) {
+    const value = event.args.flow[key];
+    if (value != null) facts.append(el('dt',label),el('dd',key.endsWith('Id') && componentById.has(value) ? componentName(value) : String(value)));
+  }
   panel.append(facts);
   for (const [label, ids] of [["完成依赖 · 前置事件完成后开始", event.dependencies], ["发射依赖 · 不要求前置事件完成", event.args?.issueDependencies ?? []], ["后继事件 · 含完成与发射边", successors.get(event.id) ?? []]]) {
     panel.append(el("h4", label, "dependency-title"));
@@ -571,7 +647,23 @@ function renderAtTime() {
   for (const button of document.querySelectorAll("[data-component-id]")) button.classList.toggle("running", activeComponents.has(button.dataset.componentId));
   renderActiveTasks();
   renderComponentInfo();
+  renderTrafficCounters();
   world.update(state);
+}
+
+function renderTrafficCounters() {
+  if (!isTraffic()) return;
+  let moving = 0, waiting = 0, completed = 0;
+  for (const packet of trafficPackets) {
+    if (packet.end <= state.time) completed++;
+    else if (packet.start <= state.time) {
+      if (packet.transfers.some(event => event.start <= state.time && state.time < event.end)) moving++;
+      else waiting++;
+    }
+  }
+  $('packets-moving').textContent = number(moving);
+  $('packets-waiting').textContent = number(waiting);
+  $('packets-completed').textContent = number(completed);
 }
 
 function seek(time) {
@@ -588,6 +680,8 @@ function pause() {
   frame = null; lastFrame = null;
   $("play").textContent = "播放";
   $("play").setAttribute("aria-pressed", "false");
+  $('traffic-play').textContent = '开始数据流';
+  $('traffic-play').setAttribute('aria-pressed', 'false');
 }
 
 function togglePlay() {
@@ -597,12 +691,15 @@ function togglePlay() {
   state.playing = true;
   $("play").textContent = "暂停";
   $("play").setAttribute("aria-pressed", "true");
+  $('traffic-play').textContent = '暂停数据流';
+  $('traffic-play').setAttribute('aria-pressed', 'true');
   let lastRender = 0;
   function tick(now) {
     if (!state.playing) return;
     const inspectionDuration = playbackDuration();
     if (lastFrame !== null) state.time = Math.min(totalTime, state.time + (now - lastFrame) / inspectionDuration * (totalTime - startTime) * state.rate);
     lastFrame = now;
+    world.animate?.(state.time);
     // Limit expensive active-list updates; no animation is needed for understanding individual steps.
     if (now - lastRender >= 100 || state.time >= totalTime) { renderAtTime(); lastRender = now; }
     if (state.time >= totalTime) { pause(); return; }
@@ -677,6 +774,7 @@ async function importDetail(file) {
 }
 
 async function loadExample(sample = $("sample-select").value) {
+  if (sample === 'traffic') return runTraffic();
   const sequence = ++loadSequence;
   announce("正在加载 GTSim GEMM 仿真示例…");
   try {
@@ -692,7 +790,37 @@ async function loadExample(sample = $("sample-select").value) {
   }
 }
 
+async function runTraffic() {
+  const sequence = ++loadSequence;
+  const button = $('simulate-traffic');
+  button.disabled = true;
+  announce('正在运行 H100 SXM 132 SM 教学数据流仿真…');
+  try {
+    // Give the running status a frame before the synchronous, deterministic model.
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    if (sequence !== loadSequence) return;
+    const trace = simulateTraffic(trafficConfig());
+    if (sequence !== loadSequence) return;
+    setTrace(trace, null, 'macro');
+    const firstTransfer = trace.events.find(event => event.args?.stage === 'transfer' && event.args.flow?.kind === 'read-response')
+      ?? trace.events.find(event => event.args?.stage === 'transfer');
+    if (firstTransfer) seek(firstTransfer.start + (firstTransfer.end - firstTransfer.start) / 2);
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion) togglePlay();
+    announce(`已生成 132 SM 的独立数据流运行：${number(trace.metrics?.traffic?.packets ?? trafficPackets.length)} 个端到端包。${reducedMotion ? '已暂停，可点“开始数据流”或单步查看。' : '正在回放，随时可暂停；右侧可检查运输与排队事件。'}`);
+  } catch (error) {
+    if (sequence === loadSequence) announce(`数据流仿真未完成：${error.message}。当前运行保持可用。`, true);
+  } finally {
+    button.disabled = false;
+  }
+}
+
 $("play").addEventListener("click", togglePlay);
+$('traffic-play').addEventListener('click', togglePlay);
+$('traffic-config').addEventListener('submit', event => {event.preventDefault(); runTraffic();});
+for (const id of ['noc-bandwidth','hbm-bandwidth','coalesce-shared']) $(id).addEventListener('change', () => {
+  $('traffic-config-note').textContent = '参数已修改，点击“重新仿真”生成新运行。当前回放仍使用原参数。';
+});
 $("step").addEventListener("click", () => step(1));
 $("step-back").addEventListener("click", () => step(-1));
 $("time-slider").addEventListener("input", (event) => { pause(); seek(Number(event.target.value)); });
@@ -736,7 +864,7 @@ $("micro-view").addEventListener('click', () => {
   ++loadSequence;
   if (runs.detail && activeRun !== 'detail') { activateRun('detail'); return; }
   enterSm();
-  if (!runs.detail) announce('已进入 SM，当前可查看真实 Tile 操作；载入详细指令运行后启用指令视图。');
+  if (!runs.detail) announce(`已进入 SM，当前查看 ${runInfo(state.trace).backend} 的${runInfo(state.trace).granularity}；载入详细指令运行后启用指令视图。`);
 });
 $("trace-file").addEventListener("change", (event) => { importFile(event.target.files[0], false); event.target.value = ""; });
 $("workspace-file").addEventListener("change", (event) => { importFile(event.target.files[0], true); event.target.value = ""; });

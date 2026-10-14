@@ -91,7 +91,7 @@ Accel-Sim 2.0 的格式、Hopper 机制和匹配后端要求以其 [正式 relea
 
 ## 本次实现范围
 
-当前采用两级入口：GPU 全景回放 GTSim tile 操作，SM 内部按已导入数据展示指令观测或指令区间。原有固定小 GEMM 仍来自真实 GTSim，归属信息来自已有事件中的 `smId`、`threadBlockId`、`warpId`；没有这些字段的 profile 不猜测归属。
+当前采用两级入口：GPU 全景默认运行独立的 [132 SM 数据流教学模型](traffic-model.md)，并可切换 GTSim tile 操作；SM 内部按已导入数据展示任务、指令观测或指令区间。原有固定小 GEMM 仍来自真实 GTSim，归属信息来自已有事件中的 `smId`、`threadBlockId`、`warpId`；没有这些字段的 profile 不猜测归属。教学模型的 HBM / NoC 事件来自它自己的离散事件引擎，不从 GTSim 区间拆出。
 
 本次增加 [详细事件 adapter](../tools/detailed/README.md)：可直接转换 FlashGPU-Sim 原生 `INSTRUCTION_ISSUE` runtime 日志，保留 cycle、SM、scheduler、warp、dynamic warp ID、PC、操作类别和指令文本。其 ISSUE/STALL 记录是时间点，以 `instruction_observations` 声明能力，不补造完成时间。带实际起止时间的自定义后端 observer JSON 可声明 `instruction_spans`；原始 Accel-Sim `.tracez` / `.traceg` 是执行输入，不能通过此入口直接获得仿真 issue/completion。格式核查版本与操作方法见 adapter 文档。
 
