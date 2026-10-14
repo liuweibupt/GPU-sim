@@ -1,5 +1,12 @@
 /* Two-level controls and layout; simulation timestamps never depend on layout. */
 :root { --world-height: clamp(570px, 62vh, 720px); }
+.gpu-lane-scroll { min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-color: #466b7c #0c1c27; }
+@media (max-width: 700px) {
+  .gpu-sm-detail .gpu-cta-trace { min-width: 1056px; }
+}
+@media (min-width: 1101px) {
+  #workspace:has(.gpu-sm-detail) { --world-height: clamp(700px, 78vh, 900px); }
+}
 .scale-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 9px 18px; padding: 10px 12px; border: 1px solid #294347; border-radius: 9px; background: linear-gradient(110deg, #122826aa, #101e2bcc 65%); min-width: 0; }
 .scale-tabs { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .scale-tab { display: flex; align-items: center; gap: 12px; min-height: 57px; min-width: 180px; padding: 8px 12px; text-align: left; border-color: transparent; background: transparent; }

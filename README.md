@@ -37,6 +37,8 @@
 
 进入任意已记录的 SM 后，可查看四个分区及共享存储区；选择单个分区进一步阅读。图、事件和说明使用同一份 [机器可读规格](lib/sm-architecture.js)，每个组件定义作用、作用域、输入/输出类型、状态、资源、时序、转换条件、释放条件、不变量与来源等级。[完整形式化说明](docs/sm-architecture.md)
 
+SM 内部组件采用与外层城市一致的 **2.5D 三面盒子**：顶面、侧壁、底座和接脚由原生 SVG 绘制，Tensor 阵列、寄存器/缓存存储架、算术单元与 TMA 搬运通道用不同纹样区分。名称与事件状态显示在正面；类型化通路接到盒子端口，移动数据点独立置于上层，可暂停、定位和点击追踪。手机端保持字体可读，在画布内滚动浏览。盒子尺寸、格纹及接脚数量仅为造型，不表示硬件面积、容量或实测端口数。
+
 - **取指与发射：** L1/L0 指令缓存、Fetch、Decode、Warp Scheduler、Scoreboard、Issue、Dispatch。
 - **操作数与执行：** Register File、Operand Collector、FP32 FPU、FP64 FPU、INT32、SFU、Tensor Core、LSU、Branch/Reconvergence、Writeback。
 - **存储与异步通路：** L1 Data/Texture Cache、Shared Memory、TMA、mbarrier、Texture、Constant Cache、NoC/L2 边界。L1/SMEM 共用物理容量预算，但寻址和同步语义不同；TMA 的大块数据无需经过 RF。
@@ -51,7 +53,7 @@ node scripts/generate-sm.mjs
 
 生成的 [SM 教学样例](examples/h100-sm.json) 可导入、导出，或与城市运行共同保存在工作区；两者的时钟与指令/Tile ID 不自动对应。
 
-![SM 内部流水线与共享组件](docs/assets/sm-pipeline.png)
+![SM 内部立体组件与数据通路](docs/assets/sm-pipeline.png)
 
 [查看 TMA 形式化规格与本次运行参数](docs/assets/sm-tma-spec.png)
 
@@ -122,7 +124,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 | [NVIDIA Hopper 架构资料](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，Michael Andersch 等作者，以及 [Hopper Tuning Guide](https://docs.nvidia.com/cuda/archive/13.0.3/hopper-tuning-guide/index.html)、[PTX ISA](https://docs.nvidia.com/cuda/archive/12.8.1/parallel-thread-execution/index.html) 的 NVIDIA 团队 | **硬件规格与 ISA 语义来源。** H100 SXM 的132SM/5HBM、SM四分区与执行单元数量、RF与L1/SMEM容量、TMA及mbarrier语义依据这些资料。本仓库自行实现符号时序教学模型与SVG图，不复制官方图稿，不声称NVIDIA官方仿真器、物理netlist或真实NoC复原。 |
 | [Uncovering Real GPU NoC Characteristics](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)，Zhixian Jin、Christopher Rocca、Jiho Kim、Hans Kasan、Minsoo Rhu、Ali Bakhoda、Tor M. Aamodt、John Kim；以及 NVIDIA [H100 白皮书](https://resources.nvidia.com/en-us-hopper-architecture/nvidia-h100-tensor-c) | **NoC 方法与公开结构来源。** 依据分区局部性、往返延迟/吞吐区别与带宽层级修正模型；未复制论文代码/图表，也未声称已复现实测矩阵。用户提供的知乎解读引导了论文核查，一手证据和推断区别见 [NoC 调研](docs/research/gpu-noc.md)。 |
 | [GTSim / GPU-Tile-Sim](https://github.com/SJTU-ReArch-Group/GTSim)，Yitong Ding、Jiawei Huang 等作者与 SJTU-ReArch-Group 贡献者 | **已接入的外部时序后端。** Adapter 下载并编译固定版本的原始 core 与 GEMM builder，读取原生节点时间；两个GTSim样例均由它生成。MIT 版权声明属于 Jiawei Huang，完整保留于 [第三方声明](THIRD_PARTY_NOTICES.md)，版本与 archive hash 见 [锁定清单](tools/gtsim/upstream.json)。 |
-| [Gem5SimCity](https://github.com/Entropy-xcy/Gem5SimCity)，Entropy-xcy 与项目贡献者 | **第一阶段形态的直接参考。** 借鉴真实 simulator→trace→交互回放的分层及计算机结构城市化表达；本仓库的 viewer 和 observer 自行实现，未复制其源码、trace 或美术资产。核查版本与对应设计见 [参考分析](docs/research/gem5-simcity.md)。 |
+| [Gem5SimCity](https://github.com/Entropy-xcy/Gem5SimCity)，Entropy-xcy 与项目贡献者 | **形态与交互的直接参考。** 借鉴真实 simulator→trace→交互回放的分层及计算机结构城市化、组件建筑与可见数据通路的表达。本项目的外层 SM 城市及内部组件盒子采用自行实现的 SVG；viewer 和 observer 自行实现，未复制其源码、trace 或美术资产。核查版本与对应设计见 [参考分析](docs/research/gem5-simcity.md)。 |
 | [Daisen / Akita](https://github.com/sarchlab/akita/tree/main/daisen)，Yifan Sun、Yixuan Zhang、Ali Mosallaei、Michael D. Shah、Cody Dunne、David Kaeli 及项目贡献者 | **GPU 可视化研究与交互参考。** 借鉴任务、组件、时间与依赖联动的思路；当前未集成其代码。 |
 | [Accel-Sim](https://accel-sim.github.io/)、[GPGPU-Sim / AerialVision](https://github.com/gpgpu-sim/gpgpu-sim_distribution)、[FlashGPU-Sim](https://github.com/FlashGPU-Sim/FlashGPU-Sim)、[MGPUSim](https://github.com/sarchlab/mgpusim)、[Multi2Sim](https://github.com/Multi2Sim/multi2sim) 的作者与贡献者 | **相关工作与后续 adapter 研究。** 已比较模型、数据粒度、版本和公开能力；这些工具尚不是本原型已接入的执行后端。 |
 | [Perfetto](https://perfetto.dev/docs/getting-started/other-formats)、[PyTorch / Kineto](https://github.com/pytorch/kineto)、[NVIDIA Nsight](https://developer.nvidia.com/tools-overview)、[AMD RGP](https://gpuopen.com/rgp/) 的作者与贡献者 | **数据格式与性能工具参考。** 当前自行实现 Chrome/PyTorch duration JSON importer；Nsight、RGP 的原生报告尚未直接接入。 |

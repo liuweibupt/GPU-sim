@@ -1,7 +1,7 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
 import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-1";
-import {createSmPipelineScene} from "./sm-pipeline-scene.js";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-box-1";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 function countThrough(sorted, time) {
@@ -208,7 +208,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   }
   function fitScene() {
     if (!stage.clientWidth || !stage.clientHeight) return;
-    const naturalWidth = Math.max(650, stage.clientWidth - 2);
+    const naturalWidth = Math.max(drillSmId ? 260 : 650, stage.clientWidth - 2);
     scene.style.width = `${naturalWidth}px`;
     const overviewBoxes = !drillSmId && index.mode === "architecture" && (presentation === "boxes" || index.physicalSms > 12 || index.sms.length > 12);
     const overviewGraphic = overviewBoxes ? scene.querySelector(".gpu-box-full .gpu-box-svg") : null;
@@ -491,7 +491,10 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     }
     cursor = vector("line", {x1: x(view.time), x2: x(view.time), y1: 22, y2: height - 6, class: "gpu-cta-cursor"});
     cursor.dataset.start = start; cursor.dataset.end = end; cursor.dataset.left = left; cursor.dataset.width = plotWidth;
-    chart.append(cursor); parent.append(chart, element("p", "gpu-extra-note", `来源时间：${trace.meta.timeUnit} · 显示 ${count} / ${events.length} 个区间；重叠区间可能遮叠，完整事件保留在主时间线。`));
+    chart.append(cursor);
+    const laneScroll = element("div", "gpu-lane-scroll"); laneScroll.tabIndex = 0;
+    laneScroll.setAttribute("aria-label", "可横向滚动的原始事件轨道"); laneScroll.append(chart);
+    parent.append(laneScroll, element("p", "gpu-extra-note", `来源时间：${trace.meta.timeUnit} · 显示 ${count} / ${events.length} 个区间；重叠区间可能遮叠，完整事件保留在主时间线。`));
   }
   function renderInstructionRows(parent, events) {
     const list = element("div", "gpu-instruction-list"); list.setAttribute("aria-label", "原生指令 PC 与 opcode");
@@ -544,6 +547,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     structureSwitch.style.display = drillSmId ? 'none' : '';
     root.classList.toggle("gpu-box-mode", presentation === "boxes"); boxSwitch.setAttribute("aria-pressed", String(presentation === "boxes")); schematicSwitch.setAttribute("aria-pressed", String(presentation === "structure"));
     root.classList.toggle("gpu-overview", index.mode === "architecture" && !drillSmId);
+    root.classList.toggle("gpu-sm-detail", Boolean(drillSmId));
     if (!trace) scene.append(element("p", "gpu-empty", "载入 Trace 后，探索 GPU tile 城市与 SM 内部执行。"));
     else if (index.mode === "tracks") renderTracks();
     else if (drillSmId && index.byId.has(drillSmId)) renderSm();
