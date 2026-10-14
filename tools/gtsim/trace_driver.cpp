@@ -1,7 +1,10 @@
 #include "simulator.h"
+#include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <map>
 #include <memory>
+#include <random>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -11,6 +14,11 @@ DAG* build_gemm_h100(int M, int N, int K);
 
 namespace {
 constexpr const char* revision = "45a996c1585e60e98194057d94f7e664d41150ba";
+std::string invocation_id() {
+    const auto timestamp = std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::system_clock::now().time_since_epoch()).count();
+    return "gtsim-" + std::to_string(timestamp) + "-" + std::to_string(std::random_device{}());
+}
 std::string quoted(const std::string& value) {
     std::string result = "\"";
     const char* digits = "0123456789abcdef";
@@ -46,10 +54,18 @@ int positive(const std::string& text) {
     return result;
 }
 void export_trace(const std::string& path, const Simulator& simulator,
-                  int M, int N, int K, bool success) {
+                  int M, int N, int K, int max_cycles, bool success,
+                  const std::string& run_id, double wall_time_seconds) {
     std::ofstream out(path);
     if (!out) throw std::runtime_error("Cannot write trace: " + path);
     const auto& cfg = simulator.config;
+    // The experiment key is reproducible; the invocation ID is deliberately
+    // separate because repeated runs have independent clocks and wall times.
+    const std::string experiment_id = std::string("gtsim-") + revision + "-gemm-"
+        + std::to_string(M) + "x" + std::to_string(N) + "x" + std::to_string(K)
+        + "-l2-" + std::to_string(cfg.l2_bandwidth_bytes_per_cycle)
+        + "-sram-" + std::to_string(cfg.sram_bandwidth_bytes_per_cycle)
+        + "-limit-" + std::to_string(max_cycles);
     std::size_t unissued = 0, incomplete = 0, emitted = 0;
     for (const auto* node : simulator.dag->nodes) {
         if (node->start < 0) ++unissued;
@@ -60,6 +76,11 @@ void export_trace(const std::string& path, const Simulator& simulator,
         << M << 'x' << N << 'x' << K
         << "\",\"producer\":\"GTSim v0.1.0 + GPU-sim read-only observer\","
         << "\"producerRevision\":" << quoted(revision)
+        << ",\"backend\":\"GTSim\",\"backendVersion\":\"0.1.0\","
+        << "\"capabilities\":[\"tile_tasks\"],\"granularity\":\"tile\","
+        << "\"experimentId\":" << quoted(experiment_id)
+        << ",\"runId\":" << quoted(run_id)
+        << ",\"timeDomain\":" << quoted("gtsim:" + run_id + ":cycle")
         << ",\"evidenceKind\":\"simulation\",\"timeUnit\":\"cycle\","
         << "\"description\":\"Official hand-written H100 GEMM timing graph. Intervals use native DAGNode first-issue start and completion end. No numerical GEMM execution, measured silicon transactions, or reconstructed internal memory stages. Components are active SM and native pipeline groups; idle SMs are omitted.\","
         << "\"config\":{\"M\":" << M << ",\"N\":" << N << ",\"K\":" << K
@@ -72,7 +93,7 @@ void export_trace(const std::string& path, const Simulator& simulator,
         << "\"command\":\"gtsim_trace --m " << M << " --n " << N << " --k " << K
         << " --l2-bandwidth " << cfg.l2_bandwidth_bytes_per_cycle
         << " --sram-bandwidth " << cfg.sram_bandwidth_bytes_per_cycle
-        << " --max-cycles " << simulator.cycle << " --output <trace.json>\"},\n";
+        << " --max-cycles " << max_cycles << " --output <trace.json>\"},\n";
     std::map<int, std::set<std::string>> groups;
     for (const auto* node : simulator.dag->nodes) groups[node->sm_id].insert(node->pipeline_type);
     out << "\"components\":[{\"id\":\"gpu\",\"label\":\"H100 timing model\",\"kind\":\"gpu\"}";
@@ -98,7 +119,7 @@ void export_trace(const std::string& path, const Simulator& simulator,
             << ",\"componentId\":" << quoted(component_id(node))
             << ",\"start\":" << node->start << ",\"end\":" << node->end << ",\"dependencies\":";
         ids(out, node->depends_on);
-        out << ",\"args\":{\"nodeId\":" << node->id << ",\"op\":" << quoted(node->op)
+        out << ",\"args\":{\"granularity\":\"tile\",\"nodeId\":" << node->id << ",\"op\":" << quoted(node->op)
             << ",\"warpId\":" << node->warp_id << ",\"threadBlockId\":" << node->thread_block_id
             << ",\"smId\":" << node->sm_id << ",\"issueCycle\":" << node->issue_cycle
             << ",\"tmaIssueCompleteCycle\":";
@@ -110,6 +131,8 @@ void export_trace(const std::string& path, const Simulator& simulator,
             << ",\"cols\":" << node->tile.c << "}}}";
     }
     out << "\n],\n\"metrics\":{\"totalCycles\":" << simulator.cycle
+        << ",\"wallTimeSeconds\":" << std::setprecision(17) << wall_time_seconds
+        << ",\"timingScope\":\"Simulator::run only; excludes download, build, graph construction, and trace export\""
         << ",\"totalNodeCount\":" << simulator.dag->nodes.size()
         << ",\"completedNodeCount\":" << simulator.completed_node_count
         << ",\"emittedEventCount\":" << emitted
@@ -168,8 +191,12 @@ int main(int argc, char* argv[]) {
         if (dag->nodes.size() > 50000) throw std::runtime_error("Prototype graph limit: 50,000 nodes.");
         config.silence_mode = true;
         Simulator simulator(dag.get(), config);
+        const std::string run_id = invocation_id();
+        const auto run_start = std::chrono::steady_clock::now();
         const bool success = simulator.run(max_cycles, true);
-        export_trace(output, simulator, M, N, K, success);
+        const double wall_time_seconds = std::chrono::duration<double>(
+            std::chrono::steady_clock::now() - run_start).count();
+        export_trace(output, simulator, M, N, K, max_cycles, success, run_id, wall_time_seconds);
         return success ? 0 : 2;
     } catch (const std::exception& error) {
         std::cerr << error.what() << '\n';

@@ -8,17 +8,29 @@
 
 ## GPU 城市界面
 
-- 默认使用可交互的 **2.5D 等距盒子沙盘**：立体 SM 城块、共享 L2 物流中心和堆叠 HBM 仓库，按真实事件区间更新活跃高亮与进度。可切回结构图；沉浸视图放大城市，检查器和权威时间线仍可联动。
-- 每个 SM 是一座可进入的计算城市，L2 是共享物流中心，HBM 是区域仓库；GPU → SM → CTA → warp 逐级观察，滚轮向下深入、向上返回，也可使用按钮。
+- 默认使用可交互的 **2.5D 等距硬件城市**：立体 SM 城块、共享 L2 物流中心和堆叠 HBM 仓库，按真实事件区间更新活跃高亮与任务标记。城市优先视图放大场景，检查器和权威时间线联动。
+- 每个 SM 是一座可进入的计算城市；GPU → SM 为两级场景，CTA/warp 在 SM 内筛选。滚轮向下进入 SM、向上返回，也可使用按钮。
 - 当前 GTSim 轨迹支持原生 SM/pipeline 和 CTA/warp 归属联动、进行中与已完成区间计数、tile 数据窗口、任务及依赖检查。未提供独立事件的 L2/HBM/调度器以结构示意呈现。
 - 时间线支持 1–16× 局部放大、聚焦所选事件、点击定位和精确 cycle/us 输入。深入观察时动画默认放慢；原始仿真时间保持不变。
 - 默认 GEMM 与低 L2 带宽对照可直接切换，工作区同时保存选择、任务范围、架构尺度与时间窗口。Profile 导入保留原生轨道。
 
-立体沙盘由本仓库原生 SVG/CSS 绘制，不依赖 WebGL 或外部渲染服务。盒子高度、位置与连接为结构示意，不代表实测面积、容量、物理 floorplan 或传输路径；没有请求数据时不画虚构车流。SM、Tensor、scheduler、cache、HBM、warp 六类透明组件美术由内置 `image_gen` 工具生成，用于结构图与细节面板，保存在 [web/assets/gpu](web/assets/gpu/README.md)，完整提示词见 [manifest.json](web/assets/gpu/manifest.json)。美术中的格子与灯光不编码实测数量或状态。
+立体沙盘由本仓库原生 SVG/CSS 绘制，不依赖 WebGL 或外部渲染服务。建筑高度、位置与连接为结构示意，不代表实测面积、容量、物理 floorplan 或传输路径；没有请求数据时不画虚构车流。此前生成的六类透明组件美术与上一版盒子场景模块保留在仓库，当前两级工作台使用原生矢量渲染；提示词见 [manifest.json](web/assets/gpu/manifest.json)。美术中的格子与灯光不编码实测数量或状态。
 
-![GPU 城市架构工作台](docs/assets/workbench.png)
+[上一版盒子城市](docs/assets/workbench.png) · [上一版 SM 流水线](docs/assets/box-sm.png)
 
-[查看 SM 内部的立体流水线](docs/assets/box-sm.png)。
+## 两级仿真与指令视图
+
+默认场景改为可点击的等距立体硬件城市：**GPU 全景观察 Tile，SM 内部观察指令**。CTA/warp 是 SM 内的筛选条件，不再是第三张场景。建筑位置和高度为结构示意；亮色任务标记对应原始事件。
+
+- 外层运行实际 GTSim timing graph，观察原生 Tile 操作、SM 归属和依赖；两个样例仍为 796 个区间、5,492 / 6,413 cycles。
+- 内层通过“载入指令运行”打开 [FlashGPU-Sim 原生 ISSUE/STALL 日志](tools/detailed/README.md)，或详细 observer JSON。日志只有观测时间点时，绘制时间点并保留 PC、指令文本、SM/warp，不生成完成时间。
+- 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。宏观全景默认 15 秒/遍，SM 检查 30 秒/遍，指令慢放 60 秒/遍；这与后端实际仿真耗时无关。耗时只有来源记录时才显示，并保留测量范围。
+
+**Accel-Sim 2.0 尚未接入可执行的输出 observer。** 其输入 `.tracez` / `.traceg` 不含所需的仿真完成时间，不能直接当作执行轨迹。本次交付详细输出导入与两级回放，未在本机编译或运行详细模拟器，也未把独立后端的 cycle 融合成同一次运行。[接入格式与命令](tools/detailed/README.md) · [多尺度边界](docs/multiscale-simulation.md)
+
+![两级仿真与等距 GPU 城市](docs/assets/two-level-workbench.png)
+
+[本轮验证记录](docs/two-level-validation.md)
 
 ## 运行功能原型
 

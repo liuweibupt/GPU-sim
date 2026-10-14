@@ -91,8 +91,12 @@ Accel-Sim 2.0 的格式、Hopper 机制和匹配后端要求以其 [正式 relea
 
 ## 本次实现范围
 
-本次沿用固定 GTSim 小 GEMM 轨迹，增加更符合 GPU 的城市美术、组件区分和 SM/CTA/warp 任务归属下钻。归属信息来自已有事件中的 `smId`、`threadBlockId`、`warpId`；选中后过滤和关联原始 tile 操作。没有这些字段的 profile 不猜测归属。
+当前采用两级入口：GPU 全景回放 GTSim tile 操作，SM 内部按已导入数据展示指令观测或指令区间。原有固定小 GEMM 仍来自真实 GTSim，归属信息来自已有事件中的 `smId`、`threadBlockId`、`warpId`；没有这些字段的 profile 不猜测归属。
 
-L2 物流中心、HBM 仓库及内部设施可以作为架构示意帮助定位，但没有对应事件时不显示为已观测的请求队列、命中率或交通量。本次没有接入 Accel-Sim/GPGPU-Sim/FlashGPU-Sim 的逐指令/逐事务运行，也没有实现 CTA 后端热切、checkpoint 或新的 GPU 执行引擎。更精细的画面与下钻不会改变这些能力边界。
+本次增加 [详细事件 adapter](../tools/detailed/README.md)：可直接转换 FlashGPU-Sim 原生 `INSTRUCTION_ISSUE` runtime 日志，保留 cycle、SM、scheduler、warp、dynamic warp ID、PC、操作类别和指令文本。其 ISSUE/STALL 记录是时间点，以 `instruction_observations` 声明能力，不补造完成时间。带实际起止时间的自定义后端 observer JSON 可声明 `instruction_spans`；原始 Accel-Sim `.tracez` / `.traceg` 是执行输入，不能通过此入口直接获得仿真 issue/completion。格式核查版本与操作方法见 adapter 文档。
 
-后续依次验收：详细后端的小 kernel 与数值/事件验证、指令到请求的稳定关联、单后端多层回放、同 workload 独立 run 比较，最后再研究局部精化或混合仿真。每一步同时验证原始时间不变、归属正确、请求不重复计数、未知信息不补造，以及缩放/筛选/回退的交互一致性。
+两级分别维护 run、模拟时间域和回放速度；墙钟仿真耗时只有实际记录时才显示，否则为未知。GTSim 的宏观周期与详细后端周期不按比例对齐。详细 run 缺失时界面说明导入方式，SM 内不会把同一批 tile 节点改称逐指令数据。
+
+L2 物流中心、HBM 仓库及内部设施可以作为架构示意帮助定位，但没有对应事件时不显示为已观测的请求队列、命中率或交通量。本次没有集成 Accel-Sim/GPGPU-Sim/FlashGPU-Sim 本地运行器，也没有实现 CTA 后端热切、checkpoint 或新的 GPU 执行引擎。导入日志的能力与直接启动后端的能力分别表述。
+
+本次核查了 FlashGPU-Sim 官方记录格式并验证 adapter；当前环境没有 CUDA `nvcc`，未构建或运行详细模拟器，也未提供伪装成后端产物的指令样例。测试中手写 fixture 显式为 `illustration`。后续依次验收：详细后端的小 kernel 与数值/事件验证、指令到请求的稳定关联、同 workload 独立 run 比较，最后再研究局部精化或混合仿真。每一步同时验证原始时间不变、归属正确、请求不重复计数、未知信息不补造，以及缩放/筛选/回退的交互一致性。

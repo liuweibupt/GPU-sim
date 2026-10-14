@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import io
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -59,7 +60,16 @@ def validate_trace(trace: dict, raw_log: str | None = None) -> None:
     assert trace["schemaVersion"] == 1
     assert trace["meta"]["evidenceKind"] == "simulation"
     assert trace["meta"]["producerRevision"] == LOCK["revision"]
+    assert trace["meta"]["backend"] == "GTSim"
+    assert trace["meta"]["backendVersion"] == "0.1.0"
+    assert trace["meta"]["capabilities"] == ["tile_tasks"]
+    assert trace["meta"]["granularity"] == "tile"
+    assert trace["meta"]["experimentId"].startswith(f"gtsim-{LOCK['revision']}-gemm-")
+    assert trace["meta"]["runId"].startswith("gtsim-")
+    assert trace["meta"]["timeDomain"] == f"gtsim:{trace['meta']['runId']}:cycle"
     metrics = trace["metrics"]
+    assert math.isfinite(metrics["wallTimeSeconds"]) and metrics["wallTimeSeconds"] >= 0
+    assert metrics["timingScope"] == "Simulator::run only; excludes download, build, graph construction, and trace export"
     events = {event["id"]: event for event in trace["events"]}
     assert len(events) == len(trace["events"]), "Duplicate event IDs"
     components = {component["id"] for component in trace["components"]}
@@ -69,6 +79,7 @@ def validate_trace(trace: dict, raw_log: str | None = None) -> None:
     assert len(events) + len(omitted) == metrics["totalNodeCount"]
     assert len(omitted) == metrics["unissuedNodeCount"] + metrics["startedIncompleteNodeCount"]
     for event in events.values():
+        assert event["args"]["granularity"] == "tile"
         assert event["componentId"] in components
         assert 0 <= event["start"] <= event["end"] <= metrics["totalCycles"]
         assert event["start"] == event["args"]["issueCycle"]
@@ -138,6 +149,7 @@ def main() -> int:
         assert totals and int(totals[-1]) == trace["metrics"]["totalCycles"], "Observer changed official timing"
         print(f"Unmodified upstream Total cycles matched: {totals[-1]}")
     print(f"Validated {len(trace['events'])} spans; {trace['metrics']['totalCycles']} cycles; complete={trace['metrics']['simulationCompleted']}")
+    print(f"Native simulation wall time: {trace['metrics']['wallTimeSeconds']:.6f} s ({trace['metrics']['timingScope']})")
     print(f"Trace: {args.output}\nNative run log: {log_path}")
     return result.returncode
 

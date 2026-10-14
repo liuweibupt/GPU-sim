@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """CPU-only integration checks; build once with build_and_trace.py --test."""
+import copy
 import json
 import os
 from pathlib import Path
@@ -14,6 +15,19 @@ BINARY = CACHE / "build-observer-v1" / "gtsim_trace"
 
 
 class ObserverTests(unittest.TestCase):
+    def assert_same_observations(self, actual, expected):
+        """Compare all native observations; only invocation metadata can vary."""
+        self.assertNotEqual(actual["meta"]["runId"], expected["meta"]["runId"])
+        for trace in (actual, expected):
+            self.assertEqual(trace["meta"]["timeDomain"], f"gtsim:{trace['meta']['runId']}:cycle")
+            self.assertGreaterEqual(trace["metrics"]["wallTimeSeconds"], 0)
+        actual, expected = copy.deepcopy(actual), copy.deepcopy(expected)
+        for trace in (actual, expected):
+            del trace["meta"]["runId"]
+            del trace["meta"]["timeDomain"]
+            del trace["metrics"]["wallTimeSeconds"]
+        self.assertEqual(actual, expected)
+
     def run_trace(self, *args, expected_returncode=0):
         with tempfile.TemporaryDirectory(prefix="gpu-sim-observer-test-") as directory:
             output = Path(directory) / "trace.json"
@@ -26,14 +40,14 @@ class ObserverTests(unittest.TestCase):
     def test_committed_baseline_reproduces_native_timestamps(self):
         trace = self.run_trace()
         committed = json.loads((HERE.parents[1] / "examples/gtsim-gemm.json").read_text())
-        self.assertEqual(trace, committed)
+        self.assert_same_observations(trace, committed)
         self.assertEqual(trace["metrics"]["totalCycles"], 5492)
         self.assertEqual(len(trace["events"]), 796)
 
     def test_low_l2_bandwidth_changes_real_timing_and_matches_example(self):
         trace = self.run_trace("--l2-bandwidth", "128")
         committed = json.loads((HERE.parents[1] / "examples/gtsim-gemm-slow-l2.json").read_text())
-        self.assertEqual(trace, committed)
+        self.assert_same_observations(trace, committed)
         self.assertEqual(trace["metrics"]["totalCycles"], 6413)
 
     def test_sram_configuration_reaches_native_model(self):

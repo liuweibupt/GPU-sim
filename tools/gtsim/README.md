@@ -59,6 +59,24 @@ The top-level schema is `schemaVersion: 1`, `meta`, `components`, `events`, `met
 Metadata records upstream commit, producer, `evidenceKind: simulation`, cycle units,
 actual shape/configuration, and a reproducible native harness command.
 
+- `meta.backend` / `backendVersion` identify GTSim v0.1.0. Its only advertised
+  capability is `tile_tasks`; both `meta.granularity` and every completed event's
+  `args.granularity` are `tile`. A tile DAG node is not an instruction issue or a
+  warp scheduler observation, even when its native operation names resemble GPU
+  instructions. The SM instruction view requires a separate detailed backend.
+- `meta.experimentId` identifies the locked backend, workload, adjustable service
+  budgets, and cycle limit reproducibly. `meta.runId` identifies one native
+  invocation, and `meta.timeDomain` names that invocation's cycle clock. Repeating
+  an experiment preserves native node IDs/timestamps but produces a fresh run ID.
+  Independent tile and instruction backend clocks must not be aligned by matching
+  cycle numbers or SM numbers; any drill-down correspondence needs explicit
+  provenance from the detailed backend.
+- `metrics.wallTimeSeconds` measures the steady-clock duration of the actual
+  `Simulator::run` call, including its native final reporting. `metrics.timingScope`
+  explicitly excludes download, compilation, DAG construction, and JSON export.
+  It is host elapsed time for this invocation, not simulated GPU time or a claim
+  about GTSim versus another backend's speed. Exported examples record fresh
+  measured values, so this field varies across machines and repeated runs.
 - Each event is one completed original DAG node. `start` is its native first issue;
   `end` is native completion. Node ID, operation, warp, block, SM, and tile are kept
   in `args`. A span can include both service and waiting; it is not a claimed
@@ -90,5 +108,8 @@ The integration checks include native partial runs at 1, 1,000, 2,000 and 4,000
 cycles. Mid-run completed intervals are checked against the full baseline, while
 the unfinished nodes retain missing endpoints. A time limit must not shift
 timestamps or delete original dependencies merely to make a file importable.
+Reproduction checks compare every native observation and reproducible metadata
+field; only the invocation's run ID, clock-domain name, and measured wall time are
+excluded from byte-for-byte equality.
 
 See [the upstream lock](upstream.json) and [third-party notices](../../THIRD_PARTY_NOTICES.md).

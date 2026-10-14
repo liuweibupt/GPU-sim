@@ -6,8 +6,9 @@
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#070d16" />
     <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
-    <title>GPU 计算城市 · GPU Trace 工作台</title>
+    <title>GPU City · 两级仿真工作台</title>
     <link rel="stylesheet" href="./style.css?v=boxes-1" />
+    <link rel="stylesheet" href="./multiscale.css" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
@@ -32,6 +33,16 @@
     </section>
 
     <main id="workspace" tabindex="-1">
+      <section class="scale-bar" aria-label="两级仿真与运行管理">
+        <div class="scale-tabs" aria-label="观察尺度">
+          <button id="macro-view" type="button" class="scale-tab" aria-pressed="true"><span class="scale-index">01</span><span><strong>GPU 全景</strong><small>GTSim · Tile 粒度</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
+          <span class="scale-connector" aria-hidden="true">→</span>
+          <button id="micro-view" type="button" class="scale-tab" aria-pressed="false"><span class="scale-index">02</span><span><strong>SM 内部</strong><small id="micro-backend">指令粒度 · 待载入</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
+        </div>
+        <div class="run-clock"><span id="run-granularity">Tile 操作</span><span class="run-separator" aria-hidden="true">/</span><span>仿真耗时 <b id="simulation-runtime">未记录</b></span><span id="clock-scope" class="clock-scope">独立仿真时钟</span></div>
+        <button id="import-detail" type="button" class="detail-import">载入指令运行 <span aria-hidden="true">＋</span></button>
+      </section>
+      <p id="run-context" class="run-context">两级视图分别读取各自的仿真记录。</p>
       <div class="workbench">
         <details class="panel components-panel" aria-labelledby="components-heading" open>
           <summary class="panel-heading"><span><span class="section-kicker">HIERARCHY</span><span id="components-heading" class="panel-title">组件导航</span></span><button id="clear-component" type="button" disabled>全部</button></summary>
@@ -41,7 +52,7 @@
         </details>
 
         <section class="panel world-panel" aria-labelledby="world-heading">
-          <div class="panel-heading world-heading"><div><p class="section-kicker">GPU WORLD</p><h2 id="world-heading">进入计算城市</h2></div><div class="world-heading-tools"><span class="subtle-tag">原生 Trace 驱动</span><label class="view-mode-control"><input id="immersive-view" type="checkbox" checked /><span class="view-mode-switch" aria-hidden="true"></span><span>城市优先</span></label></div></div>
+          <div class="panel-heading world-heading"><div><p class="section-kicker">GPU WORLD</p><h2 id="world-heading">进入计算城市</h2></div><div class="world-heading-tools"><span id="world-level-tag" class="subtle-tag">全景 / TILE</span><label class="view-mode-control"><input id="immersive-view" type="checkbox" checked /><span class="view-mode-switch" aria-hidden="true"></span><span>城市优先</span></label></div></div>
           <div id="gpu-world"><div class="world-loading"><span class="loading-chip" aria-hidden="true"></span><p>正在构建 GPU 视图…</p></div></div>
           <div class="world-footnote"><span>滚轮深入 · 点选城市 / 任务 · 查看执行证据</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
         </section>
@@ -55,7 +66,7 @@
 
       <section class="panel timeline-panel" aria-labelledby="timeline-heading">
         <div class="timeline-toolbar"><div class="panel-heading timeline-title"><div><p class="section-kicker">EXECUTION TIMELINE</p><h2 id="timeline-heading">事件时间线</h2></div><span id="event-count" class="muted">0 个事件</span></div><div class="filters"><label class="search-label" for="event-search"><span class="sr-only">查找事件</span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input id="event-search" type="search" placeholder="搜索名称、组件、事件 ID" /></label><label for="category-filter"><span class="sr-only">事件类别</span><select id="category-filter"><option value="">全部类别</option></select></label></div><div class="timeline-zoom"><label for="timeline-zoom">缩放 <output id="timeline-zoom-label" for="timeline-zoom">1×</output></label><input id="timeline-zoom" type="range" min="1" max="16" value="1" step="1" /><button id="timeline-focus-selection" type="button" disabled>聚焦事件</button></div></div>
-        <div class="transport" aria-label="执行回放"><div class="transport-buttons"><button id="play" class="primary play-button" type="button" disabled>播放</button><button id="step-back" type="button" disabled title="上一个事件边界 · 左方向键">← 上一边界</button><button id="step" type="button" disabled title="下一个事件边界 · 右方向键">下一边界 →</button><label class="inline-label" for="playback-rate">速度<select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select></label><div class="seek-controls"><label class="sr-only" for="time-input">精确定位时间，单位与 Trace 一致</label><input id="time-input" type="number" step="any" value="0" disabled aria-label="精确定位时间，单位与 Trace 一致" /><button id="seek-time" type="button" disabled>定位</button></div><output id="time-label" for="time-slider time-input">0</output></div><label class="sr-only" for="time-slider">回放时间</label><input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled /></div>
+        <div class="transport" aria-label="执行回放"><div class="transport-buttons"><button id="play" class="primary play-button" type="button" disabled>播放</button><button id="step-back" type="button" disabled title="上一个事件边界 · 左方向键">← 上一边界</button><button id="step" type="button" disabled title="下一个事件边界 · 右方向键">下一边界 →</button><label class="inline-label" for="playback-rate">回放速度<select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select></label><span id="playback-scope" class="playback-scope">全景 · 15s / 遍</span><div class="seek-controls"><label class="sr-only" for="time-input">精确定位时间，单位与 Trace 一致</label><input id="time-input" type="number" step="any" value="0" disabled aria-label="精确定位时间，单位与 Trace 一致" /><button id="seek-time" type="button" disabled>定位</button></div><output id="time-label" for="time-slider time-input">0</output></div><label class="sr-only" for="time-slider">回放时间</label><input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled /></div>
         <div class="timeline-context-row"><p id="timeline-context" class="muted panel-intro">时间单位由执行记录提供。</p><span class="cursor-legend"><span aria-hidden="true"></span>当前时刻</span></div><div id="timeline" class="timeline" tabindex="0" aria-label="可横向和纵向滚动的事件时间线"><p class="empty">加载 Trace 后显示事件跨度。点击事件可查看依赖与原始字段。</p></div>
         <div class="timeline-bottom"><details class="keyboard-help"><summary>键盘与阅读帮助</summary><p class="control-help"><kbd>空格</kbd> 播放 / 暂停 · <kbd>←</kbd> <kbd>→</kbd> 上一 / 下一事件边界 · <kbd>Home</kbd> <kbd>End</kbd> 起点 / 终点。回放速度仅改变观看速度；进行中事件按 [start, end) 判断。每页最多 80 个事件，横条表示原始时间跨度，虚线表示当前时刻。</p></details><div class="pagination"><button id="previous-page" type="button" disabled>上一页</button><span id="page-label">第 0 / 0 页</span><button id="next-page" type="button" disabled>下一页</button></div></div>
       </section>
@@ -65,6 +76,7 @@
     <footer><span class="footer-brand">GPU CITY <span>计算城市</span></span><span>让计算看得见。</span><a href="https://github.com/liuweibupt/GPU-sim#readme" target="_blank" rel="noopener">项目与致谢 ↗</a></footer>
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
-    <script type="module" src="./app.js?v=boxes-1"></script>
+    <input id="detail-file" type="file" accept=".json,.log,.txt,application/json,text/plain" hidden />
+    <script type="module" src="./app.js?v=two-level-1"></script>
   </body>
 </html>

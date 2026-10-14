@@ -1,6 +1,8 @@
-import { normalizeTrace, validateTrace } from "../lib/trace.js";
+import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
-import { createGpuWorld } from "./gpu-world.js?v=boxes-1";
+import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js";
+import {normalizeDetailedTrace, normalizeFlashGpuLog} from "../lib/detailed-trace.js";
+import { createGpuWorld } from "./gpu-world.js?v=two-level-1";
 
 const $ = (id) => document.getElementById(id);
 const PAGE_SIZE = 80;
@@ -12,10 +14,14 @@ const state = {
   selectedComponentId: null, query: "", category: "", page: 0,
   scope: null, timelineZoom: 1, timelineCenter: null,
 };
+let runs = {macro: null, detail: null};
+let activeRun = 'macro';
+let observationLevel = 'gpu';
 const world = createGpuWorld($("gpu-world"), {
   onSelectComponent: (id) => selectComponent(id, {preserveScope: true}),
   onSelectEvent: (id) => { if (eventById.has(id)) selectEvent(id); },
   onSelectScope: (scope) => selectScope(scope),
+  onLevelChange: (level) => { observationLevel = level; renderRunBar(); },
 });
 let eventById = new Map();
 let omittedById = new Map();
@@ -32,6 +38,66 @@ let visibleEvents = [];
 let descendantIds = null;
 let loadSequence = 0;
 let timelineRange = {start:0,end:0};
+
+function normalizeImported(input) {
+  return normalizeRun(input);
+}
+
+function captureView() {
+  const {time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter} = state;
+  return {time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter,
+    immersive: $('immersive-view')?.checked ?? true, world: world.getView?.()};
+}
+
+function rememberRun() {
+  if (state.trace) runs[activeRun] = {trace: state.trace, view: captureView()};
+}
+
+function playbackDuration() {
+  return activeRun === 'detail' || state.scope?.threadBlockId != null ? 60000 : observationLevel === 'sm' ? 30000 : 15000;
+}
+
+function renderRunBar() {
+  if (!state.trace) return;
+  const info = describeRun(state.trace), detail = activeRun === 'detail';
+  $('macro-view').setAttribute('aria-pressed', String(!detail && observationLevel === 'gpu'));
+  $('micro-view').setAttribute('aria-pressed', String(detail || observationLevel === 'sm'));
+  $('macro-view').disabled = !runs.macro && detail;
+  const detailedInfo = runs.detail && describeRun(runs.detail.trace);
+  $('micro-backend').textContent = detailedInfo ? `${detailedInfo.backend} · ${detailedInfo.granularity}` : '指令粒度 · 待载入';
+  $('run-granularity').textContent = info.granularity;
+  $('simulation-runtime').textContent = info.wallTimeSeconds === null ? '未记录' : `${number(info.wallTimeSeconds)} s`;
+  $('simulation-runtime').title = info.timingScope ?? '来源未记录仿真墙钟耗时；播放速度不代表仿真吞吐。';
+  $('clock-scope').textContent = detail ? '详细运行 · 独立时钟' : '宏观运行 · 独立时钟';
+  $('clock-scope').title = info.timeDomain;
+  $('world-level-tag').textContent = detail ? 'SM / INSTRUCTION' : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
+  $('playback-scope').textContent = `${detail ? '指令慢放' : observationLevel === 'sm' ? 'SM 慢放' : '全景'} · ${number(playbackDuration() / 1000 / state.rate)}s / 遍`;
+  $('run-context').textContent = detail
+    ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。与 GTSim 分别运行；各自保留时间与选择，不自动对齐 SM / CTA 或拼接 cycle。`
+    : observationLevel === 'sm'
+      ? '当前 SM 展示 GTSim 原生 Tile 操作。载入详细运行后，可查看真实指令观测；两份运行独立保存。'
+      : '外层观察 Tile 任务在 SM 上的执行与依赖；点击 SM 进入内部。详细后端单独运行，回放速度与仿真耗时分别显示。';
+}
+
+function activateRun(slot) {
+  if (!runs[slot]) return false;
+  if (slot !== activeRun) {
+    ++loadSequence;
+    const next = runs[slot];
+    setTrace(next.trace, next.view, slot);
+    announce(`已切换到${slot === 'detail' ? '详细指令' : '宏观 Tile'}运行，恢复它自己的时钟与观察位置。`);
+  }
+  return true;
+}
+
+function enterSm() {
+  const savedId = world.getView?.().smComponentId;
+  const sm = state.trace?.components.find(component => component.kind === 'sm' && component.id === savedId)
+    ?? state.trace?.components.find(component => component.kind === 'sm');
+  if (!sm) { announce('这份记录没有原生 SM 归属，保留 Profile 轨道。'); return; }
+  selectComponent(sm.id);
+  observationLevel = 'sm'; renderRunBar();
+}
 
 function el(tag, text, className) {
   const node = document.createElement(tag);
@@ -117,10 +183,14 @@ function indexTrace() {
   descendantIds = descendants(state.selectedComponentId);
 }
 
-function setTrace(input, savedView = null) {
-  const trace = normalizeTrace(input);
+function setTrace(input, savedView = null, slot = null, remember = true) {
+  const trace = normalizeImported(input);
   validateTrace(trace);
+  if (remember) rememberRun();
   pause();
+  activeRun = slot ?? runKind(trace);
+  runs[activeRun] = {trace, view: savedView};
+  observationLevel = 'gpu';
   state.trace = trace;
   Object.assign(state, {
     time: 0, selectedEventId: null, selectedComponentId: null,
@@ -168,6 +238,11 @@ function setTrace(input, savedView = null) {
   }
   world.setTrace(trace);
   if (savedView?.world && world.setView) world.setView(savedView.world);
+  if (activeRun === 'detail' && !savedView?.world?.smComponentId) {
+    const sm = trace.components.find(component => component.kind === 'sm');
+    if (sm) {state.selectedComponentId = sm.id; descendantIds = descendants(sm.id); world.setView({smComponentId: sm.id});}
+  }
+  observationLevel = world.getView?.().smComponentId ? 'sm' : 'gpu';
   renderSummary();
   renderComponents();
   renderTimeline();
@@ -184,6 +259,7 @@ function setTrace(input, savedView = null) {
   $("time-input").disabled = !trace.events.length;
   $("seek-time").disabled = !trace.events.length;
   $("timeline-zoom").disabled = totalTime === startTime;
+  renderRunBar();
 }
 
 function renderSummary() {
@@ -266,6 +342,7 @@ function selectComponent(id, {preserveScope = false} = {}) {
   renderActiveTasks();
   renderComponentInfo();
   world.update(state);
+  observationLevel = world.getView?.().smComponentId ? 'sm' : 'gpu'; renderRunBar();
 }
 
 function selectScope(scope) {
@@ -280,6 +357,7 @@ function selectScope(scope) {
   descendantIds = descendants(state.selectedComponentId);
   renderComponents(); renderTimeline(); renderActiveTasks(); renderComponentInfo();
   world.update(state);
+  renderRunBar();
 }
 
 function renderComponentInfo() {
@@ -429,7 +507,7 @@ function renderDetails() {
   panel.append(el("h3", event.name, "detail-title"));
   const facts = el("dl", undefined, "detail-facts");
   for (const [label, value] of [["ID", event.id], ["组件", `${componentName(event.componentId)} (${event.componentId})`], ["类别", categoryName(event)], ["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]]) facts.append(el("dt", label), el("dd", value));
-  for (const [key,label] of [['smId','SM'],['threadBlockId','CTA'],['warpId','Warp'],['op','操作']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
+  for (const [key,label] of [['smId','SM'],['threadBlockId','CTA'],['warpId','Warp'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage','观测阶段'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
   panel.append(facts);
   for (const [label, ids] of [["完成依赖 · 前置事件完成后开始", event.dependencies], ["发射依赖 · 不要求前置事件完成", event.args?.issueDependencies ?? []], ["后继事件 · 含完成与发射边", successors.get(event.id) ?? []]]) {
     panel.append(el("h4", label, "dependency-title"));
@@ -522,7 +600,7 @@ function togglePlay() {
   let lastRender = 0;
   function tick(now) {
     if (!state.playing) return;
-    const inspectionDuration = state.scope?.threadBlockId != null ? 60000 : state.selectedComponentId && state.selectedComponentId !== 'gpu' ? 30000 : 15000;
+    const inspectionDuration = playbackDuration();
     if (lastFrame !== null) state.time = Math.min(totalTime, state.time + (now - lastFrame) / inspectionDuration * (totalTime - startTime) * state.rate);
     lastFrame = now;
     // Limit expensive active-list updates; no animation is needed for understanding individual steps.
@@ -566,8 +644,10 @@ async function importFile(file, workspaceOnly) {
     const input = JSON.parse(await file.text());
     if (sequence !== loadSequence) return;
     if (input?.kind === "gpu-sim-workspace") {
-      if (input.version !== 1) throw new Error("工作区版本不受支持；当前支持 version 1。");
-      setTrace(input.trace, input.view);
+      const decoded = decodeWorkspace(input, normalizeImported);
+      runs = decoded.runs;
+      const next = runs[decoded.activeRun];
+      setTrace(next.trace, next.view, decoded.activeRun, false);
       announce(`已打开工作区：${file.name}。文件只在浏览器本地处理。`);
     } else {
       if (workspaceOnly) throw new Error("这不是工作区文件。请使用“导入 Trace”打开执行记录。");
@@ -577,6 +657,22 @@ async function importFile(file, workspaceOnly) {
     }
   } catch (error) {
     if (sequence === loadSequence) announce(`无法打开 ${file.name}：${error.message}。原工作区保持可用。`, true);
+  }
+}
+
+async function importDetail(file) {
+  if (!file) return;
+  const sequence = ++loadSequence;
+  announce(`正在读取详细指令运行 ${file.name}…`);
+  try {
+    if (file.size > MAX_FILE_BYTES) throw new Error('最多读取 32 MiB；请先截取指令窗口。');
+    const contents = await file.text();
+    const trace = /^\s*[\[{]/.test(contents) ? normalizeDetailedTrace(JSON.parse(contents)) : normalizeFlashGpuLog(contents);
+    if (sequence !== loadSequence) return;
+    setTrace(trace, null, 'detail');
+    announce(`已载入 ${describeRun(trace).backend} 详细运行，共 ${number(trace.events.length)} 个${describeRun(trace).granularity}；宏观运行已保留。`);
+  } catch (error) {
+    if (sequence === loadSequence) announce(`详细运行未载入：${error.message}。当前运行保持可用。`, true);
   }
 }
 
@@ -600,7 +696,7 @@ $("play").addEventListener("click", togglePlay);
 $("step").addEventListener("click", () => step(1));
 $("step-back").addEventListener("click", () => step(-1));
 $("time-slider").addEventListener("input", (event) => { pause(); seek(Number(event.target.value)); });
-$("playback-rate").addEventListener("change", (event) => { state.rate = Number(event.target.value); });
+$("playback-rate").addEventListener("change", (event) => { state.rate = Number(event.target.value); renderRunBar(); });
 $("event-search").addEventListener("input", (event) => { state.query = event.target.value; state.page = 0; if (state.trace) { renderTimeline(); renderActiveTasks(); } });
 $("category-filter").addEventListener("change", (event) => { state.category = event.target.value; state.page = 0; if (state.trace) { renderTimeline(); renderActiveTasks(); } });
 $("clear-component").addEventListener("click", () => selectComponent(null));
@@ -629,13 +725,26 @@ $("seek-time").addEventListener('click',seekInput);
 $("time-input").addEventListener('keydown',event=>{if(event.key==='Enter')seekInput();});
 $("import-trace").addEventListener("click", () => $("trace-file").click());
 $("import-workspace").addEventListener("click", () => $("workspace-file").click());
+$("import-detail").addEventListener('click', () => $('detail-file').click());
+$("detail-file").addEventListener('change', event => { importDetail(event.target.files[0]); event.target.value = ''; });
+$("macro-view").addEventListener('click', () => {
+  ++loadSequence;
+  if (activeRun !== 'macro') { activateRun('macro'); return; }
+  selectComponent(null); world.setView({smComponentId: null, scope: null}); observationLevel = 'gpu'; renderRunBar();
+});
+$("micro-view").addEventListener('click', () => {
+  ++loadSequence;
+  if (runs.detail && activeRun !== 'detail') { activateRun('detail'); return; }
+  enterSm();
+  if (!runs.detail) announce('已进入 SM，当前可查看真实 Tile 操作；载入详细指令运行后启用指令视图。');
+});
 $("trace-file").addEventListener("change", (event) => { importFile(event.target.files[0], false); event.target.value = ""; });
 $("workspace-file").addEventListener("change", (event) => { importFile(event.target.files[0], true); event.target.value = ""; });
 $("export-trace").addEventListener("click", () => { if (state.trace && download(state.trace, "trace")) announce("Trace 已导出，原始时间单位、指标与事件保留。未上传任何文件。"); });
 $("save-workspace").addEventListener("click", () => {
   if (!state.trace) return;
-  const { time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter } = state;
-  if (download({ kind: "gpu-sim-workspace", version: 1, trace: state.trace, view: { time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter, immersive: $("immersive-view")?.checked ?? true, world:world.getView?.() } }, "workspace")) announce("工作区已保存，包含 Trace、当前时间、选择、尺度与筛选。未上传任何文件。");
+  rememberRun();
+  if (download({kind: 'gpu-sim-workspace', version: 2, activeRun, runs}, 'workspace')) announce('工作区已保存，包含两份运行及各自的时钟、播放速度、选择与镜头。');
 });
 document.addEventListener("keydown", (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest("input, select, textarea, button, a, summary, [role='button'], [contenteditable='true']")) return;

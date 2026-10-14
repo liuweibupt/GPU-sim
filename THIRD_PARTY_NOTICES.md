@@ -44,6 +44,15 @@ code/assets. Project and design acknowledgements are maintained in
 and [references.bib](docs/references.bib). These citations do not replace license
 notices for any future code, data, or asset reuse.
 
+The detailed log adapter is independently authored against the documented
+FlashGPU-Sim runtime output grammar at revision
+[`291fbe172332eb481556632a79eb9cfc93cf46bf`](https://github.com/FlashGPU-Sim/FlashGPU-Sim/tree/291fbe172332eb481556632a79eb9cfc93cf46bf).
+No FlashGPU-Sim source, executable, or simulation output is redistributed here.
+The format sources and limitations are recorded in
+[the adapter guide](tools/detailed/README.md). Accel-Sim 2.0 remains a candidate
+execution backend requiring an output observer; raw SASS inputs are not imported
+as simulated instruction timings.
+
 The six component PNGs under `web/assets/gpu/` were generated for this project
 with the built-in image generation tool on 2026-10-14. They are conceptual
 hardware artwork, not copied game assets, vendor logos, or measured floorplans.
