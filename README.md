@@ -4,12 +4,13 @@
 
 开发顺序是**先保证模型、事件和交互功能正确，再增加城市渲染和游戏机制**。本仓库目前交付相关工作调研、产品与模型设计，以及一个可运行的事件回放原型。
 
-**[在线工作台](https://liuweibupt.github.io/GPU-sim/)** · [数据流模型](docs/traffic-model.md) · [发布流程](docs/deployment.md) · [多尺度仿真设计](docs/multiscale-simulation.md)
+**[在线工作台](https://liuweibupt.github.io/GPU-sim/)** · [SM 组件形式化规格](docs/sm-architecture.md) · [数据流模型](docs/traffic-model.md) · [发布流程](docs/deployment.md) · [多尺度仿真设计](docs/multiscale-simulation.md)
 
 ## GPU 城市界面
 
 - 默认使用 **H100 SXM 规模的数据流城市**：完整 132 个 SM、5 个 HBM 服务端点，以及逻辑 L2 / NoC。数量依据 [NVIDIA 规格](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，路由、带宽和周期采用本仓库明确标注的教学模型。
 - 读请求、HBM 返回、L2 共享分发和写回是可点击的移动数据包；链路和端点排队来自离散事件模型。调 NoC / HBM 带宽、开关共享请求合并后重新仿真，会改变实际完成时间与运输事件。
+- NoC 默认采用**双分区 Crossbar / 局部 L2**：SM 访问本分区缓存，远端内存 miss 才过跨分区桥。链路串行化与传播时间分开，传播延迟不会被误当成全程带宽占用。结构约束参考 [NVIDIA 白皮书](https://resources.nvidia.com/en-us-hopper-architecture/nvidia-h100-tensor-c) 与 [Jin 等 MICRO 2024 论文](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)，具体聚合拓扑与周期仍是未校准的教学模型。
 - **2.5D 等距硬件城市**按事件区间更新活跃状态、运输进度和排队标记；城市优先视图放大场景，检查器和权威时间线联动。
 - 每个 SM 是一座可进入的计算城市；GPU → SM 为两级场景，CTA/warp 在 SM 内筛选。滚轮向下进入 SM、向上返回，也可使用按钮。
 - 当前 GTSim 轨迹支持原生 SM/pipeline 和 CTA/warp 归属联动、进行中与已完成区间计数、tile 数据窗口、任务及依赖检查。未提供独立事件的 L2/HBM/调度器以结构示意呈现。
@@ -20,18 +21,46 @@
 
 立体沙盘由本仓库原生 SVG/CSS 绘制，不依赖 WebGL 或外部渲染服务。建筑高度、位置与连线几何不代表实测面积、容量或物理 floorplan；运输只沿当前运行声明的拓扑与 hop 区间移动。旧 GTSim/profile 缺少内部运输事件时不生成车流，配置 SM 占位明确标为未观测。此前生成的六类透明组件美术保留在仓库，提示词见 [manifest.json](web/assets/gpu/manifest.json)。
 
-![132 SM 与 HBM / NoC 数据流城市](docs/assets/traffic-city.png)
+![132 SM 与双分区 NoC 数据流城市](docs/assets/partitioned-noc.png)
 
-[查看原始请求与逐跳路径追踪](docs/assets/traffic-request.png) · [模型规则与边界](docs/traffic-model.md)
+[模型规则与边界](docs/noc-model.md) · [旧单 Fabric 的请求追踪截图](docs/assets/traffic-request.png)
 
 [上一版盒子城市](docs/assets/workbench.png) · [上一版 SM 流水线](docs/assets/box-sm.png)
+
+## 并发共享读取与广播的区别
+
+多个 SM 可以并发请求重叠输入，L2 缓存重用和 pending miss 合并可能减少 HBM 流量，数据仍按各请求单播返回。H100 的局部分区可以分别填充同一数据；默认模型不再保证全 GPU 共用一次填充。合成场景使用整 Tile 合并策略，尚未实现实际 sector/MSHR，也未复现实测 SM↔L2 延迟矩阵。[完整 NoC 模型](docs/noc-model.md) · [论文核查](docs/research/gpu-noc.md)
+
+真正的 Hopper TMA multicast 是软件显式发起、限定同一 thread-block cluster 内 CTA mask 的 global→SMEM 搬运，不能自动扩展成 132 SM 广播。当前城市模型执行普通读取，SM 教学模型执行单目标 TMA；它们都未执行 cluster multicast。L2 复用、TMA multicast、DSM 和跨 GPU NVLink 是不同机制。
+
+## SM 内部：组件规格与流水线仿真
+
+进入任意已记录的 SM 后，可查看四个分区及共享存储区；选择单个分区进一步阅读。图、事件和说明使用同一份 [机器可读规格](lib/sm-architecture.js)，每个组件定义作用、作用域、输入/输出类型、状态、资源、时序、转换条件、释放条件、不变量与来源等级。[完整形式化说明](docs/sm-architecture.md)
+
+- **取指与发射：** L1/L0 指令缓存、Fetch、Decode、Warp Scheduler、Scoreboard、Issue、Dispatch。
+- **操作数与执行：** Register File、Operand Collector、FP32 FPU、FP64 FPU、INT32、SFU、Tensor Core、LSU、Branch/Reconvergence、Writeback。
+- **存储与异步通路：** L1 Data/Texture Cache、Shared Memory、TMA、mbarrier、Texture、Constant Cache、NoC/L2 边界。L1/SMEM 共用物理容量预算，但寻址和同步语义不同；TMA 的大块数据无需经过 RF。
+
+点击 **“运行 SM 流水线”**，在所选 SM 上生成独立的教学运行：显式取指/译码/发射/执行/写回，RAW/WAW 与资源等待、普通 load 命中/缺失、SMEM bank 冲突，以及异步 TMA→SMEM→mbarrier→Tensor 消费。可修改 warp 数、Issue 间隔、外部内存与 Tensor 延迟、SMEM 地址步长后重跑；原始事件时间不会随动画速度改变。点选组件查看形式化规则，点选事件查看具体指令、寄存器、等待原因与依赖。
+
+这是自行实现的**符号时序教学模型**，不执行张量数值或任意 PTX/SASS，不声称 NVIDIA cycle accuracy。公开结构与容量引用 NVIDIA Hopper/CUDA 资料；Fetch/Decode 等逻辑阶段、队列及周期参数是教学定义。指令缓存与分支只做时序服务，不执行 cache tag/miss 或真实分支掩码；纹理和常量路径只保留结构。有限资源在途容量与上游 credit 已建模，逐组件有限队列及全链路背压仍未实现。旧 GTSim/profile 缺少 SM 内部事件时，只显示结构，不补造流水线活动。
+
+```bash
+node scripts/generate-sm.mjs
+```
+
+生成的 [SM 教学样例](examples/h100-sm.json) 可导入、导出，或与城市运行共同保存在工作区；两者的时钟与指令/Tile ID 不自动对应。
+
+![SM 内部流水线与共享组件](docs/assets/sm-pipeline.png)
+
+[查看 TMA 形式化规格与本次运行参数](docs/assets/sm-tma-spec.png)
 
 ## 两级仿真与指令视图
 
 **GPU 全景观察 Tile 与数据运输，SM 内部检查任务或载入指令运行**。CTA/warp 是 SM 内的筛选条件，不再是第三张场景。详细运行与宏观运行分别保存。
 
-- 外层默认在浏览器运行数据流教学模型：132 SM 共完成396个tile，默认38,768模型周期；NoC降至16B/cycle后为54,159。GTSim timing graph继续作为独立外部后端样例，仍为796区间、5,492 / 6,413 cycles。
-- 内层通过“载入指令运行”打开 [FlashGPU-Sim 原生 ISSUE/STALL 日志](tools/detailed/README.md)，或详细 observer JSON。日志只有观测时间点时，绘制时间点并保留 PC、指令文本、SM/warp，不生成完成时间。
+- 外层默认在浏览器运行双分区数据流教学模型，132 SM 共完成396个 Tile；可调整桥传播延迟、链路带宽与共享 Tile 策略后重跑。单 Fabric 可作对照。GTSim timing graph 继续作为独立外部后端样例，仍为796区间、5,492 / 6,413 cycles。
+- 内层可以运行上述 SM 教学模型，也可通过“载入指令运行”打开 [FlashGPU-Sim 原生 ISSUE/STALL 日志](tools/detailed/README.md)，或详细 observer JSON。日志只有观测时间点时，绘制时间点并保留 PC、指令文本、SM/warp，不生成完成时间。
 - 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。数据流全景默认90秒/遍，SM检查120秒/遍；GTSim保持15 / 30秒，指令慢放60秒。这与后端仿真耗时无关。减少动画模式默认暂停。
 
 **Accel-Sim 2.0 尚未接入可执行的输出 observer。** 其输入 `.tracez` / `.traceg` 不含所需的仿真完成时间，不能直接当作执行轨迹。本次交付详细输出导入与两级回放，未在本机编译或运行详细模拟器，也未把独立后端的 cycle 融合成同一次运行。[接入格式与命令](tools/detailed/README.md) · [多尺度边界](docs/multiscale-simulation.md)
@@ -67,6 +96,9 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 | [第一版设计](docs/design.md) | 用户目标、计算城市玩法、阶段划分、架构和验收标准 |
 | [模型与数据契约](docs/model-and-data-contract.md) | 原型 trace、时间与依赖语义、未来有限队列模型和可扩展接口 |
 | [H100规模数据流模型](docs/traffic-model.md) | 132SM / 5HBM、请求/响应、L2共享合并、逐跳NoC排队、带宽实验与模型边界 |
+| [SM 组件形式化规格](docs/sm-architecture.md) | 四分区、取指/发射/执行/存储组件、typed ports、状态转换与流水线教学模型边界 |
+| [分区 NoC 模型](docs/noc-model.md) | 局部 L2、远端 HBM miss、跨分区桥、串行化/传播、带宽预算与未实现机制 |
+| [真实 GPU NoC 论文核查](docs/research/gpu-noc.md) | MICRO 2024 与 H100 白皮书、一手证据与推断、普通读取/TMA multicast/DSM 的区别 |
 | [多尺度仿真](docs/multiscale-simulation.md) | SM 城市、tile / 指令 / 请求粒度，以及 GTSim 与详细后端的关联设计 |
 | [网站发布](docs/deployment.md) | GitHub Pages 构建、首次启用与部署验证 |
 | [验证记录](docs/validation.md) | 自动检查、原生参数实验、浏览器交互与存档规模验证 |
@@ -77,7 +109,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 ## 当前能力与后续开发
 
-当前具备可重仿真的简化数据流模型，以及“外部仿真器 → 可追溯事件 → 可检查回放”链路。它们分别保留运行来源和时钟。立体城市是2.5D交互渲染；尚无自由旋转3D世界、任意CUDA/Triton执行、自由拼装硬件或多人服务。
+当前具备可重仿真的简化数据流模型、独立 SM 流水线教学模型，以及“外部仿真器 → 可追溯事件 → 可检查回放”链路。它们分别保留运行来源和时钟。立体城市是2.5D交互渲染；尚无自由旋转3D世界、任意CUDA/Triton执行、自由拼装硬件或多人服务。
 
 下一步接入详细后端的指令与存储请求事件，让宏观 tile 任务与微观 transaction 可以关联探索。首先采用同一 workload 的独立 run 与受控比较，再研究 checkpoint / 局部精化；不任意抽出一个 CTA 热切模拟器。详细仿真允许耗时，后台运行、GPU 时间和动画速度分别管理。并行完善有限队列、带宽、调度与背压的可编辑模型，以及世界建设、预算与可选挑战。
 
@@ -87,7 +119,8 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 | 项目与贡献者 | 本项目的使用方式 |
 | --- | --- |
-| [NVIDIA Hopper 架构资料](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，Michael Andersch 等作者与 NVIDIA 团队 | **硬件规格来源。** H100 SXM的132SM和5HBM3栈依据该资料；本仓库的数据流教学模型自行实现，不是NVIDIA官方仿真器或真实NoC复原。 |
+| [NVIDIA Hopper 架构资料](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，Michael Andersch 等作者，以及 [Hopper Tuning Guide](https://docs.nvidia.com/cuda/archive/13.0.3/hopper-tuning-guide/index.html)、[PTX ISA](https://docs.nvidia.com/cuda/archive/12.8.1/parallel-thread-execution/index.html) 的 NVIDIA 团队 | **硬件规格与 ISA 语义来源。** H100 SXM 的132SM/5HBM、SM四分区与执行单元数量、RF与L1/SMEM容量、TMA及mbarrier语义依据这些资料。本仓库自行实现符号时序教学模型与SVG图，不复制官方图稿，不声称NVIDIA官方仿真器、物理netlist或真实NoC复原。 |
+| [Uncovering Real GPU NoC Characteristics](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)，Zhixian Jin、Christopher Rocca、Jiho Kim、Hans Kasan、Minsoo Rhu、Ali Bakhoda、Tor M. Aamodt、John Kim；以及 NVIDIA [H100 白皮书](https://resources.nvidia.com/en-us-hopper-architecture/nvidia-h100-tensor-c) | **NoC 方法与公开结构来源。** 依据分区局部性、往返延迟/吞吐区别与带宽层级修正模型；未复制论文代码/图表，也未声称已复现实测矩阵。用户提供的知乎解读引导了论文核查，一手证据和推断区别见 [NoC 调研](docs/research/gpu-noc.md)。 |
 | [GTSim / GPU-Tile-Sim](https://github.com/SJTU-ReArch-Group/GTSim)，Yitong Ding、Jiawei Huang 等作者与 SJTU-ReArch-Group 贡献者 | **已接入的外部时序后端。** Adapter 下载并编译固定版本的原始 core 与 GEMM builder，读取原生节点时间；两个GTSim样例均由它生成。MIT 版权声明属于 Jiawei Huang，完整保留于 [第三方声明](THIRD_PARTY_NOTICES.md)，版本与 archive hash 见 [锁定清单](tools/gtsim/upstream.json)。 |
 | [Gem5SimCity](https://github.com/Entropy-xcy/Gem5SimCity)，Entropy-xcy 与项目贡献者 | **第一阶段形态的直接参考。** 借鉴真实 simulator→trace→交互回放的分层及计算机结构城市化表达；本仓库的 viewer 和 observer 自行实现，未复制其源码、trace 或美术资产。核查版本与对应设计见 [参考分析](docs/research/gem5-simcity.md)。 |
 | [Daisen / Akita](https://github.com/sarchlab/akita/tree/main/daisen)，Yifan Sun、Yixuan Zhang、Ali Mosallaei、Michael D. Shah、Cody Dunne、David Kaeli 及项目贡献者 | **GPU 可视化研究与交互参考。** 借鉴任务、组件、时间与依赖联动的思路；当前未集成其代码。 |
@@ -106,5 +139,6 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 3. Mahmoud Khairy et al. **Accel-Sim: An Extensible Simulation Framework for Validated GPU Modeling.** ISCA 2020。[项目与论文入口](https://accel-sim.github.io/)
 4. Junrui Pan et al. **Architecting the Next Generation of Asynchronous, Distributed GPUs for the AI Era.** 2026，arXiv:2608.22602，Accel-Sim 2.0 相关预印本。[论文](https://arxiv.org/abs/2608.22602)
 5. Siying Yu et al. **FlashGPU-sim: Enabling GPU Modeling for Modern Architectures and AI Workloads.** 2026，arXiv:2609.15311；作者注明 to appear in MICRO 2026。[论文](https://arxiv.org/abs/2609.15311)
+6. Zhixian Jin et al. **Uncovering Real GPU NoC Characteristics: Implications on Interconnect Architecture.** MICRO 2024, pp. 885–898, DOI: 10.1109/MICRO61859.2024.00070。[作者论文](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)
 
 GPGPU-Sim、AerialVision、MGPUSim 与 gem5 等基础工作的作者、出版信息及可复用引用条目一并列在 [完整参考文献](docs/references.md)。研究文档还在具体事实附近保留了版本、格式、游戏与教学项目的一手来源链接。

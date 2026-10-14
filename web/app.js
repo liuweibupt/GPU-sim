@@ -1,9 +1,10 @@
 import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
-import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=traffic-1";
-import {normalizeDetailedTrace, normalizeFlashGpuLog} from "../lib/detailed-trace.js";
-import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=traffic-1";
-import { createGpuWorld } from "./gpu-world.js?v=traffic-1";
+import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-1";
+import {normalizeFlashGpuLog} from "../lib/detailed-trace.js";
+import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=sm-1";
+import {simulateSm, DEFAULT_SM_CONFIG} from "../lib/sm-model.js?v=sm-1";
+import { createGpuWorld } from "./gpu-world.js?v=sm-1";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
@@ -53,21 +54,65 @@ function isTraffic(trace = state.trace) {
   return trace?.meta?.backend === 'GPU City Traffic Model';
 }
 
+function isSmModel(trace = state.trace) {
+  return trace?.meta?.capabilities?.includes('sm_pipeline') === true;
+}
+
+const smControls = [
+  ['sm-warps', 'warpCount'], ['sm-issue-interval', 'issueIntervalCycles'],
+  ['sm-memory-latency', 'globalMemoryLatencyCycles'], ['sm-tensor-latency', 'tensorLatencyCycles'],
+  ['sm-bank-stride', 'sharedBankStrideWords'],
+];
+
+function syncSmTarget(id) {
+  let component = componentById.get(id);
+  while (component && component.kind !== 'sm') component = componentById.get(component.parentId);
+  if (!component) return;
+  const smId = component.args?.smId ?? component.smId ?? /^sm-(\d+)$/.exec(component.id)?.[1];
+  if (Number.isInteger(Number(smId)) && Number(smId) >= 0 && Number(smId) < 132) {
+    $('sm-target').value = String(smId);
+    $('sm-config-label').textContent = `目标 SM ${smId} · 4 分区 · ${$('sm-warps').value} warps`;
+  }
+}
+
+function smConfig() {
+  return {...DEFAULT_SM_CONFIG, smId: Number($('sm-target').value),
+    ...Object.fromEntries(smControls.map(([id,key]) => [key, Number($(id).value)]))};
+}
+
+function showSmConfig(config) {
+  if (!config) return;
+  $('sm-target').value = String(config.smId);
+  for (const [id,key] of smControls) {
+    const control = $(id), value = String(config[key]);
+    control.querySelector('option[data-imported]')?.remove();
+    if (![...control.options].some(option => option.value === value)) {
+      const option = new Option(value, value); option.dataset.imported = 'true'; control.add(option);
+    }
+    control.value = value;
+  }
+  $('sm-config-label').textContent = `SM ${config.smId} · 4 分区 · ${config.warpCount} warps`;
+  $('sm-config-note').textContent = '当前运行的参数已恢复。修改后点击“运行 SM 流水线”生成新记录；宏观运行保留。';
+}
+
 function runInfo(trace) {
   return describeRun(trace);
 }
 
 function trafficConfig() {
   return {...DEFAULT_TRAFFIC_CONFIG, numSms: 132,
+    nocTopology: $('noc-topology').value,
     nocBytesPerCycle: Number($('noc-bandwidth').value),
+    crossPartitionBytesPerCycle: Number($('noc-cross-bandwidth').value),
+    crossPartitionLatencyCycles: Number($('noc-cross-latency').value),
     hbmBytesPerCycle: Number($('hbm-bandwidth').value),
     coalesceShared: $('coalesce-shared').checked};
 }
 
 function showTrafficConfig(config) {
   if (!config) return;
-  for (const [id, key] of [['noc-bandwidth','nocBytesPerCycle'],['hbm-bandwidth','hbmBytesPerCycle']]) {
-    const control = $(id), value = String(config[key]);
+  for (const [id, key] of [['noc-bandwidth','nocBytesPerCycle'],['hbm-bandwidth','hbmBytesPerCycle'],['noc-cross-bandwidth','crossPartitionBytesPerCycle']]) {
+    const control = $(id), value = String(config[key] ?? DEFAULT_TRAFFIC_CONFIG[key]);
     control.querySelector('option[data-imported]')?.remove();
     if (![...control.options].some(option => option.value === value)) {
       const option = new Option(`${value} B / cycle`, value);
@@ -75,9 +120,14 @@ function showTrafficConfig(config) {
     }
     control.value = value;
   }
+  $('noc-topology').value = config.nocTopology ?? 'uniform-star';
+  $('noc-cross-latency').value = String(config.crossPartitionLatencyCycles ?? DEFAULT_TRAFFIC_CONFIG.crossPartitionLatencyCycles);
+  const partitioned = $('noc-topology').value === 'partitioned-crossbar';
+  $('noc-cross-bandwidth').disabled = !partitioned;
+  $('noc-cross-latency').disabled = !partitioned;
   $('coalesce-shared').checked = config.coalesceShared !== false;
-  $('traffic-config-label').textContent = `${config.numSms === 132 && config.hbmStacks === 5 ? 'H100 SXM' : '教学变体'} · ${number(config.numSms)} SM · NoC ${number(config.nocBytesPerCycle)} B/cycle`;
-  $('traffic-config-note').textContent = '参数只用于下一次仿真；当前记录的时间不会改变。';
+  $('traffic-config-label').textContent = `${config.numSms === 132 && config.hbmStacks === 5 ? 'H100 SXM' : '教学变体'} · ${number(config.numSms)} SM · ${partitioned ? '双分区' : '单 Fabric'} · ${number(config.nocBytesPerCycle)} B/cycle`;
+  $('traffic-config-note').textContent = '参数只用于下一次仿真；当前记录的时间不会改变。普通读取逐 SM 单播返回，未执行 TMA cluster multicast。';
 }
 
 function normalizeImported(input) {
@@ -108,18 +158,20 @@ function renderRunBar() {
   const detailedInfo = runs.detail && describeRun(runs.detail.trace);
   const macroInfo = runs.macro && runInfo(runs.macro.trace);
   $('macro-backend').textContent = macroInfo ? `${isTraffic(runs.macro.trace) ? '教学模型' : macroInfo.backend} · ${macroInfo.granularity}` : '宏观运行 · 待载入';
-  $('micro-backend').textContent = detailedInfo ? `${detailedInfo.backend} · ${detailedInfo.granularity}` : '指令粒度 · 待载入';
+  $('micro-backend').textContent = detailedInfo ? `${isSmModel(runs.detail.trace) ? '教学模型' : detailedInfo.backend} · ${detailedInfo.granularity}` : '组件规格 · 可运行流水线模型';
   $('run-granularity').textContent = info.granularity;
   $('simulation-runtime').textContent = info.wallTimeSeconds === null ? '未记录' : `${number(info.wallTimeSeconds)} s`;
   $('simulation-runtime').title = info.timingScope ?? '来源未记录仿真墙钟耗时；播放速度不代表仿真吞吐。';
   $('clock-scope').textContent = detail ? '详细运行 · 独立时钟' : '宏观运行 · 独立时钟';
   $('clock-scope').title = info.timeDomain;
-  $('world-level-tag').textContent = detail ? 'SM / INSTRUCTION' : traffic ? `${observationLevel === 'sm' ? 'SM' : 'GPU'} / DATA FLOW` : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
+  $('world-level-tag').textContent = isSmModel() ? 'SM / PIPELINE MODEL' : detail ? 'SM / INSTRUCTION' : traffic ? `${observationLevel === 'sm' ? 'SM' : 'GPU'} / DATA FLOW` : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
   $('playback-scope').textContent = `${detail ? '指令慢放' : observationLevel === 'sm' ? 'SM 慢放' : '全景'} · ${number(playbackDuration() / 1000 / state.rate)}s / 遍`;
-  $('run-context').textContent = detail
+  $('run-context').textContent = isSmModel()
+    ? `SM ${state.trace.meta.config.smId} 流水线教学模型 · 4 分区，显式执行 Fetch / Decode / Issue、RAW 等待、执行和写回；TMA 异步完成后释放 mbarrier。与城市模型分别运行，时序未按实机校准。`
+    : detail
     ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。与宏观模型分别运行，各自保留时钟与选择；不自动对齐或拼接 cycle。`
     : traffic
-      ? `GPU City 教学模型 · ${state.trace.meta.config.numSms === 132 && state.trace.meta.config.hbmStacks === 5 ? 'H100 SXM 132 SM 配置' : `${number(state.trace.meta.config.numSms)} SM 教学变体`}，非真实芯片时序。HBM → L2 → NoC → SM 按离散事件运输；${state.trace.meta.config.coalesceShared ? '共享读取先合并，再向请求者分发。' : '共享读取逐请求访问 HBM，用于关闭合并的对照。'}`
+      ? `GPU City 教学模型 · ${state.trace.meta.config.numSms === 132 && state.trace.meta.config.hbmStacks === 5 ? 'H100 SXM 132 SM 配置' : `${number(state.trace.meta.config.numSms)} SM 教学变体`}。${state.trace.meta.config.nocTopology === 'partitioned-crossbar' ? '双分区 Crossbar / 局部 L2，远端内存 miss 经桥；链路串行化与传播分开。' : '单 Fabric 与理想共享缓存对照。'}${state.trace.meta.config.coalesceShared ? '同缓存域内共享 Tile 复用后逐 SM 单播；不是全 GPU 广播。' : '已禁用共享缓存与请求合并；每请求独立访问 HBM。'}时序未按实机校准。`
     : observationLevel === 'sm'
       ? `当前 SM 展示 ${info.backend} 的 ${info.granularity}。载入详细运行后可查看指令观测；两份运行独立保存。`
       : '外层观察 Tile 任务在 SM 上的执行与依赖；点击 SM 进入内部。详细后端单独运行，回放速度与仿真耗时分别显示。';
@@ -300,6 +352,8 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   sampleSelect.querySelector('option[value="custom"]')?.remove();
   if (isTraffic(trace)) {
     sampleSelect.value = 'traffic'; showTrafficConfig(trace.meta.config);
+  } else if (isSmModel(trace)) {
+    sampleSelect.value = 'sm'; showSmConfig(trace.meta.config);
   } else if (/GTSim/.test(trace.meta.producer) && trace.meta.config?.M === 256 && trace.meta.config?.N === 256 && trace.meta.config?.K === 128) {
     sampleSelect.value = trace.meta.config.l2BandwidthBytesPerCycle === 128 ? 'slow-l2' : 'standard';
   } else {
@@ -342,13 +396,15 @@ function renderSummary() {
   const { meta, events, components, metrics } = state.trace;
   $("trace-title").textContent = meta.title || "未命名执行记录";
   $("trace-description").textContent = meta.description || "这份记录未提供描述。点击事件查看原始字段。";
-  $('source-boundary').textContent = isTraffic()
-    ? '132 SM 对应 H100 SXM 的公开规格；互连拓扑、带宽参数、缓存与传输时序由教学模型定义。共享读取按请求合并并分发，不声称真实 HBM 广播协议。'
+  $('source-boundary').textContent = isSmModel()
+    ? '组件规格引用 NVIDIA Hopper/CUDA 公开资料；Fetch/Decode 等显式阶段、资源队列与周期参数由本教学模型定义。演示指令不是真实 SASS；无数值执行，也未校准真实 H100 时序。'
+    : isTraffic()
+    ? '132 SM 对应 H100 SXM 公开规格；双分区与局部缓存参考 NVIDIA 白皮书和 Jin 等 MICRO 2024。SM 编号映射、聚合节点、带宽/延迟是教学定义，未拟合论文往返测量。普通读取不等于广播；TMA cluster multicast 尚未执行。'
     : '时间与依赖来自执行记录；未记录的硬件状态与传输路径不作推断。不同后端的运行分别保存。';
   const measured = meta.evidenceKind === "measurement";
   $("evidence-badge").textContent = measured
     ? `${meta.producer} · 测量记录（以来源说明为准）`
-    : isTraffic() ? 'GPU City 教学模型 · 非真实芯片时序' : `${meta.producer} ${meta.evidenceKind === "illustration" ? "示意模型" : "仿真"} · 非实机 profile`;
+    : isSmModel() ? 'SM 流水线教学模型 · 非真实芯片时序' : isTraffic() ? 'GPU City 教学模型 · 非真实芯片时序' : `${meta.producer} ${meta.evidenceKind === "illustration" ? "示意模型" : "仿真"} · 非实机 profile`;
   $("evidence-badge").classList.toggle("measurement", measured);
   const facts = $("trace-facts");
   facts.replaceChildren();
@@ -414,6 +470,7 @@ function renderComponents() {
 function selectComponent(id, {preserveScope = false} = {}) {
   if (!preserveScope) state.scope = null;
   state.selectedComponentId = id;
+  syncSmTarget(id);
   descendantIds = descendants(id);
   state.page = 0;
   renderComponents();
@@ -590,8 +647,15 @@ function renderDetails() {
   panel.append(el("h3", event.name, "detail-title"));
   const facts = el("dl", undefined, "detail-facts");
   for (const [label, value] of [["ID", event.id], ["组件", `${componentName(event.componentId)} (${event.componentId})`], ["类别", categoryName(event)], ["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]]) facts.append(el("dt", label), el("dd", value));
-  for (const [key,label] of [['smId','SM'],['threadBlockId',isTraffic() ? '模型 CTA ID' : 'CTA'],['round','任务轮次'],['warpId','Warp'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage','观测阶段'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
-  if (event.args?.flow) for (const [key, label] of [['packetId','数据包'],['requestId','请求'],['kind','运输类型'],['sourceId','本跳起点'],['targetId','本跳终点'],['bytes','字节数'],['dataKey','数据标识']]) {
+  for (const [key,label] of [['smId','SM'],['threadBlockId',isTraffic() || isSmModel() ? '模型 CTA ID' : 'CTA'],['round','任务轮次'],['warpId','Warp'],['partitionId','分区'],['instructionId','指令 ID'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage',isSmModel() ? '模型阶段' : '观测阶段'],['stallReason','等待原因'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
+  if (isTraffic()) for (const [key,label] of [['issueReleaseCycle','串行化资源释放'],['serializationCycles','串行化周期'],['propagationCycles','传播周期']]) {
+    if (event.args?.[key] != null) facts.append(el('dt',label),el('dd',timeText(event.args[key])));
+  }
+  if (event.args?.smPipelineTransfer) for (const [key,label] of [['sourceId','通路起点'],['targetId','通路终点'],['kind','通路类型'],['bytes','字节数']]) {
+    const value = event.args.smPipelineTransfer[key];
+    if (value != null) facts.append(el('dt',label),el('dd',componentById.has(value) ? componentName(value) : String(value)));
+  }
+  if (event.args?.flow) for (const [key, label] of [['packetId','数据包'],['requestId','请求'],['kind','运输类型'],['sourceId','本跳起点'],['targetId','本跳终点'],['originPartitionId','起点缓存域'],['destinationPartitionId','终点缓存域'],['bytes','字节数'],['dataKey','数据标识']]) {
     const value = event.args.flow[key];
     if (value != null) facts.append(el('dt',label),el('dd',key.endsWith('Id') && componentById.has(value) ? componentName(value) : String(value)));
   }
@@ -776,7 +840,8 @@ async function importDetail(file) {
   try {
     if (file.size > MAX_FILE_BYTES) throw new Error('最多读取 32 MiB；请先截取指令窗口。');
     const contents = await file.text();
-    const trace = /^\s*[\[{]/.test(contents) ? normalizeDetailedTrace(JSON.parse(contents)) : normalizeFlashGpuLog(contents);
+    const trace = /^\s*[\[{]/.test(contents) ? normalizeRun(JSON.parse(contents)) : normalizeFlashGpuLog(contents);
+    if (runKind(trace) !== 'detail') throw new Error('需要指令 observer 或 SM 流水线教学运行；宏观 Trace 请使用“导入 Trace”。');
     if (sequence !== loadSequence) return;
     setTrace(trace, null, 'detail');
     announce(`已载入 ${describeRun(trace).backend} 详细运行，共 ${number(trace.events.length)} 个${describeRun(trace).granularity}；宏观运行已保留。`);
@@ -787,6 +852,7 @@ async function importDetail(file) {
 
 async function loadExample(sample = $("sample-select").value) {
   if (sample === 'traffic') return runTraffic();
+  if (sample === 'sm') return runSmModel();
   const sequence = ++loadSequence;
   announce("正在加载 GTSim GEMM 仿真示例…");
   try {
@@ -803,6 +869,7 @@ async function loadExample(sample = $("sample-select").value) {
 }
 
 async function runTraffic() {
+  if (!$('traffic-config').reportValidity()) return;
   const sequence = ++loadSequence;
   const button = $('simulate-traffic');
   button.disabled = true;
@@ -827,10 +894,42 @@ async function runTraffic() {
   }
 }
 
+async function runSmModel() {
+  if (!$('sm-config').reportValidity()) return;
+  const sequence = ++loadSequence, button = $('simulate-sm');
+  const config = smConfig();
+  button.disabled = true;
+  announce(`正在运行 SM ${config.smId} 的独立流水线教学仿真…`);
+  try {
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    if (sequence !== loadSequence) return;
+    const trace = simulateSm(config);
+    if (sequence !== loadSequence) return;
+    setTrace(trace, null, 'detail');
+    // Start with execution and queues visible; seeking keeps the original clock.
+    const firstExecution = trace.events.find(event => event.args?.stage === 'execute');
+    if (firstExecution) seek(firstExecution.start);
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) togglePlay();
+    announce(`SM ${config.smId} 流水线运行已生成：${number(trace.metrics.sm.completedInstructions)} 条教学指令，${number(trace.metrics.sm.makespan)} 模型周期。点选组件查看形式化规格，暂停或单步检查事件与依赖。`);
+  } catch (error) {
+    if (sequence === loadSequence) announce(`SM 仿真未完成：${error.message}。当前运行保持可用。`, true);
+  } finally {
+    button.disabled = false;
+  }
+}
+
 $("play").addEventListener("click", togglePlay);
 $('traffic-play').addEventListener('click', togglePlay);
 $('traffic-config').addEventListener('submit', event => {event.preventDefault(); runTraffic();});
-for (const id of ['noc-bandwidth','hbm-bandwidth','coalesce-shared']) $(id).addEventListener('change', () => {
+$('sm-config').addEventListener('submit', event => {event.preventDefault(); runSmModel();});
+for (const id of ['sm-target', ...smControls.map(([id]) => id)]) $(id).addEventListener('change', () => {
+  $('sm-config-note').textContent = '参数已修改。点击“运行 SM 流水线”生成新运行；当前事件的原始时间保持不变。';
+});
+showSmConfig(DEFAULT_SM_CONFIG);
+for (const id of ['noc-topology','noc-bandwidth','hbm-bandwidth','coalesce-shared','noc-cross-bandwidth','noc-cross-latency']) $(id).addEventListener('change', () => {
+  const partitioned = $('noc-topology').value === 'partitioned-crossbar';
+  $('noc-cross-bandwidth').disabled = !partitioned;
+  $('noc-cross-latency').disabled = !partitioned;
   $('traffic-config-note').textContent = '参数已修改，点击“重新仿真”生成新运行。当前回放仍使用原参数。';
 });
 $("step").addEventListener("click", () => step(1));
@@ -876,7 +975,7 @@ $("micro-view").addEventListener('click', () => {
   ++loadSequence;
   if (runs.detail && activeRun !== 'detail') { activateRun('detail'); return; }
   enterSm();
-  if (!runs.detail) announce(`已进入 SM，当前查看 ${runInfo(state.trace).backend} 的${runInfo(state.trace).granularity}；载入详细指令运行后启用指令视图。`);
+  if (!runs.detail) announce(`已进入 SM。可点选组件查阅规格，点击“运行 SM 流水线”生成独立教学运行，或载入详细后端的指令记录。`);
 });
 $("trace-file").addEventListener("change", (event) => { importFile(event.target.files[0], false); event.target.value = ""; });
 $("workspace-file").addEventListener("change", (event) => { importFile(event.target.files[0], true); event.target.value = ""; });
@@ -895,4 +994,5 @@ document.addEventListener("keydown", (event) => {
   else if (event.code === "End" && state.trace) { event.preventDefault(); pause(); seek(totalTime); }
 });
 document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
+showTrafficConfig(DEFAULT_TRAFFIC_CONFIG);
 loadExample();

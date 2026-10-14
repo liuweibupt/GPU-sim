@@ -127,6 +127,56 @@
   urldate = {2026-10-14}
 }
 
+@inproceedings{jin2024realgpunoc,
+  author = {Zhixian Jin and Christopher Rocca and Jiho Kim and Hans Kasan and Minsoo Rhu and Ali Bakhoda and Tor M. Aamodt and John Kim},
+  title = {{Uncovering Real GPU NoC Characteristics: Implications on Interconnect Architecture}},
+  booktitle = {2024 57th IEEE/ACM International Symposium on Microarchitecture (MICRO)},
+  year = {2024},
+  pages = {885--898},
+  publisher = {IEEE Computer Society},
+  doi = {10.1109/MICRO61859.2024.00070},
+  url = {https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf},
+  note = {Characterization and modeling-method reference; this project does not reproduce the measured H100 latency matrix or physical netlist},
+  urldate = {2026-10-14}
+}
+
+@manual{nvidia_h100_whitepaper,
+  author = {{NVIDIA}},
+  title = {{NVIDIA H100 Tensor Core GPU Architecture}},
+  edition = {Version 1.04},
+  url = {https://resources.nvidia.com/en-us-hopper-architecture/nvidia-h100-tensor-c},
+  note = {Official architecture whitepaper; partitioned crossbar and L2 locality are structural constraints, not calibration of this project's timing model},
+  urldate = {2026-10-14}
+}
+
+@misc{nvidia2022hopper,
+  author = {Michael Andersch and Greg Palmer and Ronny Krashinsky and Nick Stam and Vishal Mehta and Gonzalo Brito and Sridhar Ramaswamy},
+  title = {{NVIDIA Hopper Architecture In-Depth}},
+  year = {2022},
+  howpublished = {NVIDIA Technical Blog, March 22},
+  url = {https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/},
+  note = {Public architectural structure and specifications; not a source of this project's teaching-model cycle timings},
+  urldate = {2026-10-14}
+}
+
+@manual{nvidia2025hoppertuning,
+  author = {{NVIDIA}},
+  title = {{Hopper Tuning Guide, CUDA 13.0.3}},
+  year = {2025},
+  url = {https://docs.nvidia.com/cuda/archive/13.0.3/hopper-tuning-guide/index.html},
+  note = {Pinned documentation version; public occupancy, memory and TMA capabilities},
+  urldate = {2026-10-14}
+}
+
+@manual{nvidia2025ptx,
+  author = {{NVIDIA}},
+  title = {{Parallel Thread Execution ISA, CUDA 12.8.1}},
+  year = {2025},
+  url = {https://docs.nvidia.com/cuda/archive/12.8.1/parallel-thread-execution/index.html},
+  note = {ISA semantics reference; PTX is not a proprietary physical SM pipeline description},
+  urldate = {2026-10-14}
+}
+
 @misc{entropy2026gem5simcity,
   author = {{Entropy-xcy and Gem5SimCity contributors}},
   title = {{Gem5SimCity}},

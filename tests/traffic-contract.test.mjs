@@ -60,3 +60,52 @@ test('explicit excerpts retain known endpoints without manufacturing missing hop
   assert.equal(normalizeRun(trace).events.length, 1);
   assert.equal(trace.events[0].args.flow.originId, 'hbm');
 });
+
+function pipelinedFixture() {
+  const trace = fixture(), first = trace.events[0];
+  first.args.issueReleaseCycle = 4;
+  first.args.serializationCycles = 4;
+  first.args.propagationCycles = 2;
+  trace.meta.topology.links[0].occupancy = 'serialization-only';
+  trace.events.push({...structuredClone(first), id: 'next-packet', start: 4, end: 10,
+    dependencies: [], args: {...structuredClone(first.args), issueReleaseCycle: 8,
+      issueDependencies: [first.id], flow: {...structuredClone(first.args.flow), packetId: 'packet-1', destinationId: 'l2'}}});
+  return trace;
+}
+
+test('serializer release permits overlapping in-flight tails without rewriting old full-occupancy records', () => {
+  const trace = pipelinedFixture(), before = structuredClone(trace);
+  assert.equal(normalizeRun(trace), trace);
+  assert.deepEqual(trace, before);
+  assert.ok(trace.events[2].start < trace.events[0].end);
+  const old = fixture(), oldBefore = structuredClone(old);
+  assert.equal(normalizeRun(old), old);
+  assert.deepEqual(old, oldBefore);
+  assert.equal(old.events[0].args.issueReleaseCycle, undefined);
+});
+
+test('serialization release, payload bandwidth and tail propagation must all agree', () => {
+  for (const change of [
+    trace => trace.events[0].args.issueReleaseCycle = 3,
+    trace => trace.events[0].args.issueReleaseCycle = 7,
+    trace => { trace.events[0].args.issueReleaseCycle = 5; trace.events[0].args.serializationCycles = 5; trace.events[0].args.propagationCycles = 1; },
+    trace => trace.events[0].args.issueReleaseCycle = NaN,
+    trace => trace.events[0].args.serializationCycles = 2,
+    trace => trace.events[0].args.propagationCycles = 8,
+    trace => delete trace.events[0].args.issueReleaseCycle,
+    trace => { trace.events[2].start = 3; trace.events[2].end = 9; trace.events[2].args.issueReleaseCycle = 7; },
+  ]) {
+    const trace = pipelinedFixture(); change(trace);
+    assert.throws(() => normalizeRun(trace));
+  }
+});
+
+test('undeclared legacy links retain full occupancy even when an importer supplies an early release field', () => {
+  const trace = pipelinedFixture();
+  delete trace.meta.topology.links[0].occupancy;
+  delete trace.events[0].args.serializationCycles;
+  delete trace.events[0].args.propagationCycles;
+  delete trace.events[2].args.serializationCycles;
+  delete trace.events[2].args.propagationCycles;
+  assert.throws(() => normalizeRun(trace), /串行化占用发生重叠/);
+});

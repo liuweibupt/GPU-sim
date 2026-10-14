@@ -1,6 +1,7 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
-import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=traffic-1";
+import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-1";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 function countThrough(sorted, time) {
@@ -166,7 +167,8 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   let trace = null, index = indexComponents(null), stats = null;
   let view = {time: 0, selectedComponentId: null, selectedEventId: null, scope: null};
   let drillSmId = null, zoom = 1, wholeMap = false, showStructure = true, showTasks = false;
-  let presentation = "boxes", boxScene = null;
+  let presentation = "boxes", boxScene = null, smPipelineScene = null;
+  const smPipelineViews = new Map();
   let cursor = null, lastLevel = "", lastTokenSignature = "", instructionRows = null, instructionRowEvents = [], lastInstructionSignature = "";
   const statNodes = new Map(), tokenSites = [], eventNodes = new Map();
   const zoomLevels = [.75, 1, 1.25, 1.5, 2];
@@ -239,8 +241,8 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   }
   function detailedEvents(smId = drillSmId) {
     const capabilities = trace?.meta?.capabilities ?? [];
-    if (!capabilities.includes("instruction_spans") && !capabilities.includes("instruction_observations")) return [];
-    return (index.intervals.get(smId)?.events ?? []).filter(event => event.args?.granularity === "instruction");
+    if (!capabilities.includes("instruction_spans") && !capabilities.includes("instruction_observations") && !capabilities.includes("modeled_instruction_spans")) return [];
+    return (index.intervals.get(smId)?.events ?? []).filter(event => event.args?.granularity === "instruction" || capabilities.includes("sm_pipeline") && event.args?.instructionId != null);
   }
   function reportLevel() {
     const instructionAvailable = detailedEvents().length > 0;
@@ -413,34 +415,14 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
 
   function renderSm() {
     const sm = index.byId.get(drillSmId), instructions = detailedEvents(sm.id);
+    const modeledPipeline = trace.meta.capabilities?.includes("sm_pipeline");
     const instructionPoints = instructions.length > 0 && instructions.every(event => event.start === event.end);
-    heading("SM INTERIOR / EXECUTION FLOORPLAN", `${sm.label} · ${instructions.length ? instructionPoints ? "指令观测点 observer" : "指令区间 observer" : "tile 级 observer"}`);
+    heading("SM INTERIOR / FORMAL MICROARCHITECTURE", `${sm.label} · ${modeledPipeline ? "教学 SM 模型阶段" : instructions.length ? instructionPoints ? "指令观测点 observer" : "指令区间 observer" : "tile 级 observer"}`);
     scene.append(scopeStats(sm.id));
-    if (!instructions.length) {
-      const empty = element("div", "gpu-instruction-empty"), text = element("div");
-      text.append(element("strong", "", "指令轨迹未载入"), element("p", "", "当前记录提供粗粒度任务或数据传输区间。载入 Accel-Sim 2.0 或同类详细 observer 的指令 trace 后，才显示 PC、opcode 与 warp 指令执行。"));
-      empty.append(element("span", "gpu-instruction-mark", "</>"), text); scene.append(empty);
-    }
-    const pipelineKinds = new Set(["pipeline-group", "pipeline", "execution-unit", "tensor-core", "alu", "load-store-unit", "compute"]);
-    const pipelines = (index.children.get(sm.id) ?? []).filter(component => pipelineKinds.has(component.kind));
-    if (presentation === "boxes") {
-      boxScene = createGpuBoxScene({components: pipelines, eventsById: new Map([...index.intervals].map(([id, value]) => [id, value.events])), level: "sm", title: sm.label,
-        trace, onSelectComponent: id => chooseComponent(id, false)}); scene.append(boxScene.element);
-    } else {
-    const svg = citySvg(360, `${sm.label} 内部流水线，实线为原生组件，虚线为未观测结构`);
-    const p = projector(500, 70, 1.05, .35);
-    ground(svg, p, 330, 330);
-    schematic(svg, p, 20, 18, 120, 65, 28, "WARP SCHEDULER", "调度状态未观测");
-    schematic(svg, p, 175, 18, 125, 65, 28, "REGISTER FILE", "寄存器状态未观测");
-    const cols = pipelines.length <= 3 ? Math.max(1, pipelines.length) : 3, rows = Math.ceil(pipelines.length / cols), gap = 13;
-    const width = (280 - gap * (cols - 1)) / cols, depth = (156 - gap * (Math.max(1, rows) - 1)) / Math.max(1, rows);
-    for (const [i, component] of pipelines.entries()) nativeBuilding(svg, p, component, 25 + i % cols * (width + gap), 112 + Math.floor(i / cols) * (depth + gap), width, depth, 42, pipelineType(component));
-    if (!pipelines.length) svg.append(vector("text", {x: 500, y: 180, fill: "#90adbc", "font-size": 13, "text-anchor": "middle"}, "未提供独立流水线组件"));
-    schematic(svg, p, 40, 285, 250, 30, 15, "L1 / SHARED MEMORY", "结构示意 · 未观测访问");
-    for (const site of tokenSites) svg.append(site.group);
-    svg.append(vector("text", {x: 500, y: 344, fill: "#6f94a8", "font-size": 10, "text-anchor": "middle"}, "原生流水线 / 选择建筑联动时间线 · 虚线结构未观测"));
-    scene.append(svg);
-    }
+    smPipelineScene = createSmPipelineScene({trace, sm, events: index.intervals.get(sm.id)?.events ?? [],
+      onSelectComponent: id => chooseComponent(id, false), onSelectEvent: id => {const event = trace.events.find(event => event.id === id); if (event) chooseEvent(event);}, onResize: fitScene});
+    scene.append(smPipelineScene.element);
+    if (smPipelineViews.has(sm.id)) smPipelineScene.setView(smPipelineViews.get(sm.id));
     const execution = element("section", "gpu-sm-execution"); execution.setAttribute("aria-label", "SM 原生工作负载与指令轨迹");
     const header = element("div", "gpu-section-label"); header.append(element("span", "", instructions.length ? instructionPoints ? "WARP / INSTRUCTION OBSERVATIONS" : "WARP / INSTRUCTION SPANS" : trace.meta.trafficSchemaVersion ? "TASK / TILE OPERATIONS" : "WARP / TILE OPERATIONS"), element("small", "", trace.meta.trafficSchemaVersion ? "逻辑任务归属；未模拟真实 CTA / warp 调度" : "CTA 与 warp 为筛选范围")); execution.append(header);
     renderFilters(execution, sm.id);
@@ -449,7 +431,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     renderEventLanes(execution, events, Boolean(instructions.length));
     if (instructions.length) renderInstructionRows(execution, events);
     scene.append(execution);
-    footnote.textContent = instructions.length ? instructionPoints ? "菱形仅表示原生日志的 ISSUE / STALL 等观测时点；不推断执行时长，观测点不计入进行中区间。PC 与指令文本保留来源语义。" : "指令区间只来自显式声明能力且标记 granularity=instruction 的原生记录；零时长菱形表示观测点，不推断执行时长。" : "当前保留来源的粗粒度任务、CTA 或 warp 归属；未提供 warp 的任务不补造 warp。详细指令回放需要单独载入详细仿真后端，可视化缩放不会提高仿真精度。";
+    footnote.textContent = modeledPipeline ? "SM 教学模型的 Fetch / Issue / 执行 / 写回 / 异步内存阶段来自独立运行；组件时序与资源参数为显式教学配置，未宣称 NVIDIA cycle accurate。未使用的结构组件保持未观测。" : instructions.length ? instructionPoints ? "菱形仅表示原生日志的 ISSUE / STALL 等观测时点；不推断执行时长，观测点不计入进行中区间。PC 与指令文本保留来源语义。" : "原生指令只有明确的 architectureComponentId 映射才能驱动正式组件；未映射阶段不从 opcode 推断。零时长菱形表示观测点。" : "当前保留来源的粗粒度任务、CTA 或 warp 归属；正式 SM 图只定义组件与类型化连接，Fetch / Issue 等状态不从 tile 推断。运行 SM 教学模型或载入映射详细 trace 才显示对应阶段证据。";
   }
   function scoped(events) {
     if (!view.scope) return events;
@@ -555,8 +537,11 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     const activeElement = document.activeElement;
     const focused = scene.contains(activeElement) ? activeElement.dataset.gpuComponentId : null;
     boxScene?.destroy?.(); boxScene = null;
+    if (smPipelineScene) {const previousSm = smPipelineScene.getView().smComponentId; if (previousSm) smPipelineViews.set(previousSm, smPipelineScene.getView()); smPipelineScene.destroy(); smPipelineScene = null;}
     statNodes.clear(); tokenSites.length = 0; eventNodes.clear(); cursor = null; lastTokenSignature = ""; instructionRows = null; instructionRowEvents = []; lastInstructionSignature = "";
     scene.replaceChildren(); makeBreadcrumb();
+    presentationGroup.style.display = drillSmId ? 'none' : '';
+    structureSwitch.style.display = drillSmId ? 'none' : '';
     root.classList.toggle("gpu-box-mode", presentation === "boxes"); boxSwitch.setAttribute("aria-pressed", String(presentation === "boxes")); schematicSwitch.setAttribute("aria-pressed", String(presentation === "structure"));
     root.classList.toggle("gpu-overview", index.mode === "architecture" && !drillSmId);
     if (!trace) scene.append(element("p", "gpu-empty", "载入 Trace 后，探索 GPU tile 城市与 SM 内部执行。"));
@@ -590,6 +575,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   function patchCounters() {
     if (!stats) return;
     boxScene?.update({byId: stats.byId, time: view.time, selectedComponentId: view.selectedComponentId, selectedEventId: view.selectedEventId});
+    smPipelineScene?.update({time: view.time, selectedEventId: view.selectedEventId, scope: view.scope});
     for (const [id, nodes] of statNodes) {
       const value = stats.byId.get(id);
       if (value) for (const group of nodes) for (const key of ["active", "completed", "total"]) if (group[key]) group[key].textContent = value[key].toLocaleString();
@@ -659,16 +645,17 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
 
   setZoom(1); renderScene();
   return {setTrace, update,
-    animate(time) {if (Number.isFinite(time)) {view.time = time; boxScene?.animate?.({time, selectedEventId: view.selectedEventId});}},
-    getView() {return {smComponentId: drillSmId, scope: view.scope ? {...view.scope} : null, zoom, wholeMap, showStructure, showTasks, presentation};},
+    animate(time) {if (Number.isFinite(time)) {view.time = time; boxScene?.animate?.({time, selectedEventId: view.selectedEventId}); smPipelineScene?.animate({time, selectedEventId: view.selectedEventId});}},
+    getView() {return {smComponentId: drillSmId, scope: view.scope ? {...view.scope} : null, zoom, wholeMap, showStructure, showTasks, presentation, smPipeline: smPipelineScene?.getView() ?? null};},
     setView(saved = {}) {
       drillSmId = index.byId.get(saved.smComponentId)?.kind === "sm" ? saved.smComponentId : null;
       if (zoomLevels.includes(saved.zoom)) zoom = saved.zoom;
       if (typeof saved.showStructure === "boolean") {showStructure = saved.showStructure; root.classList.toggle("gpu-hide-structure", !showStructure); structureSwitch.setAttribute("aria-pressed", String(showStructure));}
       if (typeof saved.showTasks === "boolean") {showTasks = saved.showTasks; taskSwitch.setAttribute("aria-pressed", String(showTasks));}
       if (["boxes", "structure"].includes(saved.presentation)) presentation = saved.presentation;
+      if (drillSmId && saved.smPipeline) smPipelineViews.set(drillSmId, saved.smPipeline);
       update({scope: saved.scope ?? null}); wholeMap = saved.wholeMap === true; renderScene(); renderTasks();
     },
-    destroy() {document.removeEventListener("fullscreenchange", fullscreenChanged); resizeObserver?.disconnect(); boxScene?.destroy?.(); root.remove();},
+    destroy() {document.removeEventListener("fullscreenchange", fullscreenChanged); resizeObserver?.disconnect(); boxScene?.destroy?.(); smPipelineScene?.destroy?.(); root.remove();},
   };
 }

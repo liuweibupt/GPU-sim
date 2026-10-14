@@ -20,6 +20,24 @@
 .run-context { color: #8da7ae; font-size: 11px; line-height: 1.6; margin: -3px 2px 0; }
 .playback-scope { color: #7a9a98; font-size: 10px; white-space: nowrap; }
 .traffic-experiment { flex: 1 0 100%; border-top: 1px solid #2a484a; padding-top: 8px; min-width: 0; }
+.sm-experiment { flex: 1 0 100%; border-top: 1px solid #2a484a; padding-top: 8px; min-width: 0; }
+.sm-experiment > summary { display: flex; align-items: center; gap: 10px; width: fit-content; color: #9ebacb; font-size: 11px; cursor: pointer; list-style: none; }
+.sm-experiment > summary::-webkit-details-marker { display: none; }
+.sm-experiment > summary > span:first-child { color: #a9c7ff; font-weight: 600; }
+.sm-experiment > summary > span:last-child { color: #7f9dbd; transition: transform .15s; }
+.sm-experiment[open] > summary > span:last-child { transform: rotate(180deg); }
+#sm-config-label { color: #8ca5bd; font: 10px ui-monospace, monospace; }
+.sm-config { display: flex; align-items: start; flex-wrap: wrap; gap: 12px; padding: 13px 0 1px; min-width: 0; }
+.sm-config > label { display: flex; flex-direction: column; gap: 5px; color: #9ab5c9; font-size: 10px; min-width: 0; }
+.sm-config select, .sm-config input { background: #102232; font: 11px ui-monospace, monospace; min-width: 98px; max-width: 100%; min-height: 34px; }
+.sm-config input { width: 98px; }
+.sm-config-note { flex: 1 0 100%; margin: 0; color: #839bb0; font-size: 11px; line-height: 1.6; }
+.sm-run { font-size: 11px; white-space: nowrap; }
+@media (max-width: 520px) {
+  .sm-experiment > summary { flex-wrap: wrap; gap: 6px; }
+  .sm-config > label { flex: 1 0 42%; }
+  .sm-config select { width: 100%; }
+}
 .traffic-experiment > summary { display: flex; align-items: center; gap: 10px; width: fit-content; color: #adceca; font-size: 11px; cursor: pointer; list-style: none; }
 .traffic-experiment > summary::-webkit-details-marker { display: none; }
 .traffic-experiment > summary > span:first-child { color: #9ceacf; font-weight: 600; }
@@ -29,6 +47,7 @@
 .traffic-config { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 13px 0 1px; min-width: 0; }
 .traffic-config > label { display: flex; flex-direction: column; gap: 5px; color: #90b2b5; font-size: 10px; }
 .traffic-config select { background: #0e2331; font: 11px ui-monospace, monospace; min-width: 135px; }
+.traffic-config input[type=number] { width: 135px; min-height: 34px; background: #0e2331; font: 11px ui-monospace, monospace; }
 .traffic-preset { display: grid; gap: 5px; margin-right: 10px; color: #8aabab; font-size: 10px; }
 .traffic-preset strong { color: #c7e6dd; font: 12px ui-monospace, monospace; }
 .traffic-preset small { color: #708d9b; font-size: 10px; }

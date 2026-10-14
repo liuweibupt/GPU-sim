@@ -58,3 +58,10 @@ with the built-in image generation tool on 2026-10-14. They are conceptual
 hardware artwork, not copied game assets, vendor logos, or measured floorplans.
 Generation prompts and their role are recorded in
 [the asset manifest](web/assets/gpu/manifest.json).
+
+The Hopper SM component schema, teaching simulator and SVG pipeline drawing are
+independently authored for this repository. Public component counts and memory
+capacities, and TMA/mbarrier semantics, cite NVIDIA's Hopper architecture article,
+Hopper Tuning Guide and PTX ISA. No NVIDIA architecture diagram, SDK code or
+simulator is redistributed by this feature. Detailed provenance and model
+assumptions are listed in [the SM specification](docs/sm-architecture.md).

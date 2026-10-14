@@ -37,6 +37,16 @@
 
 ## 格式与工具来源
 
+**NoC 建模方法参考：** Zhixian Jin, Christopher Rocca, Jiho Kim, Hans Kasan, Minsoo Rhu, Ali Bakhoda, Tor M. Aamodt, John Kim. *Uncovering Real GPU NoC Characteristics: Implications on Interconnect Architecture.* MICRO 2024, pp. 885–898. DOI: 10.1109/MICRO61859.2024.00070。[作者公开论文](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)、[机构出版记录](https://pure.kaist.ac.kr/en/publications/uncovering-real-gpu-noc-characteristics-implications-on-interconn/)、[DOI](https://doi.org/10.1109/MICRO61859.2024.00070)。键：`jin2024realgpunoc`。该研究用于约束延迟/吞吐分离、分区与局部性、带宽层级的建模；本项目没有复现实测 H100 矩阵或使用其 simulator 代码。[逐项核查](research/gpu-noc.md)
+
+**NoC 公开结构参考：** NVIDIA. *NVIDIA H100 Tensor Core GPU Architecture*, v1.04，[官方白皮书](https://resources.nvidia.com/en-us-hopper-architecture/nvidia-h100-tensor-c)。L2 一节明确 partitioned crossbar 与局部缓存。键：`nvidia_h100_whitepaper`；本项目的双分区编号、聚合节点与时序参数仍为教学选择。
+
+SM 形式化规格与自研教学模型采用以下 NVIDIA 一手资料；它们是公开结构与 ISA 语义的来源，不提供本项目的 Fetch/Decode/Issue 周期参数，也不验证真实芯片周期准确性。图由本仓库原生 SVG 重新绘制，未捆绑官方架构图片。
+
+- Michael Andersch, Greg Palmer, Ronny Krashinsky, Nick Stam, Vishal Mehta, Gonzalo Brito, Sridhar Ramaswamy. **NVIDIA Hopper Architecture In-Depth.** NVIDIA Technical Blog, 2022-03-22。SM 图、四分区、FP32/FP64/INT32/Tensor 数量及 H100 SXM 配置。[官方文章](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)。BibTeX：`nvidia2022hopper`。
+- NVIDIA. **Hopper Tuning Guide, CUDA 13.0.3.** RF、驻留 warp/CTA、L1/SMEM 容量与 carveout、TMA 及 cluster 公开能力。[固定版本官方文档](https://docs.nvidia.com/cuda/archive/13.0.3/hopper-tuning-guide/index.html)。BibTeX：`nvidia2025hoppertuning`。
+- NVIDIA. **Parallel Thread Execution ISA, CUDA 12.8.1.** 寄存器/存储空间、`cp.async.bulk`、`mbarrier` 和 WGMMA 的语义。教学 demo 使用单 warp MMA，尚未实现真实 WGMMA warpgroup。[固定版本官方文档](https://docs.nvidia.com/cuda/archive/12.8.1/parallel-thread-execution/index.html)。BibTeX：`nvidia2025ptx`。
+
 Chrome/PyTorch duration JSON importer 为本项目自行实现，保留 X 与配对 B/E 区间，不根据 correlation ID 构造内部 GPU 因果。格式依据 [Chromium Trace Event Format 入口](https://chromium.googlesource.com/catapult/+/HEAD/docs/trace-event-format.md)、[Perfetto 支持的其他格式](https://perfetto.dev/docs/getting-started/other-formats) 与 [PyTorch/Kineto 官方 JSON writer](https://github.com/pytorch/kineto/blob/main/libkineto/src/output_json.cpp)。这些来源不表示本项目捆绑其代码库或 SDK。
 
 Nsight、RGP、游戏及其他教学项目的具体事实继续在 [可视化调研](research/visualization.md)、[仿真器调研](research/simulators.md)、[游戏调研](research/games.md) 和 [Gem5SimCity 核查](research/gem5-simcity.md) 的相应段落直接引用官方来源。上述 BibTeX 集合只收录当前关键基础论文和两个固定版本的代码条目。

@@ -4,6 +4,8 @@
 
 后续迭代已实现独立的 [H100 规模数据流教学模型](traffic-model.md)：明确的请求/响应、逐跳运输和无界 FCFS 排队，契约扩展为 `trafficSchemaVersion: 1`。下文有限 buffer、credit/backpressure 等仍是后续目标，不能用已有排队动画宣称已实现。
 
+另有独立的 [SM 流水线教学模型与组件规格](sm-architecture.md)，使用 `meta.smModelSchemaVersion: 1` 和 `sm_pipeline` / `modeled_instruction_spans` 能力。教学阶段与真实 observer 的 `instruction_spans` / `instruction_observations` 分别校验；前者记录符号指令生命周期、分区归属、寄存器依赖、等待原因与显式通路端点，不冒充原生 SASS 或真实芯片时序。[契约校验实现](../lib/sm-contract.js) 不补填缺失阶段、传输或完成时间。工作区把该运行保存在 detail 槽，与宏观运行分别恢复。
+
 ## 当前 trace v1
 
 JSON 顶层包含 `schemaVersion: 1`、`meta`、`components`、`events` 和 `metrics`。规范化与验证实现位于 [lib/trace.js](../lib/trace.js)。事件原始时序从不为动画改写。

@@ -79,6 +79,7 @@ ${TRAFFIC_OVERLAY_CSS}
 @media(max-width:600px){.gpu-box-full .gpu-box-svg{height:360px;min-width:540px}.gpu-box-full .gpu-box-visual{overflow:auto;scrollbar-color:#466b7c #0c1c27}.gpu-box-full .gpu-box-caption{font-size:10px}.gpu-box-native-picker{margin-left:4px;margin-right:4px;font-size:10px}.gpu-box-native-picker span{display:none}.gpu-box-map-mobile-note{display:block;font:10px/1.5 ui-monospace,monospace;color:#7fa7b8;margin:0 5px 8px}}
 .gpu-world:fullscreen .gpu-box-full .gpu-box-svg{height:clamp(480px,66vh,800px)}.gpu-box-flat .gpu-box-sm-wall{display:none}.gpu-box-flat .gpu-box-sm-roof{fill:#102b38}.gpu-box-flat .gpu-box-infra-top{opacity:.9}
 .gpu-box-full .gpu-traffic-evidence,.gpu-box-full .gpu-traffic-legend,.gpu-box-full .gpu-box-native-picker{font-size:calc(11px * var(--gpu-readable-scale,1))}
+.gpu-box-domain{fill:#246466;fill-opacity:.09;stroke:#447c82;stroke-width:1;stroke-dasharray:5 5;pointer-events:none}.gpu-box-domain-label{fill:#8eb9bf;font:11px ui-monospace,monospace;pointer-events:none;paint-order:stroke;stroke:#0c222d;stroke-width:3px}.gpu-traffic-wire.gpu-box-bridge{stroke:#c8a1ee;stroke-width:2;stroke-dasharray:6 4;opacity:.65}.gpu-box-bridge-label{fill:#b7a3cd;font:10px ui-monospace,monospace;pointer-events:none;paint-order:stroke;stroke:#102632;stroke-width:3px}
 `;
 
 /** Display configured SMs without adding components or activity to a trace. */
@@ -101,13 +102,23 @@ export function sceneSmComponents(components = [], configuredSms = null) {
 /** Coordinates are a logical, readable floorplan, never a measured die map. */
 export function trafficCityLayout(sms, topology) {
   const positions = new Map(), shapes = new Map(), topologyRouters = (topology?.nodes ?? []).filter(node => node.kind === "router");
-  const columns = topologyRouters.length || Math.min(12, Math.max(1, Math.ceil(Math.sqrt(sms.length * 1.18)))), rows = Math.max(1, Math.ceil(sms.length / columns));
+  const nativeNodes = new Map((topology?.nodes ?? []).filter(node => node.kind === "sm").map(node => [node.componentId ?? node.id, node]));
+  const groupSizes = new Map();
+  for (const sm of sms) {const group = nativeNodes.get(sm.id)?.clusterId; if (group != null) groupSizes.set(group, (groupSizes.get(group) ?? 0) + 1);}
+  // Dense router groups use adjacent columns rather than shrinking 17 SMs into
+  // unreadable rows. This is only scene geometry, not a new scheduling group.
+  const maxGroup = Math.max(0, ...groupSizes.values(), topologyRouters.length ? Math.ceil(sms.length / topologyRouters.length) : 0);
+  const groupColumns = topologyRouters.length ? Math.max(1, Math.ceil(maxGroup / 12)) : 1;
+  const columns = topologyRouters.length * groupColumns || Math.min(12, Math.max(1, Math.ceil(Math.sqrt(sms.length * 1.18))));
+  const rows = Math.max(1, Math.ceil(sms.length / columns), Math.ceil(maxGroup / groupColumns));
   const left = 85, right = 1015, top = 108, bottom = 306, dx = (right - left) / columns, dy = (bottom - top) / rows;
-  const nativeNodes = new Map((topology?.nodes ?? []).filter(node => node.kind === "sm").map(node => [node.componentId ?? node.id, node])), groupRows = new Map();
+  const groupRows = new Map();
   for (const [index, sm] of sms.entries()) {
     const group = nativeNodes.get(sm.id)?.clusterId, nativeColumn = topologyRouters.findIndex(node => node.id === group);
-    const column = nativeColumn >= 0 ? nativeColumn : Math.floor(index / rows), row = nativeColumn >= 0 ? groupRows.get(group) ?? 0 : index % rows;
-    if (nativeColumn >= 0) groupRows.set(group, row + 1);
+    const ordinal = groupRows.get(group) ?? 0;
+    const column = nativeColumn >= 0 ? nativeColumn * groupColumns + ordinal % groupColumns : Math.floor(index / rows);
+    const row = nativeColumn >= 0 ? Math.floor(ordinal / groupColumns) : index % rows;
+    if (nativeColumn >= 0) groupRows.set(group, ordinal + 1);
     const x = left + column * dx, y = top + row * dy;
     const width = dx - 12, height = Math.min(19, dy - 6);
     shapes.set(sm.id, {x, y, width, height}); positions.set(sm.id, {x: x + width / 2, y: y + height + 4});
@@ -115,25 +126,44 @@ export function trafficCityLayout(sms, topology) {
   const nodes = topology?.nodes ?? [], categories = kind => nodes.filter(node => node.kind === kind);
   for (const [kind, y, margin] of [["router", 325, 115], ["l2", 398, 115], ["hbm", 450, 175]]) {
     const values = categories(kind);
-    values.forEach((node, index) => positions.set(node.id, {x: kind === "router" ? left + index * dx + (dx - 12) / 2 : values.length === 1 ? 550 : margin + index * (1100 - 2 * margin) / (values.length - 1), y}));
+    values.forEach((node, index) => positions.set(node.id, {x: kind === "router" ? left + index * dx * groupColumns + (dx * groupColumns - 12) / 2 : values.length === 1 ? 550 : margin + index * (1100 - 2 * margin) / (values.length - 1), y}));
   }
-  for (const node of nodes) if (node.kind === "fabric" || /noc/i.test(node.kind)) positions.set(node.id, {x: 550, y: 354});
+  const isFabric = node => node?.kind === "fabric" || /noc/i.test(node?.kind ?? "");
+  const fabrics = nodes.filter(isFabric).sort((a, b) => (Number(a.partitionId ?? Infinity) - Number(b.partitionId ?? Infinity)) || a.id.localeCompare(b.id));
+  const fabricShapes = new Map(), domains = [];
+  for (const [index, node] of fabrics.entries()) {
+    const slot = 900 / fabrics.length, width = fabrics.length === 1 ? 900 : slot * .82;
+    const position = {x: fabrics.length === 1 ? 550 : 100 + slot * (index + .5), y: 354};
+    positions.set(node.id, position); fabricShapes.set(node.id, {width, height: 30});
+    if (fabrics.length > 1 && node.partitionId != null) {
+      const members = nodes.filter(member => String(member.partitionId) === String(node.partitionId));
+      domains.push({partitionId: node.partitionId, fabricId: node.id, x: 38 + index * 1024 / fabrics.length, y: 87,
+        width: 1024 / fabrics.length - 12, height: 328, sms: members.filter(member => member.kind === "sm").length, l2s: members.filter(member => member.kind === "l2").length});
+    }
+  }
   for (const node of nodes) if (node.kind === "sm" && node.componentId && positions.has(node.componentId)) positions.set(node.id, positions.get(node.componentId));
   const byId = new Map(nodes.map(node => [node.id, node])), routes = new Map();
   for (const link of topology?.links ?? []) {
     const from = positions.get(link.sourceId), to = positions.get(link.targetId); if (!from || !to) continue;
-    const a = byId.get(link.sourceId)?.kind, b = byId.get(link.targetId)?.kind;
+    const sourceNode = byId.get(link.sourceId), targetNode = byId.get(link.targetId), a = sourceNode?.kind, b = targetNode?.kind;
     let route;
     if (a === "sm" || b === "sm") {
       const sm = a === "sm" ? from : to, router = a === "sm" ? to : from, node = byId.get(a === "sm" ? link.sourceId : link.targetId), shape = shapes.get(node?.componentId ?? node?.id);
       const corridor = shape ? shape.x + shape.width + 6 : sm.x + 24;
       route = [sm, {x: corridor, y: sm.y}, {x: corridor, y: router.y - 12}, {x: router.x, y: router.y - 12}, router]; if (a !== "sm") route.reverse();
     }
-    else if (a === "fabric" || b === "fabric") {route = [from, {x: a === "fabric" ? to.x : from.x, y: 354}, to];}
+    else if (isFabric(sourceNode) && isFabric(targetNode)) {
+      const bridgeY = from.x <= to.x ? 373 : 379;
+      route = [from, {x: from.x, y: bridgeY}, {x: to.x, y: bridgeY}, to];
+    }
+    else if (isFabric(sourceNode) || isFabric(targetNode)) {
+      const fabric = isFabric(sourceNode) ? from : to, endpoint = isFabric(sourceNode) ? to : from;
+      route = [from, {x: endpoint.x, y: fabric.y}, to];
+    }
     else {const middle = (from.y + to.y) / 2; route = [from, {x: from.x, y: middle}, {x: to.x, y: middle}, to];}
     routes.set(link.id, route);
   }
-  return {positions, shapes, routes, columns, rows};
+  return {positions, shapes, routes, fabricShapes, domains, columns, rows};
 }
 
 function makePrism(group, shape, palette, {texture = false, layers = 0, projection} = {}) {
@@ -185,12 +215,18 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   graphic.append(svg("desc", {}, "全部配置 SM 的逻辑盒子地图；布局不是实际芯片位置。虚线盒子仅为配置占位。数据包只来自有端点、链路和起止时间的 transfer 事件，等待计数只来自 queue 事件。可用下方选择器进入 SM。"));
   graphic.append(svg("path", {d: "M45 85H1040L1065 103V296L1040 312H45L25 296V103Z", fill: "#0d2631", stroke: "#345362", "stroke-width": 1.5}),
     svg("path", {d: "M45 312H1040L1065 296V304L1040 320H45L25 304V296Z", fill: "#081820", stroke: "#2b4655"}));
+  const domains = svg("g", {"aria-label": "逻辑缓存分区，非芯片物理位置"});
+  for (const [index, domain] of layout.domains.entries()) {
+    domains.append(svg("rect", {x: domain.x, y: domain.y, width: domain.width, height: domain.height, rx: 9, class: "gpu-box-domain", "data-gpu-cache-domain": domain.partitionId, ...(index % 2 ? {style: "fill:#334e89;stroke:#526f9b"} : {})}),
+      svg("text", {x: domain.x + 11, y: domain.y + 16, class: "gpu-box-domain-label"}, `P${domain.partitionId} · ${domain.sms} SM / ${domain.l2s} L2`));
+  }
+  graphic.append(domains);
   graphic.append(svg("text", {x: 46, y: 38, fill: "#c7f0e7", "font-size": 21, "font-weight": 600}, title ?? "GPU COMPUTE CITY"),
     svg("text", {x: 46, y: 59, class: "gpu-box-model-label"}, "LOGICAL DATAFLOW MAP / 逻辑互连布局 · 非芯片实测布线"),
     svg("text", {x: 1045, y: 37, "text-anchor": "end", class: "gpu-box-sm-count", "data-gpu-rendered-sm-count": sms.length}, `${sms.length} SM`));
   const omitted = sms.filter(sm => sm.configuredOnly).length;
   graphic.append(svg("text", {x: 1045, y: 58, "text-anchor": "end", class: "gpu-box-model-label"}, omitted ? `${components.length} 已记录 · ${omitted} 仅配置` : "全部原生 SM · 点击进入"));
-  graphic.append(svg("text", {x: 47, y: 99, class: "gpu-box-group-title"}, "SM COMPUTE DISTRICTS"));
+  graphic.append(svg("text", {x: 47, y: layout.domains.length ? 79 : 99, class: "gpu-box-group-title"}, layout.domains.length ? "SM COMPUTE DISTRICTS / LOGICAL CACHE DOMAINS" : "SM COMPUTE DISTRICTS"));
   const evidence = html("div", "gpu-traffic-evidence"), evidenceText = html("div", "gpu-traffic-detail"), inspectButton = html("button", "", "查看事件");
   inspectButton.type = "button"; inspectButton.hidden = true; evidence.append(evidenceText, inspectButton);
   let byId = new Map(), selectedComponentId = null, inspectedEvent = null;
@@ -236,23 +272,32 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   for (const node of topologyNodes.filter(node => node.kind !== "sm")) {
     const position = infraLayout.positions.get(node.id); if (!position) continue;
     const isFabric = node.kind === "fabric" || /noc/i.test(node.kind), isRouter = node.kind === "router", isHbm = node.kind === "hbm";
-    const width = isFabric ? 900 : isRouter ? 42 : isHbm ? 102 : 94, height = isFabric ? 30 : isRouter ? 13 : isHbm ? 39 : 23;
+    const width = isFabric ? infraLayout.fabricShapes.get(node.id)?.width ?? 900 : isRouter ? 42 : isHbm ? 102 : 94, height = isFabric ? 30 : isRouter ? 13 : isHbm ? 39 : 23;
     const x = position.x - width / 2, y = position.y - height / 2, color = isHbm ? "#435975" : isRouter ? "#284756" : "#25635f";
     const group = svg("g", {class: "gpu-box-infra", role: topology ? "button" : "img", tabindex: 0, "data-gpu-topology-node": node.id});
     group.append(svg("path", {d: `M${x} ${y + height}h${width}l8 -6v9l-8 6H${x}Z`, fill: "#10202d", stroke: "#355562", "stroke-width": .8}),
       svg("path", {d: `M${x} ${y}h${width}l8 -6H${x + 8}Z M${x} ${y}h${width}v${height}H${x}Z`, fill: isFabric ? "#153c49" : color, stroke: isHbm ? "#839dc8" : "#70b6b1", "stroke-width": 1.2, class: "gpu-box-infra-top"}));
     if (isHbm) for (let layer = 1; layer < 5; layer++) group.append(svg("line", {x1: x + 2, x2: x + width - 2, y1: y + layer * height / 5, y2: y + layer * height / 5, stroke: "#95afce", "stroke-width": .8, opacity: .45}));
-    const name = node.label ?? (isFabric ? "NoC SHARED FABRIC" : isRouter ? `R${node.id.split("-").at(-1)}` : isHbm ? `HBM ${node.stackId ?? node.id.split("-").at(-1)}` : `L2 ${node.bankId ?? node.id.split("-").at(-1)}`);
-    group.append(svg("text", {x: position.x, y: position.y + (isHbm ? -29 : 4), "text-anchor": "middle", class: "gpu-box-infra-title", style: isRouter ? "font-size:10px" : ""}, name),
+    const name = isFabric && infraLayout.fabricShapes.size > 1 ? `NoC P${node.partitionId ?? [...infraLayout.fabricShapes.keys()].indexOf(node.id)}` : node.label ?? (isFabric ? "NoC SHARED FABRIC" : isRouter ? `R${node.id.split("-").at(-1)}` : isHbm ? `HBM ${node.stackId ?? node.id.split("-").at(-1)}` : `L2 ${node.bankId ?? node.id.split("-").at(-1)}`);
+    group.append(svg("text", {x: position.x, y: position.y + (isHbm ? -29 : isFabric && infraLayout.fabricShapes.size > 1 ? -18 : 4), "text-anchor": "middle", class: "gpu-box-infra-title", style: isRouter ? "font-size:10px" : isFabric && infraLayout.fabricShapes.size > 1 ? "paint-order:stroke;stroke:#0e2631;stroke-width:4px;font-size:13px" : ""}, name),
       svg("title", {}, `${node.id} · ${node.kind}\n${topology ? "简化模型的原生服务/路由节点；空间位置为逻辑布局" : "结构示意；本 trace 没有该组件的访问记录"}`));
     group.addEventListener("pointerenter", () => {inspectedEvent = null; inspectButton.hidden = true; evidenceText.replaceChildren(html("strong", "", name), document.createTextNode(topology ? ` · 模型节点 ${node.id} / ${node.kind}，仅显示来源 service/queue 区间；逻辑 router 分组不等同于物理 GPC。` : " · 结构示意，未提供实际流量或服务记录。"));});
     if (topology) attachActivation(group, () => onSelectComponent(node.componentId ?? node.id));
     graphic.append(group); infraNodes.push({node, group});
   }
   graphic.append(svg("text", {x: 46, y: 340, class: "gpu-box-group-title"}, topology ? "LOGICAL ROUTERS / 模型分组" : ""),
-    svg("text", {x: 46, y: 381, class: "gpu-box-group-title"}, "L2 SHARED LOGISTICS"),
+    svg("text", {x: 46, y: 381, class: "gpu-box-group-title"}, layout.domains.length > 1 ? "PARTITIONED L2 LOGISTICS" : "L2 SHARED LOGISTICS"),
     svg("text", {x: 46, y: 425, class: "gpu-box-group-title"}, "HBM MEMORY SERVICE"));
   const traffic = topology ? createTrafficOverlay({graphic, topology, events, positions: layout.positions, routes: layout.routes, onSelectEvent, onInspect: inspectFlow}) : null;
+  const bridgeLinks = (topology?.links ?? []).filter(link => infraLayout.fabricShapes.has(link.sourceId) && infraLayout.fabricShapes.has(link.targetId));
+  for (const link of bridgeLinks) {
+    const path = [...graphic.querySelectorAll(".gpu-traffic-wire")].find(node => node.dataset.gpuLinkId === link.id);
+    if (path) {path.classList.add("gpu-box-bridge"); path.dataset.gpuBridge = link.id;}
+  }
+  if (bridgeLinks.length) {
+    const from = layout.positions.get(bridgeLinks[0].sourceId), to = layout.positions.get(bridgeLinks[0].targetId);
+    if (from && to) graphic.append(svg("text", {x: (from.x + to.x) / 2, y: 349, "text-anchor": "middle", class: "gpu-box-bridge-label"}, "INTER-PARTITION BRIDGE"));
+  }
   visual.append(graphic); root.append(visual, html("p", "gpu-box-map-mobile-note", "手机可左右滑动地图，或使用 + 放大；下方可直接选择全部 SM。"));
   const legend = html("div", "gpu-traffic-legend");
   for (const [name, color] of [["读请求", FLOW_COLORS["read-request"]], ["响应数据", FLOW_COLORS["read-response"]], ["共享输入分发", FLOW_COLORS.shared], ["写回", FLOW_COLORS.writeback], ["显式队列", "#ffd18a"]]) {

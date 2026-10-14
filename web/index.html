@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#070d16" />
     <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
     <title>GPU City · GPU 数据流城市</title>
-    <link rel="stylesheet" href="./style.css?v=traffic-1" />
-    <link rel="stylesheet" href="./multiscale.css?v=traffic-1" />
+    <link rel="stylesheet" href="./style.css?v=sm-1" />
+    <link rel="stylesheet" href="./multiscale.css?v=sm-1" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
@@ -18,7 +18,7 @@
         <div><p class="eyebrow">GPU CITY <span class="brand-divider">/</span> 计算城市</p><h1>GPU 计算城市 <span class="version-tag">ALPHA</span></h1></div>
       </div>
       <div class="file-actions" aria-label="文件操作">
-        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="traffic">H100 SXM · 132 SM 数据流</option><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
+        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="traffic">H100 SXM · 132 SM 数据流</option><option value="sm">SM · 流水线教学模型</option><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
         <button id="load-example" type="button" title="重新加载所选示例">加载示例</button>
         <button id="import-trace" type="button" class="accent-button">导入 Trace</button>
         <details class="file-menu"><summary>工作区与导出 <span aria-hidden="true">⌄</span></summary><div class="file-menu-content"><button id="export-trace" type="button" disabled>导出 Trace JSON</button><button id="import-workspace" type="button">打开工作区</button><button id="save-workspace" type="button" disabled>保存工作区</button></div></details>
@@ -40,16 +40,32 @@
           <button id="micro-view" type="button" class="scale-tab" aria-pressed="false"><span class="scale-index">02</span><span><strong>SM 内部</strong><small id="micro-backend">指令粒度 · 待载入</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
         </div>
         <div class="run-clock"><span id="run-granularity">Tile 操作</span><span class="run-separator" aria-hidden="true">/</span><span>仿真耗时 <b id="simulation-runtime">未记录</b></span><span id="clock-scope" class="clock-scope">独立仿真时钟</span></div>
+        <button id="simulate-sm" type="submit" form="sm-config" class="accent-button sm-run">运行 SM 流水线 <span aria-hidden="true">↗</span></button>
         <button id="import-detail" type="button" class="detail-import">载入指令运行 <span aria-hidden="true">＋</span></button>
+        <details class="sm-experiment">
+          <summary><span>SM 流水线实验</span><span id="sm-config-label">4 分区 · 可编辑教学时序</span><span aria-hidden="true">⌄</span></summary>
+          <form id="sm-config" class="sm-config">
+            <label for="sm-target">目标 SM<input id="sm-target" type="number" min="0" max="131" step="1" value="0" required /></label>
+            <label for="sm-warps">驻留 Warp<select id="sm-warps"><option value="4">4 warps</option><option value="8" selected>8 warps</option><option value="16">16 warps</option><option value="32">32 warps</option></select></label>
+            <label for="sm-issue-interval">Issue 间隔<select id="sm-issue-interval"><option value="1" selected>1 cycle</option><option value="2">2 cycles</option><option value="4">4 cycles</option></select></label>
+            <label for="sm-memory-latency">外部内存服务延迟<select id="sm-memory-latency"><option value="40">40 cycles</option><option value="120" selected>120 cycles</option><option value="240">240 cycles</option></select></label>
+            <label for="sm-tensor-latency">Tensor 执行延迟<select id="sm-tensor-latency"><option value="8">8 cycles</option><option value="16">16 cycles</option><option value="24" selected>24 cycles</option><option value="32">32 cycles</option></select></label>
+            <label for="sm-bank-stride">SMEM 地址步长<select id="sm-bank-stride"><option value="1" selected>1 word · 无 bank 冲突</option><option value="2">2 words · 2 路冲突</option><option value="32">32 words · 32 路冲突</option></select></label>
+            <p id="sm-config-note" class="sm-config-note">点选城市同步目标 SM。参数只用于下一次独立运行；时序是教学假设，不是 NVIDIA 测量值。</p>
+          </form>
+        </details>
         <details class="traffic-experiment">
-          <summary><span>数据流实验</span><span id="traffic-config-label">H100 SXM · 132 SM</span><span aria-hidden="true">⌄</span></summary>
+          <summary><span>数据流 / NoC 实验</span><span id="traffic-config-label">H100 SXM · 132 SM</span><span aria-hidden="true">⌄</span></summary>
           <form id="traffic-config" class="traffic-config">
-            <div class="traffic-preset"><span>下一次仿真的架构</span><strong>H100 SXM · 132 SM</strong><small>教学互连，非 NVIDIA 物理拓扑</small></div>
-            <label for="noc-bandwidth">NoC 链路带宽<select id="noc-bandwidth"><option value="16">16 B / cycle</option><option value="32">32 B / cycle</option><option value="64" selected>64 B / cycle</option><option value="128">128 B / cycle</option><option value="256">256 B / cycle</option></select></label>
+            <div class="traffic-preset"><span>下一次仿真的架构</span><strong>H100 SXM · 132 SM</strong><small>文献约束抽象 · 时序未校准</small></div>
+            <label for="noc-topology">互连与缓存策略<select id="noc-topology"><option value="partitioned-crossbar" selected>双分区 Crossbar / 局部 L2</option><option value="uniform-star">单 Fabric / 理想全局缓存（对照）</option></select></label>
+            <label for="noc-bandwidth">NoC 有向链路带宽<select id="noc-bandwidth"><option value="16">16 B / cycle</option><option value="32">32 B / cycle</option><option value="64">64 B / cycle</option><option value="128">128 B / cycle</option><option value="256" selected>256 B / cycle</option><option value="512">512 B / cycle</option></select></label>
+            <label for="noc-cross-bandwidth">跨分区桥带宽<select id="noc-cross-bandwidth"><option value="256">256 B / cycle</option><option value="512" selected>512 B / cycle</option><option value="1024">1024 B / cycle</option></select></label>
+            <label for="noc-cross-latency">跨分区桥传播延迟<input id="noc-cross-latency" type="number" value="16" min="0" max="100000" step="1" required /></label>
             <label for="hbm-bandwidth">HBM 通道带宽<select id="hbm-bandwidth"><option value="64">64 B / cycle</option><option value="128" selected>128 B / cycle</option><option value="256">256 B / cycle</option><option value="512">512 B / cycle</option></select></label>
-            <label class="traffic-merge" for="coalesce-shared"><input id="coalesce-shared" type="checkbox" checked /><span>合并共享读取<small>合并相同数据的请求后分发</small></span></label>
+            <label class="traffic-merge" for="coalesce-shared"><input id="coalesce-shared" type="checkbox" checked /><span>L2 共享 Tile 复用假设<small>同缓存域内理想合并 / 命中 · 返回仍单播</small></span></label>
             <button id="simulate-traffic" type="submit" class="accent-button">重新仿真</button>
-            <p id="traffic-config-note" class="traffic-config-note">参数只用于下一次仿真；当前记录的时间不会改变。</p>
+            <p id="traffic-config-note" class="traffic-config-note">参数只用于下一次仿真；当前记录的时间不会改变。该场景是并发共享输入演示，未执行 TMA cluster multicast。</p>
           </form>
         </details>
       </section>
@@ -94,6 +110,6 @@
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
     <input id="detail-file" type="file" accept=".json,.log,.txt,application/json,text/plain" hidden />
-    <script type="module" src="./app.js?v=traffic-1"></script>
+    <script type="module" src="./app.js?v=sm-1"></script>
   </body>
 </html>

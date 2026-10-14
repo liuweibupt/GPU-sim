@@ -2,6 +2,8 @@
 
 日期：2026-10-14。本文记录当前产品方向及后续实现约束；除“本次实现范围”外，均为设计，不代表后端已接入。统一 trace 的现有协议见 [模型与数据契约](model-and-data-contract.md)，后端公开能力及固定版本见 [仿真器调研](research/simulators.md)。
 
+当前还实现了独立 [SM 流水线教学模型](sm-architecture.md)：四分区的 Fetch/Decode/Scheduler/Scoreboard/Issue、操作数与执行路径，以及 L1、SMEM、TMA 和异步 barrier。每项由版本化形式化规格定义，图中未观测组件保持结构展示。该教学运行在 detail 槽保存，不把城市 Tile、旧 GTSim 操作或外部 observer 自动展开成推测指令；本节之后的多后端关联、checkpoint 与局部精化仍是后续设计。
+
 ## 一个 GPU 世界，多座 SM 城市
 
 GPU 全景是一个区域，**每个 SM 是一座可进入的城市**。放大进入 SM 后，看执行单元、寄存器、L1/shared memory、调度与工作队伍；继续按 CTA、warp 和操作筛选，观察任务在哪里执行、在等什么。

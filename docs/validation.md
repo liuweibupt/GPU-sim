@@ -85,3 +85,21 @@ python3 tools/gtsim/test_observer.py
 - 操作语义与任务依赖面板位于时间线之后，默认折叠；GTSim展开后保留定位重叠、方包选择与依赖追踪。各宽度的grid行独立，新增面板不遮挡数据流城市与回放控件。
 
 等待队列仍无界，router/fabric为理想中转，未实现真实NVIDIA NoC布局、有限buffer/credit背压、flit或硬件multicast。模型与动画时钟分别控制。
+
+## 形式化 SM 与文献约束的双分区 NoC
+
+2026-10-14 后续迭代：本节描述当前实现；前述单 Fabric 的周期、12 个逻辑路由组和全 GPU 单次共享 fill 属于历史模型记录。
+
+- **106/106 Node测试通过**；5份GTSim/NoC/SM样例契约校验、JS语法、Git空白和本地文档链接检查通过。静态构建在`/GPU-sim/`子路径验证入口、ESM、动态CSS和原schema详细指令导入，无404/请求失败/脚本错误，320px无整页溢出。
+
+- SM 图与教学模型共用25类组件定义，按4分区实例化76节点、254条类型化端口连线。组件有状态、资源、L/II/K/Q、转换条件、释放条件、不变量与来源等级；只有选定SM展开教学事件，没有在132SM各复制76节点并伪称全GPU详细仿真。
+- TMA 提交与异步完成分开，SMEM提交后再完成字节计数barrier。没有经过RF的TMA payload或虚构的TMA寄存器写回；MMA.SYNC通过寄存器片段输入，不冒充WGMMA warpgroup执行。未执行的纹理/常量路径无活动，I-cache与分支明确只做时序服务。
+- 最终SM默认 **112条教学指令 / 2,611阶段 / 1,130模型周期**；stride32为 **2,622阶段 / 1,198周期**。TMA每warp填充4KiB，具体LDS lane地址范围必须落入已填充缓冲并引用真实写入依赖；STS使用独立scratch。默认/stride32分配33,792 / 64,544B，均为64KiB carveout；32warp+stride32等超容量组合会被拒绝。多轮复用两个物理缓冲前须完成前轮消费，不把不同dataKey误算为无限存储。
+- Chrome检查SM131、四分区总览76组件、P0/P3切换、typed ports/状态/当前有效时序/转换/不变量/引用弹窗、Escape关闭。显式Fetch→Decode token定位、前进、回退坐标一致。工作区保留宏观与教学各自时钟、SM目标、bank参数和分区选择。
+- NoC默认 **14,411事件 / 596组件 / 396 Tile / 32,166模型周期**；带宽256→16 B/cycle后 **15,508事件 / 46,834周期**。共享396读分别在两个缓存域各填充3次，共6次HBM读取、节省390次；不是全GPU广播或TMA multicast。
+- 566个bridge hop、591,744桥传输字节；214本地HBM读、188远端HBM读。本分区L2命中返回不跨桥，远端内存miss请求/返回经过有向桥。
+- 串行化占用与传播独立，L2固定延迟与接收间隔分开。契约严格验证serializer释放、字节带宽、尾包到达、后续hop因果；旧无释放声明记录继续按end占用，不修改原Trace。
+- 独立审计补验141个配置，含1SM/1L2、奇数SM/router/L2、不同HBM、合并开关与单Fabric模式。完成数、端点字节、分区fill、bridge和本地返回守恒；7,313次传播重叠无注入冲突。默认3.2只是NoC/L2端口与HBM字节预算之比，未称实测吞吐。
+- Chrome验证默认132SM/5HBM/2fabric与cache域、点击bridge源事件`traffic:1398`并追踪request、从SM131启动教学运行后切回恢复宏观时钟、参数草稿不改旧记录、慢NoC重仿真、单Fabric兼容、原GTSim保持5,492周期且无推测车流。390/320px无整页横向溢出，无脚本错误或失败资源请求。
+
+当前HBM仍为未校准的单服务端点；Tile缓存/pending合并是理想化策略，未执行真实sector/MSHR、有限NoC buffer/credit、flit/wormhole、完整WGMMA/DSM/TMA multicast或数值kernel。检查与补验验证实现规则，不等于实机H100校准。[NoC规则与论文核查](noc-model.md) · [SM完整定义](sm-architecture.md)

@@ -72,3 +72,40 @@ test("logical city routes preserve exact topology endpoints and keep every SM se
   }
   assert.deepEqual(layout.routes.get("sm-router"), [...layout.routes.get("router-sm")].reverse());
 });
+
+test("two logical fabrics remain separate with local router/cache routes and directed bridge lanes", () => {
+  const sms = sceneSmComponents(Array.from({length: 132}, (_, i) => ({id: `sm-${i}`, kind: "sm"})), 132);
+  const nodes = [...sms.map((sm, i) => ({id: sm.id, kind: "sm", componentId: sm.id, partitionId: i < 66 ? 0 : 1, clusterId: `router-${Math.floor(i / 66) * 4 + Math.min(3, Math.floor(i % 66 / 17))}`})),
+    ...Array.from({length: 8}, (_, i) => ({id: `router-${i}`, kind: "router", partitionId: Math.floor(i / 4)})),
+    ...Array.from({length: 8}, (_, i) => ({id: `l2-${i}`, kind: "l2", partitionId: Math.floor(i / 4)})),
+    ...Array.from({length: 5}, (_, i) => ({id: `hbm-${i}`, kind: "hbm", partitionId: i < 3 ? 0 : 1})),
+    {id: "fabric-0", kind: "fabric", partitionId: 0}, {id: "fabric-1", kind: "fabric", partitionId: 1}];
+  const links = [{id: "local0", sourceId: "router-0", targetId: "fabric-0"}, {id: "local1", sourceId: "fabric-1", targetId: "l2-7"},
+    {id: "bridge01", sourceId: "fabric-0", targetId: "fabric-1"}, {id: "bridge10", sourceId: "fabric-1", targetId: "fabric-0"}];
+  const before = JSON.stringify({sms, nodes, links}), layout = trafficCityLayout(sms, {nodes, links});
+  assert.equal(layout.shapes.size, 132); assert.equal(layout.columns, 16); assert.equal(layout.rows, 9);
+  assert.ok([...layout.shapes.values()].every(shape => shape.height >= 15));
+  assert.equal(layout.positions.get("fabric-0").x, 325); assert.equal(layout.positions.get("fabric-1").x, 775);
+  const f0 = layout.fabricShapes.get("fabric-0"), f1 = layout.fabricShapes.get("fabric-1");
+  assert.ok(325 + f0.width / 2 < 775 - f1.width / 2);
+  assert.equal(layout.domains.length, 2); assert.deepEqual(layout.domains.map(domain => [domain.sms, domain.l2s]), [[66, 4], [66, 4]]);
+  assert.ok(layout.routes.get("local0").every(point => point.x < 550));
+  assert.ok(layout.routes.get("local1").every(point => point.x > 550));
+  assert.notDeepEqual(layout.routes.get("bridge01"), [...layout.routes.get("bridge10")].reverse());
+  for (const link of links) {assert.deepEqual(layout.routes.get(link.id)[0], layout.positions.get(link.sourceId)); assert.deepEqual(layout.routes.get(link.id).at(-1), layout.positions.get(link.targetId));}
+  assert.equal(JSON.stringify({sms, nodes, links}), before);
+});
+
+test("single-fabric imports retain their layout and multiple fabrics have stable non-overlapping positions", () => {
+  const single = trafficCityLayout([], {nodes: [{id: "legacy", kind: "fabric"}], links: []});
+  assert.deepEqual(single.positions.get("legacy"), {x: 550, y: 354}); assert.equal(single.fabricShapes.get("legacy").width, 900);
+  for (const count of [2, 3, 8, 20]) {
+    const nodes = Array.from({length: count}, (_, index) => ({id: `fabric-${index}`, kind: "fabric", partitionId: index}));
+    const layout = trafficCityLayout([], {nodes, links: []}), reversed = trafficCityLayout([], {nodes: [...nodes].reverse(), links: []});
+    for (const node of nodes) assert.deepEqual(layout.positions.get(node.id), reversed.positions.get(node.id));
+    for (let i = 1; i < count; i++) {
+      const previous = nodes[i - 1].id, current = nodes[i].id;
+      assert.ok(layout.positions.get(previous).x + layout.fabricShapes.get(previous).width / 2 < layout.positions.get(current).x - layout.fabricShapes.get(current).width / 2);
+    }
+  }
+});
