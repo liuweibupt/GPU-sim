@@ -83,6 +83,11 @@
         <div class="timeline-bottom"><details class="keyboard-help"><summary>键盘与阅读帮助</summary><p class="control-help"><kbd>空格</kbd> 播放 / 暂停 · <kbd>←</kbd> <kbd>→</kbd> 上一 / 下一事件边界 · <kbd>Home</kbd> <kbd>End</kbd> 起点 / 终点。回放速度仅改变观看速度；进行中事件按 [start, end) 判断。每页最多 80 个事件，横条表示原始时间跨度，虚线表示当前时刻。</p></details><div class="pagination"><button id="previous-page" type="button" disabled>上一页</button><span id="page-label">第 0 / 0 页</span><button id="next-page" type="button" disabled>下一页</button></div></div>
       </section>
 
+      <details class="panel dataflow-panel" aria-labelledby="dataflow-heading">
+        <summary class="panel-heading dataflow-heading"><span><span class="section-kicker">DATA FLOW &amp; TASK GRAPH</span><span id="dataflow-heading" class="panel-title">操作数据流与任务追踪</span></span><span class="subtle-tag">语义路径 · 原始依赖 <span aria-hidden="true">⌄</span></span></summary>
+        <div id="dataflow"></div>
+      </details>
+
       <details class="panel metadata-panel"><summary>原始指标、配置与采集命令 <span class="summary-note">保留来源证据</span></summary><p class="muted">指标名称与数值按记录原样保留。未提供的内部状态或依赖不会补造。</p><pre id="trace-metadata">尚未加载执行记录。</pre></details>
     </main>
     <footer><span class="footer-brand">GPU CITY <span>计算城市</span></span><span>让计算看得见。</span><a href="https://github.com/liuweibupt/GPU-sim#readme" target="_blank" rel="noopener">项目与致谢 ↗</a></footer>

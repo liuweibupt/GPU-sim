@@ -4,6 +4,7 @@ import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-st
 import {normalizeDetailedTrace, normalizeFlashGpuLog} from "../lib/detailed-trace.js";
 import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=traffic-1";
 import { createGpuWorld } from "./gpu-world.js?v=traffic-1";
+import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
 const PAGE_SIZE = 80;
@@ -24,6 +25,13 @@ const world = createGpuWorld($("gpu-world"), {
   onSelectScope: (scope) => selectScope(scope),
   onLevelChange: (level) => { observationLevel = level; renderRunBar(); },
 });
+const dataflow = createDataflow($("dataflow"), (id) => {
+  pause();
+  state.selectedComponentId = null; descendantIds = null;
+  state.scope = null; state.query = ""; state.category = "";
+  $("event-search").value = ""; $("category-filter").value = "";
+  renderComponents(); selectEvent(id);
+}, (time) => { pause(); seek(time); });
 let eventById = new Map();
 let omittedById = new Map();
 let componentById = new Map();
@@ -414,6 +422,7 @@ function selectComponent(id, {preserveScope = false} = {}) {
   renderComponentInfo();
   world.update(state);
   observationLevel = world.getView?.().smComponentId ? 'sm' : 'gpu'; renderRunBar();
+  dataflow.update(state);
 }
 
 function selectScope(scope) {
@@ -429,6 +438,7 @@ function selectScope(scope) {
   renderComponents(); renderTimeline(); renderActiveTasks(); renderComponentInfo();
   world.update(state);
   renderRunBar();
+  dataflow.update(state);
 }
 
 function renderComponentInfo() {
@@ -567,6 +577,7 @@ function selectEvent(id) {
   renderActiveTasks();
   renderDetails();
   world.update(state);
+  dataflow.update(state);
 }
 
 function renderDetails() {
@@ -649,6 +660,7 @@ function renderAtTime() {
   renderComponentInfo();
   renderTrafficCounters();
   world.update(state);
+  dataflow.update(state);
 }
 
 function renderTrafficCounters() {
