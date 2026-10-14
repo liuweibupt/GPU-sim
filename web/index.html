@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>GPU 计算城市 · Trace 工作台</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">跳到工作区</a>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">GPU 计算城市 · 功能原型</p>
+        <h1>看见计算如何发生</h1>
+        <p class="subtitle">从一份执行记录开始，检查组件、事件与依赖，保存自己的观察。</p>
+      </div>
+      <div class="file-actions" aria-label="文件操作">
+        <button id="load-example" type="button">加载 GTSim 示例</button>
+        <button id="import-trace" type="button">导入 Trace</button>
+        <button id="export-trace" type="button" disabled>导出 Trace</button>
+        <button id="import-workspace" type="button">打开工作区</button>
+        <button id="save-workspace" type="button" disabled>保存工作区</button>
+      </div>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite">正在加载默认示例…</div>
+    <section class="trace-summary" aria-label="执行记录来源">
+      <div>
+        <span id="evidence-badge" class="evidence-badge">尚未加载执行记录</span>
+        <h2 id="trace-title">选择一份 Trace 开始</h2>
+        <p id="trace-description" class="muted">支持统一 JSON，以及转换器支持的原始格式。文件在浏览器中处理，不上传。</p>
+      </div>
+      <dl id="trace-facts" class="facts"></dl>
+    </section>
+
+    <main id="workspace" tabindex="-1">
+      <section class="transport panel" aria-label="执行回放">
+        <div class="transport-buttons">
+          <button id="play" class="primary" type="button" disabled>播放</button>
+          <button id="step-back" type="button" disabled aria-label="上一个事件边界">← 上一边界</button>
+          <button id="step" type="button" disabled>下一边界 →</button>
+          <label class="inline-label" for="playback-rate">回放速度
+            <select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select>
+          </label>
+          <output id="time-label" for="time-slider">0</output>
+        </div>
+        <label class="sr-only" for="time-slider">回放时间</label>
+        <input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled />
+        <p class="control-help">回放速度只改变观看速度。空格：播放/暂停；← / →：事件边界；Home / End：起点/终点。进行中事件按 [start, end) 判断。</p>
+      </section>
+
+      <div class="workbench">
+        <aside class="panel components-panel" aria-labelledby="components-heading">
+          <div class="panel-heading"><h2 id="components-heading">组件世界</h2><button id="clear-component" type="button" disabled>查看全部</button></div>
+          <p class="muted panel-intro">选择 GPU、SM 或资源，联动查看其下的事件。位置仅用于阅读。</p>
+          <div id="component-tree" class="component-tree"><p class="empty">加载 Trace 后显示组件层级。</p></div>
+        </aside>
+
+        <section class="panel timeline-panel" aria-labelledby="timeline-heading">
+          <div class="panel-heading"><h2 id="timeline-heading">事件时间线</h2><span id="event-count" class="muted">0 个事件</span></div>
+          <div class="filters">
+            <label for="event-search">查找事件<input id="event-search" type="search" placeholder="名称、组件、事件 ID" /></label>
+            <label for="category-filter">类别<select id="category-filter"><option value="">全部类别</option></select></label>
+          </div>
+          <p id="timeline-context" class="muted panel-intro">时间单位由执行记录提供。</p>
+          <div id="timeline" class="timeline" tabindex="0" aria-label="可横向和纵向滚动的事件时间线"><p class="empty">加载 Trace 后显示事件跨度。点击事件可查看依赖与原始字段。</p></div>
+          <div class="pagination"><button id="previous-page" type="button" disabled>上一页</button><span id="page-label">第 0 / 0 页</span><button id="next-page" type="button" disabled>下一页</button></div>
+          <p class="control-help">每页最多 80 个事件；横条长度表示原始时间跨度。虚线表示当前时间，不代表数据传输路径。</p>
+        </section>
+
+        <section class="panel tasks-panel" aria-labelledby="tasks-heading">
+          <div class="panel-heading"><h2 id="tasks-heading">当前任务</h2><span id="active-count" class="muted">0 个进行中</span></div>
+          <div id="active-tasks" class="task-list"><p class="empty">拖动时间滑块或单步，查看这个时刻进行中的任务。</p></div>
+        </section>
+
+        <section class="panel details-panel" aria-labelledby="details-heading">
+          <div class="panel-heading"><h2 id="details-heading">事件与依赖</h2><button id="jump-to-event" type="button" disabled>跳到事件开始</button></div>
+          <div id="event-details"><p class="empty">选择时间线或当前任务中的事件。这里保留原始名称、时间与参数。</p></div>
+        </section>
+      </div>
+
+      <details class="panel metadata-panel">
+        <summary>原始指标、配置与采集命令</summary>
+        <p class="muted">指标名称与数值按记录原样保留。未提供的内部状态或依赖不会补造。</p>
+        <pre id="trace-metadata">尚未加载执行记录。</pre>
+      </details>
+    </main>
+    <footer>功能优先的本地 Trace 工作台 · 保存包含执行记录与视图状态的工作区，随时继续观察。</footer>
+    <input id="trace-file" type="file" accept=".json,application/json" hidden />
+    <input id="workspace-file" type="file" accept=".json,application/json" hidden />
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

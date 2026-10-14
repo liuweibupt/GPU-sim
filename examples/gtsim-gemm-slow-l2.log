@@ -1,0 +1,61 @@
+Starting simulation with 796 nodes...
+Warp distribution: 19:48 18:48 17:48 16:48 15:48 8:14 0:48 13:48 1:48 14:48 2:48 3:48 4:48 5:48 6:48 7:48 20:14 12:48 
+Total warps in use: 18
+Warps per subpartition: 5 (SP0: warps 0,4,8,12... | SP1: 1,5,9,13... | SP2: 2,6,10,14... | SP3: 3,7,11,15...)
+
+Dynamic Allocation (O2): DISABLED
+Scheduling Policy: Per-Subpartition GTO (Greedy-Then-Oldest)
+  - Each subpartition schedules independently among its 4 warps
+  - Greedy: Continue from last issued warp if possible
+  - Oldest: Pick warp with longest stall time (oldest last_issue_cycle)
+Memory model: T_sum = T_frontend + T_queuing + T_data + T_bank_conflict
+Tensor throughput: 128 ops/inst
+SIMD throughput: 32 ops/inst
+SFU throughput: 32 ops/inst
+LS throughput: 128 bytes/inst
+Tensor width: 32 ops/cycle
+SIMD width: 32 ops/cycle
+SFU width: 4 ops/cycle
+LS width: 128 bytes/cycle
+Number of SMs: 132
+Cluster size: DISABLED
+Max concurrent blocks per SM: 1
+Workload type: GEMM
+SRAM read queue depth: 64
+SRAM write queue depth: 64
+TMEM read queue depth: 64
+TMEM write queue depth: 64
+TMEM read latency: 33 cycles
+TMEM write latency: 33 cycles
+TMEM read bandwidth: 128 bytes/cycle
+TMEM write bandwidth: 128 bytes/cycle
+L2 cache size: 52428800 bytes
+L2 line size: 128 bytes
+L2 hit latency: 380 cycles
+L2 miss penalty: 270 cycles
+L2 bandwidth: 128 bytes/cycle
+L2 write bandwidth: 2150 bytes/cycle
+L2 queue depth: 65536
+L2 max transactions per cycle per subpartition: 1
+DRAM size: 85899345920 bytes
+DRAM bandwidth: 3100 GB/s (1183.66 bytes/cycle)
+DRAM latency (miss penalty): 270 cycles
+Core frequency: 1980.00 MHz
+DRAM frequency: 2619.00 MHz
+
+
+✅ Simulation completed at cycle 6413
+
+Shared Memory Bank Conflict Stats:
+  Total ld.sram2reg with conflicts: 0
+  Total cycles added by conflicts: 0
+
+
+Tile Stats:
+TB      SM    Tile    Start     End       Latency   PreSt       St        Store     CpAvg       Mma         MmaStart    Finished    Nodes   
+--------------------------------------------------------------------------------------------------------------------------------------------
+0       0     0       1         6412      6411      4080        556       1774      1518.00     1040.00     1520        398/398     398     
+1       1     1       1         6413      6412      4080        556       1775      1518.00     1040.00     1520        398/398     398     
+Total cycles: 6413
+Finished: 796/796
+Kernel time (last output store issue cycle): 4641

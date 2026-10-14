@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.15)
+project(GPUSimGTSimObserver LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(CTest)
+if(NOT GTSIM_SOURCE_DIR)
+  message(FATAL_ERROR "Set GTSIM_SOURCE_DIR to the pinned upstream source directory")
+endif()
+add_subdirectory("${GTSIM_SOURCE_DIR}" upstream)
+# Compile the original workload builder unchanged. Only rename its CLI entry
+# point so the observer harness can call build_gemm_h100 directly.
+add_library(gtsim_gemm_builder OBJECT "${GTSIM_SOURCE_DIR}/workloads/gemm/gemm_h100.cpp")
+target_compile_definitions(gtsim_gemm_builder PRIVATE main=gtsim_original_gemm_main)
+target_include_directories(gtsim_gemm_builder PRIVATE "${GTSIM_SOURCE_DIR}/include")
+add_executable(gtsim_trace trace_driver.cpp $<TARGET_OBJECTS:gtsim_gemm_builder>)
+target_link_libraries(gtsim_trace PRIVATE gtsim_core)
+target_compile_options(gtsim_trace PRIVATE -Wall -Wextra -Wpedantic)
