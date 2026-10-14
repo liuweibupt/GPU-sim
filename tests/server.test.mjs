@@ -17,6 +17,9 @@ test('documented entrypoint, module and sample are served; repository metadata i
   for (const path of ['/web/app.js','/lib/trace.js','/examples/gtsim-gemm.json']) {
     assert.equal((await fetch(base + path)).status,200,path);
   }
+  const asset = await fetch(base + '/web/assets/gpu/sm.png',{method:'HEAD'});
+  assert.equal(asset.status,200);
+  assert.equal(asset.headers.get('content-type'),'image/png');
   assert.equal((await fetch(base + '/.git/config')).status,404);
   assert.equal((await fetch(base + '/web/%2e%2e/%2e%2e/.git/config')).status,404);
 });

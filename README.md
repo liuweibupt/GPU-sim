@@ -4,6 +4,19 @@
 
 开发顺序是**先保证模型、事件和交互功能正确，再增加城市渲染和游戏机制**。本仓库目前交付相关工作调研、产品与模型设计，以及一个可运行的事件回放原型。
 
+**[在线工作台](https://liuweibupt.github.io/GPU-sim/)** · [发布流程](docs/deployment.md) · [多尺度仿真设计](docs/multiscale-simulation.md)
+
+## GPU 城市界面
+
+- 每个 SM 是一座可进入的计算城市，L2 是共享物流中心，HBM 是区域仓库；GPU → SM → CTA → warp 逐级观察，滚轮向下深入、向上返回，也可使用按钮。
+- 当前 GTSim 轨迹支持原生 SM/pipeline 和 CTA/warp 归属联动、进行中与已完成区间计数、tile 数据窗口、任务及依赖检查。未提供独立事件的 L2/HBM/调度器以结构示意呈现。
+- 时间线支持 1–16× 局部放大、聚焦所选事件、点击定位和精确 cycle/us 输入。深入观察时动画默认放慢；原始仿真时间保持不变。
+- 默认 GEMM 与低 L2 带宽对照可直接切换，工作区同时保存选择、任务范围、架构尺度与时间窗口。Profile 导入保留原生轨道。
+
+SM、Tensor、scheduler、cache、HBM、warp 六类透明组件美术由内置 `image_gen` 工具生成，保存在 [web/assets/gpu](web/assets/gpu/README.md)，完整提示词见 [manifest.json](web/assets/gpu/manifest.json)。交互标签与实际任务状态由前端单独绘制；美术中的格子与灯光不编码实测数量或状态。
+
+![GPU 城市架构工作台](docs/assets/workbench.png)
+
 ## 运行功能原型
 
 需要 Node.js 18+，无 npm 依赖，也不需要物理 GPU。
@@ -30,6 +43,8 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 | --- | --- |
 | [第一版设计](docs/design.md) | 用户目标、计算城市玩法、阶段划分、架构和验收标准 |
 | [模型与数据契约](docs/model-and-data-contract.md) | 原型 trace、时间与依赖语义、未来有限队列模型和可扩展接口 |
+| [多尺度仿真](docs/multiscale-simulation.md) | SM 城市、tile / 指令 / 请求粒度，以及 GTSim 与详细后端的关联设计 |
+| [网站发布](docs/deployment.md) | GitHub Pages 构建、首次启用与部署验证 |
 | [验证记录](docs/validation.md) | 自动检查、原生参数实验、浏览器交互与存档规模验证 |
 | [GPU 仿真器调研](docs/research/simulators.md) | Accel-Sim 2.0、GTSim、FlashGPU-Sim，以及 GPGPU-Sim、MGPUSim、Multi2Sim |
 | [可视化与 profiler 调研](docs/research/visualization.md) | Daisen、AerialVision、GPUVision、Nsight、RGP、Perfetto 等 |
@@ -40,7 +55,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 当前原型验证“外部仿真器 → 可追溯事件 → 可检查回放”这条链路，保留真实时间和依赖语义。它还没有任意 CUDA/Triton 执行、可自由拼装硬件的在线模拟、多人世界或 3D 城市。
 
-下一步是把有限队列、带宽、延迟、调度与背压做成可编辑模型，支持同一 workload 在多个配置下重新运行与 A/B 对比；再增加城市建设、预算、可选挑战和更丰富渲染。真实 GPU runner、FlashGPU-Sim/Accel-Sim 等后端通过 adapter 扩展，不要求重写世界或 UI。
+下一步接入详细后端的指令与存储请求事件，让宏观 tile 任务与微观 transaction 可以关联探索。首先采用同一 workload 的独立 run 与受控比较，再研究 checkpoint / 局部精化；不任意抽出一个 CTA 热切模拟器。详细仿真允许耗时，后台运行、GPU 时间和动画速度分别管理。并行完善有限队列、带宽、调度与背压的可编辑模型，以及世界建设、预算与可选挑战。
 
 ## 致谢与项目来源
 

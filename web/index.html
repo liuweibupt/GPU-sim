@@ -3,90 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <title>GPU 计算城市 · Trace 工作台</title>
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#101519" />
+    <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
+    <title>GPU 计算城市 · GPU Trace 工作台</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
     <header class="app-header">
-      <div>
-        <p class="eyebrow">GPU 计算城市 · 功能原型</p>
-        <h1>看见计算如何发生</h1>
-        <p class="subtitle">从一份执行记录开始，检查组件、事件与依赖，保存自己的观察。</p>
+      <div class="app-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M9 9h22v22H9zM14 14h12v12H14z" stroke="currentColor" stroke-width="1.5"/><path d="M14 4v5m6-5v5m6-5v5M14 31v5m6-5v5m6-5v5M4 14h5m-5 6h5m-5 6h5m22-12h5m-5 6h5m-5 6h5" stroke="currentColor" stroke-width="1.5"/><path d="M17 17h6v6h-6z" fill="currentColor"/></svg>
+        <div><p class="eyebrow">GPU CITY <span class="brand-divider">/</span> 计算城市</p><h1>GPU 架构实验台 <span class="version-tag">ALPHA</span></h1></div>
       </div>
       <div class="file-actions" aria-label="文件操作">
-        <button id="load-example" type="button">加载 GTSim 示例</button>
-        <button id="import-trace" type="button">导入 Trace</button>
-        <button id="export-trace" type="button" disabled>导出 Trace</button>
-        <button id="import-workspace" type="button">打开工作区</button>
-        <button id="save-workspace" type="button" disabled>保存工作区</button>
+        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
+        <button id="load-example" type="button" title="重新加载所选示例">加载示例</button>
+        <button id="import-trace" type="button" class="accent-button">导入 Trace</button>
+        <details class="file-menu"><summary>工作区与导出 <span aria-hidden="true">⌄</span></summary><div class="file-menu-content"><button id="export-trace" type="button" disabled>导出 Trace JSON</button><button id="import-workspace" type="button">打开工作区</button><button id="save-workspace" type="button" disabled>保存工作区</button></div></details>
       </div>
     </header>
 
     <div id="status" class="status" role="status" aria-live="polite">正在加载默认示例…</div>
     <section class="trace-summary" aria-label="执行记录来源">
-      <div>
-        <span id="evidence-badge" class="evidence-badge">尚未加载执行记录</span>
-        <h2 id="trace-title">选择一份 Trace 开始</h2>
-        <p id="trace-description" class="muted">支持统一 JSON，以及转换器支持的原始格式。文件在浏览器中处理，不上传。</p>
-      </div>
+      <div class="trace-identification"><p class="eyebrow trace-eyebrow">当前实验 <span class="live-dot" aria-hidden="true"></span></p><h2 id="trace-title">选择一份 Trace 开始</h2><span id="evidence-badge" class="evidence-badge">尚未加载执行记录</span></div>
       <dl id="trace-facts" class="facts"></dl>
+      <details class="source-notes"><summary>来源与建模边界</summary><p id="trace-description" class="muted">支持统一 JSON，以及转换器支持的原始格式。文件在浏览器中处理，不上传。</p><p class="control-help">架构位置用于探索；时间与依赖来自执行记录。未记录的硬件状态与传输路径不作推断。</p></details>
     </section>
 
     <main id="workspace" tabindex="-1">
-      <section class="transport panel" aria-label="执行回放">
-        <div class="transport-buttons">
-          <button id="play" class="primary" type="button" disabled>播放</button>
-          <button id="step-back" type="button" disabled aria-label="上一个事件边界">← 上一边界</button>
-          <button id="step" type="button" disabled>下一边界 →</button>
-          <label class="inline-label" for="playback-rate">回放速度
-            <select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select>
-          </label>
-          <output id="time-label" for="time-slider">0</output>
-        </div>
-        <label class="sr-only" for="time-slider">回放时间</label>
-        <input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled />
-        <p class="control-help">回放速度只改变观看速度。空格：播放/暂停；← / →：事件边界；Home / End：起点/终点。进行中事件按 [start, end) 判断。</p>
-      </section>
-
       <div class="workbench">
         <aside class="panel components-panel" aria-labelledby="components-heading">
-          <div class="panel-heading"><h2 id="components-heading">组件世界</h2><button id="clear-component" type="button" disabled>查看全部</button></div>
-          <p class="muted panel-intro">选择 GPU、SM 或资源，联动查看其下的事件。位置仅用于阅读。</p>
+          <div class="panel-heading"><div><p class="section-kicker">HIERARCHY</p><h2 id="components-heading">组件导航</h2></div><button id="clear-component" type="button" disabled>全部</button></div>
+          <p class="panel-intro muted">选择资源，联动架构图与事件。</p>
           <div id="component-tree" class="component-tree"><p class="empty">加载 Trace 后显示组件层级。</p></div>
+          <div class="navigator-note"><span class="live-dot" aria-hidden="true"></span><span>绿色指示灯表示该组件存在进行中事件。</span></div>
         </aside>
 
-        <section class="panel timeline-panel" aria-labelledby="timeline-heading">
-          <div class="panel-heading"><h2 id="timeline-heading">事件时间线</h2><span id="event-count" class="muted">0 个事件</span></div>
-          <div class="filters">
-            <label for="event-search">查找事件<input id="event-search" type="search" placeholder="名称、组件、事件 ID" /></label>
-            <label for="category-filter">类别<select id="category-filter"><option value="">全部类别</option></select></label>
-          </div>
-          <p id="timeline-context" class="muted panel-intro">时间单位由执行记录提供。</p>
-          <div id="timeline" class="timeline" tabindex="0" aria-label="可横向和纵向滚动的事件时间线"><p class="empty">加载 Trace 后显示事件跨度。点击事件可查看依赖与原始字段。</p></div>
-          <div class="pagination"><button id="previous-page" type="button" disabled>上一页</button><span id="page-label">第 0 / 0 页</span><button id="next-page" type="button" disabled>下一页</button></div>
-          <p class="control-help">每页最多 80 个事件；横条长度表示原始时间跨度。虚线表示当前时间，不代表数据传输路径。</p>
+        <section class="panel world-panel" aria-labelledby="world-heading">
+          <div class="panel-heading world-heading"><div><p class="section-kicker">ARCHITECTURE EXPLORER</p><h2 id="world-heading">计算发生的地方</h2></div><span class="subtle-tag">示意布局 · 原生 Trace 事件</span></div>
+          <div id="gpu-world"><div class="world-loading"><span class="loading-chip" aria-hidden="true"></span><p>正在构建 GPU 视图…</p></div></div>
+          <div class="world-footnote"><span>点选组件探索资源，点选任务查看执行证据。</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
         </section>
 
-        <section class="panel tasks-panel" aria-labelledby="tasks-heading">
-          <div class="panel-heading"><h2 id="tasks-heading">当前任务</h2><span id="active-count" class="muted">0 个进行中</span></div>
-          <div id="active-tasks" class="task-list"><p class="empty">拖动时间滑块或单步，查看这个时刻进行中的任务。</p></div>
-        </section>
-
-        <section class="panel details-panel" aria-labelledby="details-heading">
-          <div class="panel-heading"><h2 id="details-heading">事件与依赖</h2><button id="jump-to-event" type="button" disabled>跳到事件开始</button></div>
-          <div id="event-details"><p class="empty">选择时间线或当前任务中的事件。这里保留原始名称、时间与参数。</p></div>
-        </section>
+        <aside class="inspector" aria-label="检查器">
+          <section class="panel selection-panel" aria-labelledby="selection-heading"><div class="panel-heading"><div><p class="section-kicker">INSPECTOR</p><h2 id="selection-heading">当前观察</h2></div><span class="inspector-dot" aria-hidden="true"></span></div><div id="selected-component-info" class="selected-component-info">整个 GPU · 选择组件查看其执行活动</div></section>
+          <section class="panel details-panel" aria-labelledby="details-heading"><div class="panel-heading"><h2 id="details-heading">事件与依赖</h2><button id="jump-to-event" type="button" disabled title="将回放定位到所选事件的开始时间">定位开始</button></div><div id="event-details"><p class="empty">选择架构图、时间线或当前任务中的事件，查看时间、依赖与原始字段。</p></div></section>
+          <section class="panel tasks-panel" aria-labelledby="tasks-heading"><div class="panel-heading"><h2 id="tasks-heading">进行中的任务</h2><span id="active-count" class="muted">0 个进行中</span></div><div id="active-tasks" class="task-list"><p class="empty">拖动时间滑块或单步，查看这个时刻进行中的任务。</p></div></section>
+        </aside>
       </div>
 
-      <details class="panel metadata-panel">
-        <summary>原始指标、配置与采集命令</summary>
-        <p class="muted">指标名称与数值按记录原样保留。未提供的内部状态或依赖不会补造。</p>
-        <pre id="trace-metadata">尚未加载执行记录。</pre>
-      </details>
+      <section class="panel timeline-panel" aria-labelledby="timeline-heading">
+        <div class="timeline-toolbar"><div class="panel-heading timeline-title"><div><p class="section-kicker">EXECUTION TIMELINE</p><h2 id="timeline-heading">事件时间线</h2></div><span id="event-count" class="muted">0 个事件</span></div><div class="filters"><label class="search-label" for="event-search"><span class="sr-only">查找事件</span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input id="event-search" type="search" placeholder="搜索名称、组件、事件 ID" /></label><label for="category-filter"><span class="sr-only">事件类别</span><select id="category-filter"><option value="">全部类别</option></select></label></div><div class="timeline-zoom"><label for="timeline-zoom">缩放 <output id="timeline-zoom-label" for="timeline-zoom">1×</output></label><input id="timeline-zoom" type="range" min="1" max="16" value="1" step="1" /><button id="timeline-focus-selection" type="button" disabled>聚焦事件</button></div></div>
+        <div class="transport" aria-label="执行回放"><div class="transport-buttons"><button id="play" class="primary play-button" type="button" disabled>播放</button><button id="step-back" type="button" disabled title="上一个事件边界 · 左方向键">← 上一边界</button><button id="step" type="button" disabled title="下一个事件边界 · 右方向键">下一边界 →</button><label class="inline-label" for="playback-rate">速度<select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select></label><div class="seek-controls"><label class="sr-only" for="time-input">精确定位时间，单位与 Trace 一致</label><input id="time-input" type="number" step="any" value="0" disabled aria-label="精确定位时间，单位与 Trace 一致" /><button id="seek-time" type="button" disabled>定位</button></div><output id="time-label" for="time-slider time-input">0</output></div><label class="sr-only" for="time-slider">回放时间</label><input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled /></div>
+        <div class="timeline-context-row"><p id="timeline-context" class="muted panel-intro">时间单位由执行记录提供。</p><span class="cursor-legend"><span aria-hidden="true"></span>当前时刻</span></div><div id="timeline" class="timeline" tabindex="0" aria-label="可横向和纵向滚动的事件时间线"><p class="empty">加载 Trace 后显示事件跨度。点击事件可查看依赖与原始字段。</p></div>
+        <div class="timeline-bottom"><details class="keyboard-help"><summary>键盘与阅读帮助</summary><p class="control-help"><kbd>空格</kbd> 播放 / 暂停 · <kbd>←</kbd> <kbd>→</kbd> 上一 / 下一事件边界 · <kbd>Home</kbd> <kbd>End</kbd> 起点 / 终点。回放速度仅改变观看速度；进行中事件按 [start, end) 判断。每页最多 80 个事件，横条表示原始时间跨度，虚线表示当前时刻。</p></details><div class="pagination"><button id="previous-page" type="button" disabled>上一页</button><span id="page-label">第 0 / 0 页</span><button id="next-page" type="button" disabled>下一页</button></div></div>
+      </section>
+
+      <details class="panel metadata-panel"><summary>原始指标、配置与采集命令 <span class="summary-note">保留来源证据</span></summary><p class="muted">指标名称与数值按记录原样保留。未提供的内部状态或依赖不会补造。</p><pre id="trace-metadata">尚未加载执行记录。</pre></details>
     </main>
-    <footer>功能优先的本地 Trace 工作台 · 保存包含执行记录与视图状态的工作区，随时继续观察。</footer>
+    <footer><span class="footer-brand">GPU CITY <span>计算城市</span></span><span>探索真实记录，构建自己的 GPU 实验世界。</span><a href="https://github.com/liuweibupt/GPU-sim#readme" target="_blank" rel="noopener">项目与致谢 ↗</a></footer>
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
     <script type="module" src="./app.js"></script>

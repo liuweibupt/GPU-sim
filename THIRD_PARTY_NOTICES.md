@@ -43,3 +43,9 @@ code/assets. Project and design acknowledgements are maintained in
 [README.md](README.md); research citations are in [references.md](docs/references.md)
 and [references.bib](docs/references.bib). These citations do not replace license
 notices for any future code, data, or asset reuse.
+
+The six component PNGs under `web/assets/gpu/` were generated for this project
+with the built-in image generation tool on 2026-10-14. They are conceptual
+hardware artwork, not copied game assets, vendor logos, or measured floorplans.
+Generation prompts and their role are recorded in
+[the asset manifest](web/assets/gpu/manifest.json).

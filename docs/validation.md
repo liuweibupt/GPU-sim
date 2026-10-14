@@ -43,3 +43,15 @@ python3 tools/gtsim/test_observer.py
 ## 当前边界
 
 只有上述 GTSim GEMM 图与参数接入；未运行任意 CUDA/Triton、未直接读取 Nsight 私有报告/SQLite。Chrome importer 当前显示 X 和配对 B/E，其他 phase 原样保留并报告。没有硬件在线拼装、并排 A/B、数值 reference executor、城市渲染或多人服务；这些在阶段设计中分别验收。
+
+## GPU 界面细化与发布构建
+
+2026-10-14 的后续迭代加入六类组件概念美术、GPU/SM/CTA/warp 观察、时间线窗口、精确定位和 GitHub Pages 构建。前述“当前边界”是初始功能原型记录；当前已具备 GPU 城市结构美术，仍没有新的指令/请求仿真后端或在线硬件拼装。
+
+- Node 自动检查 **20/20** 通过，包括新增层级计数、CTA 原始归属、profile 轨道保真、时间窗口和默认相机可读性。默认任务仍为原生 796 区间 / 5,492 cycles，未改 timing。
+- Chrome 验证 GPU→SM0→CTA0→warp8、返回清除范围。warp8 的原始 14 区间（LD 10 + ST 4）与筛选结果一致。
+- 保存后重开恢复 time=1750、timelineZoom=8、scope={smId:0, threadBlockId:0, warpId:8}、相机 125% 及各视图开关。
+- 慢 L2 示例末时间 6,413；Kineto/Chrome schemaVersion=1 导入保留 process/track；依赖组前 8 条加懒展开，选中 node-13 与原始区间 1,756–1,804 一致。
+- 默认重要架构标签在最低可读缩放下保持至少 11px；SM/CTA 细节纵向滚动，滚轮钻取、全屏展开及退出可用。1440px 桌面、390px 手机和其他 4 种宽度均无整页横向溢出、页面错误或失败资源请求。
+- 六张生成 PNG 加载成功，具有 alpha 通道；提示词与角色记录齐全。美术格子、亮点、结构位置不当作测量数据。
+- `npm run build` 保留项目子路径资源层级；独立静态站点的 `/GPU-sim/` 入口跳转、ESM、示例与图片加载通过浏览器烟测。线上部署另以 Actions 和实际站点检查确认。
