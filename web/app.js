@@ -1,6 +1,6 @@
 import { normalizeTrace, validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
-import { createGpuWorld } from "./gpu-world.js";
+import { createGpuWorld } from "./gpu-world.js?v=boxes-1";
 
 const $ = (id) => document.getElementById(id);
 const PAGE_SIZE = 80;
@@ -141,6 +141,7 @@ function setTrace(input, savedView = null) {
       ? Object.fromEntries(['smId','threadBlockId','warpId'].filter(key => ['string','number'].includes(typeof savedView.scope[key])).map(key => [key,savedView.scope[key]])) : null;
     state.timelineZoom = Math.max(1, Math.min(16, Number(savedView.timelineZoom) || 1));
     state.timelineCenter = Number.isFinite(savedView.timelineCenter) ? savedView.timelineCenter : null;
+    if (typeof savedView.immersive === "boolean" && $("immersive-view")) $("immersive-view").checked = savedView.immersive;
     descendantIds = descendants(state.selectedComponentId);
   }
   $("event-search").value = state.query;
@@ -634,10 +635,10 @@ $("export-trace").addEventListener("click", () => { if (state.trace && download(
 $("save-workspace").addEventListener("click", () => {
   if (!state.trace) return;
   const { time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter } = state;
-  if (download({ kind: "gpu-sim-workspace", version: 1, trace: state.trace, view: { time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter, world:world.getView?.() } }, "workspace")) announce("工作区已保存，包含 Trace、当前时间、选择、尺度与筛选。未上传任何文件。");
+  if (download({ kind: "gpu-sim-workspace", version: 1, trace: state.trace, view: { time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter, immersive: $("immersive-view")?.checked ?? true, world:world.getView?.() } }, "workspace")) announce("工作区已保存，包含 Trace、当前时间、选择、尺度与筛选。未上传任何文件。");
 });
 document.addEventListener("keydown", (event) => {
-  if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest("input, select, textarea, button, a, [contenteditable='true']")) return;
+  if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest("input, select, textarea, button, a, summary, [role='button'], [contenteditable='true']")) return;
   if (event.code === "Space") { event.preventDefault(); togglePlay(); }
   else if (event.code === "ArrowRight") { event.preventDefault(); step(1); }
   else if (event.code === "ArrowLeft") { event.preventDefault(); step(-1); }

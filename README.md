@@ -8,14 +8,17 @@
 
 ## GPU 城市界面
 
+- 默认使用可交互的 **2.5D 等距盒子沙盘**：立体 SM 城块、共享 L2 物流中心和堆叠 HBM 仓库，按真实事件区间更新活跃高亮与进度。可切回结构图；沉浸视图放大城市，检查器和权威时间线仍可联动。
 - 每个 SM 是一座可进入的计算城市，L2 是共享物流中心，HBM 是区域仓库；GPU → SM → CTA → warp 逐级观察，滚轮向下深入、向上返回，也可使用按钮。
 - 当前 GTSim 轨迹支持原生 SM/pipeline 和 CTA/warp 归属联动、进行中与已完成区间计数、tile 数据窗口、任务及依赖检查。未提供独立事件的 L2/HBM/调度器以结构示意呈现。
 - 时间线支持 1–16× 局部放大、聚焦所选事件、点击定位和精确 cycle/us 输入。深入观察时动画默认放慢；原始仿真时间保持不变。
 - 默认 GEMM 与低 L2 带宽对照可直接切换，工作区同时保存选择、任务范围、架构尺度与时间窗口。Profile 导入保留原生轨道。
 
-SM、Tensor、scheduler、cache、HBM、warp 六类透明组件美术由内置 `image_gen` 工具生成，保存在 [web/assets/gpu](web/assets/gpu/README.md)，完整提示词见 [manifest.json](web/assets/gpu/manifest.json)。交互标签与实际任务状态由前端单独绘制；美术中的格子与灯光不编码实测数量或状态。
+立体沙盘由本仓库原生 SVG/CSS 绘制，不依赖 WebGL 或外部渲染服务。盒子高度、位置与连接为结构示意，不代表实测面积、容量、物理 floorplan 或传输路径；没有请求数据时不画虚构车流。SM、Tensor、scheduler、cache、HBM、warp 六类透明组件美术由内置 `image_gen` 工具生成，用于结构图与细节面板，保存在 [web/assets/gpu](web/assets/gpu/README.md)，完整提示词见 [manifest.json](web/assets/gpu/manifest.json)。美术中的格子与灯光不编码实测数量或状态。
 
 ![GPU 城市架构工作台](docs/assets/workbench.png)
+
+[查看 SM 内部的立体流水线](docs/assets/box-sm.png)。
 
 ## 运行功能原型
 
@@ -53,7 +56,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 ## 当前能力与后续开发
 
-当前原型验证“外部仿真器 → 可追溯事件 → 可检查回放”这条链路，保留真实时间和依赖语义。它还没有任意 CUDA/Triton 执行、可自由拼装硬件的在线模拟、多人世界或 3D 城市。
+当前原型验证“外部仿真器 → 可追溯事件 → 可检查回放”这条链路，保留真实时间和依赖语义。立体城市是 2.5D 交互渲染；尚没有自由旋转的 3D 世界、任意 CUDA/Triton 执行、可自由拼装硬件的在线模拟或多人服务。
 
 下一步接入详细后端的指令与存储请求事件，让宏观 tile 任务与微观 transaction 可以关联探索。首先采用同一 workload 的独立 run 与受控比较，再研究 checkpoint / 局部精化；不任意抽出一个 CTA 热切模拟器。详细仿真允许耗时，后台运行、GPU 时间和动画速度分别管理。并行完善有限队列、带宽、调度与背压的可编辑模型，以及世界建设、预算与可选挑战。
 

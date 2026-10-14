@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#101519" />
+    <meta name="theme-color" content="#070d16" />
     <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
     <title>GPU 计算城市 · GPU Trace 工作台</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./style.css?v=boxes-1" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
     <header class="app-header">
       <div class="app-brand">
         <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M9 9h22v22H9zM14 14h12v12H14z" stroke="currentColor" stroke-width="1.5"/><path d="M14 4v5m6-5v5m6-5v5M14 31v5m6-5v5m6-5v5M4 14h5m-5 6h5m-5 6h5m22-12h5m-5 6h5m-5 6h5" stroke="currentColor" stroke-width="1.5"/><path d="M17 17h6v6h-6z" fill="currentColor"/></svg>
-        <div><p class="eyebrow">GPU CITY <span class="brand-divider">/</span> 计算城市</p><h1>GPU 架构实验台 <span class="version-tag">ALPHA</span></h1></div>
+        <div><p class="eyebrow">GPU CITY <span class="brand-divider">/</span> 计算城市</p><h1>GPU 计算城市 <span class="version-tag">ALPHA</span></h1></div>
       </div>
       <div class="file-actions" aria-label="文件操作">
         <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
@@ -33,17 +33,17 @@
 
     <main id="workspace" tabindex="-1">
       <div class="workbench">
-        <aside class="panel components-panel" aria-labelledby="components-heading">
-          <div class="panel-heading"><div><p class="section-kicker">HIERARCHY</p><h2 id="components-heading">组件导航</h2></div><button id="clear-component" type="button" disabled>全部</button></div>
+        <details class="panel components-panel" aria-labelledby="components-heading" open>
+          <summary class="panel-heading"><span><span class="section-kicker">HIERARCHY</span><span id="components-heading" class="panel-title">组件导航</span></span><button id="clear-component" type="button" disabled>全部</button></summary>
           <p class="panel-intro muted">选择资源，联动架构图与事件。</p>
           <div id="component-tree" class="component-tree"><p class="empty">加载 Trace 后显示组件层级。</p></div>
           <div class="navigator-note"><span class="live-dot" aria-hidden="true"></span><span>绿色指示灯表示该组件存在进行中事件。</span></div>
-        </aside>
+        </details>
 
         <section class="panel world-panel" aria-labelledby="world-heading">
-          <div class="panel-heading world-heading"><div><p class="section-kicker">ARCHITECTURE EXPLORER</p><h2 id="world-heading">计算发生的地方</h2></div><span class="subtle-tag">示意布局 · 原生 Trace 事件</span></div>
+          <div class="panel-heading world-heading"><div><p class="section-kicker">GPU WORLD</p><h2 id="world-heading">进入计算城市</h2></div><div class="world-heading-tools"><span class="subtle-tag">原生 Trace 驱动</span><label class="view-mode-control"><input id="immersive-view" type="checkbox" checked /><span class="view-mode-switch" aria-hidden="true"></span><span>城市优先</span></label></div></div>
           <div id="gpu-world"><div class="world-loading"><span class="loading-chip" aria-hidden="true"></span><p>正在构建 GPU 视图…</p></div></div>
-          <div class="world-footnote"><span>点选组件探索资源，点选任务查看执行证据。</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
+          <div class="world-footnote"><span>滚轮深入 · 点选城市 / 任务 · 查看执行证据</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
         </section>
 
         <aside class="inspector" aria-label="检查器">
@@ -62,9 +62,9 @@
 
       <details class="panel metadata-panel"><summary>原始指标、配置与采集命令 <span class="summary-note">保留来源证据</span></summary><p class="muted">指标名称与数值按记录原样保留。未提供的内部状态或依赖不会补造。</p><pre id="trace-metadata">尚未加载执行记录。</pre></details>
     </main>
-    <footer><span class="footer-brand">GPU CITY <span>计算城市</span></span><span>探索真实记录，构建自己的 GPU 实验世界。</span><a href="https://github.com/liuweibupt/GPU-sim#readme" target="_blank" rel="noopener">项目与致谢 ↗</a></footer>
+    <footer><span class="footer-brand">GPU CITY <span>计算城市</span></span><span>让计算看得见。</span><a href="https://github.com/liuweibupt/GPU-sim#readme" target="_blank" rel="noopener">项目与致谢 ↗</a></footer>
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
-    <script type="module" src="./app.js"></script>
+    <script type="module" src="./app.js?v=boxes-1"></script>
   </body>
 </html>
