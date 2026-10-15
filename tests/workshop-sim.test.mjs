@@ -3,6 +3,29 @@ import assert from 'node:assert/strict';
 import {simulateWorkshop,workshopPerformance,previewWorkshopUpgrade} from '../lib/workshop-sim.js';
 import {createGame,getStats,getUpgradePreview,tickGame} from '../lib/idle-game.js';
 
+function assertScheduleAccounting(result){
+ assert.equal(result.finished,result.tileCount);
+ for(let tile=0;tile<result.tileCount;tile++){
+  const events=result.events.filter(e=>e.tile===tile);
+  assert.deepEqual(events.map(e=>e.operation),['issue','read','compute','write / intermediate spill']);
+  assert.equal(events[1].bytes,4096);
+  for(let i=1;i<events.length;i++)assert.ok(events[i].start>=events[i-1].end-1e-9);
+ }
+ for(const [name,resource]of Object.entries(result.resources)){
+  const events=result.events.filter(e=>e.resource===name).sort((a,b)=>a.start-b.start);
+  for(let i=1;i<events.length;i++)assert.ok(events[i].start>=events[i-1].serviceEnd-1e-9);
+  assert.equal(resource.bytes,events.reduce((sum,e)=>sum+e.bytes,0));
+  assert.ok(Math.abs(resource.busy-events.reduce((sum,e)=>sum+e.serviceEnd-e.start,0))<1e-7);
+ }
+ assert.equal(result.reads,result.tileCount);
+ assert.equal(result.resources.l1.bytes+result.resources.l2.bytes,
+  (result.l1Hits+result.l2Hits)*4096);
+ const writes=result.events.filter(e=>e.operation==='write / intermediate spill');
+ assert.equal(result.memoryBytes,(result.reads-result.l1Hits-result.l2Hits)*4096+
+  writes.reduce((sum,e)=>sum+e.bytes,0));
+ assert.ok(Math.abs(Object.values(result.critical).reduce((a,b)=>a+b,0)-result.cycles)<1e-7);
+}
+
 test('tiles obey read-compute-write dependencies; resource service never overlaps',()=>{
  const result=simulateWorkshop({alu:7,l1:1,scheduler:4,tma:2,tensor:1},'async');
  assert.equal(result.finished,result.tileCount);
@@ -45,6 +68,52 @@ test('TMA overlap, tensor execution and TMEM spills change actual schedules',()=
  assert.ok(matrix.events.some(e=>e.resource==='tensor'));
  assert.ok(simulateWorkshop({...base,tmem:1},'gemm').memoryBytes<matrix.memoryBytes);
  assert.ok(matrix.cycles<simulateWorkshop({...base,tensor:0},'gemm').cycles);
+});
+
+test('adding the first Tensor pool retains the faster legal ALU schedule',()=>{
+ const levels={alu:31,clock:2,l1:2,l2:1,dram:2,scheduler:2};
+ const options={recordEvents:true};
+ for(const kind of ['conv','gemm']){
+  const before=simulateWorkshop(levels,kind,2,options);
+  const installed={...levels,tensor:1};
+  const after=simulateWorkshop(installed,kind,2,options);
+  assert.ok(after.cycles<=before.cycles);
+  assert.equal(after.computePolicy,'alu-only');
+  assert.equal(after.hardware.tensor,1);
+  assertScheduleAccounting(after);
+  for(const event of after.events.filter(e=>e.operation==='compute')){
+   assert.equal(event.resource,'alu');
+   const ops=kind==='gemm'?8192:4096;
+   assert.ok(Math.abs(event.serviceEnd-event.start-ops/(32*32*1.7))<1e-9);
+  }
+  assert.equal(installed.tensor,1);
+ }
+ assert.deepEqual(options,{recordEvents:true});
+ assert.deepEqual(levels,{alu:31,clock:2,l1:2,l2:1,dram:2,scheduler:2});
+ const mixed=simulateWorkshop({alu:7,l1:1,scheduler:4,tma:2,tensor:1},'gemm');
+ assert.equal(mixed.computePolicy,'earliest-finish');
+ assert.deepEqual(new Set(mixed.events.filter(e=>e.operation==='compute').map(e=>e.resource)),
+  new Set(['alu','tensor']));
+ assertScheduleAccounting(mixed);
+});
+
+test('larger L2 remains a faster supply path than maximum HBM and conserves bytes',()=>{
+ const levels={alu:63,clock:8,l1:1,l2:1,dram:4,hbm:4,scheduler:4,tensor:6,tma:4,tmem:4};
+ for(const [kind,tier]of [['gemm',4],['async',3]]){
+  const before=simulateWorkshop(levels,kind,tier);
+  const after=simulateWorkshop({...levels,l2:2},kind,tier);
+  assert.ok(after.l2Hits>before.l2Hits);
+  assert.ok(after.memoryBytes<before.memoryBytes);
+  assert.ok(after.cycles<=before.cycles);
+  assert.ok(previewWorkshopUpgrade(levels,kind,'l2',tier).gain>=0);
+  assertScheduleAccounting(after);
+  const l2Reads=after.events.filter(e=>e.resource==='l2');
+  assert.ok(l2Reads.length>0);
+  for(const event of l2Reads){
+   assert.ok(Math.abs(event.serviceEnd-event.start-event.bytes/16384)<1e-9);
+   assert.ok(Math.abs(event.end-event.serviceEnd-2)<1e-9);
+  }
+ }
 });
 
 test('game rates, hit rates and upgrade previews use the same cached simulation',()=>{
