@@ -2,6 +2,14 @@
 
 站点目标地址为 <https://liuweibupt.github.io/GPU-sim/>，入口自动转到 `web/`。首次启用前，地址可能返回 404；以 Actions 成功部署和实际 HTTP 检查为准。
 
+## 工作台与游戏并存
+
+- 原 GPU 工作台保留在 <https://liuweibupt.github.io/GPU-sim/web/>，站点首页仍跳转到这里。
+- 黄Sir的算力工坊使用独立页面 <https://liuweibupt.github.io/GPU-sim/web/game/>。
+- 工作台右上角可进入游戏，游戏侧栏和页脚可返回工作台。
+
+现有构建会一起复制 `web/` 和 `lib/`，因此无需替换站点入口或另建仓库。游戏代码所在的 `codex/huang-sir-idle` 分支保留；发布到 `main` 后，两张网页由同一次 Pages 工作流共同部署。后续发布需继续包含两个页面，避免部署不含游戏的旧版本或仅上传单个子目录导致另一页面丢失。
+
 ## 静态构建
 
 ```bash
