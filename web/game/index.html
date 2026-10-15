@@ -14,8 +14,8 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c7f58a'/%3E%3Cpath d='M10 10h20v20H10zm5 5v10h10V15z' fill='%23151d13' fill-rule='evenodd'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="./game.css?v=workshop-models-1" />
-    <script type="module" src="./game.js?v=models-3"></script>
+    <link rel="stylesheet" href="./game.css?v=analytical-only-1" />
+    <script type="module" src="./game.js?v=analytical-only-1"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到游戏</a>
@@ -235,19 +235,13 @@
                   ><span>点击组件，查看升级方向 ↗</span>
                 </div>
               </div>
-              <div class="service-model-note">
-                <label for="performance-model">执行模型</label>
-                <select id="performance-model">
-                  <option value="analytical">解析模型（默认）</option>
-                  <option value="workshop">Tile 资源仿真</option>
-                </select>
-                <p>切换后，当前订单和委托按所选模型继续执行，保留已有进度。</p>
-              </div>
               <details class="service-model-note">
-                <summary id="service-model-title">解析模型 · 查看性能估算</summary>
+                <summary id="service-model-title">
+                  解析模型 · 查看周期分解
+                </summary>
                 <p id="service-model-summary"></p>
                 <p id="service-model-description">
-                  读取、计算、写回按资源和依赖排队，LRU 缓存与订单工作集共同影响完成时间。参数为未实测校准的教学假设，未使用训练好的代理模型。
+                  依据计算量、工作集、缓存容量、带宽、延迟隐藏与搬运重叠推导性能。参数为未实测校准的教学假设。
                 </p>
               </details>
               <p class="canvas-pan-hint">左右滑动，探索你的芯片 ↔</p>
@@ -272,7 +266,6 @@
                   <span class="tiny-label">当前瓶颈</span>
                   <p id="bottleneck">算力有限，先让这颗 ALU 忙起来。</p>
                   <p id="resource-evidence" class="resource-evidence"></p>
-                  <details class="resource-explanation"><summary>带宽、延迟还是并发不足？</summary><p id="resource-sensitivity" class="resource-evidence"></p></details>
                 </div>
                 <button id="compute-button" class="primary-button">
                   <svg viewBox="0 0 20 20">
@@ -416,7 +409,7 @@
           </div>
           <div id="chapter-list" class="chapter-list"></div>
           <p class="history-footnote">
-            历史提供灵感，工坊负责想象。处理速度来自轻量资源仿真；以冷缓存代表批次估计订单速率。模型时序、价格和手动加速仍为游戏设定。<a
+            历史提供灵感，工坊负责想象。处理速度由计算、存储与重叠的解析模型估算。参数尚未实机校准，价格与手动加速属于游戏设定。<a
               href="https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/"
               target="_blank"
               rel="noreferrer"

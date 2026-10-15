@@ -11,7 +11,7 @@ import {
   startRaceProject,
   restoreRace,
   serializeRace,
-} from "../../../lib/pve-race.js";
+} from "../../../lib/pve-race.js?v=analytical-only-1";
 import {
   getFinanceStats,
   quoteIPO,
@@ -19,7 +19,7 @@ import {
   quoteBuyback,
   executeBuyback,
   updateValuation,
-} from "../../../lib/pve-market.js";
+} from "../../../lib/pve-market.js?v=analytical-only-1";
 import {
   MODEL_INFO,
   getWorkloadPerformance,

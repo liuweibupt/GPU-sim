@@ -12,7 +12,7 @@ import {
   startChallenge,
   restoreGame,
   serializeGame,
-} from "../../lib/idle-game.js?v=models-3";
+} from "../../lib/idle-game.js?v=analytical-only-1";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -112,10 +112,16 @@ const chapterUnlocks = {
 let state;
 let offline = { seconds: 0, earned: 0, completed: 0 };
 let storageAvailable = true;
+let migratedTileModel = false;
 let preferences = { sound: false, reduceMotion: false };
 try {
   const stored = localStorage.getItem(SAVE_KEY);
-  if (stored) ({ state, offline } = restoreGame(stored));
+  if (stored) {
+    ({ state, offline } = restoreGame(stored));
+    try {
+      migratedTileModel = JSON.parse(stored)?.performanceModel === "workshop";
+    } catch {}
+  }
 } catch {
   storageAvailable = false;
 }
@@ -241,35 +247,36 @@ function renderShop() {
     const locked = Boolean(missing.length || research);
     const purchasable = canBuyUpgrade(state, upgrade.id);
     const maxed = level >= upgrade.maxLevel;
-    const replaced = state.performanceModel === 'workshop' && upgrade.id === 'dram' && state.levels.hbm > 0;
     const price = getUpgradeCost(state, upgrade.id);
     card.hidden =
       currentFilter !== "all" && categories[upgrade.id] !== currentFilter;
     card.classList.toggle("locked", locked);
     card.classList.toggle("purchasable", purchasable);
-    card.querySelector(".upgrade-level").textContent = replaced ? "已被 HBM 替代" : research
+    card.querySelector(".upgrade-level").textContent = research
       ? "研发中"
-      : locked
+      : missing.length
         ? "待前置组件"
         : level
           ? `LV.${String(level).padStart(2, "0")}`
           : "可研发";
-    card.querySelector(".upgrade-benefit").textContent = replaced ? "外部访存已由 HBM 服务；保留已有等级，不再购买无效升级。" : research
+    card.querySelector(".upgrade-benefit").textContent = research
       ? `经营累计 ${cash(upgrade.unlockEarned)} 后开放`
       : missing.length
         ? `前置：${missing.map((id) => names[id]).join(" + ")}`
-        : maxed ? "已达最高等级" : `${upgrade.benefit} · 当前订单预计 ${((getUpgradePreview(state, upgrade.id)?.gain ?? 0) * 100).toFixed(1)}% 速度变化`;
+        : maxed
+          ? "已达最高等级"
+          : `${upgrade.benefit} · 当前订单预计 ${((getUpgradePreview(state, upgrade.id)?.gain ?? 0) * 100).toFixed(1)}% 速度变化`;
     const button = card.querySelector("button");
     button.disabled = !purchasable;
-    button.querySelector("span").textContent = replaced ? "由 HBM 接管" : maxed
+    button.querySelector("span").textContent = maxed
       ? "已达最高等级"
       : locked
         ? "尚未开放"
         : level
           ? "升级组件 ↗"
           : "安装组件 +";
-    button.querySelector("strong").textContent = replaced ? "—" : maxed ? "MAX" : cash(price);
-    button.title = replaced ? "HBM 已替代 DRAM；请升级 HBM 调整外部带宽。" : maxed
+    button.querySelector("strong").textContent = maxed ? "MAX" : cash(price);
+    button.title = maxed
       ? "组件已达最高等级"
       : research
         ? `累计收入还差 ${cash(upgrade.unlockEarned - state.totalEarned)}`
@@ -423,19 +430,15 @@ function renderMentor(stats) {
   $("mission-count").textContent = `${Math.round(progress * 100)}%`;
   $("mentor-chapter").textContent = chapter;
   const perf = stats.performance;
-  const analytical = state.performanceModel === 'analytical';
-  $("resource-sensitivity").parentElement.hidden = analytical;
-  if (analytical) {
-    const labels = {compute:'计算',bandwidth:'访存带宽',latency:'访存延迟'};
-    $("bottleneck").textContent = `${stats.workloadName}：${labels[perf.bottleneck]}受限（公式估算）。`;
-    $("resource-evidence").textContent = `计算 ${perf.computeCycles.toFixed(1)} · 搬运 ${perf.memoryCycles.toFixed(1)} · 延迟等待 ${perf.latencyCycles.toFixed(1)} · 重叠抵扣 ${perf.overlapCycles.toFixed(1)} · 总计 ${perf.cycles.toFixed(1)} 模型 tick。`;
-  } else {
-  const percent=value=>`${Math.max(0,value*100).toFixed(1)}%`;
-  $("resource-sensitivity").textContent = `分别试算：外部带宽翻倍 → 提速 ${percent(stats.diagnosis.bandwidth)}；响应延迟减半 → ${percent(stats.diagnosis.latency)}；增加 1 个在途槽位 → ${percent(stats.diagnosis.concurrency)}。各项是独立实验，收益不相加。`;
-  $("bottleneck").textContent = `${stats.workloadName}：${perf.bottleneckLabel}占关键路径 ${(100 * perf.critical[perf.bottleneck] / perf.cycles).toFixed(0)}%。`;
-  $("resource-evidence").textContent = `订单规模 Lv.${perf.tier} · 输入工作集 ${perf.workingSetBytes/1024} KiB · 代表批次 ${perf.tileCount} tiles / ${perf.cycles.toFixed(1)} tick · 外部读写 ${(perf.memoryBytes / 1024).toFixed(0)} KiB · L1 / L2 命中 ${perf.l1Hits} / ${perf.l2Hits}（${perf.reads} 次读取）· ${perf.slots} 个在途槽位。`;
-  }
-
+  const labels = {
+    compute: "计算吞吐",
+    bandwidth: "供数带宽",
+    latency: "访存延迟",
+  };
+  $("bottleneck").textContent =
+    `${stats.workloadName}：${labels[perf.bottleneck]}受限（解析估算）。`;
+  $("resource-evidence").textContent =
+    `计算 ${perf.computeCycles.toFixed(1)} · 搬运 ${perf.memoryCycles.toFixed(1)} · 延迟 ${perf.latencyCycles.toFixed(1)} · 重叠抵扣 ${perf.overlapCycles.toFixed(1)} · 总计 ${perf.cycles.toFixed(1)} 逻辑周期。`;
 }
 
 function renderOrders() {
@@ -584,15 +587,9 @@ function render() {
   renderHardware(stats);
   renderMentor(stats);
   const service = stats.performance;
-  const analytical = state.performanceModel === 'analytical';
-  $("performance-model").value = state.performanceModel;
-  $("service-model-title").textContent = analytical ? "解析模型 · 查看性能估算" : "Tile 资源仿真 · 查看批次统计";
-  $("service-model-description").textContent = analytical
-    ? "根据计算量、分层访存、延迟隐藏与搬运重叠公式估算性能。参数为未实测校准的教学假设。"
-    : "读取、计算、写回按资源和依赖排队，LRU 缓存与订单工作集共同影响完成时间。参数为未实测校准的教学假设。";
-  $("service-model-summary").textContent = analytical
-    ? `${service.kind.toUpperCase()} · 工作集 ${service.features.workingSetBytes / 1024} KiB · ${format(service.cycles,1)} 模型 tick · 估算缓存命中 ${(service.hitRate*100).toFixed(1)}%`
-    : `${service.kind.toUpperCase()} · 工作集 ${service.workingSetBytes / 1024} KiB · ${format(service.cycles, 1)} 模型 tick · ${service.tileCount} tiles · ${service.slots} 个在途槽位`;
+  $("service-model-summary").textContent =
+    `${service.kind.toUpperCase()} · 工作集 ${format(service.features.workingSetBytes / 1024, 1)} KiB · ${format(service.cycles, 1)} 逻辑周期 · 估算缓存命中 ${format(service.hitRate * 100, 1)}%`;
+
   renderOrders();
   renderChapters();
   renderJournal();
@@ -737,15 +734,6 @@ $("chapter-list").addEventListener("click", (event) => {
     render();
   }
 });
-$("performance-model").addEventListener("change", (event) => {
-  const now = Date.now();
-  tickGame(state, Math.max(0, (now - lastFrame) / 1000));
-  lastFrame = now;
-  state.performanceModel = event.target.value === "workshop" ? "workshop" : "analytical";
-  save();
-  render();
-  toast(state.performanceModel === "analytical" ? "已切换到解析模型" : "已切换到 Tile 资源仿真");
-});
 $("settings-button").addEventListener("click", () =>
   $("settings-dialog").showModal(),
 );
@@ -818,7 +806,11 @@ $("import-file").addEventListener("change", async (event) => {
     save();
     render();
     $("settings-dialog").close();
-    toast("存档已导入。欢迎回到你的工坊。");
+    toast(
+      raw.performanceModel === "workshop"
+        ? "存档已导入，已保留进度并迁移到解析模型。"
+        : "存档已导入。欢迎回到你的工坊。",
+    );
   } catch (error) {
     toast(`导入失败：${error.message}，当前进度已保留。`, "error");
   }
@@ -843,6 +835,7 @@ window.addEventListener("storage", (event) => {
 createShop();
 applyPreferences();
 render();
+if (migratedTileModel) toast("Tile 模式已移除，已保留进度并迁移到解析模型。");
 if (!storageAvailable) {
   $("save-status").textContent = "无法自动存档 · 可导出备份";
   toast("本机存档暂不可用，你仍可游玩并导出进度。", "error");

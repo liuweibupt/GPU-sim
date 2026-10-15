@@ -285,6 +285,42 @@ test('JSON saves preserve active contracts and challenge progress without changi
   assert.deepEqual(state, before);
 });
 
+test('retired Tile-model saves preserve the business and resume analytically through the offline cap', () => {
+  const state = createGame(1000);
+  buyLevels(state, starterHardware);
+  tickGame(state, 12);
+  state.won = CHAPTERS.slice(0, 4).map(chapter => chapter.id);
+  assert.equal(startChallenge(state, 'alexnet').ok, true);
+  manualCompute(state);
+  tickGame(state, 0.1);
+  state.money = 431;
+  const canonical = JSON.parse(serializeGame(state, 4000));
+  assert.ok(canonical.activeJob.progress > 0);
+  assert.ok(canonical.challenge.progress > 0);
+  assert.ok(canonical.completed > 0);
+
+  for (const model of ['workshop', 'invalid']) {
+    const legacy = {...canonical, performanceModel: model};
+    const restored = restoreGame(JSON.stringify(legacy), 4000, {performanceModel: 'workshop'});
+    assert.deepEqual(restored.offline, {seconds: 0, earned: 0, completed: 0});
+    assert.deepEqual(restored.state, canonical);
+    assert.equal(legacy.performanceModel, model, 'loading does not mutate the source save');
+  }
+  assert.equal(createGame(1000, {performanceModel: 'workshop'}).performanceModel, 'analytical');
+
+  const expected = structuredClone(canonical);
+  tickGame(expected, 8 * 3600);
+  const resumedAt = 4000 + 8 * 3600000;
+  expected.savedAt = resumedAt;
+  const restored = restoreGame({...canonical, performanceModel: 'workshop'}, resumedAt);
+  assert.deepEqual(restored.state, expected);
+  assert.deepEqual(restored.offline, {
+    seconds: 8 * 3600,
+    earned: expected.money - canonical.money,
+    completed: expected.completed - canonical.completed,
+  });
+});
+
 test('offline catch-up matches continuous simulation, has an eight-hour cap and cannot replay on resave', () => {
   const state = createGame(1000);
   const text = serializeGame(state, 1000);
