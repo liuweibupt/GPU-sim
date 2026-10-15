@@ -1,6 +1,8 @@
 // Presentation of explicit interconnect events. This module never generates a
 // route, packet, queue, cache hit, or simulated time from compute activity.
+import {createIntervalIndex} from "../lib/interval-index.js";
 const NS = "http://www.w3.org/2000/svg";
+const trafficIntervals = new WeakMap();
 
 export const FLOW_COLORS = Object.freeze({
   "read-request": "#61aaff", "read-response": "#4ef1ce", shared: "#d9a1ff", writeback: "#ffad65",
@@ -34,23 +36,35 @@ export function indexTraffic(topology, events = []) {
     else if (stage === "queue" && nodes.has(event.componentId)) queues.push({event, metadata: event.args, nodeId: event.componentId});
     else if (stage === "service" && nodes.has(event.componentId)) services.push({event, flow, metadata: event.args, nodeId: event.componentId});
   }
-  return {nodes, links, transfers, queues, services, byRequest, omittedTransfers};
+  const index = {nodes, links, transfers, queues, services, byRequest, omittedTransfers};
+  trafficIntervals.set(index, intervalQueries(index));
+  return index;
+}
+
+function intervalQueries(index) {
+  const options = {start: item => item.event.start, end: item => item.event.end};
+  return {transfers: createIntervalIndex(index.transfers, options), queues: createIntervalIndex(index.queues, options), services: createIntervalIndex(index.services, options)};
 }
 
 /** Half-open source intervals and pure interpolation make pause/seek/rewind
  * identical to playback. Zero-duration records never invent moving packets. */
 export function trafficAt(index, time) {
-  const active = values => values.filter(({event}) => event.start <= time && time < event.end);
   if (!Number.isFinite(time)) return {transfers: [], queues: [], services: []};
-  return {transfers: active(index.transfers).map(item => ({...item, progress: (time - item.event.start) / (item.event.end - item.event.start)})),
-    queues: active(index.queues), services: active(index.services)};
+  let queries = trafficIntervals.get(index);
+  if (!queries) {queries = intervalQueries(index); trafficIntervals.set(index, queries);}
+  return {transfers: queries.transfers.at(time).map(item => ({...item, progress: (time - item.event.start) / (item.event.end - item.event.start)})),
+    queues: queries.queues.at(time), services: queries.services.at(time)};
 }
 
-export function pointAlongRoute(route, progress) {
+function measureRoute(route) {
+  const distances = route.slice(1).map((point, index) => Math.hypot(point.x - route[index].x, point.y - route[index].y));
+  return {distances, total: distances.reduce((sum, value) => sum + value, 0)};
+}
+export function pointAlongRoute(route, progress, metrics) {
   if (!route?.length) return null;
   if (route.length === 1) return {...route[0], angle: 0};
-  const distances = route.slice(1).map((point, index) => Math.hypot(point.x - route[index].x, point.y - route[index].y));
-  let remaining = Math.max(0, Math.min(1, progress)) * distances.reduce((sum, value) => sum + value, 0);
+  const {distances, total} = metrics ?? measureRoute(route);
+  let remaining = Math.max(0, Math.min(1, progress)) * total;
   for (let i = 0; i < distances.length; i++) {
     if (remaining <= distances[i] || i === distances.length - 1) {
       const fraction = distances[i] ? remaining / distances[i] : 0, from = route[i], to = route[i + 1];
@@ -63,7 +77,7 @@ export function pointAlongRoute(route, progress) {
 }
 
 export const TRAFFIC_OVERLAY_CSS = `
-.gpu-traffic-wire{fill:none;stroke:#426574;stroke-width:1.15;opacity:.2;pointer-events:stroke}.gpu-traffic-wire:hover{stroke:#91d1db;opacity:.75;stroke-width:2}.gpu-traffic-active-wire{fill:none;stroke-width:2.3;opacity:.52;pointer-events:none}.gpu-traffic-selection{fill:none;stroke:#f0d7ff;stroke-width:3;opacity:.8;stroke-dasharray:6 4;pointer-events:none}.gpu-traffic-packet{cursor:pointer;outline:none}.gpu-traffic-packet .gpu-traffic-payload{stroke:#efffff;stroke-width:.7;filter:drop-shadow(0 0 5px var(--packet-color))}.gpu-traffic-packet .gpu-traffic-halo{fill:var(--packet-color);opacity:.16}.gpu-traffic-packet:hover .gpu-traffic-payload,.gpu-traffic-packet:focus-visible .gpu-traffic-payload,.gpu-traffic-packet[aria-pressed=true] .gpu-traffic-payload{stroke:#fff;stroke-width:2;filter:drop-shadow(0 0 9px var(--packet-color))}.gpu-traffic-tail{stroke:var(--packet-color);stroke-width:3;opacity:.65}.gpu-traffic-queue{cursor:pointer;outline:none}.gpu-traffic-queue rect{fill:#523516;stroke:#ffd18a;stroke-width:1}.gpu-traffic-queue text{fill:#fff1c5;font:600 10px ui-monospace,monospace;pointer-events:none}.gpu-traffic-service{fill:none;stroke:#e2b3ff;stroke-width:3;opacity:.7;pointer-events:none}.gpu-traffic-legend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:11px/1.5 ui-monospace,monospace;color:#9ab9c9;padding:4px 10px 10px}.gpu-traffic-legend span{display:flex;align-items:center;gap:5px}.gpu-traffic-legend i{display:block;width:12px;height:5px;border-radius:1px;background:var(--packet-color);box-shadow:0 0 6px color-mix(in srgb,var(--packet-color) 40%,transparent)}.gpu-traffic-summary{margin-left:auto;color:#bddfe5}.gpu-traffic-evidence{display:flex;align-items:flex-start;gap:9px;min-height:42px;padding:9px 12px;margin:0 10px 10px;border:1px solid #345564;border-radius:6px;background:#102530;color:#91b4c5;font:11px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}.gpu-traffic-evidence strong{color:#d4f5f1;font-weight:500}.gpu-traffic-evidence .gpu-traffic-detail{flex:1;min-width:0}.gpu-traffic-evidence .gpu-traffic-request{display:block;color:#c3a9eb}.gpu-traffic-evidence .gpu-traffic-hint{color:#7194a5}.gpu-traffic-evidence button{background:#183846;border:1px solid #456c7d;border-radius:5px;padding:3px 7px;color:#c8edf1;font:inherit;cursor:pointer;flex-shrink:0}.gpu-traffic-evidence button:hover{border-color:#a3dedf}.gpu-traffic-overflow{fill:#b9dce7;font:12px ui-monospace,monospace;paint-order:stroke;stroke:#0b1923;stroke-width:3px}
+.gpu-traffic-wire{fill:none;stroke:#426574;stroke-width:1.15;opacity:.2;pointer-events:stroke}.gpu-traffic-wire:hover{stroke:#91d1db;opacity:.75;stroke-width:2}.gpu-traffic-active-wire{fill:none;stroke-width:2.3;opacity:.52;pointer-events:none}.gpu-traffic-selection{fill:none;stroke:#f0d7ff;stroke-width:3;opacity:.8;stroke-dasharray:6 4;pointer-events:none}.gpu-traffic-packet{cursor:pointer;outline:none}.gpu-traffic-packet .gpu-traffic-payload{stroke:#efffff;stroke-width:.7}.gpu-traffic-packet .gpu-traffic-halo{fill:var(--packet-color);opacity:.16}.gpu-traffic-packet:hover .gpu-traffic-payload,.gpu-traffic-packet:focus-visible .gpu-traffic-payload,.gpu-traffic-packet[aria-pressed=true] .gpu-traffic-payload{stroke:#fff;stroke-width:2;filter:drop-shadow(0 0 9px var(--packet-color))}.gpu-traffic-tail{stroke:var(--packet-color);stroke-width:3;opacity:.65}.gpu-traffic-queue{cursor:pointer;outline:none}.gpu-traffic-queue rect{fill:#523516;stroke:#ffd18a;stroke-width:1}.gpu-traffic-queue text{fill:#fff1c5;font:600 10px ui-monospace,monospace;pointer-events:none}.gpu-traffic-service{fill:none;stroke:#e2b3ff;stroke-width:3;opacity:.7;pointer-events:none}.gpu-traffic-legend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:11px/1.5 ui-monospace,monospace;color:#9ab9c9;padding:4px 10px 10px}.gpu-traffic-legend span{display:flex;align-items:center;gap:5px}.gpu-traffic-legend i{display:block;width:12px;height:5px;border-radius:1px;background:var(--packet-color);box-shadow:0 0 6px color-mix(in srgb,var(--packet-color) 40%,transparent)}.gpu-traffic-summary{margin-left:auto;color:#bddfe5}.gpu-traffic-evidence{display:flex;align-items:flex-start;gap:9px;min-height:42px;padding:9px 12px;margin:0 10px 10px;border:1px solid #345564;border-radius:6px;background:#102530;color:#91b4c5;font:11px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}.gpu-traffic-evidence strong{color:#d4f5f1;font-weight:500}.gpu-traffic-evidence .gpu-traffic-detail{flex:1;min-width:0}.gpu-traffic-evidence .gpu-traffic-request{display:block;color:#c3a9eb}.gpu-traffic-evidence .gpu-traffic-hint{color:#7194a5}.gpu-traffic-evidence button{background:#183846;border:1px solid #456c7d;border-radius:5px;padding:3px 7px;color:#c8edf1;font:inherit;cursor:pointer;flex-shrink:0}.gpu-traffic-evidence button:hover{border-color:#a3dedf}.gpu-traffic-overflow{fill:#b9dce7;font:12px ui-monospace,monospace;paint-order:stroke;stroke:#0b1923;stroke-width:3px}
 @media(max-width:600px){.gpu-traffic-legend{font-size:10px;gap:8px;padding-left:5px;padding-right:5px}.gpu-traffic-evidence{font-size:10px;margin-left:4px;margin-right:4px;padding:7px 8px}.gpu-traffic-summary{margin-left:0;width:100%}}
 @media(prefers-reduced-motion:reduce){.gpu-traffic-packet *{filter:none!important}.gpu-traffic-selection{stroke-dasharray:none}}
 `;
@@ -75,6 +89,8 @@ function svg(tag, attributes = {}, text) {
   return node;
 }
 function routeData(route) {return route.map((point, index) => `${index ? "L" : "M"}${point.x} ${point.y}`).join(" ");}
+function attribute(node, name, value) {const text = String(value); if (node.getAttribute(name) !== text) node.setAttribute(name, text);}
+function content(node, value) {if (node.textContent !== value) node.textContent = value;}
 function activate(node, action) {
   node.addEventListener("click", action);
   node.addEventListener("keydown", event => {if (event.key === "Enter" || event.key === " ") {event.preventDefault(); action();}});
@@ -86,12 +102,13 @@ function linkDescription(link) {return `${link.sourceId} → ${link.targetId}\n$
 export function createTrafficOverlay({graphic, topology, events = [], positions = new Map(), routes = new Map(),
   onSelectEvent = () => {}, onInspect = () => {}} = {}) {
   const index = indexTraffic(topology, events), eventsById = new Map(events.map(event => [event.id, event])), base = svg("g", {class: "gpu-traffic-links"}), selection = svg("g"), activity = svg("g"), packets = svg("g"), queues = svg("g"), services = svg("g");
-  const renderedRoutes = new Map();
+  const renderedRoutes = new Map(), renderedMetrics = new Map();
   for (const link of index.links.values()) {
     const from = positions.get(link.sourceId), to = positions.get(link.targetId);
     const route = routes.get(link.id) ?? (from && to ? [from, to] : null);
     if (!route || route.length < 2) continue;
     renderedRoutes.set(link.id, route);
+    renderedMetrics.set(link.id, measureRoute(route));
     const path = svg("path", {d: routeData(route), class: "gpu-traffic-wire", "data-gpu-link-id": link.id});
     path.append(svg("title", {}, linkDescription(link))); base.append(path);
   }
@@ -115,13 +132,14 @@ export function createTrafficOverlay({graphic, topology, events = [], positions 
     const state = trafficAt(index, time), live = new Set(), liveLinks = new Set(), liveQueues = new Set(), liveServices = new Set();
     for (const item of state.transfers) {
       const route = renderedRoutes.get(item.link.id); if (!route) continue;
-      const point = pointAlongRoute(route, item.progress); if (!point) continue;
+      const point = pointAlongRoute(route, item.progress, renderedMetrics.get(item.link.id)); if (!point) continue;
       live.add(item.event.id); liveLinks.add(item.link.id);
       if (!activePaths.has(item.link.id)) {const path = svg("path", {d: routeData(route), class: "gpu-traffic-active-wire"}); activity.append(path); activePaths.set(item.link.id, path);}
-      activePaths.get(item.link.id).setAttribute("stroke", flowColor(item.flow));
+      attribute(activePaths.get(item.link.id), "stroke", flowColor(item.flow));
       let node = packetNodes.get(item.event.id);
       if (!node) {
         node = svg("g", {class: "gpu-traffic-packet", tabindex: 0, role: "button", "data-gpu-flow-event-id": item.event.id, "data-gpu-packet-id": item.flow.packetId, "data-gpu-request-id": item.flow.requestId});
+        node.setAttribute("aria-label", `${item.flow.kind} ${item.flow.bytes} bytes，${item.link.sourceId} 至 ${item.link.targetId}，请求 ${item.flow.requestId}`);
         node.style.setProperty("--packet-color", flowColor(item.flow));
         node.append(svg("circle", {r: 18, class: "gpu-traffic-halo"}), svg("line", {x1: -24, y1: 0, x2: -7, y2: 0, class: "gpu-traffic-tail"}),
           svg("rect", {x: -9, y: -5, width: 18, height: 10, rx: 2, fill: flowColor(item.flow), class: "gpu-traffic-payload"}),
@@ -129,9 +147,8 @@ export function createTrafficOverlay({graphic, topology, events = [], positions 
           svg("title", {}, `${item.flow.kind} · ${item.flow.bytes} bytes\n${item.flow.packetId} / ${item.flow.requestId}\n${linkDescription(item.link)}\n${item.event.start} → ${item.event.end} cycle\n数据 ${item.flow.dataKey}${item.flow.shared ? " · 共享输入" : ""}`));
         activate(node, () => choose(item)); node.addEventListener("pointerenter", () => inspect(item)); node.addEventListener("focus", () => inspect(item)); packets.append(node); packetNodes.set(item.event.id, node);
       }
-      node.setAttribute("transform", `translate(${point.x} ${point.y}) rotate(${point.angle})`);
-      node.setAttribute("aria-pressed", String(selectedEventId === item.event.id));
-      node.setAttribute("aria-label", `${item.flow.kind} ${item.flow.bytes} bytes，${item.link.sourceId} 至 ${item.link.targetId}，请求 ${item.flow.requestId}`);
+      attribute(node, "transform", `translate(${point.x} ${point.y}) rotate(${point.angle})`);
+      attribute(node, "aria-pressed", selectedEventId === item.event.id);
     }
     // Group only explicit queue spans at their contended link's source port.
     const groups = new Map();
@@ -139,13 +156,17 @@ export function createTrafficOverlay({graphic, topology, events = [], positions 
     for (const [id, values] of groups) {
       const item = values[0], position = positions.get(item.link?.sourceId ?? item.nodeId); if (!position) continue; liveQueues.add(id);
       let node = queueNodes.get(id);
-      if (!node) {node = svg("g", {class: "gpu-traffic-queue", tabindex: 0, role: "button", "data-gpu-queue-link": id}); node.append(svg("rect", {x: -13, y: -10, width: 26, height: 15, rx: 3}), svg("text", {x: 0, y: 1, "text-anchor": "middle"}), svg("title")); queues.append(node); queueNodes.set(id, node); activate(node, () => {if (node.queueItem) choose(node.queueItem);});}
+      if (!node) {node = svg("g", {class: "gpu-traffic-queue", tabindex: 0, role: "button", "data-gpu-queue-link": id}); node.countText = svg("text", {x: 0, y: 1, "text-anchor": "middle"}); node.queueTitle = svg("title"); node.append(svg("rect", {x: -13, y: -10, width: 26, height: 15, rx: 3}), node.countText, node.queueTitle); queues.append(node); queueNodes.set(id, node); activate(node, () => {if (node.queueItem) choose(node.queueItem);});}
       node.queueItem = item;
       const sourceKind = index.nodes.get(item.link?.sourceId ?? item.nodeId)?.kind;
       const offset = sourceKind === "hbm" ? {x: 65, y: item.link ? -18 : 20} : sourceKind === "l2" ? {x: 57, y: -17} : {x: 14, y: -10};
-      node.setAttribute("transform", `translate(${position.x + offset.x} ${position.y + offset.y})`); node.querySelector("text").textContent = String(values.length);
-      node.querySelector("title").textContent = `${values.length} 个显式等待区间\n${item.link ? linkDescription(item.link) : `${item.nodeId} 服务队列`}\n${values.map(value => `${value.flow?.packetId ?? value.metadata?.requestId ?? value.event.id}: ${value.event.start} → ${value.event.end}`).slice(0, 6).join("\n")}`;
-      node.setAttribute("aria-label", `${id}，${values.length} 个显式等待区间，查看原始queue事件`);
+      attribute(node, "transform", `translate(${position.x + offset.x} ${position.y + offset.y})`); content(node.countText, String(values.length));
+      const signature = JSON.stringify([values.length, values.slice(0, 6).map(value => value.event.id)]);
+      if (signature !== node.queueSignature) {
+        node.queueSignature = signature;
+        content(node.queueTitle, `${values.length} 个显式等待区间\n${item.link ? linkDescription(item.link) : `${item.nodeId} 服务队列`}\n${values.slice(0, 6).map(value => `${value.flow?.packetId ?? value.metadata?.requestId ?? value.event.id}: ${value.event.start} → ${value.event.end}`).join("\n")}`);
+      }
+      attribute(node, "aria-label", `${id}，${values.length} 个显式等待区间，查看原始queue事件`);
     }
     const activeServiceNodeIds = new Set(state.services.map(item => item.nodeId));
     for (const id of activeServiceNodeIds) {const position = positions.get(id); if (!position) continue; liveServices.add(id); if (!serviceNodes.has(id)) {const circle = svg("circle", {cx: position.x, cy: position.y, r: 13, class: "gpu-traffic-service", "data-gpu-service-node": id}); services.append(circle); serviceNodes.set(id, circle);}}

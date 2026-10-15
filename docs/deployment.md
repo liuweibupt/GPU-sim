@@ -12,6 +12,8 @@ npm run build
 
 构建无第三方 npm 依赖。`dist/` 仅包含 `web/`、`lib/`、`examples/*.json`、入口跳转和 `.nojekyll`，不发布仿真器源码、构建缓存或实验日志。原有目录层级与相对 URL 保留，因此部署到 `/GPU-sim/` 项目路径时，JS 模块、默认 trace 和图片仍可加载。`dist/` 已在 `.gitignore` 中；由 Actions 上传构建产物，无需将生成文件提交至主分支。
 
+Worker 入口和已编译的 `lib/interval-query.wasm` 一同发布，C 源码不进入站点。正常构建无需 Clang；仅修改 WASM 源码时执行 `npm run build:wasm` 并提交二进制。WASM 加载失败时播放会使用 JavaScript 索引。[性能与复现方法](browser-performance.md)
+
 GitHub Pages 只托管浏览器端静态应用。Trace 导入和工作区存档仍在用户浏览器中完成；它不会在服务器执行 CUDA 或启动仿真器。线上站点与 localhost 的浏览器存储属于不同 origin，需要通过工作区文件迁移存档。
 
 ## 首次启用

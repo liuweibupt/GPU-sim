@@ -99,9 +99,12 @@
 .sm-formal-link.sm-link-selected {opacity:.93;stroke-width:2.2}
 .sm-formal-link.sm-link-active {opacity:.96;stroke-width:2.6}
 .sm-pipeline-token {pointer-events:all;cursor:pointer;outline:none}
-.sm-light-trail {stroke:var(--flow-color);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;opacity:.7;filter:drop-shadow(0 0 3px var(--flow-color));pointer-events:none}
-.sm-light-halo {fill:var(--flow-color);opacity:.22;filter:blur(3px);pointer-events:none}
-.sm-light-core {fill:#f3fffb;stroke:var(--flow-color);stroke-width:2.5;filter:drop-shadow(0 0 4px var(--flow-color)) drop-shadow(0 0 9px var(--flow-color));pointer-events:none}
+.sm-light-trail {stroke:var(--flow-color);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;opacity:.7;pointer-events:none}
+/* Layered halos stay bright without per-frame offscreen blur surfaces. */
+.sm-light-halo {fill:var(--flow-color);opacity:.16;pointer-events:none}
+.sm-light-glow {fill:var(--flow-color);opacity:.25;pointer-events:none}
+.sm-light-core {fill:#f3fffb;stroke:var(--flow-color);stroke-width:2.5;pointer-events:none}
+.sm-pipeline-token[aria-pressed=true] .sm-light-core,.sm-pipeline-token:focus-visible .sm-light-core {filter:drop-shadow(0 0 4px var(--flow-color))}
 .sm-light-ring {fill:none;stroke:#eafff4;stroke-width:1.3;opacity:0;pointer-events:none}
 .sm-light-hit {fill:transparent;stroke:none;pointer-events:all}
 .sm-pipeline-token[aria-pressed=true] .sm-light-ring,.sm-pipeline-token:focus-visible .sm-light-ring {opacity:.95}

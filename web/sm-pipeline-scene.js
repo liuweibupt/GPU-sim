@@ -2,7 +2,8 @@
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
 import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js?v=sm-residency-3";
 import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-residency-3";
-import {observationSnapshot} from "../lib/instruction-view.js";
+import {observationSnapshot} from "../lib/instruction-view.js?v=browser-perf-1";
+import {createIntervalIndex} from "../lib/interval-index.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const FLOW_TYPES = ["control", "instruction", "operand", "memory", "completion"];
@@ -35,6 +36,39 @@ const HARDWARE_ROWS = [
 const LOGICAL_STAGES = ["fetch", "decode", "scoreboard", "issue", "operand-collector", "branch", "writeback"];
 const HARDWARE_WEIGHTS = {"warp-scheduler": 2, dispatch: 1, int32: 2, fp32: 4, fp64: 2, tensor: 3, lsu: 4, sfu: 1};
 let nextSceneId = 0;
+const evidenceQueries = new WeakMap();
+
+function countThrough(sorted, time, value = item => item) {
+  let low = 0, high = sorted.length;
+  while (low < high) {const middle = (low + high) >>> 1; if (value(sorted[middle]) <= time) low = middle + 1; else high = middle;}
+  return low;
+}
+function queriesFor(evidence) {
+  let queries = evidenceQueries.get(evidence);
+  if (!queries) {
+    const mapped = [...evidence.byComponent].flatMap(([componentId, events]) => events.map(event => ({event, componentId})));
+    queries = {transfers: createIntervalIndex(evidence.transfers),
+      mapped: createIntervalIndex(mapped, {start: item => item.event.start, end: item => item.event.end}), scopes: new Map()};
+    evidenceQueries.set(evidence, queries);
+  }
+  return queries;
+}
+function scopedSummaryRows(evidence, scope) {
+  const queries = queriesFor(evidence), key = JSON.stringify([scope?.threadBlockId == null ? null : String(scope.threadBlockId), scope?.warpId == null ? null : String(scope.warpId)]);
+  if (queries.scopes.has(key)) return queries.scopes.get(key);
+  const rows = new Map();
+  for (const [id, source] of evidence.byComponent) {
+    const events = source.filter(event => sourceEventsMatch(event, scope));
+    const starts = [...events].sort((a, b) => a.start - b.start);
+    const points = starts.filter(event => event.start === event.end), pointGroups = new Map();
+    for (const event of points) {if (!pointGroups.has(event.start)) pointGroups.set(event.start, []); pointGroups.get(event.start).push(event);}
+    rows.set(id, {events, starts, points, pointGroups, ends: events.map(event => event.end).sort((a, b) => a - b),
+      spanEnds: events.filter(event => event.end > event.start).map(event => event.end).sort((a, b) => a - b)});
+  }
+  // Scope changes are infrequent. Bound retained indexes during long sessions.
+  if (queries.scopes.size >= 8) queries.scopes.delete(queries.scopes.keys().next().value);
+  queries.scopes.set(key, rows); return rows;
+}
 
 function dom(tag, className, text) {
   const node = document.createElement(tag);
@@ -47,6 +81,9 @@ function svg(tag, attributes = {}) {
   for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, String(value));
   return node;
 }
+function attribute(node, name, value) {const text = String(value); if (node.getAttribute(name) !== text) node.setAttribute(name, text);}
+function content(node, value) {if (node.textContent !== value) node.textContent = value;}
+function toggle(node, name, enabled) {if (node.classList.contains(name) !== Boolean(enabled)) node.classList.toggle(name, Boolean(enabled));}
 function action(label, className, callback) {
   const node = dom("button", className, label); node.type = "button"; node.addEventListener("click", callback); return node;
 }
@@ -103,11 +140,28 @@ export function indexSmPipelineEvidence(architecture, events = [], components = 
       else unresolvedTransfers.push(event);
     }
   }
-  return {byComponent, transfers, unmapped, unresolvedTransfers};
+  const evidence = {byComponent, transfers, unmapped, unresolvedTransfers};
+  queriesFor(evidence);
+  return evidence;
 }
 
 /** Pure half-open snapshots make pause / seek / rewind independent of playback. */
 export function summarizeSmPipelineEvidence(evidence, time, scope = null) {
+  if (Number.isFinite(time)) {
+    const result = new Map();
+    for (const [id, row] of scopedSummaryRows(evidence, scope)) {
+      const observed = countThrough(row.points, time, event => event.start), latest = countThrough(row.starts, time, event => event.start);
+      const cycle = observed ? row.points[observed - 1].start : null;
+      result.set(id, {id, observed: row.events.length > 0, total: row.events.length, completed: countThrough(row.ends, time),
+        pointTotal: row.points.length, observedPoints: observed, observationCycle: cycle,
+        pointsAtCursor: cycle !== null && cycle === time, points: cycle === null ? [] : row.pointGroups.get(cycle).slice(0, 6),
+        endedSpans: countThrough(row.spanEnds, time), active: [], queue: [], stall: [], transfer: [], latest: latest ? row.starts[latest - 1] : null});
+    }
+    for (const {event, componentId} of queriesFor(evidence).mapped.at(time)) {
+      if (sourceEventsMatch(event, scope)) result.get(componentId)[eventState(event)].push(event);
+    }
+    return result;
+  }
   const result = new Map();
   for (const [id, source] of evidence.byComponent) {
     const events = source.filter(event => sourceEventsMatch(event, scope));
@@ -131,8 +185,8 @@ export function summarizeSmPipelineEvidence(evidence, time, scope = null) {
 export function smPipelineTransferMarks(evidence, time, scope = null, limit = 64) {
   const result = [];
   if (!Number.isFinite(time) || limit <= 0) return result;
-  for (const event of evidence.transfers) {
-    if (!sourceEventsMatch(event, scope) || event.end <= event.start || event.start > time || time >= event.end) continue;
+  for (const event of queriesFor(evidence).transfers.at(time)) {
+    if (!sourceEventsMatch(event, scope)) continue;
     result.push({event, ...event.args.smPipelineTransfer, progress: (time - event.start) / (event.end - event.start)});
     if (result.length >= limit) break;
   }
@@ -143,8 +197,8 @@ export function smPipelineTransferMarks(evidence, time, scope = null, limit = 64
 export function smPipelineStageMarks(evidence, time, scope = null, limit = 64) {
   const marks = [];
   if (!Number.isFinite(time) || limit <= 0) return marks;
-  for (const [componentId, events] of evidence.byComponent) for (const event of events) {
-    if (event.args?.smPipelineTransfer || !sourceEventsMatch(event, scope) || event.end <= event.start || event.start > time || time >= event.end) continue;
+  for (const {componentId, event} of queriesFor(evidence).mapped.at(time)) {
+    if (event.args?.smPipelineTransfer || !sourceEventsMatch(event, scope)) continue;
     marks.push({event, componentId, state: eventState(event), progress: (time - event.start) / (event.end - event.start)});
     if (marks.length >= limit) return marks;
   }
@@ -188,7 +242,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const nativeById = new Map(trace.components.map(component => [component.id, component]));
   function mappedSource(component) {return nativeById.get(component.id) ?? [...nativeById.values()].find(item => item.args?.architectureComponentId === component.id);}
   const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的指令光点与正式组件`);
-  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-residency-3", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
+  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=browser-perf-1", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
   const header = dom("div", "sm-pipeline-head"), title = dom("div");
   const teaching = trace.meta.capabilities?.includes('sm_pipeline');
   title.append(dom("strong", "", `SM ${smNumber} / ${teaching ? '教学流水线' : '原生指令流水线'}`), dom("small", "", teaching
@@ -199,7 +253,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   reference.target = "_blank"; reference.rel = "noopener noreferrer";
   reference.title = "参考 NVIDIA 官方功能框图；组件尺寸不代表芯片物理面积"; title.append(reference);
   const tabs = dom("div", "sm-partition-tabs"); tabs.setAttribute("aria-label", "选择 SM 分区"); header.append(title, tabs); root.append(header);
-  const explanation = dom("p", "sm-pipeline-explanation"); root.append(explanation);
+  const explanation = dom("p", "sm-pipeline-explanation"), explanationCount = dom("b"), explanationText = document.createTextNode(""); explanation.append(explanationCount, explanationText); root.append(explanation);
   const legend = dom("div", "sm-flow-legend"); legend.append(dom("span", "", "类型化连接")); root.append(legend);
   const activity = dom("div", "sm-light-status"); activity.setAttribute("aria-label", "当前指令光点数量"); root.append(activity);
   const boardScroll = dom("div", "sm-pipeline-scroll");
@@ -374,21 +428,22 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   function patchCards() {
     for (const [id, {card, state}] of cards) {
       const value = snapshot.get(id);
-      card.setAttribute("aria-pressed", String(id === selectedFormalId));
-      for (const kind of ["active", "stall", "queue", "transfer"]) card.classList.toggle(`sm-evidence-${kind}`, value[kind].length > 0);
+      attribute(card, "aria-pressed", id === selectedFormalId);
+      for (const kind of ["active", "stall", "queue", "transfer"]) toggle(card, `sm-evidence-${kind}`, value[kind].length > 0);
       const status = value.stall.length ? `STALL ${value.stall.length} · ${value.stall[0].args?.stallReason ?? "source"}`
         : value.queue.length ? `QUEUE ${value.queue.length}` : value.active.length ? `ACTIVE ${value.active.length} · ${value.active[0].args?.stage ?? "span"}`
         : value.transfer.length ? `TRANSFER ${value.transfer.length}`
         : value.pointTotal ? `${value.observedPoints} / ${value.pointTotal} 点已观测${value.observationCycle == null ? '' : ` · ${value.pointsAtCursor ? '当前' : '最近'} @ ${value.observationCycle}`}`
         : value.observed ? `${value.endedSpans} / ${value.total} 源区间已结束` : "未观测 / 结构定义";
-      state.textContent = status;
-      if (formalById.get(id).simulationCoverage === "timing-only" && value.observed) state.textContent = `仅时序 · ${status}`;
-      card.setAttribute("aria-label", `${LABELS[localId(formalById.get(id))]?.[0] ?? formalById.get(id).label}，${status}，查看正式规格`);
+      content(state, formalById.get(id).simulationCoverage === "timing-only" && value.observed ? `仅时序 · ${status}` : status);
+      attribute(card, "aria-label", `${LABELS[localId(formalById.get(id))]?.[0] ?? formalById.get(id).label}，${status}，查看正式规格`);
     }
     const count = [...snapshot.values()].filter(value => value.observed).length;
-    const typedTransfers = evidence.transfers.filter(event => sourceEventsMatch(event, scope)).length;
-    explanation.replaceChildren(dom("b", "", `${count} / ${architecture.components.length} 个正式组件有当前范围的原始事件证据。`), document.createTextNode(count ? " 其余节点保留结构定义；未观测不等于空闲。" : " 当前来源只提供 tile / 任务或未映射的指令记录；Fetch、Issue 等状态保持未观测。"));
-    footer.textContent = `${typedTransfers} 个显式类型化阶段转移 · ${evidence.unmapped.length} 个来源事件未映射${evidence.unresolvedTransfers.length ? ` · ${evidence.unresolvedTransfers.length} 个转移没有匹配正式连接，未绘制` : ""}。光点仅在原始非零区间内存在；道路上按区间进度插值，屋顶上表示组件驻留，不代表物理连线延迟或真实执行 lane。${layout === "observed" ? "来源路径隐藏未观测组件，可切换完整架构。" : "未观测组件保持结构定义。"}暂停、单步和回退均由同一 trace 时间驱动。`;
+    const rows = scopedSummaryRows(evidence, scope);
+    if (rows.typedTransfers == null) rows.typedTransfers = evidence.transfers.filter(event => sourceEventsMatch(event, scope)).length;
+    content(explanationCount, `${count} / ${architecture.components.length} 个正式组件有当前范围的原始事件证据。`);
+    content(explanationText, count ? " 其余节点保留结构定义；未观测不等于空闲。" : " 当前来源只提供 tile / 任务或未映射的指令记录；Fetch、Issue 等状态保持未观测。");
+    content(footer, `${rows.typedTransfers} 个显式类型化阶段转移 · ${evidence.unmapped.length} 个来源事件未映射${evidence.unresolvedTransfers.length ? ` · ${evidence.unresolvedTransfers.length} 个转移没有匹配正式连接，未绘制` : ""}。光点仅在原始非零区间内存在；道路上按区间进度插值，屋顶上表示组件驻留，不代表物理连线延迟或真实执行 lane。${layout === "observed" ? "来源路径隐藏未观测组件，可切换完整架构。" : "未观测组件保持结构定义。"}暂停、单步和回退均由同一 trace 时间驱动。`);
   }
   function patchWires() {
     const activeLinks = new Set(smPipelineTransferMarks(evidence, time, scope, Infinity).flatMap(mark => {
@@ -396,9 +451,9 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     }));
     for (const link of architecture.links) {
       const path = paths.get(link.id); if (!path) continue;
-      path.style.display = enabledTypes.has(link.type) ? "" : "none";
-      path.classList.toggle("sm-link-selected", selectedFormalId === link.source || selectedFormalId === link.target);
-      path.classList.toggle("sm-link-active", activeLinks.has(`${link.source}|${link.target}|${link.type}`));
+      const display = enabledTypes.has(link.type) ? "" : "none"; if (path.style.display !== display) path.style.display = display;
+      toggle(path, "sm-link-selected", selectedFormalId === link.source || selectedFormalId === link.target);
+      toggle(path, "sm-link-active", activeLinks.has(`${link.source}|${link.target}|${link.type}`));
     }
   }
   function patchTokens() {
@@ -417,22 +472,28 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     const drawn = visible.slice(0, 96), keep = new Set();
     for (const mark of drawn) {
       const key = `${mark.type}:${mark.event.id}`; keep.add(key);
+      const route = mark.type === "transfer" ? smPipelineTransferRoute(mark) : [];
       let light = lights.get(key);
       if (!light) {
-        const token = svg("g", {class: "sm-pipeline-token", role: "button", tabindex: 0});
+        const token = svg("g", {class: "sm-pipeline-token", role: "button", tabindex: 0, "data-sm-light-kind": mark.type,
+          [mark.type === "transfer" ? "data-sm-transfer-event-id" : "data-sm-stage-event-id"]: mark.event.id,
+          "aria-label": `${mark.event.name}，W${mark.event.args?.warpId ?? "?"}，${mark.type === "transfer" ? `${FLOW_LABELS[mark.kind]}阶段转移` : `${mark.event.args?.stage ?? mark.state}组件区间`}`});
         const trail = svg("polyline", {class: "sm-light-trail", fill: "none"});
         const halo = svg("circle", {class: "sm-light-halo", r: 12});
+        const glow = svg("circle", {class: "sm-light-glow", r: 8});
         const ring = svg("circle", {class: "sm-light-ring", r: 8.5});
         const core = svg("circle", {class: "sm-light-core", r: 4.5});
         const hit = svg("circle", {class: "sm-light-hit", r: 14});
         // A bent trail can have a distant bounding-box center. Keep it outside
         // the interactive group so pointer/keyboard focus targets the light.
-        const title = svg("title"); token.append(halo, ring, core, hit, title);
+        const title = svg("title"); token.append(halo, glow, ring, core, hit, title);
+        title.textContent = `${mark.event.args?.opcode ?? mark.event.name}\nPC ${mark.event.args?.pc ?? "未提供"} · W${mark.event.args?.warpId ?? "?"} · ${instructionId(mark.event) ?? mark.event.id}\n${mark.type === "transfer" ? route.join(" → ") : mark.componentId}\n${mark.event.start} → ${mark.event.end} ${trace.meta.timeUnit}`;
+        const color = mark.type === "transfer" ? `var(--sm-${mark.kind})` : mark.state === "stall" ? "#ffb071" : mark.state === "queue" ? "#ffe094" : "#9effdc";
+        token.style.setProperty("--flow-color", color); trail.style.setProperty("--flow-color", color);
         const choose = () => onSelectEvent(mark.event.id);
         token.addEventListener("click", choose); token.addEventListener("keydown", event => {if (event.key === "Enter" || event.key === " ") {event.preventDefault(); choose();}});
         light = {token, trail, title}; lights.set(key, light); tokenLayer.append(trail, token);
       }
-      const route = mark.type === "transfer" ? smPipelineTransferRoute(mark) : [];
       const segments = route.slice(1).map((id, index) => pathByPair.get(`${route[index]}|${id}|${mark.kind}`));
       const location = componentLocations.get(mark.componentId), slot = Number(mark.event.args?.warpId) || 0;
       const at = progress => {
@@ -441,21 +502,14 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
         return position ? segments[position.index].path.getPointAtLength(position.distance) : null;
       };
       let point, trail; try {
-        point = at(mark.progress); if (!point) {light.token.style.display = "none"; continue;}
+        point = at(mark.progress); if (!point) {light.token.style.display = "none"; light.trail.style.display = "none"; continue;}
         trail = [.09, .065, .04, .02, 0].map(delta => at(Math.max(0, mark.progress - delta))).filter(Boolean);
-      } catch {light.token.style.display = "none"; continue;}
-      light.token.style.display = "";
-      light.token.setAttribute("data-sm-light-kind", mark.type);
-      light.token.setAttribute(mark.type === "transfer" ? "data-sm-transfer-event-id" : "data-sm-stage-event-id", mark.event.id);
-      light.token.setAttribute("aria-pressed", String(isSelected(mark)));
-      light.token.setAttribute("aria-label", `${mark.event.name}，W${mark.event.args?.warpId ?? "?"}，${mark.type === "transfer" ? `${FLOW_LABELS[mark.kind]}阶段转移` : `${mark.event.args?.stage ?? mark.state}组件区间`}`);
-      light.token.setAttribute("transform", `translate(${point.x},${point.y})`);
-      const color = mark.type === "transfer" ? `var(--sm-${mark.kind})` : mark.state === "stall" ? "#ffb071" : mark.state === "queue" ? "#ffe094" : "#9effdc";
-      light.token.style.setProperty("--flow-color", color);
-      light.trail.setAttribute("transform", `translate(${point.x},${point.y})`);
-      light.trail.style.setProperty("--flow-color", color);
-      light.trail.setAttribute("points", trail.map(p => `${p.x - point.x},${p.y - point.y}`).join(" "));
-      light.title.textContent = `${mark.event.args?.opcode ?? mark.event.name}\nPC ${mark.event.args?.pc ?? "未提供"} · W${mark.event.args?.warpId ?? "?"} · ${instructionId(mark.event) ?? mark.event.id}\n${mark.type === "transfer" ? route.join(" → ") : mark.componentId}\n${mark.event.start} → ${mark.event.end} ${trace.meta.timeUnit}`;
+      } catch {light.token.style.display = "none"; light.trail.style.display = "none"; continue;}
+      if (light.token.style.display) light.token.style.display = "";
+      if (light.trail.style.display) light.trail.style.display = "";
+      attribute(light.token, "aria-pressed", isSelected(mark));
+      attribute(light.token, "transform", `translate(${point.x},${point.y})`);
+      attribute(light.trail, "points", trail.map(p => `${p.x},${p.y}`).join(" "));
     }
     for (const [key, light] of lights) if (!keep.has(key)) {light.token.remove(); light.trail.remove(); lights.delete(key);}
     const partitionCounts = new Map([0, 1, 2, 3].map(value => [value, 0]));
@@ -465,11 +519,11 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     }
     for (const [value, tab] of tabNodes) {
       const count = value === "all" ? requested.length : partitionCounts.get(value);
-      tab.textContent = `${value === "all" ? "四分区" : `P${value}`}${count ? ` · ${count}` : ""}`;
-      tab.classList.toggle("sm-partition-has-lights", count > 0);
+      content(tab, `${value === "all" ? "四分区" : `P${value}`}${count ? ` · ${count}` : ""}`);
+      toggle(tab, "sm-partition-has-lights", count > 0);
     }
     const status = `t=${time.toLocaleString(undefined, {maximumFractionDigits: 2})} ${trace.meta.timeUnit} · 当前视图 ${drawn.length} 光点${visible.length > drawn.length ? ` / ${visible.length}（最多绘制 96）` : ""} · SM 全部 ${transfers.length} 转移 / ${stages.length} 组件区间`;
-    activity.dataset.active = String(drawn.length > 0);
+    attribute(activity, "data-active", drawn.length > 0);
     if (activity.textContent !== status) activity.textContent = status;
   }
   function definitionSection(label, value) {
@@ -510,14 +564,15 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     const nativeId = sourceComponent?.id;
     if (nativeId) proof.append(action("选择来源组件并联动主时间线", "sm-formal-native", () => {dialog.close(); onSelectComponent(nativeId);}));
     content.append(proof, dom("p", "sm-formal-timing-warning", "公开架构事实、形式化教学选择与 trace 观测属于不同证据层。结构连线和默认模型参数不能当作 NVIDIA 未公开的真实流水线延迟、物理面积或完整端口数量。"));
-    dialog.append(heading, content); patchCards(); patchWires(); patchDialog();
+    dialog.append(heading, content);
     if (!dialog.open) dialog.showModal();
+    patchCards(); patchWires(); patchDialog();
   }
   function patchDialog() {
-    if (!selectedFormalId || !evidenceSummary || !evidenceList) return;
+    if (!dialog.open || !selectedFormalId || !evidenceSummary || !evidenceList) return;
     const value = snapshot.get(selectedFormalId); if (!value) return;
-    evidenceSummary.textContent = value.observed ? `t=${time.toLocaleString(undefined, {maximumFractionDigits: 2})} ${trace.meta.timeUnit} · ACTIVE ${value.active.length} / QUEUE ${value.queue.length} / STALL ${value.stall.length} / TRANSFER ${value.transfer.length}${value.pointTotal ? ` · ${value.observedPoints} / ${value.pointTotal} 点已观测${value.observationCycle == null ? '' : ` · ${value.pointsAtCursor ? '当前' : '最近已观测'}周期 ${value.observationCycle}`}` : ` · ${value.endedSpans} / ${value.total} 源区间已结束`}`
-      : "当前来源没有此组件的映射事件；状态、占用率、队列深度与延迟均未观测。";
+    content(evidenceSummary, value.observed ? `t=${time.toLocaleString(undefined, {maximumFractionDigits: 2})} ${trace.meta.timeUnit} · ACTIVE ${value.active.length} / QUEUE ${value.queue.length} / STALL ${value.stall.length} / TRANSFER ${value.transfer.length}${value.pointTotal ? ` · ${value.observedPoints} / ${value.pointTotal} 点已观测${value.observationCycle == null ? '' : ` · ${value.pointsAtCursor ? '当前' : '最近已观测'}周期 ${value.observationCycle}`}` : ` · ${value.endedSpans} / ${value.total} 源区间已结束`}`
+      : "当前来源没有此组件的映射事件；状态、占用率、队列深度与延迟均未观测。");
     const relevant = [...value.stall, ...value.queue, ...value.active, ...value.transfer, ...value.points];
     const selected = evidence.byComponent.get(selectedFormalId)?.find(event => event.id === selectedEventId && sourceEventsMatch(event, scope));
     if (selected && !relevant.includes(selected)) relevant.unshift(selected);

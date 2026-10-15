@@ -1,10 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {observationSnapshot, laneWindow, instructionSearchText} from '../lib/instruction-view.js';
+import {observationSnapshot, createObservationIndex, laneWindow, instructionSearchText} from '../lib/instruction-view.js';
 
 const point = (id, cycle, warpId = 0, stage = 'ISSUE', dynamicWarpId = 0) => ({
   id, name: 'add.u32 %r1, %r2, %r3;', start: cycle, end: cycle, category: stage,
   args: {granularity: 'instruction', warpId, dynamicWarpId, stage, pc: '0x100', schedulerId: 2}
+});
+
+test('immutable observation index matches scan counts, limits, same-cycle order and rewind', () => {
+  const events = [point('late', 20), point('stall', 10, 1, 'STALL_SCOREBOARD'),
+    point('issued', 10), {...point('span', 1), end: 30}, point('zero', 0)];
+  const index = createObservationIndex(events);
+  for (const time of [-1, 0, 5, 10, 10.5, 20, 100, 0]) for (const limit of [1, 200, 0]) {
+    assert.deepEqual(index.at(time, {limit}), observationSnapshot(events, time, {limit}));
+  }
 });
 
 test('snapshot counts recorded points, separates stalls, and never looks ahead', () => {

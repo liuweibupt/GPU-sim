@@ -1,7 +1,8 @@
 import {trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-3";
 // Native SVG isometric scenery. The package floorplan is illustrative; highlights,
 // counters and progress marks are derived exclusively from source event intervals.
-import {createTrafficOverlay, TRAFFIC_OVERLAY_CSS, FLOW_COLORS} from "./traffic-overlay.js?v=traffic-1";
+import {createTrafficOverlay, TRAFFIC_OVERLAY_CSS, FLOW_COLORS} from "./traffic-overlay.js?v=browser-perf-1";
+import {createIntervalIndex} from "../lib/interval-index.js";
 const NS = "http://www.w3.org/2000/svg";
 const PALETTES = {
   sm: {top: "#254951", left: "#122a35", right: "#173943", edge: "#72e2d1", dim: "#3e8d87"},
@@ -50,6 +51,9 @@ function html(tag, className, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
+function attribute(node, name, value) {const text = String(value); if (node.getAttribute(name) !== text) node.setAttribute(name, text);}
+function content(node, value) {if (node.textContent !== value) node.textContent = value;}
+function toggle(node, name, enabled) {if (node.classList.contains(name) !== Boolean(enabled)) node.classList.toggle(name, Boolean(enabled));}
 function points(values) { return values.map(point => `${point.x},${point.y}`).join(" "); }
 function line(a, b, attributes = {}) { return svg("line", {x1: a.x, y1: a.y, x2: b.x, y2: b.y, ...attributes}); }
 function nativeKind(component) {
@@ -316,7 +320,7 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   picker.append(label, select, open, html("span", "", `${sms.length} 个 SM 全部绘制 · ${traffic ? "光包按源区间移动" : "未提供流量不造车流"}`)); root.append(picker);
   if (omitted) {const note = html("div", "gpu-box-missing"); note.append(html("b", "", `${omitted} 个虚线 SM 仅为配置占位`), html("span", "", "未记录 ≠ 空闲；不推断工作负载或链路流量")); root.append(note);}
   function animate({time = 0, selectedEventId = null} = {}) {
-    if (traffic) {const state = traffic.update({time, selectedEventId}); summary.textContent = `${state.renderedTransfers} 跳传输 / ${state.queues.length} 等待区间 / ${state.services.length} 服务区间`;}
+    if (traffic) {const state = traffic.update({time, selectedEventId}); content(summary, `${state.renderedTransfers} 跳传输 / ${state.queues.length} 等待区间 / ${state.services.length} 服务区间`);}
   }
   return {element: root, animate, update({byId: nextById = new Map(), time = 0, selectedComponentId: nextSelection = null, selectedEventId = null} = {}) {
     byId = nextById; selectedComponentId = nextSelection;
@@ -324,18 +328,18 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
     const activities = new Map(smActivity?.sms.map(sm => [sm.componentId, sm]) ?? []);
     for (const {component, group} of smNodes) {
       const value = byId.get(component.id), activity = activities.get(component.id);
-      group.dataset.smState = activity?.state ?? (component.configuredOnly ? 'unobserved' : value?.active > 0 ? 'observed-interval' : 'no-observed-interval');
-      group.classList.toggle("gpu-running", !component.configuredOnly && (activity ? activity.computingBlocks > 0 : value?.active > 0));
-      group.classList.toggle("gpu-sm-waiting", activity?.state === 'memory-wait');
-      group.classList.toggle("gpu-sm-ready", activity?.state === 'ready');
-      group.classList.toggle("gpu-sm-resident", activity?.residentBlocks > 0);
-      group.classList.toggle("gpu-selected", selectedComponentId === component.id);
-      group.setAttribute("aria-pressed", String(selectedComponentId === component.id));
-      group.setAttribute("aria-label", `${component.label}，${activity ? `${activity.residentBlocks} 个驻留 CTA，${activity.computingBlocks} 个计算，${activity.waitingBlocks} 个等内存` : component.configuredOnly ? '未观测' : `${value?.active ?? 0} 个进行中区间`}，打开独立 SM 教学运行`);
+      attribute(group, "data-sm-state", activity?.state ?? (component.configuredOnly ? 'unobserved' : value?.active > 0 ? 'observed-interval' : 'no-observed-interval'));
+      toggle(group, "gpu-running", !component.configuredOnly && (activity ? activity.computingBlocks > 0 : value?.active > 0));
+      toggle(group, "gpu-sm-waiting", activity?.state === 'memory-wait');
+      toggle(group, "gpu-sm-ready", activity?.state === 'ready');
+      toggle(group, "gpu-sm-resident", activity?.residentBlocks > 0);
+      toggle(group, "gpu-selected", selectedComponentId === component.id);
+      attribute(group, "aria-pressed", selectedComponentId === component.id);
+      attribute(group, "aria-label", `${component.label}，${activity ? `${activity.residentBlocks} 个驻留 CTA，${activity.computingBlocks} 个计算，${activity.waitingBlocks} 个等内存` : component.configuredOnly ? '未观测' : `${value?.active ?? 0} 个进行中区间`}，打开独立 SM 教学运行`);
     }
-    for (const {node, group} of infraNodes) group.classList.toggle("gpu-running", byId.get(node.componentId ?? node.id)?.active > 0);
+    for (const {node, group} of infraNodes) toggle(group, "gpu-running", byId.get(node.componentId ?? node.id)?.active > 0);
     animate({time, selectedEventId});
-    if (selectedComponentId && components.some(component => component.id === selectedComponentId)) select.value = selectedComponentId;
+    if (selectedComponentId && select.value !== selectedComponentId && components.some(component => component.id === selectedComponentId)) select.value = selectedComponentId;
     if (selectedEventId) {const selected = sourceEvents.get(selectedEventId); if (selected && (selected.args?.flow || ["queue", "service"].includes(selected.args?.stage)) && inspectedEvent !== selected) inspectFlow(selected);}
   }, destroy() {traffic?.destroy();}};
 }
@@ -377,6 +381,9 @@ export function createGpuBoxScene({components = [], eventsById = new Map(), leve
   const list = html("div", "gpu-box-native-list");
   list.setAttribute("aria-label", "原生组件与当前区间计数");
   const maximum = 8, shown = components.slice(0, maximum);
+  const markQueries = new Map(shown.map(component => [component.id, createIntervalIndex(eventsById.get(component.id) ?? [])]));
+  const intervalMarks = (id, time, limit) => markQueries.get(id).at(time).slice(0, limit)
+    .map(event => ({id: event.id, progress: (time - event.start) / (event.end - event.start)}));
   list.classList.toggle("gpu-box-two", shown.length === 2);
   const columns = shown.length < 4 ? shown.length || 1 : Math.min(4, Math.ceil(Math.sqrt(shown.length)));
   const rows = Math.ceil(shown.length / columns) || 1;
@@ -472,21 +479,21 @@ export function createGpuBoxScene({components = [], eventsById = new Map(), leve
     for (const {id, item, active, completed, completedText, progress} of nativeRows) {
       const value = byId.get(id);
       const pointOnly = value?.pointTotal > 0 && value.pointTotal === value.total;
-      active.textContent = (value?.active ?? 0).toLocaleString();
-      completed.textContent = (pointOnly ? value.observed : value?.endedSpans ?? value?.completed ?? 0).toLocaleString();
-      completedText.lastChild.textContent = pointOnly ? ' 点已观测' : ' 区间结束';
-      item.classList.toggle("gpu-running", value?.active > 0); item.classList.toggle("gpu-selected", selectedComponentId === id);
-      const marks = activeIntervalMarks(eventsById.get(id), time, 1);
-      progress.style.width = marks.length ? `${marks[0].progress * 100}%` : "0%";
+      content(active, (value?.active ?? 0).toLocaleString());
+      content(completed, (pointOnly ? value.observed : value?.endedSpans ?? value?.completed ?? 0).toLocaleString());
+      content(completedText.lastChild, pointOnly ? ' 点已观测' : ' 区间结束');
+      toggle(item, "gpu-running", value?.active > 0); toggle(item, "gpu-selected", selectedComponentId === id);
+      const marks = intervalMarks(id, time, 1), width = marks.length ? `${marks[0].progress * 100}%` : "0%";
+      if (progress.style.width !== width) progress.style.width = width;
     }
     for (const {id, group, count, markSlots} of nativeGroups) {
       const value = byId.get(id);
-      count.textContent = `${value?.active ?? 0} ACTIVE`;
-      group.classList.toggle("gpu-running", value?.active > 0); group.classList.toggle("gpu-selected", selectedComponentId === id);
-      const marks = activeIntervalMarks(eventsById.get(id), time, markSlots.length);
+      content(count, `${value?.active ?? 0} ACTIVE`);
+      toggle(group, "gpu-running", value?.active > 0); toggle(group, "gpu-selected", selectedComponentId === id);
+      const marks = intervalMarks(id, time, markSlots.length);
       markSlots.forEach(({slot, fill, marker, x}, index) => {
-        const mark = marks[index]; slot.style.display = mark ? "" : "none";
-        if (mark) {fill.setAttribute("width", mark.progress * 84); marker.setAttribute("cx", x + mark.progress * 84);}
+        const mark = marks[index], display = mark ? "" : "none"; if (slot.style.display !== display) slot.style.display = display;
+        if (mark) {attribute(fill, "width", mark.progress * 84); attribute(marker, "cx", x + mark.progress * 84);}
       });
     }
   }};

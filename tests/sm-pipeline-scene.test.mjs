@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {instantiateSmArchitecture, smComponentId} from "../lib/sm-architecture.js";
 import {simulateSm} from "../lib/sm-model.js";
+import {observationSnapshot} from "../lib/instruction-view.js";
 import {indexSmPipelineEvidence, summarizeSmPipelineEvidence, smPipelineTransferMarks, smPipelineStageMarks, smPipelineStagePoint, smPipelineTransferRoute, smPipelineRoutePosition} from "../web/sm-pipeline-scene.js";
 
 const architecture = instantiateSmArchitecture(0);
@@ -55,6 +56,42 @@ test("warp and CTA zero identifiers are preserved in evidence scopes", () => {
   const value = summarizeSmPipelineEvidence(indexSmPipelineEvidence(architecture, source), 2, {threadBlockId: 0, warpId: 0}).get(fetch);
   assert.deepEqual(value.active.map(event => event.id), ["zero"]);
   assert.equal(value.total, 1);
+});
+
+test("indexed snapshots match source scans across unsorted points, tied starts, scope changes and rewinds", () => {
+  let seed = 92713;
+  const next = maximum => {seed = (seed * 1664525 + 1013904223) >>> 0; return seed % maximum;};
+  const source = Array.from({length: 240}, (_, index) => {
+    const start = next(20), componentId = [fetch, decode, issue][next(3)];
+    return stage(`random-${index}`, componentId, start, start + next(7),
+      {stage: ["fetch", "queue", "stall", "transfer"][next(4)], warpId: next(4), threadBlockId: next(6)});
+  });
+  // More than six observations at a tied cycle exercise the display cap and
+  // source order independently of the sorted lookup used by the fast path.
+  source.unshift(...Array.from({length: 9}, (_, index) => stage(`point-${index}`, fetch, 7, 7)));
+  const evidence = indexSmPipelineEvidence(architecture, source), before = JSON.stringify(source);
+  const scopes = [null, {threadBlockId: 0, warpId: 0}, {threadBlockId: "0", warpId: "0"},
+    ...Array.from({length: 12}, (_, index) => ({threadBlockId: index % 6, warpId: index % 4}))];
+  for (const scope of scopes) for (const time of [0, 7, 7.5, 19, 26, 4, 7]) {
+    const actual = summarizeSmPipelineEvidence(evidence, time, scope);
+    for (const [id, events] of evidence.byComponent) {
+      const selected = events.filter(event => (!scope || (scope.threadBlockId == null || String(scope.threadBlockId) === String(event.args.threadBlockId)) &&
+        (scope.warpId == null || String(scope.warpId) === String(event.args.warpId))));
+      const points = observationSnapshot(selected, time, {limit: 6});
+      const expected = {id, observed: selected.length > 0, total: selected.length, completed: 0,
+        pointTotal: points.total, observedPoints: points.observed, observationCycle: points.cycle,
+        pointsAtCursor: points.atCursor, points: points.events, endedSpans: 0,
+        active: [], queue: [], stall: [], transfer: [], latest: null};
+      for (const event of selected) {
+        if (event.end <= time) expected.completed++;
+        if (event.end > event.start && event.end <= time) expected.endedSpans++;
+        if (event.start <= time && (!expected.latest || event.start >= expected.latest.start)) expected.latest = event;
+        if (event.start <= time && time < event.end) expected[["queue", "stall", "transfer"].includes(event.args.stage) ? event.args.stage : "active"].push(event);
+      }
+      assert.deepEqual(actual.get(id), expected, `${id} @ ${time}, scope ${JSON.stringify(scope)}`);
+    }
+  }
+  assert.equal(JSON.stringify(source), before);
 });
 
 test("moving tokens require explicit typed source transfer spans with valid endpoints", () => {

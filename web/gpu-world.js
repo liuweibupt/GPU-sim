@@ -1,8 +1,9 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
-import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-residency-3";
-import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-residency-3";
-import {observationSnapshot, laneWindow} from "../lib/instruction-view.js";
+import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=browser-perf-1";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=browser-perf-1";
+import {laneWindow} from "../lib/instruction-view.js?v=browser-perf-1";
+import {createIntervalIndex} from "../lib/interval-index.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 function countThrough(sorted, time) {
@@ -48,7 +49,15 @@ function indexComponents(trace) {
   const configuredSms = trace?.meta?.config?.numSms;
   // A count does not establish an SM floorplan or activity for omitted SMs.
   const physicalSms = Number.isInteger(configuredSms) && configuredSms >= sms.length ? configuredSms : null;
+  const events = trace?.events ?? [], capabilities = trace?.meta?.capabilities ?? [];
+  const detailed = capabilities.some(capability => ["instruction_spans", "instruction_observations", "modeled_instruction_spans"].includes(capability));
+  const spans = events.filter(event => event.end > event.start);
+  for (const interval of intervals.values()) interval.detailedEvents = detailed
+    ? interval.events.filter(event => event.args?.granularity === "instruction" || capabilities.includes("sm_pipeline") && event.args?.instructionId != null) : [];
   return {components, byId, children, intervals, sms, gpus, physicalSms,
+    eventsById: new Map(events.map(event => [event.id, event])),
+    starts: spans.map(event => event.start).sort((a, b) => a - b), spanEnds: spans.map(event => event.end).sort((a, b) => a - b),
+    ends: events.map(event => event.end).sort((a, b) => a - b),
     mode: sms.length || gpus.length ? "architecture" : "tracks"};
 }
 
@@ -67,8 +76,8 @@ function snapshot(index, trace, time) {
   return {byId, components: [...byId.values()], mode: index.mode,
     observedSms: index.sms.length, physicalSms: index.physicalSms,
     unobservedSms: index.physicalSms === null ? null : index.physicalSms - index.sms.length,
-    activeTotal: events.filter(event => event.start <= time && time < event.end).length,
-    completedTotal: events.filter(event => event.end <= time).length, totalEvents: events.length};
+    activeTotal: countThrough(index.starts, time) - countThrough(index.spanEnds, time),
+    completedTotal: countThrough(index.ends, time), totalEvents: events.length};
 }
 
 /** Counts use half-open [start, end) intervals, aggregate descendants once, and
@@ -114,6 +123,9 @@ function element(tag, className, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
+function attribute(node, name, value) {const text = String(value); if (node.getAttribute(name) !== text) node.setAttribute(name, text);}
+function content(node, value) {if (node.textContent !== value) node.textContent = value;}
+function toggle(node, name, enabled) {if (node.classList.contains(name) !== Boolean(enabled)) node.classList.toggle(name, Boolean(enabled));}
 
 function button(text, className, action, title) {
   const node = element("button", className, text);
@@ -243,9 +255,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     return null;
   }
   function detailedEvents(smId = drillSmId) {
-    const capabilities = trace?.meta?.capabilities ?? [];
-    if (!capabilities.includes("instruction_spans") && !capabilities.includes("instruction_observations") && !capabilities.includes("modeled_instruction_spans")) return [];
-    return (index.intervals.get(smId)?.events ?? []).filter(event => event.args?.granularity === "instruction" || capabilities.includes("sm_pipeline") && event.args?.instructionId != null);
+    return index.intervals.get(smId)?.detailedEvents ?? [];
   }
   function reportLevel() {
     const instructionAvailable = detailedEvents().length > 0;
@@ -576,10 +586,11 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     if (focused) [...scene.querySelectorAll("[data-gpu-component-id]")].find(node => node.dataset.gpuComponentId === focused)?.focus({preventScroll: true});
   }
   function patchTokens() {
-    const selected = trace?.events.find(event => event.id === view.selectedEventId);
+    const selected = index.eventsById.get(view.selectedEventId);
     const data = tokenSites.map(site => {
-      const events = index.intervals.get(site.id)?.events ?? [];
-      const active = events.filter(event => event.start <= view.time && view.time < event.end);
+      const interval = index.intervals.get(site.id), events = interval?.events ?? [];
+      if (interval && !interval.query) interval.query = createIntervalIndex(events);
+      const active = interval?.query.at(view.time) ?? [];
       const chosen = selected && events.includes(selected) ? [selected, ...active.filter(event => event !== selected)] : active;
       return {site, events: chosen.slice(0, site.capacity)};
     });
@@ -602,24 +613,24 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     smPipelineScene?.update({time: view.time, selectedEventId: view.selectedEventId, scope: view.scope});
     for (const [id, nodes] of statNodes) {
       const value = stats.byId.get(id);
-      if (value) for (const group of nodes) for (const key of ["active", "completed", "total", "observed", "issue", "stall", "pointTotal", "endedSpans"]) if (group[key]) group[key].textContent = value[key].toLocaleString();
+      if (value) for (const group of nodes) for (const key of ["active", "completed", "total", "observed", "issue", "stall", "pointTotal", "endedSpans"]) if (group[key]) content(group[key], value[key].toLocaleString());
     }
     for (const node of scene.querySelectorAll("[data-gpu-component-id]")) {
       if (node.classList.contains("gpu-box-sm-micro")) continue;
       const id = node.dataset.gpuComponentId, value = stats.byId.get(id), component = index.byId.get(id);
-      const pointOnly = detailedEvents(id).length > 0 && (index.intervals.get(id)?.events ?? []).every(event => event.start === event.end);
-      node.classList.toggle("gpu-running", value?.active > 0); node.classList.toggle("gpu-selected", view.selectedComponentId === id);
-      node.setAttribute("aria-pressed", String(view.selectedComponentId === id));
-      node.setAttribute("aria-label", `${component?.label ?? id}，${value?.active ?? 0} 个进行中区间，${value?.completed ?? 0} ${pointOnly ? "个观测已发生" : "个区间已结束"}，${component?.kind === "sm" ? "进入 SM 内部" : "选择组件"}`);
+      const pointOnly = detailedEvents(id).length > 0 && value?.pointTotal === value?.total;
+      toggle(node, "gpu-running", value?.active > 0); toggle(node, "gpu-selected", view.selectedComponentId === id);
+      attribute(node, "aria-pressed", view.selectedComponentId === id);
+      attribute(node, "aria-label", `${component?.label ?? id}，${value?.active ?? 0} 个进行中区间，${value?.completed ?? 0} ${pointOnly ? "个观测已发生" : "个区间已结束"}，${component?.kind === "sm" ? "进入 SM 内部" : "选择组件"}`);
     }
     patchEventLanes();
     for (const {node, event} of eventNodes.values()) {
-      node.setAttribute("aria-pressed", String(event.id === view.selectedEventId)); node.classList.toggle("gpu-event-active", event.start === event.end ? event.start <= view.time : event.start <= view.time && view.time < event.end);
+      attribute(node, "aria-pressed", event.id === view.selectedEventId); toggle(node, "gpu-event-active", event.start === event.end ? event.start <= view.time : event.start <= view.time && view.time < event.end);
     }
-    for (const row of scene.querySelectorAll("[data-gpu-instruction-event-id]")) row.setAttribute("aria-pressed", String(row.dataset.gpuInstructionEventId === view.selectedEventId));
+    for (const row of scene.querySelectorAll("[data-gpu-instruction-event-id]")) attribute(row, "aria-pressed", row.dataset.gpuInstructionEventId === view.selectedEventId);
     if (cursor) {
       const start = Number(cursor.dataset.start), end = Number(cursor.dataset.end), x = Number(cursor.dataset.left) + (view.time - start) / (end - start || 1) * Number(cursor.dataset.width);
-      cursor.setAttribute("x1", x); cursor.setAttribute("x2", x); cursor.setAttribute("visibility", view.time < start || view.time > end ? "hidden" : "visible");
+      attribute(cursor, "x1", x); attribute(cursor, "x2", x); attribute(cursor, "visibility", view.time < start || view.time > end ? "hidden" : "visible");
     }
     patchTokens(); patchInstructionRows();
   }

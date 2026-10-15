@@ -2,11 +2,13 @@ import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
 import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-residency-3";
 import {normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from "../lib/detailed-trace.js";
-import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
-import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG, trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-3";
-import {simulateSm, DEFAULT_SM_CONFIG, smActivityAt} from "../lib/sm-model.js?v=sm-residency-3";
+import {createObservationIndex, instructionSearchText} from "../lib/instruction-view.js?v=browser-perf-1";
+import {DEFAULT_TRAFFIC_CONFIG, trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-3";
+import {DEFAULT_SM_CONFIG, smActivityAt} from "../lib/sm-model.js?v=sm-residency-3";
+import {createIntervalIndex, countThrough, initializeIntervalWasm} from "../lib/interval-index.js";
+import {createSimulationClient} from "../lib/simulation-client.js";
 import {replayBounds, advanceReplay} from "../lib/playback.js";
-import { createGpuWorld } from "./gpu-world.js?v=sm-residency-3";
+import { createGpuWorld } from "./gpu-world.js?v=browser-perf-1";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
@@ -14,6 +16,8 @@ const PAGE_SIZE = 80;
 const MAX_COMPONENTS = 400;
 const MAX_FILE_BYTES = 32 * 1024 * 1024;
 const SVG_NS = "http://www.w3.org/2000/svg";
+const simulation = createSimulationClient();
+initializeIntervalWasm();
 const state = {
   trace: null, time: 0, playing: false, rate: 1, selectedEventId: null,
   selectedComponentId: null, query: "", category: "", page: 0,
@@ -56,6 +60,22 @@ let descendantIds = null;
 let loadSequence = 0;
 let timelineRange = {start:0,end:0};
 let trafficPackets = [];
+let allIntervals = createIntervalIndex([]);
+let packetIntervals = createIntervalIndex([]);
+let packetEnds = [];
+let scopeCache = null, filterCache = null;
+let searchText = new WeakMap();
+let activeListSignature = null, componentInfoSignature = null;
+const smCounterNodes = new Map();
+
+function beginLoad() {
+  simulation.cancel();
+  $('simulate-traffic').disabled = false;
+  $('simulate-sm').disabled = false;
+  return ++loadSequence;
+}
+
+function setText(node, value) { if (node.textContent !== value) node.textContent = value; }
 
 function isTraffic(trace = state.trace) {
   return trace?.meta?.backend === 'GPU City Traffic Model';
@@ -210,7 +230,7 @@ function renderRunBar() {
 function activateRun(slot) {
   if (!runs[slot]) return false;
   if (slot !== activeRun) {
-    ++loadSequence;
+    beginLoad();
     const next = runs[slot];
     setTrace(next.trace, next.view, slot);
     announce(`已切换到${slot === 'detail' ? '详细指令' : '宏观'}运行，恢复它自己的时钟与观察位置。`);
@@ -282,15 +302,30 @@ function descendants(id) {
   return ids;
 }
 
-function filteredEvents() {
-  if (!state.trace) return [];
-  const query = state.query.toLocaleLowerCase();
-  return state.trace.events.filter((event) =>
-    eventInComponent(event) &&
-    eventInScope(event, state.scope) &&
-    (!state.category || categoryName(event) === state.category) &&
-    (!query || `${instructionSearchText(event)} ${componentName(event.componentId)}`.toLocaleLowerCase().includes(query))
-  );
+function scopedIndex() {
+  const key = JSON.stringify([state.selectedComponentId, state.scope]);
+  if (scopeCache?.trace === state.trace && scopeCache.key === key) return scopeCache;
+  const events = !state.selectedComponentId && !state.scope ? state.trace.events
+    : state.trace.events.filter(event => eventInComponent(event) && eventInScope(event, state.scope));
+  scopeCache = {trace: state.trace, key, events,
+    intervals: events === state.trace.events ? allIntervals : createIntervalIndex(events), points: createObservationIndex(events)};
+  return scopeCache;
+}
+
+function filteredIndex() {
+  const scope = scopedIndex(), query = state.query.toLocaleLowerCase(), category = state.category;
+  if (filterCache?.scope === scope && filterCache.query === query && filterCache.category === category) return filterCache;
+  const events = !query && !category ? scope.events : scope.events.filter(event => {
+    if (category && categoryName(event) !== category) return false;
+    if (!query) return true;
+    if (!searchText.has(event)) searchText.set(event, `${instructionSearchText(event)} ${componentName(event.componentId)}`.toLocaleLowerCase());
+    return searchText.get(event).includes(query);
+  });
+  filterCache = {scope, query, category, events,
+    intervals: events === scope.events ? scope.intervals : createIntervalIndex(events),
+    points: events === scope.events ? scope.points : createObservationIndex(events),
+    sorted: [...events].sort((a, b) => a.start - b.start || a.end - b.end || a.id.localeCompare(b.id))};
+  return filterCache;
 }
 
 function eventInComponent(event) {
@@ -301,6 +336,10 @@ function eventInComponent(event) {
 }
 
 function indexTrace() {
+  scopeCache = filterCache = null;
+  searchText = new WeakMap();
+  activeListSignature = componentInfoSignature = null;
+  allIntervals = createIntervalIndex(state.trace.events);
   eventById = new Map(state.trace.events.map((event) => [event.id, event]));
   const omitted = state.trace.metrics?.omittedNodes;
   omittedById = new Map((Array.isArray(omitted) ? omitted : []).map((node) => [node.id, node]));
@@ -326,13 +365,14 @@ function indexTrace() {
   if (isTraffic()) for (const event of state.trace.events) {
     const packetId = event.args?.flow?.packetId;
     if (!packetId) continue;
-    if (!packets.has(packetId)) packets.set(packetId, {start: event.start, end: event.end, transfers: []});
+    if (!packets.has(packetId)) packets.set(packetId, {start: event.start, end: event.end});
     const packet = packets.get(packetId);
     packet.start = Math.min(packet.start, event.start);
     packet.end = Math.max(packet.end, event.end);
-    if (event.args.stage === 'transfer') packet.transfers.push(event);
   }
   trafficPackets = [...packets.values()];
+  packetIntervals = createIntervalIndex(trafficPackets);
+  packetEnds = trafficPackets.map(packet => packet.end).sort((a, b) => a - b);
 }
 
 function setTrace(input, savedView = null, slot = null, remember = true) {
@@ -531,18 +571,19 @@ function selectScope(scope) {
 
 function renderComponentInfo() {
   const panel = $("selected-component-info");
-  panel.replaceChildren();
   if (!state.trace) return;
   const component = componentById.get(state.selectedComponentId);
   const scopeLabel = state.scope ? ['smId','threadBlockId','warpId'].filter(key => state.scope[key] != null).map(key => `${({smId:'SM',threadBlockId:isTraffic() ? '模型 CTA ID' : 'CTA',warpId:'Warp'})[key]} ${state.scope[key]}`).join(' / ') : null;
+  const scope = scopedIndex(), active = scope.intervals.countStarted(state.time) - scope.intervals.countEnded(state.time);
+  const spanCount = scope.intervals.size, completed = scope.intervals.countEnded(state.time);
+  const points = scope.points.at(state.time);
+  const signature = JSON.stringify([scope.key, active, spanCount, completed, points.observed, points.total, points.issue, points.stall]);
+  if (signature === componentInfoSignature) return;
+  componentInfoSignature = signature;
+  panel.replaceChildren();
   panel.append(el('h3', scopeLabel || component?.label || 'GPU 全局观察', 'detail-title'));
-  const scopeEvents = state.trace.events.filter(event => eventInComponent(event) && eventInScope(event,state.scope));
-  const active = scopeEvents.filter(activeAt).length;
-  const spans = scopeEvents.filter(event => event.end > event.start);
-  const completed = spans.filter(event => event.end <= state.time).length;
-  const points = observationSnapshot(scopeEvents, state.time);
   const nativePoints = state.trace.meta.capabilities?.includes('instruction_observations');
-  panel.append(el('p', `${points.total ? `${number(points.observed)} / ${number(points.total)} 个${nativePoints ? '观测点' : '时点事件'}已发生${nativePoints ? ` · ISSUE ${number(points.issue)} · STALL ${number(points.stall)}` : ''}` : `${number(spans.length)} 个事件区间`} ${spans.length ? `· ${number(active)} 区间进行中 · ${number(completed)} 已结束` : ''}`, 'muted'));
+  panel.append(el('p', `${points.total ? `${number(points.observed)} / ${number(points.total)} 个${nativePoints ? '观测点' : '时点事件'}已发生${nativePoints ? ` · ISSUE ${number(points.issue)} · STALL ${number(points.stall)}` : ''}` : `${number(spanCount)} 个事件区间`} ${spanCount ? `· ${number(active)} 区间进行中 · ${number(completed)} 已结束` : ''}`, 'muted'));
   if (/GTSim/i.test(state.trace.meta.producer)) panel.append(el('p', '当前后端：GTSim tile 操作图。CTA / warp 按任务归属查看；进行中区间数不等于硬件利用率。', 'muted'));
   else panel.append(el('p', `当前后端：${runInfo(state.trace).backend} · ${runInfo(state.trace).granularity}。${isTraffic() ? '运输、排队与计算均来自本次教学仿真。' : '按来源记录展示。'}`, 'muted'));
   if (state.scope) {
@@ -558,7 +599,7 @@ function renderTimeline() {
   timeline.replaceChildren();
   cursorLine = null;
   timelineRange = timeWindow({start:startTime,end:totalTime}, state.timelineZoom, state.timelineCenter);
-  visibleEvents = filteredEvents().filter(event => intersectsWindow(event,timelineRange)).sort((a, b) => a.start - b.start || a.end - b.end || a.id.localeCompare(b.id));
+  visibleEvents = filteredIndex().sorted.filter(event => intersectsWindow(event,timelineRange));
   const pageCount = Math.ceil(visibleEvents.length / PAGE_SIZE);
   state.page = Math.min(state.page, Math.max(0, pageCount - 1));
   $("event-count").textContent = `${number(visibleEvents.length)} / ${number(state.trace.events.length)} 个事件`;
@@ -634,13 +675,18 @@ function renderTimeline() {
 }
 
 function renderActiveTasks() {
-  const events = filteredEvents();
-  const active = events.filter(event => activeAt(event) && event.category !== "residency"), observations = observationSnapshot(events, state.time);
+  const index = filteredIndex();
+  const active = index.intervals.at(state.time).filter(event => event.category !== "residency"), observations = index.points.at(state.time);
   const observed = observations.events;
   const shown = [...active, ...observed];
   $('tasks-heading').textContent = '当前事件';
   $("active-count").textContent = observations.total ? `${observations.cycle == null ? '尚无观测' : `${observations.atCursor ? '当前' : '最近'} ${timeText(observations.cycle)} · ${number(observed.length + observations.omitted)} 点`}${active.length ? ` · ${number(active.length)} 区间` : ''}` : `${number(active.length)} 个区间进行中`;
   const list = $("active-tasks");
+  const signature = JSON.stringify([shown.slice(0, 40).map(event => event.id), state.selectedEventId,
+    observations.total && !observations.atCursor && observations.cycle != null ? state.time : null,
+    observations.omitted, shown.length > 40, state.time >= totalTime]);
+  if (signature === activeListSignature) return;
+  activeListSignature = signature;
   const scrollTop = list.scrollTop;
   const focusedEventId = list.contains(document.activeElement) ? document.activeElement.dataset.eventId : null;
   list.replaceChildren();
@@ -672,7 +718,7 @@ function selectEvent(id) {
   if (instructionPoint) {pause(); state.time = event.start;}
   if (event && !intersectsWindow(event,timelineRange)) state.timelineCenter = (event.start+event.end)/2;
   const range = timeWindow({start:startTime,end:totalTime},state.timelineZoom,state.timelineCenter);
-  const within = filteredEvents().filter(event=>intersectsWindow(event,range)).sort((a,b)=>a.start-b.start||a.end-b.end||a.id.localeCompare(b.id));
+  const within = filteredIndex().sorted.filter(event=>intersectsWindow(event,range));
   const index = within.findIndex(event=>event.id===id);
   if(index >= 0) state.page=Math.floor(index/PAGE_SIZE);
   renderTimeline();
@@ -745,7 +791,7 @@ function renderDetails() {
         state.scope = null; state.timelineCenter = (eventById.get(id).start + eventById.get(id).end) / 2;
         $("event-search").value = ""; $("category-filter").value = "";
         const range = timeWindow({start:startTime,end:totalTime},state.timelineZoom,state.timelineCenter);
-        const all = filteredEvents().filter(event=>intersectsWindow(event,range)).sort((a, b) => a.start - b.start || a.end - b.end || a.id.localeCompare(b.id));
+        const all = filteredIndex().sorted.filter(event=>intersectsWindow(event,range));
         state.page = Math.max(0, Math.floor(all.findIndex((item) => item.id === id) / PAGE_SIZE));
         renderComponents(); selectEvent(id);
       });
@@ -780,29 +826,25 @@ function renderAtTime() {
   }
   // Keep the hierarchy DOM stable during playback to retain keyboard focus and scroll.
   const activeComponents = new Set();
-  if (state.trace) for (const event of state.trace.events) if (activeAt(event)) {
+  const activeEvents = allIntervals.at(state.time);
+  for (const event of activeEvents) {
     let id = event.componentId;
     while (id && !activeComponents.has(id)) { activeComponents.add(id); id = componentById.get(id)?.parentId; }
   }
   for (const button of document.querySelectorAll("[data-component-id]")) button.classList.toggle("running", activeComponents.has(button.dataset.componentId));
   renderActiveTasks();
   renderComponentInfo();
-  renderTrafficCounters();
+  renderTrafficCounters(activeEvents);
   renderSmCounters();
   world.update(state);
   dataflow.update(state);
 }
 
-function renderTrafficCounters() {
+function renderTrafficCounters(activeEvents) {
   if (!isTraffic()) return;
-  let moving = 0, waiting = 0, completed = 0;
-  for (const packet of trafficPackets) {
-    if (packet.end <= state.time) completed++;
-    else if (packet.start <= state.time) {
-      if (packet.transfers.some(event => event.start <= state.time && state.time < event.end)) moving++;
-      else waiting++;
-    }
-  }
+  const moving = new Set(activeEvents.filter(event => event.args?.stage === 'transfer' && event.args.flow?.packetId).map(event => event.args.flow.packetId)).size;
+  const waiting = packetIntervals.countStarted(state.time) - packetIntervals.countEnded(state.time) - moving;
+  const completed = countThrough(packetEnds, state.time);
   $('packets-moving').textContent = number(moving);
   $('packets-waiting').textContent = number(waiting);
   $('packets-completed').textContent = number(completed);
@@ -817,11 +859,15 @@ function renderTrafficCounters() {
 function renderSmCounters() {
   if (!isSmModel()) return;
   const snapshot = smActivityAt(state.trace, state.time), host = $('sm-counters');
-  host.replaceChildren();
-  if (!snapshot?.available) {host.append(el('span', '来源未记录 Warp 驻留状态')); return;}
+  if (!snapshot?.available) {setText(host, '来源未记录 Warp 驻留状态'); smCounterNodes.clear(); return;}
   host.title = '就绪指令可能与已发射指令重叠；可发射需满足依赖和资源准入。';
+  if (!smCounterNodes.size) host.replaceChildren();
   for (const [key, label] of [['residentCtas', '驻留 CTA'], ['resident', '驻留 Warp'], ['ready', '就绪'], ['eligible', '可发射'], ['issuing', '发射中'], ['inflight', '有在途指令'], ['waiting', '依赖等待'], ['queued', '待准入']]) {
-    const item = el('span'); item.append(el('b', number(snapshot.counts?.[key] ?? 0)), document.createTextNode(label)); host.append(item);
+    if (!smCounterNodes.has(key)) {
+      const item = el('span'), value = el('b');
+      item.append(value, document.createTextNode(label)); host.append(item); smCounterNodes.set(key, value);
+    }
+    setText(smCounterNodes.get(key), number(snapshot.counts?.[key] ?? 0));
   }
 }
 
@@ -849,7 +895,7 @@ function togglePlay() {
   state.playing = true;
   $("play").textContent = "暂停";
   $("play").setAttribute("aria-pressed", "true");
-  let lastRender = 0;
+  let lastRender = 0, lastAnimation = null;
   function tick(now) {
     if (!state.playing) return;
     const inspectionDuration = playbackDuration();
@@ -858,9 +904,14 @@ function togglePlay() {
     state.time = next.time;
     if (state.time < previous) {state.timelineCenter = null; renderTimeline();}
     lastFrame = now;
-    world.animate?.(state.time);
-    // Limit expensive active-list updates; no animation is needed for understanding individual steps.
-    if (now - lastRender >= 100 || state.time >= totalTime) { renderAtTime(); lastRender = now; }
+    // Animation follows elapsed time at 30 Hz; inspectors refresh at 10 Hz.
+    // Rendering less often never changes trace clocks, playback speed or seek.
+    const fullRender = now - lastRender >= 100 || next.ended;
+    if (fullRender) { renderAtTime(); lastRender = now; }
+    if (fullRender || lastAnimation === null || now - lastAnimation >= 1000 / 30 - .5) {
+      if (!fullRender) world.animate?.(state.time);
+      lastAnimation = lastAnimation === null ? now : now - (now - lastAnimation) % (1000 / 30);
+    }
     if (next.ended) { pause(); return; }
     frame = requestAnimationFrame(tick);
   }
@@ -893,7 +944,7 @@ function download(data, suffix) {
 
 async function importFile(file, workspaceOnly) {
   if (!file) return;
-  const sequence = ++loadSequence;
+  const sequence = beginLoad();
   announce(`正在读取 ${file.name}…`);
   try {
     if (file.size > MAX_FILE_BYTES) throw new Error("原型最多导入 32 MiB JSON。请先截取需要观察的事件窗口。");
@@ -918,7 +969,7 @@ async function importFile(file, workspaceOnly) {
 
 async function importDetail(file) {
   if (!file) return;
-  const sequence = ++loadSequence;
+  const sequence = beginLoad();
   announce(`正在读取详细指令运行 ${file.name}…`);
   try {
     if (file.size > MAX_FILE_BYTES) throw new Error('最多读取 32 MiB；请先截取指令窗口。');
@@ -937,7 +988,7 @@ async function importDetail(file) {
 async function loadExample(sample = $("sample-select").value) {
   if (sample === 'traffic') return runTraffic();
   if (sample === 'sm') return runSmModel();
-  const sequence = ++loadSequence;
+  const sequence = beginLoad();
   const flashgpu = sample === 'flashgpu' || sample === 'flashgpu-points';
   announce(flashgpu ? '正在加载 FlashGPU-Sim vectorAdd 原生指令运行…' : "正在加载 GTSim GEMM 仿真示例…");
   try {
@@ -962,15 +1013,12 @@ async function loadExample(sample = $("sample-select").value) {
 
 async function runTraffic() {
   if (!$('traffic-config').reportValidity()) return;
-  const sequence = ++loadSequence;
+  const sequence = beginLoad();
   const button = $('simulate-traffic');
   button.disabled = true;
   announce('正在运行 H100 SXM 132 SM 教学数据流仿真…');
   try {
-    // Give the running status a frame before the synchronous, deterministic model.
-    await new Promise(resolve => requestAnimationFrame(resolve));
-    if (sequence !== loadSequence) return;
-    const trace = simulateTraffic(trafficConfig());
+    const trace = await simulation.run('traffic', trafficConfig());
     if (sequence !== loadSequence) return;
     setTrace(trace, null, 'macro');
     const firstTransfer = trace.events.find(event => event.args?.stage === 'transfer' && event.args.flow?.kind === 'read-response')
@@ -980,22 +1028,20 @@ async function runTraffic() {
     if (!reducedMotion) togglePlay();
     announce(`已生成 132 SM 的独立数据流运行：${number(trace.metrics?.traffic?.packets ?? trafficPackets.length)} 个端到端包。${reducedMotion ? '已暂停，可点“开始数据流”或单步查看。' : '正在回放，随时可暂停；右侧可检查运输与排队事件。'}`);
   } catch (error) {
-    if (sequence === loadSequence) announce(`数据流仿真未完成：${error.message}。当前运行保持可用。`, true);
+    if (sequence === loadSequence && error.name !== 'AbortError') announce(`数据流仿真未完成：${error.message}。当前运行保持可用。`, true);
   } finally {
-    button.disabled = false;
+    if (sequence === loadSequence) button.disabled = false;
   }
 }
 
 async function runSmModel() {
   if (!$('sm-config').reportValidity()) return;
-  const sequence = ++loadSequence, button = $('simulate-sm');
+  const sequence = beginLoad(), button = $('simulate-sm');
   const config = smConfig();
   button.disabled = true;
   announce(`正在运行 SM ${config.smId} 的独立流水线教学仿真…`);
   try {
-    await new Promise(resolve => requestAnimationFrame(resolve));
-    if (sequence !== loadSequence) return;
-    const trace = simulateSm(config);
+    const trace = await simulation.run('sm', config);
     if (sequence !== loadSequence) return;
     setTrace(trace, null, 'detail');
     // Start with execution and queues visible; seeking keeps the original clock.
@@ -1004,9 +1050,9 @@ async function runSmModel() {
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) togglePlay();
     announce(`SM ${config.smId} 流水线运行已生成：${number(trace.metrics.sm.completedInstructions)} 条教学指令，${number(trace.metrics.sm.makespan)} 模型周期。点选组件查看形式化规格，暂停或单步检查事件与依赖。`);
   } catch (error) {
-    if (sequence === loadSequence) announce(`SM 仿真未完成：${error.message}。当前运行保持可用。`, true);
+    if (sequence === loadSequence && error.name !== 'AbortError') announce(`SM 仿真未完成：${error.message}。当前运行保持可用。`, true);
   } finally {
-    button.disabled = false;
+    if (sequence === loadSequence) button.disabled = false;
   }
 }
 
@@ -1058,7 +1104,8 @@ $("import-detail").addEventListener('click', () => $('detail-file').click());
 
 $("detail-file").addEventListener('change', event => { importDetail(event.target.files[0]); event.target.value = ''; });
 function showMacro() {
-  ++loadSequence;
+  if (!state.trace) return;
+  beginLoad();
   if (activeRun !== 'macro' && !activateRun('macro')) return;
   selectComponent(null); world.setView({smComponentId: null, scope: null}); observationLevel = 'gpu'; renderRunBar();
 }
@@ -1086,5 +1133,6 @@ document.addEventListener("keydown", (event) => {
   else if (event.code === "End" && state.trace) { event.preventDefault(); pause(); seek(totalTime); }
 });
 document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
+window.addEventListener('pagehide', () => {beginLoad(); pause();});
 showTrafficConfig(DEFAULT_TRAFFIC_CONFIG);
 loadExample();

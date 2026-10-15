@@ -21,6 +21,8 @@
 
 立体沙盘由本仓库原生 SVG/CSS 绘制，不依赖 WebGL 或外部渲染服务。建筑高度、位置与连线几何不代表实测面积、容量或物理 floorplan；运输只沿当前运行声明的拓扑与 hop 区间移动。旧 GTSim/profile 缺少内部运输事件时不生成车流，配置 SM 占位明确标为未观测。此前生成的六类透明组件美术保留在仓库，提示词见 [manifest.json](web/assets/gpu/manifest.json)。
 
+仿真在浏览器的 **Web Worker** 中运行，重新仿真和切换场景会终止过期计算。播放时的事件查询使用 **WebAssembly 区间树**，无法加载 WASM 时使用同算法的 JavaScript 索引。动画按 30 Hz 更新、检查面板按 10 Hz 更新；时钟按实际经过时间推进，暂停、定位和原始事件周期保持一致。[优化方法与浏览器实测](docs/browser-performance.md)
+
 ![132 SM 驻留、计算与访存等待](docs/assets/sm-residency-overview.png)
 
 [本次界面与模型验证](docs/sm-residency-validation.md)

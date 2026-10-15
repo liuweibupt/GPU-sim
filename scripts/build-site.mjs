@@ -12,6 +12,7 @@ for (const directory of ['web', 'lib']) {
   await cp(new URL(directory, root), new URL(directory, output), {
     recursive: true,
     dereference: true,
+    filter: source => !source.endsWith('.c'),
   });
 }
 

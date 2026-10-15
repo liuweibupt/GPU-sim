@@ -20,6 +20,11 @@ test('documented entrypoint, module and sample are served; repository metadata i
   const asset = await fetch(base + '/web/assets/gpu/sm.png',{method:'HEAD'});
   assert.equal(asset.status,200);
   assert.equal(asset.headers.get('content-type'),'image/png');
+  const wasm = await fetch(base + '/lib/interval-query.wasm');
+  assert.equal(wasm.status, 200);
+  assert.equal(wasm.headers.get('content-type'), 'application/wasm');
+  assert.ok(WebAssembly.validate(await wasm.arrayBuffer()));
+  assert.equal((await fetch(base + '/web/simulation-worker.js')).status, 200);
   assert.equal((await fetch(base + '/.git/config')).status,404);
   assert.equal((await fetch(base + '/web/%2e%2e/%2e%2e/.git/config')).status,404);
 });
