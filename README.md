@@ -6,6 +6,14 @@
 
 **[在线工作台](https://liuweibupt.github.io/GPU-sim/)** · [SM 组件形式化规格](docs/sm-architecture.md) · [数据流模型](docs/traffic-model.md) · [发布流程](docs/deployment.md) · [多尺度仿真设计](docs/multiscale-simulation.md)
 
+## 黄Sir的算力工坊
+
+新增独立挂机经营网页：运行 `npm start` 后打开 [本地游戏](http://127.0.0.1:4173/web/game/)，也可以从工作台右上角进入。原创 SVG 黄Sir 带你从 **一颗 ALU、零缓存、零显存** 开始，自动接收浮点计算订单、交付赚钱，再购买新硬件；点击「手动超频」或按空格可加速起步。
+
+成长分两条线：**硬件研发**按经营收入与组件前置逐步开放 ALU、时钟、L1、DRAM、L2、调度器、Tensor Core、HBM、TMA、TMEM；**应用委托**从标量、向量、像素和物理计算开始，后期再挑战 AlexNet、Transformer、大模型训练、长序列推理与架空 AI 工厂。无需完成应用任务也能发展全部硬件；普通订单种类只随硬件扩展。
+
+浏览器每 5 秒自动存档，支持导入/导出、离线收益（最多 8 小时）、减少动画和确认重置。关卡、算力、命中率与价格属于游戏设定，独立于工作台的仿真与实机数据。[完整玩法与剧情策划](docs/idle-game-design.md) · [验证记录](docs/idle-game-validation.md)
+
 ## GPU 城市界面
 
 - 默认使用 **H100 SXM 规模的数据流城市**：完整 132 个 SM、5 个 HBM 服务端点，以及逻辑 L2 / NoC。数量依据 [NVIDIA 规格](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，路由、带宽和周期采用本仓库明确标注的教学模型。

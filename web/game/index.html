@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c100e" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="和黄Sir一起，从一颗 ALU 开始接单赚钱，建造 GPU，亲历 AlexNet、Transformer、TMA 与 TMEM 的算力时代。"
+    />
+    <title>黄Sir的算力工坊 · 从 ALU 到 AI 时代</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c7f58a'/%3E%3Cpath d='M10 10h20v20H10zm5 5v10h10V15z' fill='%23151d13' fill-rule='evenodd'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./game.css" />
+    <script type="module" src="./game.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到游戏</a>
+    <aside class="rail" aria-label="快捷导航">
+      <a class="rail-brand" href="./" aria-label="算力工坊首页"
+        ><svg viewBox="0 0 32 32" fill="none">
+          <rect x="7" y="7" width="18" height="18" rx="3" />
+          <path
+            d="M12 3v4m8-4v4M12 25v4m8-4v4M3 12h4m-4 8h4m18-8h4m-4 8h4M12 12h8v8h-8z"
+          /></svg
+      ></a>
+      <nav class="rail-nav">
+        <button
+          class="rail-button active"
+          data-view="workshop"
+          aria-label="算力工坊"
+          title="算力工坊"
+        >
+          <svg viewBox="0 0 24 24">
+            <rect x="4" y="4" width="6" height="6" rx="1" />
+            <rect x="14" y="4" width="6" height="6" rx="1" />
+            <rect x="4" y="14" width="6" height="6" rx="1" />
+            <rect x="14" y="14" width="6" height="6" rx="1" />
+          </svg></button
+        ><button
+          class="rail-button"
+          data-view="history"
+          aria-label="赛博史官"
+          title="赛博史官"
+        >
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-2H4zM20 4h-4a3 3 0 0 0-3 3m0 14a4 4 0 0 1 4-2h3V4"
+            />
+          </svg></button
+        ><button
+          class="rail-button"
+          data-view="journal"
+          aria-label="经营日志"
+          title="经营日志"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5" />
+          </svg>
+        </button>
+      </nav>
+      <div class="rail-bottom">
+        <a
+          class="rail-button"
+          href="../"
+          aria-label="打开 GPU 仿真工作台"
+          title="GPU 仿真工作台"
+          ><svg viewBox="0 0 24 24">
+            <path d="m9 5-7 7 7 7m6-14 7 7-7 7" /></svg></a
+        ><button
+          id="settings-button"
+          class="rail-button"
+          aria-label="游戏设置"
+          title="游戏设置"
+        >
+          <svg viewBox="0 0 24 24">
+            <path
+              d="m10 3-1 3-3 1-2 3 2 2-1 3 3 3 3-1 2 3 3-1 1-3 3-1v-4l-3-1-1-3z"
+            />
+            <circle cx="12" cy="12" r="3" />
+          </svg></button
+        ><span class="rail-status" title="本地运行"></span>
+      </div>
+    </aside>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a href="./" class="wordmark"
+          ><strong>黄Sir<span>的算力工坊</span></strong
+          ><span class="alpha-tag">IDLE LAB</span></a
+        >
+        <div class="topbar-right">
+          <span id="save-status" class="save-status"
+            ><span class="status-dot"></span>自动存档已开启</span
+          ><button
+            id="sound-button"
+            class="icon-button"
+            aria-label="开启音效"
+            aria-pressed="false"
+            title="开启音效"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M4 9h4l5-4v14l-5-4H4zM17 9l5 6m0-6-5 6" />
+            </svg>
+          </button>
+          <div class="user-avatar">
+            <img src="./assets/huang-sir-avatar.svg" alt="黄Sir头像" />
+          </div>
+        </div>
+      </header>
+      <main id="main">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">BUILD SMALL. THINK PARALLEL.</p>
+            <h1 id="page-title">算力工坊<span class="heading-dot">.</span></h1>
+            <p class="page-subtitle" id="page-subtitle">
+              一颗 ALU，一个车库。下一个计算时代，由你建造。
+            </p>
+          </div>
+          <div class="open-badge">
+            <span class="status-dot"></span>营业中 <span class="divider">/</span
+            ><span id="play-time">00:00:00</span>
+          </div>
+        </div>
+        <nav class="view-tabs" aria-label="游戏页面">
+          <button class="active" data-view="workshop" aria-current="page">
+            算力工坊 <span>WORKSHOP</span></button
+          ><button data-view="history">
+            应用任务 <span>CHRONICLES</span
+            ><i id="history-indicator" hidden></i></button
+          ><button data-view="journal">经营日志 <span>LOGBOOK</span></button
+          ><span class="tab-caption"
+            >从 ALU 到 AI 的一场小小冒险 <span>↗</span></span
+          >
+        </nav>
+
+        <div class="stats-grid" aria-label="工坊经营数据">
+          <article class="stat-card balance">
+            <div class="stat-label">
+              <span>可用资金</span><span class="stat-icon">◈</span>
+            </div>
+            <div class="stat-number">
+              <span class="currency">$</span><span id="money">0.00</span>
+            </div>
+            <div class="stat-foot">
+              <span class="green" id="income">+$0.00 / s</span
+              ><span>用计算换第一桶金</span>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">
+              <span>计算吞吐</span
+              ><svg viewBox="0 0 20 20">
+                <path d="m3 13 5-5 4 3 5-7M13 4h4v4" />
+              </svg>
+            </div>
+            <div class="stat-number">
+              <span id="throughput">1.0</span><small>算力 / s</small>
+            </div>
+            <div class="stat-foot">
+              <span id="hardware-summary">1 ALU · FP32</span
+              ><span id="boost-tag" class="green" hidden>超频中 ↑</span>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">
+              <span>已交付订单</span
+              ><svg viewBox="0 0 20 20">
+                <path d="M5 3h10v14H5zM7 10l2 2 4-5" />
+              </svg>
+            </div>
+            <div class="stat-number">
+              <span id="completed">0</span><small>笔</small>
+            </div>
+            <div class="stat-foot">
+              <span>累计收入 <b id="total-earned">$0.00</b></span
+              ><span class="mini-chart" aria-hidden="true">▁▂▂▃▂▄▅▇</span>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">
+              <span>缓存命中率</span
+              ><svg viewBox="0 0 20 20">
+                <rect x="3" y="4" width="14" height="5" rx="1" />
+                <rect x="3" y="11" width="14" height="5" rx="1" />
+                <path d="M6 6.5h1m-1 7h1" />
+              </svg>
+            </div>
+            <div class="stat-number">
+              <span id="hit-rate">0</span><small>%</small>
+            </div>
+            <div class="stat-foot">
+              <span id="cache-summary">尚未安装缓存</span
+              ><span id="cache-tip">每份数据，现用现取</span>
+            </div>
+          </article>
+        </div>
+
+        <section id="workshop-view" class="view-panel">
+          <div class="workshop-grid">
+            <section
+              class="panel hardware-panel"
+              aria-labelledby="hardware-title"
+            >
+              <div class="panel-heading">
+                <div>
+                  <span class="section-number">01</span>
+                  <h2 id="hardware-title">你的 GPU</h2>
+                  <span id="generation-tag" class="pill">车库原型 · GEN 0</span>
+                </div>
+                <span class="live-label"
+                  ><span class="status-dot"></span>LIVE</span
+                >
+              </div>
+              <div class="hardware-canvas">
+                <div class="canvas-label">
+                  <span>黄Sir CUSTOM SILICON</span
+                  ><span id="chip-revision">REV 0.1</span>
+                </div>
+                <svg
+                  id="hardware-svg"
+                  viewBox="0 0 800 345"
+                  role="group"
+                  aria-label="GPU 硬件布局，已解锁的组件会发光"
+                ></svg>
+                <div class="canvas-bottom">
+                  <span
+                    ><i class="legend-dot"></i>已安装
+                    <i class="legend-dot locked"></i>待解锁</span
+                  ><span>点击组件，查看升级方向 ↗</span>
+                </div>
+              </div>
+              <p class="canvas-pan-hint">左右滑动，探索你的芯片 ↔</p>
+              <div class="live-order">
+                <span class="status-dot"></span>
+                <div class="live-order-details">
+                  <strong id="live-order-client">正在计算客户请求</strong
+                  ><span id="live-order-expression">FP32</span>
+                </div>
+                <div class="live-order-meter">
+                  <div class="progress-track">
+                    <span id="live-order-progress"></span>
+                  </div>
+                  <span id="live-order-percent">0%</span>
+                </div>
+                <span id="live-order-queue" class="live-order-queue"
+                  >2 单等候</span
+                >
+              </div>
+              <div class="hardware-footer">
+                <div>
+                  <span class="tiny-label">当前瓶颈</span>
+                  <p id="bottleneck">算力有限，先让这颗 ALU 忙起来。</p>
+                </div>
+                <button id="compute-button" class="primary-button">
+                  <svg viewBox="0 0 20 20">
+                    <path d="m11 2-7 9h5l-1 7 8-10h-5z" /></svg
+                  ><span>手动超频</span><kbd>SPACE</kbd>
+                </button>
+              </div>
+            </section>
+            <aside class="mentor-panel panel" aria-label="黄Sir的建议">
+              <div class="mentor-top">
+                <span class="mentor-label"
+                  ><span class="status-dot"></span>FOUNDER'S NOTE</span
+                ><span class="mentor-chapter" id="mentor-chapter"
+                  >序章 / 车库创业</span
+                >
+              </div>
+              <div class="speech">
+                <span class="quote-mark">“</span>
+                <p id="mentor-quote">
+                  先别急着改变世界。<br />把这单浮点数算完，<br />我们就有钱买缓存了。
+                </p>
+              </div>
+              <div class="portrait-stage">
+                <div class="portrait-orbit"></div>
+                <div class="portrait-lines"></div>
+                <span class="portrait-star star-one">✦</span
+                ><span class="portrait-star star-two">+</span
+                ><img
+                  class="mentor-portrait"
+                  src="./assets/huang-sir.svg"
+                  alt="戴眼镜、穿黑色皮夹克的黄Sir卡通形象"
+                />
+                <div class="mentor-name">
+                  黄Sir<span>首席梦想家 / 你的合伙人</span>
+                </div>
+              </div>
+              <div class="mentor-task">
+                <div class="task-top">
+                  <span>眼前的小目标</span><span id="mission-count">0 / 1</span>
+                </div>
+                <p id="mission-text">攒够 $24，安装第一块 L1 Cache</p>
+                <div class="progress-track">
+                  <span id="mission-progress"></span>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <section class="chapter-strip">
+            <div class="chapter-symbol">⌘</div>
+            <div class="chapter-info">
+              <span class="tiny-label"
+                >APPLICATION CONTRACT
+                <span>应用委托 · 与研发独立推进</span></span
+              >
+              <h2 id="next-chapter-title">起步 · 小数事务所</h2>
+              <p id="next-chapter-copy">
+                从一笔小小的浮点计算，交付第一份客户委托。
+              </p>
+            </div>
+            <div class="chapter-goal" id="chapter-requirements">
+              一颗 ALU 就能开始
+            </div>
+            <button id="chapter-button" class="outline-button">
+              查看委托 <span>↗</span>
+            </button>
+          </section>
+
+          <section class="upgrade-section" aria-labelledby="upgrades-title">
+            <div class="section-heading">
+              <div>
+                <span class="section-number">02</span>
+                <h2 id="upgrades-title">硬件研发</h2>
+                <span class="section-description"
+                  >每一笔收入，都能变成下一块硅。</span
+                >
+              </div>
+              <div class="filter-tabs" aria-label="升级分类">
+                <button class="active" data-filter="all" aria-pressed="true">
+                  全部</button
+                ><button data-filter="compute" aria-pressed="false">计算</button
+                ><button data-filter="memory" aria-pressed="false">存储</button
+                ><button data-filter="transfer" aria-pressed="false">
+                  数据搬运
+                </button>
+              </div>
+            </div>
+            <div class="research-status">
+              <span class="research-label"
+                >R&D <span>经营成长解锁组件</span></span
+              >
+              <div class="progress-track">
+                <span id="research-progress"></span>
+              </div>
+              <span id="research-next">累计收入 $50 开放 DRAM</span>
+            </div>
+            <div id="upgrade-grid" class="upgrade-grid"></div>
+          </section>
+
+          <section class="panel orders-panel" aria-labelledby="orders-title">
+            <div class="panel-heading">
+              <div>
+                <span class="section-number">03</span>
+                <h2 id="orders-title">客户的计算请求</h2>
+                <span class="pill" id="queue-count">0 笔排队</span>
+              </div>
+              <span class="live-label"
+                ><span class="status-dot"></span>自动接单 · 自动结算</span
+              >
+            </div>
+            <div class="orders-table">
+              <div class="order-table-head">
+                <span>客户 / 请求</span><span>计算内容</span
+                ><span>交付进度</span><span>报酬</span>
+              </div>
+              <div id="orders-list"></div>
+            </div>
+            <div class="orders-footer">
+              <span>你负责想象未来，ALU 负责把账单算出来。</span
+              ><span id="job-stream"
+                >订单持续抵达中 <span class="green">↗</span></span
+              >
+            </div>
+          </section>
+        </section>
+
+        <section id="history-view" class="view-panel" hidden>
+          <div class="history-intro">
+            <div>
+              <p class="eyebrow">赛博史官 / THE CYBER CHRONICLER</p>
+              <h2>应用带来需求，<span>你来选择解法。</span></h2>
+              <p>
+                从标量、向量、像素与物理计算起步，再迎接 AlexNet
+                和大模型。应用委托独立推进，硬件随经营发展。
+              </p>
+            </div>
+            <div class="history-count">
+              <strong id="history-won">00</strong
+              ><span>/ <span id="history-total">09</span> 份应用已交付</span>
+            </div>
+          </div>
+          <div id="chapter-list" class="chapter-list"></div>
+          <p class="history-footnote">
+            历史提供灵感，工坊负责想象。关卡、算力、价格与加速效果均为游戏设定。<a
+              href="https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/"
+              target="_blank"
+              rel="noreferrer"
+              >Hopper / TMA 参考 ↗</a
+            ><a
+              href="https://developer.nvidia.com/blog/inside-nvidia-blackwell-ultra-the-chip-powering-the-ai-factory-era/"
+              target="_blank"
+              rel="noreferrer"
+              >Blackwell / TMEM 参考 ↗</a
+            >
+          </p>
+        </section>
+        <section id="journal-view" class="view-panel" hidden>
+          <div class="history-intro">
+            <div>
+              <p class="eyebrow">SMALL WINS, BIG DREAMS</p>
+              <h2>每一块硅，<span>都有来路。</span></h2>
+              <p>从第一笔订单，到第一场算力革命。这里记下你的工坊故事。</p>
+            </div>
+            <button id="export-button" class="outline-button">
+              导出存档 <span>↓</span>
+            </button>
+          </div>
+          <div id="journal-list" class="journal-list panel"></div>
+        </section>
+        <footer class="page-footer">
+          <span
+            ><span class="footer-chip">▦</span> 黄Sir的算力工坊
+            <span class="muted">/</span> ONE ALU. INFINITE POSSIBILITIES.</span
+          ><span
+            >离线也营业 · 本机自动存档
+            <a href="../">探索 GPU 仿真工作台 ↗</a></span
+          >
+        </footer>
+      </main>
+    </div>
+    <div
+      id="toast-container"
+      class="toast-container"
+      role="status"
+      aria-live="polite"
+    ></div>
+    <dialog id="settings-dialog">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">YOUR WORKSHOP</p>
+            <h2>工坊设置</h2>
+          </div>
+          <button class="icon-button" aria-label="关闭设置">✕</button>
+        </div>
+        <p>
+          订单自动处理，进度每 5 秒保存在本机。离线最多结算 8
+          小时；清除浏览器数据会失去存档。
+        </p>
+        <label class="setting-row"
+          ><span>减少视觉动画</span
+          ><input type="checkbox" id="reduce-motion" /></label
+        ><button
+          type="button"
+          class="outline-button full-width"
+          id="save-button"
+        >
+          立即保存进度</button
+        ><button
+          type="button"
+          class="outline-button full-width"
+          id="import-button"
+        >
+          导入存档</button
+        ><input
+          id="import-file"
+          type="file"
+          accept="application/json,.json"
+          hidden
+        />
+        <div class="reset-area">
+          <h3>重返车库</h3>
+          <p>清空本机游戏进度，从一颗 ALU 重新开始。</p>
+          <label for="reset-confirm">输入「重新开始」以确认</label
+          ><input
+            id="reset-confirm"
+            type="text"
+            autocomplete="off"
+            placeholder="重新开始"
+          /><button
+            id="reset-button"
+            type="button"
+            class="danger-button"
+            disabled
+          >
+            重置工坊
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="welcome-dialog">
+      <form method="dialog">
+        <p class="eyebrow">BACK TO THE WORKSHOP</p>
+        <h2>你不在，梦想没下班。</h2>
+        <p id="offline-copy"></p>
+        <div class="offline-reward" id="offline-reward"></div>
+        <button class="primary-button full-width">
+          继续营业 <span>→</span>
+        </button>
+      </form>
+    </dialog>
+    <noscript
+      ><p class="noscript-message">
+        请开启 JavaScript，开始你的算力工坊。
+      </p></noscript
+    >
+  </body>
+</html>
