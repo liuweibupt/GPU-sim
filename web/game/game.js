@@ -12,6 +12,7 @@ import {
   restoreGame,
   serializeGame,
 } from "../../lib/idle-game.js";
+import { getWorkloadPerformance } from "../../lib/compute-model.js";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -582,6 +583,14 @@ function render() {
   renderShop();
   renderHardware(stats);
   renderMentor(stats);
+  const service = getWorkloadPerformance(
+    state.levels,
+    state.activeJob?.kind || "fp32",
+  );
+  $("service-model-summary").textContent =
+    `${service.kind.toUpperCase()} · ${format(service.cycles, 1)} 逻辑周期 · 计算 ${format(service.computeCycles, 1)} / 搬运 ${format(service.memoryCycles, 1)} / 延迟 ${format(service.latencyCycles, 1)} · 重叠 ${format(service.overlap * 100, 1)}%`;
+  $("bottleneck").textContent =
+    `当前负载受${{ compute: "计算吞吐", bandwidth: "供数带宽", latency: "访存延迟" }[service.bottleneck]}限制。升级收益来自周期分解。`;
   renderOrders();
   renderChapters();
   renderJournal();

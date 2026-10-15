@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c100e" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="黄Sir与Lisa的算力创业竞赛：自动经营、研发硬件、IPO融资、回购股票，争夺GPT-3时刻与商业首单。"
+    />
+    <title>算力创业赛 · 黄Sir vs Lisa</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c8f58b'/%3E%3Cpath d='m9 9 22 22M31 9 9 31M9 9h7M9 9v7M31 9h-7m7 0v7' fill='none' stroke='%231c2715' stroke-width='3'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../game.css" />
+    <link rel="stylesheet" href="./arena.css" />
+    <script type="module" src="./arena.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到创业赛</a>
+    <aside class="rail" aria-label="快捷导航">
+      <a class="rail-brand" href="../" aria-label="回到算力工坊"
+        ><svg viewBox="0 0 32 32">
+          <rect x="7" y="7" width="18" height="18" rx="3" />
+          <path
+            d="M12 3v4m8-4v4M12 25v4m8-4v4M3 12h4m-4 8h4m18-8h4m-4 8h4M12 12h8v8h-8z"
+          /></svg
+      ></a>
+      <nav class="rail-nav">
+        <a class="rail-button" href="../" aria-label="算力工坊" title="算力工坊"
+          ><svg viewBox="0 0 24 24">
+            <rect x="4" y="4" width="6" height="6" rx="1" />
+            <rect x="14" y="4" width="6" height="6" rx="1" />
+            <rect x="4" y="14" width="6" height="6" rx="1" />
+            <rect x="14" y="14" width="6" height="6" rx="1" /></svg></a
+        ><a
+          class="rail-button active"
+          href="./"
+          aria-current="page"
+          aria-label="PvE创业赛"
+          title="PvE创业赛"
+          ><svg viewBox="0 0 24 24">
+            <path
+              d="m4 4 16 16M20 4 4 20M4 4h5M4 4v5m16-5h-5m5 0v5M3 16l5 5m8-18 5 5"
+            /></svg></a
+        ><button
+          class="rail-button"
+          id="rail-market"
+          aria-label="打开模拟股价窗口"
+          title="模拟股价窗口"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4v16h16M7 15l4-5 4 2 5-7M16 5h4v4" />
+          </svg>
+        </button>
+      </nav>
+      <div class="rail-bottom">
+        <a
+          href="../../"
+          class="rail-button"
+          aria-label="GPU仿真工作台"
+          title="GPU仿真工作台"
+          ><svg viewBox="0 0 24 24">
+            <path d="m9 5-7 7 7 7m6-14 7 7-7 7" /></svg></a
+        ><button
+          id="rules-button"
+          class="rail-button"
+          aria-label="竞赛规则"
+          title="竞赛规则"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 3h.01" />
+          </svg></button
+        ><span class="rail-status"></span>
+      </div>
+    </aside>
+    <div class="app-shell">
+      <header class="topbar">
+        <a href="../" class="wordmark"
+          ><strong>黄Sir<span>的算力工坊</span></strong
+          ><span class="alpha-tag">PvE LAB</span></a
+        >
+        <div class="topbar-right">
+          <span id="save-status" class="save-status"
+            ><span class="status-dot"></span>创业赛独立存档</span
+          ><button id="pause-button" class="outline-button small-button">
+            暂停全场 Ⅱ</button
+          ><button
+            id="restart-button"
+            class="icon-button"
+            aria-label="重新开始创业赛"
+            title="重新开始创业赛"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M3 10a9 9 0 1 1 0 4m0-10v6h6" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <main id="main">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">THE NEXT BIG THING WON'T WAIT.</p>
+            <h1>算力创业赛<span class="heading-dot">.</span></h1>
+            <p class="page-subtitle">
+              你的 ALU 在努力，对手也没有下班。谁先迎来 GPT-3 时刻？
+            </p>
+          </div>
+          <div class="race-clock">
+            <span class="status-dot"></span
+            ><span id="world-status">所有公司同步经营</span
+            ><strong id="world-time">00:00</strong>
+          </div>
+        </div>
+        <nav class="arena-tabs" aria-label="游戏模式">
+          <a href="../">经营工坊 <span>WORKSHOP</span></a
+          ><a class="active" href="./" aria-current="page"
+            >创业 PvE <span>VENTURE RACE</span></a
+          ><button id="market-open">
+            模拟股价 <span>MARKET</span><span>↗</span></button
+          ><span class="arena-tab-note">三家公司 · 一次机会 · 共同的时钟</span>
+        </nav>
+
+        <section class="race-milestones" aria-label="赛场里程碑">
+          <article>
+            <span class="milestone-icon">◈</span>
+            <div>
+              <span class="tiny-label">01 / FIRST CAPITAL</span>
+              <h2>第一桶金</h2>
+              <p id="gold-owner">累计经营收入 $1,000，谁先做到？</p>
+            </div>
+            <span class="milestone-state" id="gold-state">争夺中</span>
+          </article>
+          <article>
+            <span class="milestone-icon">✳</span>
+            <div>
+              <span class="tiny-label">02 / GPT-3 MOMENT</span>
+              <h2>GPT-3 时刻</h2>
+              <p id="gpt-owner">备齐硬件，完成模型训练。</p>
+            </div>
+            <span class="milestone-state" id="gpt-state">争夺中</span>
+          </article>
+          <article>
+            <span class="milestone-icon">⚑</span>
+            <div>
+              <span class="tiny-label">03 / FIRST TO MARKET</span>
+              <h2>商业首单</h2>
+              <p id="deal-owner">从模型到产品，拿下先发优势。</p>
+            </div>
+            <span class="milestone-state" id="deal-state">争夺中</span>
+          </article>
+        </section>
+        <section
+          id="winner-banner"
+          class="winner-banner"
+          role="status"
+          hidden
+        ></section>
+
+        <div class="race-grid">
+          <div class="race-main-column">
+            <section class="panel founder-arena" aria-labelledby="arena-title">
+              <div class="panel-heading">
+                <div>
+                  <span class="section-number">01</span>
+                  <h2 id="arena-title">同一起点，不同选择</h2>
+                  <span class="pill">LIVE ECONOMY</span>
+                </div>
+                <span id="leader-note" class="live-label"
+                  ><span class="status-dot"></span>竞争持续进行中</span
+                >
+              </div>
+              <div class="founder-duel">
+                <div class="founder-side player-side">
+                  <div class="founder-title">
+                    <span class="founder-team">GREEN TEAM / 你</span>
+                    <h3>黄Sir<span>从一颗 ALU 开始</span></h3>
+                  </div>
+                  <img
+                    src="../assets/huang-sir.svg"
+                    alt="手持绿色芯片的黄Sir"
+                    class="founder-art"
+                  />
+                  <div class="founder-quote" id="player-quote">
+                    “先挣第一桶金，<br />再谈改变世界。”
+                  </div>
+                  <div class="founder-lineup" id="player-lineup">
+                    1 ALU · 无缓存 · 无显存
+                  </div>
+                </div>
+                <div class="versus-divider">
+                  <span>VS</span><small>BUILD.<br />EARN.<br />EVOLVE.</small>
+                </div>
+                <div class="founder-side lisa-side">
+                  <div class="founder-title">
+                    <span class="founder-team">RED TEAM / AI 对手</span>
+                    <h3>Lisa<span>稳健扩张，持续研发</span></h3>
+                  </div>
+                  <img
+                    src="./assets/lisa.svg"
+                    alt="手持红色芯片、戴眼镜的Lisa卡通形象"
+                    class="founder-art"
+                  />
+                  <div class="founder-quote" id="lisa-quote">
+                    “你在规划未来，<br />我已经开始交付。”
+                  </div>
+                  <div class="founder-lineup" id="lisa-lineup">
+                    1 ALU · 无缓存 · 无显存
+                  </div>
+                </div>
+              </div>
+              <div id="company-races" class="company-races"></div>
+              <div class="arena-bottom">
+                <span>对手会自主接单、投资和启动训练，离线时也同步推进。</span
+                ><button id="compute-button" class="primary-button">
+                  <svg viewBox="0 0 20 20">
+                    <path d="m11 2-7 9h5l-1 7 8-10h-5z" /></svg
+                  >参与计算 <kbd>SPACE</kbd>
+                </button>
+              </div>
+            </section>
+
+            <section class="company-dashboard" aria-label="你的公司数据">
+              <article>
+                <span>现金余额</span><strong id="cash-value">$0.00</strong
+                ><small id="cash-note">研发、融资与回购共用现金</small>
+              </article>
+              <article>
+                <span>预计净现金流</span
+                ><strong id="net-value">+$0.00 / s</strong
+                ><small id="net-note">订单收入 − 运营支出</small>
+              </article>
+              <article>
+                <span>运营成本</span><strong id="cost-value">$0.00 / s</strong
+                ><small>硬件越多，电费与维护越高</small>
+              </article>
+              <article>
+                <span>信用额度使用</span
+                ><strong id="debt-value">$0 / $250</strong
+                ><small id="runway-note">现金不足先透支，触线后破产</small>
+              </article>
+            </section>
+            <section id="risk-panel" class="risk-panel">
+              <div>
+                <span id="risk-icon">◇</span
+                ><strong id="risk-title">先求生，再求快。</strong>
+                <p id="risk-copy">留一点现金周转，研发不是唯一的支出。</p>
+              </div>
+              <div class="debt-meter">
+                <span>负债</span>
+                <div class="progress-track">
+                  <span id="debt-progress"></span>
+                </div>
+                <span>破产线</span>
+              </div>
+            </section>
+
+            <section
+              class="panel project-panel"
+              aria-labelledby="project-title"
+            >
+              <div class="panel-heading">
+                <div>
+                  <span class="section-number">02</span>
+                  <h2 id="project-title">你的 GPT-3 计划</h2>
+                  <button id="model-button" class="model-link" type="button">
+                    性能模型 ↗
+                  </button>
+                </div>
+                <span class="pill" id="project-phase">筹备中</span>
+              </div>
+              <div class="project-content">
+                <div>
+                  <p class="project-story" id="project-story">
+                    客户要的不再是一串数字，而是一台能续写故事的机器。先备齐计算、存储与调度，再把它变成产品。
+                  </p>
+                  <div
+                    class="project-requirements"
+                    id="project-requirements"
+                  ></div>
+                  <div class="project-stage-bars">
+                    <div>
+                      <span>模型训练</span>
+                      <div class="progress-track">
+                        <span id="training-progress"></span>
+                      </div>
+                      <b id="training-percent">0%</b>
+                    </div>
+                    <div>
+                      <span>商业首单</span>
+                      <div class="progress-track">
+                        <span id="commercial-progress"></span>
+                      </div>
+                      <b id="commercial-percent">0%</b>
+                    </div>
+                  </div>
+                </div>
+                <button id="project-button" class="primary-button" disabled>
+                  准备好硬件再出发 →
+                </button>
+              </div>
+              <p class="project-footnote">
+                训练及交付期间投入 70% 算力，日常经营保留
+                30%，运营成本继续计入。
+              </p>
+            </section>
+          </div>
+
+          <aside class="race-sidebar" aria-label="模拟市场与融资">
+            <section class="panel market-window" aria-labelledby="market-title">
+              <div class="window-titlebar">
+                <span class="window-controls"><i></i><i></i><i></i></span>
+                <h2 id="market-title">模拟股价窗口</h2>
+                <button id="market-expand" aria-label="展开模拟股价窗口">
+                  ↗
+                </button>
+              </div>
+              <div class="market-content">
+                <div class="market-topline">
+                  <span class="market-symbol" id="market-symbol">HSIR</span
+                  ><span class="simulation-label">游戏内模拟</span>
+                </div>
+                <div class="market-price">
+                  <strong id="stock-price">$1.00</strong
+                  ><span id="stock-change">+0.00%</span>
+                </div>
+                <div class="market-company-tabs" id="market-company-tabs"></div>
+                <svg
+                  id="stock-chart"
+                  class="stock-chart"
+                  viewBox="0 0 400 170"
+                  role="img"
+                  aria-label="三家公司模拟股价走势图"
+                ></svg>
+                <div class="chart-caption">
+                  <span>开赛</span><span>估值随收入、硬件和负债变化</span
+                  ><span>现在</span>
+                </div>
+                <div class="market-facts">
+                  <div>
+                    <span>公司估值</span><strong id="stock-cap">$1,000</strong>
+                  </div>
+                  <div>
+                    <span>创始人持股</span
+                    ><strong id="stock-ownership">100%</strong>
+                  </div>
+                  <div>
+                    <span>流通股数</span><strong id="stock-float">0 股</strong>
+                  </div>
+                  <div>
+                    <span>上市状态</span
+                    ><strong id="stock-listing">未上市 · 估值参考</strong>
+                  </div>
+                </div>
+                <details class="stock-explainer">
+                  <summary>
+                    股价、估值和现金有什么区别？ <span>＋</span>
+                  </summary>
+                  <p>
+                    股价是每股的模拟价格，公司估值 = 股价 ×
+                    总股数。股价上涨不会自动变成公司现金；IPO
+                    才会融资，回购则要实际花钱。
+                  </p>
+                  <p>
+                    这张图属于游戏模型。未上市公司的曲线展示的是每股估值参考。
+                  </p>
+                </details>
+              </div>
+            </section>
+            <section
+              class="panel financing-panel"
+              aria-labelledby="financing-title"
+            >
+              <div class="panel-heading">
+                <div>
+                  <span class="section-number">03</span>
+                  <h2 id="financing-title">资本工具箱</h2>
+                </div>
+                <span class="pill">YOUR COMPANY</span>
+              </div>
+              <div class="finance-tool">
+                <div class="finance-tool-heading">
+                  <span class="tool-glyph">↗</span>
+                  <div>
+                    <h3>IPO · 用股权换现金</h3>
+                    <p id="ipo-copy">经营收入达标后，开放一次公开融资。</p>
+                  </div>
+                </div>
+                <div class="finance-quote" id="ipo-quote">筹备上市中</div>
+                <button
+                  id="ipo-button"
+                  class="primary-button full-width"
+                  disabled
+                >
+                  申请 IPO
+                </button>
+                <p class="finance-help">
+                  新增 250 股，首次融资后创始人持股降至
+                  80%。融资款不计入经营收入。
+                </p>
+              </div>
+              <div class="finance-tool">
+                <div class="finance-tool-heading">
+                  <span class="tool-glyph">↙</span>
+                  <div>
+                    <h3>回购 · 拿回一部分股权</h3>
+                    <p>现金充裕时，再考虑提高持股比例。</p>
+                  </div>
+                </div>
+                <div class="buyback-form">
+                  <label for="buyback-shares">回购股数</label
+                  ><input
+                    id="buyback-shares"
+                    type="number"
+                    min="1"
+                    max="250"
+                    step="1"
+                    value="10"
+                  /><span>股</span>
+                </div>
+                <p class="finance-quote" id="buyback-quote">IPO 后开放回购</p>
+                <button
+                  id="buyback-button"
+                  class="outline-button full-width"
+                  disabled
+                >
+                  确认回购
+                </button>
+                <p class="finance-help">
+                  只可回购流通股，并至少留足 10
+                  秒运营成本。回购会减少现金，请留意破产线。
+                </p>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <section class="race-upgrades" aria-labelledby="upgrades-title">
+          <div class="section-heading">
+            <div>
+              <span class="section-number">04</span>
+              <h2 id="upgrades-title">研发与扩张</h2>
+              <span class="section-description"
+                >技术决定能力，现金流决定能活多久。</span
+              >
+            </div>
+            <span class="research-note" id="research-note"
+              >经营收入解锁新图纸 · IPO 不跳过研发门槛</span
+            >
+          </div>
+          <div class="upgrade-grid" id="upgrade-grid"></div>
+        </section>
+        <div class="race-bottom-grid">
+          <section
+            class="panel leaderboard-panel"
+            aria-labelledby="leaderboard-title"
+          >
+            <div class="panel-heading">
+              <div>
+                <span class="section-number">05</span>
+                <h2 id="leaderboard-title">竞争格局</h2>
+              </div>
+              <span class="live-label"
+                ><span class="status-dot"></span>实时发展</span
+              >
+            </div>
+            <div id="leaderboard" class="leaderboard"></div>
+          </section>
+          <section class="panel news-panel" aria-labelledby="news-title">
+            <div class="panel-heading">
+              <div>
+                <span class="section-number">06</span>
+                <h2 id="news-title">赛场快讯</h2>
+              </div>
+              <span class="pill">THE FEED</span>
+            </div>
+            <div id="race-news" class="race-news" aria-live="polite"></div>
+          </section>
+        </div>
+        <footer class="page-footer">
+          <span
+            ><span class="footer-chip">▦</span> 算力创业赛
+            <span class="muted">/</span> YOUR RIVALS NEVER SLEEP.</span
+          ><span
+            >经营与股价均为游戏模拟 <a href="../">返回算力工坊 ↗</a
+            ><a href="../../">GPU 工作台 ↗</a></span
+          >
+        </footer>
+      </main>
+    </div>
+    <div
+      class="toast-container"
+      id="toast-container"
+      role="status"
+      aria-live="polite"
+    ></div>
+    <dialog id="rules-dialog">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">EVERY DECISION HAS A COST.</p>
+            <h2>创业赛怎么赢？</h2>
+          </div>
+          <button class="icon-button" aria-label="关闭规则">✕</button>
+        </div>
+        <ol class="rules-list">
+          <li>
+            <strong>三家公司同时起步。</strong>你、Lisa 和灰盒实验室都从一颗 ALU
+            开始，AI 对手会自主投资。
+          </li>
+          <li>
+            <strong>接单赚钱，选择研发。</strong
+            >现金用于扩张，经营收入开放图纸；投资与新负载互相推动。
+          </li>
+          <li>
+            <strong>争夺三个先发时刻。</strong>累计经营收入 $1,000、完成 GPT-3
+            训练、拿下商业首单，分别记录最早到达者。
+          </li>
+          <li>
+            <strong>IPO 和回购各有代价。</strong
+            >融资稀释股权，回购消耗现金；股价不是现金余额。
+          </li>
+          <li>
+            <strong>留意净现金流。</strong
+            >硬件持续产生成本，训练期间日常收入下降。现金用完可透支，负债达到信用额度就会破产。
+          </li>
+        </ol>
+        <p>
+          比赛有独立存档，离线双方同步经营，最多计入 8
+          小时。先发冠军产生后，其余公司可以继续经营。随时可暂停全场或重开。
+        </p>
+        <button class="primary-button full-width">开始关注竞争 →</button>
+      </form>
+    </dialog>
+    <dialog id="restart-dialog">
+      <form method="dialog">
+        <p class="eyebrow">ANOTHER SHOT AT THE FUTURE.</p>
+        <h2>所有人，重回车库？</h2>
+        <p>
+          本场创业赛将清空。你和对手重新从一颗 ALU
+          开始，经营工坊的原存档不受影响。
+        </p>
+        <div class="dialog-buttons">
+          <button class="outline-button" value="cancel">继续本场</button
+          ><button class="primary-button" id="restart-confirm" type="button">
+            重开创业赛 →
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="stock-dialog" class="stock-dialog">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">FICTIONAL MARKET. REAL TRADEOFFS.</p>
+            <h2>模拟股价窗口</h2>
+          </div>
+          <button class="icon-button" aria-label="关闭股价窗口">✕</button>
+        </div>
+        <div class="market-company-tabs" id="large-market-tabs"></div>
+        <svg
+          id="large-stock-chart"
+          class="stock-chart large-stock-chart"
+          viewBox="0 0 800 320"
+          role="img"
+          aria-label="展开的三家公司模拟股价走势图"
+        ></svg>
+        <p id="large-stock-caption"></p>
+        <p>
+          经营表现与技术进展改变估值；融资和回购改变现金与股权。未上市曲线为每股估值参考，均不是真实证券行情。
+        </p>
+      </form>
+    </dialog>
+    <dialog id="model-dialog" class="model-dialog">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">COMPUTE × MEMORY × OVERLAP</p>
+            <h2>性能模型检查器</h2>
+          </div>
+          <button class="icon-button" aria-label="关闭性能模型">✕</button>
+        </div>
+        <p id="model-description"></p>
+        <label class="model-select"
+          >观察负载<select id="model-workload">
+            <option value="fp32">FP32 浮点计算</option>
+            <option value="stream">流式归约</option>
+            <option value="conv">卷积</option>
+            <option value="gemm">GEMM 矩阵乘</option>
+            <option value="async">异步 Tile</option>
+            <option value="attention">注意力</option></select
+          ><span id="model-kind">FP32</span></label
+        >
+        <div class="model-metrics">
+          <div>
+            <span>模型吞吐</span><strong id="model-throughput"></strong>
+          </div>
+          <div>
+            <span>主导瓶颈</span><strong id="model-bottleneck"></strong>
+          </div>
+          <div><span>总服务时间</span><strong id="model-cycles"></strong></div>
+          <div><span>计算周期</span><strong id="model-compute"></strong></div>
+          <div>
+            <span>数据搬运周期</span><strong id="model-memory"></strong>
+          </div>
+          <div><span>延迟成本</span><strong id="model-latency"></strong></div>
+          <div><span>模型缓存命中</span><strong id="model-hit"></strong></div>
+          <div>
+            <span>搬运重叠比例</span><strong id="model-overlap"></strong>
+          </div>
+        </div>
+        <details class="model-details">
+          <summary>展开硬件与工作负载输入</summary>
+          <pre id="model-features"></pre>
+        </details>
+        <p class="model-note">
+          这是归一化的教学性能模型，未使用真实芯片实测或 XGBoost
+          训练。周期分解反映明确的计算、访存与重叠假设；游戏收入另受市场需求限制。
+        </p>
+      </form>
+    </dialog>
+    <dialog id="offline-dialog">
+      <form method="dialog">
+        <p class="eyebrow">WHILE YOU WERE AWAY</p>
+        <h2>你离开时，赛场也在发展。</h2>
+        <p id="offline-copy"></p>
+        <div class="offline-summary" id="offline-summary"></div>
+        <button class="primary-button full-width">回到赛场 →</button>
+      </form>
+    </dialog>
+    <noscript
+      ><p class="noscript-message">
+        请开启 JavaScript，加入算力创业赛。
+      </p></noscript
+    >
+  </body>
+</html>

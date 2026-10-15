@@ -14,6 +14,16 @@
 
 浏览器每 5 秒自动存档，支持导入/导出、离线收益（最多 8 小时）、减少动画和确认重置。关卡、算力、命中率与价格属于游戏设定，独立于工作台的仿真与实机数据。[完整玩法与剧情策划](docs/idle-game-design.md) · [验证记录](docs/idle-game-validation.md)
 
+## 创业 PvE：与 Lisa 争夺 GPT-3 时刻
+
+[在线创业赛](https://liuweibupt.github.io/GPU-sim/web/game/pve/) 是独立的新页面，保留原工坊和工作台。你、Lisa 与虚构的灰盒实验室从相同的一颗 ALU 起步；对手会持续接单、投资、融资和研发。赛场分别记录第一桶金、GPT-3 模型训练与商业首单的最早到达者，离线时三家公司也按同一时钟经营。
+
+新增模拟股价窗口、一次性 IPO、流通股回购，以及运营成本、透支和破产线。IPO 进入公司现金但不计入营业收入，回购真实减少现金；盲目扩张可能让公司亏损破产。创业赛有独立存档，可以暂停全场或重开。
+
+工坊与创业赛的硬件效果现在共享**计算—存储—重叠解析模型**，从指令发射、工作集、缓存容量、带宽、延迟隐藏和 TMA/TMEM 数据路径推导周期与瓶颈，替代部件倍率直接相乘。界面可检查模型输入和周期分解。参数尚未用实机标定，未宣称训练了 XGBoost，也未将 PipeWeave 外推到单 ALU。
+
+`npm run benchmark:pve` 可复现主动经营获胜、挂机被对手超过及过度扩张破产的完整策略。[玩法与经济规则](docs/pve-design.md) · [性能模型与本地 PipeWeave 核查](docs/compute-model.md) · [策略结果](docs/pve-balance.json) · [验证记录](docs/pve-validation.md)
+
 ## GPU 城市界面
 
 - 默认使用 **H100 SXM 规模的数据流城市**：完整 132 个 SM、5 个 HBM 服务端点，以及逻辑 L2 / NoC。数量依据 [NVIDIA 规格](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，路由、带宽和周期采用本仓库明确标注的教学模型。

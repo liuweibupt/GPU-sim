@@ -6,9 +6,10 @@
 
 - 原 GPU 工作台保留在 <https://liuweibupt.github.io/GPU-sim/web/>，站点首页仍跳转到这里。
 - 黄Sir的算力工坊使用独立页面 <https://liuweibupt.github.io/GPU-sim/web/game/>。
+- 与 Lisa 竞赛的创业 PvE 使用新页面 <https://liuweibupt.github.io/GPU-sim/web/game/pve/>，有独立存档、模拟行情与资本模块。
 - 工作台右上角可进入游戏，游戏侧栏和页脚可返回工作台。
 
-现有构建会一起复制 `web/` 和 `lib/`，因此无需替换站点入口或另建仓库。游戏代码所在的 `codex/huang-sir-idle` 分支保留；发布到 `main` 后，两张网页由同一次 Pages 工作流共同部署。后续发布需继续包含两个页面，避免部署不含游戏的旧版本或仅上传单个子目录导致另一页面丢失。
+现有构建会一起复制 `web/` 和 `lib/`，因此无需替换站点入口或另建仓库。工坊分支 `codex/huang-sir-idle` 与创业赛分支 `codex/huang-sir-pve` 保留；发布到 `main` 后，三张网页由同一次 Pages 工作流共同部署。后续发布需继续包含全部页面，避免部署旧版本或仅上传单个子目录导致页面丢失。
 
 ## 静态构建
 

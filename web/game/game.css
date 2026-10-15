@@ -2330,3 +2330,72 @@ dialog p:not(.eyebrow) {
     font-size: 8px;
   }
 }
+.view-tabs > .pve-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #d9a595;
+  padding-bottom: 14px;
+  height: 47px;
+  white-space: nowrap;
+}
+.pve-nav-link > span {
+  font: 8px var(--mono);
+  color: #a67c6e;
+}
+.pve-nav-link:hover {
+  color: #f5c4b4;
+}
+@media (max-width: 960px) {
+  .view-tabs {
+    gap: 21px;
+  }
+  .pve-nav-link > span {
+    display: none;
+  }
+  .view-tabs > .pve-nav-link {
+    font-size: 11px;
+  }
+}
+@media (max-width: 720px) {
+  .view-tabs {
+    gap: 18px;
+  }
+  .view-tabs > .pve-nav-link {
+    font-size: 10px;
+    height: 43px;
+    padding-bottom: 12px;
+  }
+}
+.service-model-note {
+  padding: 10px 21px;
+  border-top: 1px solid #293824;
+  background: #11190f;
+  font-size: 9px;
+  color: #81976f;
+}
+.service-model-note summary {
+  cursor: pointer;
+}
+.service-model-note p {
+  font-size: 9px;
+  line-height: 1.9;
+  margin-top: 9px;
+  color: #8ea67c;
+}
+.service-model-note p:first-of-type {
+  font: 9px/1.9 var(--mono);
+  color: #bad59f;
+}
+@media (max-width: 720px) {
+  .service-model-note {
+    padding: 10px 14px;
+    font-size: 8px;
+  }
+  .service-model-note p,
+  .service-model-note p:first-of-type {
+    font-size: 8px;
+  }
+}

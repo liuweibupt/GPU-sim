@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {getWorkloadPerformance} from '../lib/compute-model.js';
 import {
   UPGRADES, CHAPTERS, createGame, getStats, getUpgradeCost, canBuyUpgrade,
   buyUpgrade, tickGame, manualCompute, startChallenge, restoreGame, serializeGame,
@@ -150,7 +151,8 @@ test('AlexNet checks prerequisites, shares compute with customers and awards its
   assert.equal(startChallenge(state, 'alexnet').ok, true);
   assert.equal(startChallenge(state, 'alexnet').ok, false);
   const jobsBefore = state.completed;
-  const events = tickGame(state, 300);
+  const deadline = CHAPTERS.find(chapter => chapter.id === 'alexnet').work / (getWorkloadPerformance(state.levels, 'conv').throughput * .7) + 1;
+  const events = tickGame(state, deadline);
   assert.equal(state.challenge, null);
   assert.deepEqual(state.won, ['scalar', 'vector', 'graphics', 'physics', 'alexnet']);
   assert.ok(state.completed > jobsBefore);
@@ -171,12 +173,16 @@ test('chronological chapters evolve from Tensor Core through TMA and TMEM to an 
   assert.equal(startChallenge(state, 'factory').ok, false);
   for (const chapter of CHAPTERS) {
     assert.equal(startChallenge(state, chapter.id).ok, true);
-    tickGame(state, 300);
+    const kind = ['scalar', 'vector', 'graphics'].includes(chapter.id) ? 'fp32' : chapter.id === 'physics' ? 'stream' : chapter.id === 'alexnet' ? 'conv' : chapter.id === 'transformer' ? 'gemm' : chapter.id === 'training' ? 'async' : 'attention';
+    const deadline = chapter.work / (getWorkloadPerformance(state.levels, kind).throughput * .7) + 1;
+    assert.ok(deadline < 1000, `${chapter.id} stays playable within a bounded window`);
+    tickGame(state, deadline);
     assert.ok(state.won.includes(chapter.id), `${chapter.id} completed`);
   }
   assert.equal(getStats(state).chapterIndex, CHAPTERS.length);
   const before = state.completed;
-  tickGame(state, 10);
+  const customerDeadline = state.activeJob ? (state.activeJob.work - state.activeJob.progress) / getWorkloadPerformance(state.levels, state.activeJob.kind).throughput + 1 : 10;
+  tickGame(state, customerDeadline);
   assert.ok(state.completed > before);
 });
 

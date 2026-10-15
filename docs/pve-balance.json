@@ -1,0 +1,330 @@
+{
+  "model": {
+    "id": "analytical-compute-memory",
+    "version": 1,
+    "calibration": "unmeasured teaching parameters",
+    "bareFp32": {
+      "operations": 256,
+      "bytes": 1024,
+      "cycles": 1362,
+      "throughput": 1
+    }
+  },
+  "policyNotes": [
+    "All companies start with one ALU and no money.",
+    "Active policy clicks once per simulated second, follows the published hardware plan, and uses one IPO.",
+    "Passive demand is capped; manual participation is an additional active-play benefit.",
+    "Overexpansion invests in ALU/clock only and stops manual participation after expanding.",
+    "These deterministic scenarios demonstrate viability and failure, not every possible strategy."
+  ],
+  "activeHardwarePlan": [
+    "alu",
+    "l1",
+    "alu",
+    "dram",
+    "clock",
+    "alu",
+    "scheduler",
+    "l2",
+    "alu",
+    "clock",
+    "alu",
+    "tensor",
+    "l1",
+    "alu",
+    "scheduler",
+    "l2",
+    "tensor",
+    "alu",
+    "hbm"
+  ],
+  "scenarios": [
+    {
+      "strategy": "active-balanced",
+      "elapsedSeconds": 569,
+      "winnerId": "player",
+      "playerBankrupt": false,
+      "milestones": {
+        "firstCapital": {
+          "winnerIds": [
+            "player"
+          ],
+          "elapsed": 167
+        },
+        "gpt3": {
+          "winnerIds": [
+            "player"
+          ],
+          "elapsed": 548
+        },
+        "commercial": {
+          "winnerIds": [
+            "player"
+          ],
+          "elapsed": 569
+        }
+      },
+      "companies": [
+        {
+          "id": "player",
+          "cash": 381.97,
+          "operatingRevenue": 5844,
+          "ipoProceeds": 438.42,
+          "operatingCostPerSecond": 3.44,
+          "passiveNetFlowPerSecond": 7.56,
+          "debt": 0,
+          "creditLimit": 834.4,
+          "hardware": {
+            "alu": 7,
+            "clock": 2,
+            "l1": 2,
+            "dram": 1,
+            "l2": 2,
+            "scheduler": 2,
+            "tensor": 2,
+            "hbm": 1,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "complete"
+        },
+        {
+          "id": "lisa",
+          "cash": 241.18,
+          "operatingRevenue": 1857,
+          "ipoProceeds": 428.27,
+          "operatingCostPerSecond": 2.17,
+          "passiveNetFlowPerSecond": 8.83,
+          "debt": 0,
+          "creditLimit": 435.7,
+          "hardware": {
+            "alu": 6,
+            "clock": 2,
+            "l1": 2,
+            "dram": 1,
+            "l2": 1,
+            "scheduler": 1,
+            "tensor": 1,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        },
+        {
+          "id": "grey",
+          "cash": 315.69,
+          "operatingRevenue": 2157,
+          "ipoProceeds": 286.13,
+          "operatingCostPerSecond": 1.74,
+          "passiveNetFlowPerSecond": 9.26,
+          "debt": 0,
+          "creditLimit": 465.7,
+          "hardware": {
+            "alu": 5,
+            "clock": 1,
+            "l1": 2,
+            "dram": 2,
+            "l2": 1,
+            "scheduler": 2,
+            "tensor": 1,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        }
+      ]
+    },
+    {
+      "strategy": "idle",
+      "elapsedSeconds": 1334,
+      "winnerId": "grey",
+      "playerBankrupt": false,
+      "milestones": {
+        "firstCapital": {
+          "winnerIds": [
+            "grey"
+          ],
+          "elapsed": 299
+        },
+        "gpt3": {
+          "winnerIds": [
+            "grey"
+          ],
+          "elapsed": 1306
+        },
+        "commercial": {
+          "winnerIds": [
+            "grey"
+          ],
+          "elapsed": 1334
+        }
+      },
+      "companies": [
+        {
+          "id": "player",
+          "cash": 762.82,
+          "operatingRevenue": 977,
+          "ipoProceeds": 0,
+          "operatingCostPerSecond": 0.16,
+          "passiveNetFlowPerSecond": 0.55,
+          "debt": 0,
+          "creditLimit": 347.7,
+          "hardware": {
+            "alu": 0,
+            "clock": 0,
+            "l1": 0,
+            "dram": 0,
+            "l2": 0,
+            "scheduler": 0,
+            "tensor": 0,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        },
+        {
+          "id": "lisa",
+          "cash": 799.27,
+          "operatingRevenue": 6080,
+          "ipoProceeds": 428.27,
+          "operatingCostPerSecond": 2.93,
+          "passiveNetFlowPerSecond": 8.07,
+          "debt": 0,
+          "creditLimit": 858,
+          "hardware": {
+            "alu": 7,
+            "clock": 2,
+            "l1": 2,
+            "dram": 1,
+            "l2": 2,
+            "scheduler": 2,
+            "tensor": 2,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        },
+        {
+          "id": "grey",
+          "cash": 0,
+          "operatingRevenue": 6513,
+          "ipoProceeds": 286.13,
+          "operatingCostPerSecond": 3.01,
+          "passiveNetFlowPerSecond": 7.99,
+          "debt": 266.51,
+          "creditLimit": 901.3,
+          "hardware": {
+            "alu": 7,
+            "clock": 1,
+            "l1": 2,
+            "dram": 2,
+            "l2": 2,
+            "scheduler": 2,
+            "tensor": 2,
+            "hbm": 1,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "complete"
+        }
+      ]
+    },
+    {
+      "strategy": "compute-overexpansion",
+      "elapsedSeconds": 821,
+      "winnerId": null,
+      "playerBankrupt": true,
+      "milestones": {
+        "firstCapital": {
+          "winnerIds": [
+            "grey"
+          ],
+          "elapsed": 299
+        },
+        "gpt3": {
+          "winnerIds": [],
+          "elapsed": null
+        },
+        "commercial": {
+          "winnerIds": [],
+          "elapsed": null
+        }
+      },
+      "companies": [
+        {
+          "id": "player",
+          "cash": 0,
+          "operatingRevenue": 1246,
+          "ipoProceeds": 280.97,
+          "operatingCostPerSecond": 2.9,
+          "passiveNetFlowPerSecond": 0,
+          "debt": 375.66,
+          "creditLimit": 374.6,
+          "hardware": {
+            "alu": 7,
+            "clock": 4,
+            "l1": 0,
+            "dram": 0,
+            "l2": 0,
+            "scheduler": 0,
+            "tensor": 0,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        },
+        {
+          "id": "lisa",
+          "cash": 59.08,
+          "operatingRevenue": 2867,
+          "ipoProceeds": 428.27,
+          "operatingCostPerSecond": 2.3,
+          "passiveNetFlowPerSecond": 8.7,
+          "debt": 0,
+          "creditLimit": 536.7,
+          "hardware": {
+            "alu": 6,
+            "clock": 2,
+            "l1": 2,
+            "dram": 1,
+            "l2": 2,
+            "scheduler": 2,
+            "tensor": 1,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        },
+        {
+          "id": "grey",
+          "cash": 338.61,
+          "operatingRevenue": 3206,
+          "ipoProceeds": 286.13,
+          "operatingCostPerSecond": 2.01,
+          "passiveNetFlowPerSecond": 8.99,
+          "debt": 0,
+          "creditLimit": 570.6,
+          "hardware": {
+            "alu": 6,
+            "clock": 1,
+            "l1": 2,
+            "dram": 2,
+            "l2": 2,
+            "scheduler": 2,
+            "tensor": 1,
+            "hbm": 0,
+            "tma": 0,
+            "tmem": 0
+          },
+          "project": "locked"
+        }
+      ]
+    }
+  ]
+}
