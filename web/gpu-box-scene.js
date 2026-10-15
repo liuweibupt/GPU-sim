@@ -237,7 +237,7 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
     const value = byId.get(component.id);
     evidenceText.append(html("strong", "", component.label ?? component.id), document.createTextNode(component.configuredOnly
       ? " · 仅配置 SM，占位不表示空闲，也没有可推断的任务或流量。"
-      : ` · ${component.id} · ${value?.active ?? 0} 个进行中区间 / ${value?.completed ?? 0} 个已结束区间。点击进入 SM。`));
+      : ` · ${component.id} · ${value?.active ?? 0} 个进行中区间 / ${value?.endedSpans ?? value?.completed ?? 0} 个已结束区间${value?.pointTotal ? ` / ${value.observed} 个已观测点` : ''}。点击进入 SM。`));
   }
   function inspectFlow(event) {
     inspectedEvent = event; inspectButton.hidden = false; evidenceText.replaceChildren();
@@ -441,7 +441,7 @@ export function createGpuBoxScene({components = [], eventsById = new Map(), leve
     const activeText = html("span"), completedText = html("span"); activeText.append(active, document.createTextNode(" 进行中")); completedText.append(completed, document.createTextNode(" 区间结束")); state.append(activeText, completedText);
     const mini = html("span", "gpu-box-native-mini"), progress = html("span"); mini.append(progress);
     item.append(head, id, state, mini); item.addEventListener("click", () => onSelectComponent(component.id)); list.append(item);
-    nativeRows.push({id: component.id, item, active, completed, progress});
+    nativeRows.push({id: component.id, item, active, completed, completedText, progress});
   }
   root.append(list);
   if (level === "gpu" && configuredSms !== null && configuredSms > components.length) {
@@ -452,9 +452,12 @@ export function createGpuBoxScene({components = [], eventsById = new Map(), leve
   }
   if (!components.length) root.append(html("p", "gpu-task-empty", "当前层级没有独立原生组件，事件仍保留在时间线。"));
   return {element: root, update({byId = new Map(), time = 0, selectedComponentId = null} = {}) {
-    for (const {id, item, active, completed, progress} of nativeRows) {
+    for (const {id, item, active, completed, completedText, progress} of nativeRows) {
       const value = byId.get(id);
-      active.textContent = (value?.active ?? 0).toLocaleString(); completed.textContent = (value?.completed ?? 0).toLocaleString();
+      const pointOnly = value?.pointTotal > 0 && value.pointTotal === value.total;
+      active.textContent = (value?.active ?? 0).toLocaleString();
+      completed.textContent = (pointOnly ? value.observed : value?.endedSpans ?? value?.completed ?? 0).toLocaleString();
+      completedText.lastChild.textContent = pointOnly ? ' 点已观测' : ' 区间结束';
       item.classList.toggle("gpu-running", value?.active > 0); item.classList.toggle("gpu-selected", selectedComponentId === id);
       const marks = activeIntervalMarks(eventsById.get(id), time, 1);
       progress.style.width = marks.length ? `${marks[0].progress * 100}%` : "0%";
