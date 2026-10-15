@@ -15,7 +15,7 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c7f58a'/%3E%3Cpath d='M10 10h20v20H10zm5 5v10h10V15z' fill='%23151d13' fill-rule='evenodd'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="./game.css?v=pve-1" />
-    <script type="module" src="./game.js?v=pve-1"></script>
+    <script type="module" src="./game.js?v=workshop-2"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到游戏</a>
@@ -160,7 +160,7 @@
               </svg>
             </div>
             <div class="stat-number">
-              <span id="throughput">1.0</span><small>算力 / s</small>
+              <span id="throughput">1.0</span><small>工作量 / s</small>
             </div>
             <div class="stat-foot">
               <span id="hardware-summary">1 ALU · FP32</span
@@ -236,10 +236,10 @@
                 </div>
               </div>
               <details class="service-model-note">
-                <summary>解析性能模型 · 查看周期分解</summary>
+                <summary>资源仿真 · 查看批次统计</summary>
                 <p id="service-model-summary"></p>
                 <p>
-                  计算发射、工作集与缓存、供数带宽和延迟隐藏共同推导服务时间。参数为未实测校准的教学假设，未使用训练好的代理模型。
+                  读取、计算、写回按资源和依赖排队，LRU 缓存与订单工作集共同影响完成时间。参数为未实测校准的教学假设，未使用训练好的代理模型。
                 </p>
               </details>
               <p class="canvas-pan-hint">左右滑动，探索你的芯片 ↔</p>
@@ -263,6 +263,8 @@
                 <div>
                   <span class="tiny-label">当前瓶颈</span>
                   <p id="bottleneck">算力有限，先让这颗 ALU 忙起来。</p>
+                  <p id="resource-evidence" class="resource-evidence"></p>
+                  <details class="resource-explanation"><summary>带宽、延迟还是并发不足？</summary><p id="resource-sensitivity" class="resource-evidence"></p></details>
                 </div>
                 <button id="compute-button" class="primary-button">
                   <svg viewBox="0 0 20 20">
@@ -406,7 +408,7 @@
           </div>
           <div id="chapter-list" class="chapter-list"></div>
           <p class="history-footnote">
-            历史提供灵感，工坊负责想象。关卡、算力、价格与加速效果均为游戏设定。<a
+            历史提供灵感，工坊负责想象。处理速度来自轻量资源仿真；以冷缓存代表批次估计订单速率。模型时序、价格和手动加速仍为游戏设定。<a
               href="https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/"
               target="_blank"
               rel="noreferrer"

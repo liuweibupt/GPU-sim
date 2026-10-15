@@ -4,6 +4,7 @@ import {
   createGame,
   getStats,
   getUpgradeCost,
+  getUpgradePreview,
   canBuyUpgrade,
   buyUpgrade,
   tickGame,
@@ -11,8 +12,7 @@ import {
   startChallenge,
   restoreGame,
   serializeGame,
-} from "../../lib/idle-game.js?v=analytical-1";
-import { getWorkloadPerformance } from "../../lib/compute-model.js";
+} from "../../lib/idle-game.js?v=workshop-2";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -241,34 +241,35 @@ function renderShop() {
     const locked = Boolean(missing.length || research);
     const purchasable = canBuyUpgrade(state, upgrade.id);
     const maxed = level >= upgrade.maxLevel;
+    const replaced = upgrade.id === 'dram' && state.levels.hbm > 0;
     const price = getUpgradeCost(state, upgrade.id);
     card.hidden =
       currentFilter !== "all" && categories[upgrade.id] !== currentFilter;
     card.classList.toggle("locked", locked);
     card.classList.toggle("purchasable", purchasable);
-    card.querySelector(".upgrade-level").textContent = research
+    card.querySelector(".upgrade-level").textContent = replaced ? "已被 HBM 替代" : research
       ? "研发中"
       : locked
         ? "待前置组件"
         : level
           ? `LV.${String(level).padStart(2, "0")}`
           : "可研发";
-    card.querySelector(".upgrade-benefit").textContent = research
+    card.querySelector(".upgrade-benefit").textContent = replaced ? "外部访存已由 HBM 服务；保留已有等级，不再购买无效升级。" : research
       ? `经营累计 ${cash(upgrade.unlockEarned)} 后开放`
       : missing.length
         ? `前置：${missing.map((id) => names[id]).join(" + ")}`
-        : upgrade.benefit;
+        : maxed ? "已达最高等级" : `${upgrade.benefit} · 当前订单预计 ${((getUpgradePreview(state, upgrade.id)?.gain ?? 0) * 100).toFixed(1)}% 速度变化`;
     const button = card.querySelector("button");
     button.disabled = !purchasable;
-    button.querySelector("span").textContent = maxed
+    button.querySelector("span").textContent = replaced ? "由 HBM 接管" : maxed
       ? "已达最高等级"
       : locked
         ? "尚未开放"
         : level
           ? "升级组件 ↗"
           : "安装组件 +";
-    button.querySelector("strong").textContent = maxed ? "MAX" : cash(price);
-    button.title = maxed
+    button.querySelector("strong").textContent = replaced ? "—" : maxed ? "MAX" : cash(price);
+    button.title = replaced ? "HBM 已替代 DRAM；请升级 HBM 调整外部带宽。" : maxed
       ? "组件已达最高等级"
       : research
         ? `累计收入还差 ${cash(upgrade.unlockEarned - state.totalEarned)}`
@@ -421,21 +422,12 @@ function renderMentor(stats) {
   $("mission-progress").style.width = `${progress * 100}%`;
   $("mission-count").textContent = `${Math.round(progress * 100)}%`;
   $("mentor-chapter").textContent = chapter;
-  $("bottleneck").textContent = !lv.l1
-    ? "没有缓存，每份数据都要从头供给。"
-    : !lv.dram
-      ? "缓存有了，显存还在等第一笔投资。"
-      : !lv.scheduler
-        ? "工位开始变多，调度器能让大家更高效。"
-        : !lv.tensor
-          ? "Tensor 可以进一步加速矩阵类订单。"
-          : !lv.hbm
-            ? "计算更快了，给数据拓宽一条快车道。"
-            : !lv.tma
-              ? "把搬运和计算排成流水线，减少等待。"
-              : !lv.tmem
-                ? "为矩阵中间结果安排专属存储。"
-                : "完整产线已就绪。下一步，由你的客户决定。";
+  const perf = stats.performance;
+  const percent=value=>`${Math.max(0,value*100).toFixed(1)}%`;
+  $("resource-sensitivity").textContent = `分别试算：外部带宽翻倍 → 提速 ${percent(stats.diagnosis.bandwidth)}；响应延迟减半 → ${percent(stats.diagnosis.latency)}；增加 1 个在途槽位 → ${percent(stats.diagnosis.concurrency)}。各项是独立实验，收益不相加。`;
+  $("bottleneck").textContent = `${stats.workloadName}：${perf.bottleneckLabel}占关键路径 ${(100 * perf.critical[perf.bottleneck] / perf.cycles).toFixed(0)}%。`;
+  $("resource-evidence").textContent = `订单规模 Lv.${perf.tier} · 输入工作集 ${perf.workingSetBytes/1024} KiB · 代表批次 ${perf.tileCount} tiles / ${perf.cycles.toFixed(1)} tick · 外部读写 ${(perf.memoryBytes / 1024).toFixed(0)} KiB · L1 / L2 命中 ${perf.l1Hits} / ${perf.l2Hits}（${perf.reads} 次读取）· ${perf.slots} 个在途槽位。`;
+
 }
 
 function renderOrders() {
@@ -583,14 +575,9 @@ function render() {
   renderShop();
   renderHardware(stats);
   renderMentor(stats);
-  const service = getWorkloadPerformance(
-    state.levels,
-    state.activeJob?.kind || "fp32",
-  );
+  const service = stats.performance;
   $("service-model-summary").textContent =
-    `${service.kind.toUpperCase()} · ${format(service.cycles, 1)} 逻辑周期 · 计算 ${format(service.computeCycles, 1)} / 搬运 ${format(service.memoryCycles, 1)} / 延迟 ${format(service.latencyCycles, 1)} · 重叠 ${format(service.overlap * 100, 1)}%`;
-  $("bottleneck").textContent =
-    `当前负载受${{ compute: "计算吞吐", bandwidth: "供数带宽", latency: "访存延迟" }[service.bottleneck]}限制。升级收益来自周期分解。`;
+    `${service.kind.toUpperCase()} · 工作集 ${service.workingSetBytes / 1024} KiB · ${format(service.cycles, 1)} 模型 tick · ${service.tileCount} tiles · ${service.slots} 个在途槽位`;
   renderOrders();
   renderChapters();
   renderJournal();
