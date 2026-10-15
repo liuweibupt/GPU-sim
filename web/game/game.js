@@ -11,7 +11,7 @@ import {
   startChallenge,
   restoreGame,
   serializeGame,
-} from "../../lib/idle-game.js";
+} from "../../lib/idle-game.js?v=analytical-1";
 import { getWorkloadPerformance } from "../../lib/compute-model.js";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
