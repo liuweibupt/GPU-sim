@@ -1,4 +1,4 @@
-import {trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-2";
+import {trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-3";
 // Native SVG isometric scenery. The package floorplan is illustrative; highlights,
 // counters and progress marks are derived exclusively from source event intervals.
 import {createTrafficOverlay, TRAFFIC_OVERLAY_CSS, FLOW_COLORS} from "./traffic-overlay.js?v=traffic-1";

@@ -1,12 +1,12 @@
 import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
-import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-1";
+import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-residency-3";
 import {normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from "../lib/detailed-trace.js";
 import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
-import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG, trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-2";
-import {simulateSm, DEFAULT_SM_CONFIG, smActivityAt} from "../lib/sm-model.js?v=sm-residency-2";
+import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG, trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-3";
+import {simulateSm, DEFAULT_SM_CONFIG, smActivityAt} from "../lib/sm-model.js?v=sm-residency-3";
 import {replayBounds, advanceReplay} from "../lib/playback.js";
-import { createGpuWorld } from "./gpu-world.js?v=sm-residency-2";
+import { createGpuWorld } from "./gpu-world.js?v=sm-residency-3";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);

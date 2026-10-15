@@ -1,7 +1,7 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
-import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-1";
-import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-residency-2";
+import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-residency-3";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-residency-3";
 import {observationSnapshot, laneWindow} from "../lib/instruction-view.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 

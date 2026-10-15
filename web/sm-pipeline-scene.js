@@ -1,7 +1,7 @@
 // Formal SM floorplan. The architecture is a definition, while activity is only
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
-import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js";
-import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-residency-2";
+import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js?v=sm-residency-3";
+import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-residency-3";
 import {observationSnapshot} from "../lib/instruction-view.js";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -188,7 +188,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const nativeById = new Map(trace.components.map(component => [component.id, component]));
   function mappedSource(component) {return nativeById.get(component.id) ?? [...nativeById.values()].find(item => item.args?.architectureComponentId === component.id);}
   const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的指令光点与正式组件`);
-  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-residency-2", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
+  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-residency-3", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
   const header = dom("div", "sm-pipeline-head"), title = dom("div");
   const teaching = trace.meta.capabilities?.includes('sm_pipeline');
   title.append(dom("strong", "", `SM ${smNumber} / ${teaching ? '教学流水线' : '原生指令流水线'}`), dom("small", "", teaching

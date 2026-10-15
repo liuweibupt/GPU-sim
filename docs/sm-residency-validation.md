@@ -45,3 +45,5 @@ npm run build
 [GPU 全景截图](assets/sm-residency-overview.png) · [SM 光点截图](assets/sm-residency-pipeline.png)
 
 硬件依据：[CUDA block 派发与执行模型](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html#thread-blocks-and-grids)、[Hopper occupancy](https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html#occupancy)、[每 CTA 1 KiB shared-memory 保留](https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html#unified-shared-memory-l1-texture-cache)。
+
+发布缓存回归：先在同一浏览器缓存旧版 JavaScript（1 小时缓存），再载入新版入口，确认模型、契约、架构规格和 GPU 场景均通过新版本 URL 重新获取；SM 131 光点与 128 Warp 运行通过，无脚本错误。
