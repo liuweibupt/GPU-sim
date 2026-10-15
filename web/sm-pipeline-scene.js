@@ -1,7 +1,7 @@
 // Formal SM floorplan. The architecture is a definition, while activity is only
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
 import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js";
-import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-lights-2";
+import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-compact-1";
 import {observationSnapshot} from "../lib/instruction-view.js";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -17,6 +17,13 @@ const LABELS = {
   "l1-cache": ["L1 Data Cache", "硬件管理的缓存"], "shared-memory": ["Shared Memory", "软件显式管理 / SMEM"],
   tma: ["TMA", "异步张量数据搬运"], mbarrier: ["mbarrier", "异步完成 / 字节计数"], texture: ["Texture Unit", "纹理访问路径"], "noc-interface": ["NoC Interface", "SM ↔ L2 外部边界"],
 };
+const SHORT_LABELS = {'warp-scheduler':'Sched', scoreboard:'SB', 'register-file':'RF',
+  'operand-collector':'Operands', 'constant-cache':'Constant', 'l1-cache':'L1 Cache',
+  'shared-memory':'SMEM', 'noc-interface':'NoC', 'l0-icache':'L0 I$',
+  'icache':'SM I$', fp32:'FP32', fp64:'FP64', int32:'INT32', tensor:'Tensor',
+  branch:'Branch', writeback:'WB'};
+const OVERVIEW_LABELS = {...SHORT_LABELS, 'operand-collector':'OC', dispatch:'Disp',
+  tensor:'TC', branch:'BR', 'constant-cache':'C$', texture:'Tex', mbarrier:'mbar'};
 const ROWS = [
   ["FETCH / DECODE", ["l0-icache", "fetch", "decode"]],
   ["WARP CONTROL / ISSUE", ["warp-scheduler", "scoreboard", "issue", "dispatch"]],
@@ -178,7 +185,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const nativeById = new Map(trace.components.map(component => [component.id, component]));
   function mappedSource(component) {return nativeById.get(component.id) ?? [...nativeById.values()].find(item => item.args?.architectureComponentId === component.id);}
   const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的指令光点与正式组件`);
-  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-lights-2", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
+  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-compact-1", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
   const header = dom("div", "sm-pipeline-head"), title = dom("div");
   title.append(dom("strong", "", "SM INSTRUCTION CITY"), dom("small", "", "每个光点关联一条原生记录 · 点击查看 PC、warp 与阶段区间"));
   const tabs = dom("div", "sm-partition-tabs"); tabs.setAttribute("aria-label", "选择 SM 分区"); header.append(title, tabs); root.append(header);
@@ -218,7 +225,10 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     const box = createSmComponentBox({localId: id, family: palette(component)});
     const hardwareCount = component.resources?.hardwareLanes != null ? `${component.resources.hardwareLanes} lanes · ` : component.resources?.hardwareTensorCores != null ? `${component.resources.hardwareTensorCores} core · ` : "";
     const face = dom("span", "sm-component-front"), state = dom("span", "sm-component-state", "未观测 / 结构定义");
-    face.append(dom("strong", "sm-component-name", label[0]), dom("span", "sm-component-subtitle", `${hardwareCount}${label[1]}`), state);
+    const name = dom('strong', 'sm-component-name');
+    name.append(dom('span', 'sm-component-full-name', label[0]), dom('span', 'sm-component-short-name', SHORT_LABELS[id] ?? label[0]),
+      dom('span', 'sm-component-overview-name', OVERVIEW_LABELS[id] ?? label[0]));
+    face.append(name, dom("span", "sm-component-subtitle", `${hardwareCount}${label[1]}`), state);
     card.append(box.element, face);
     card.title = `${label[0]} · ${component.purpose ?? "点击查看正式组件契约"}`;
     cards.set(component.id, {card, box, face, state}); return card;

@@ -1,7 +1,7 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
 import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-1";
-import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-lights-2";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-compact-1";
 import {observationSnapshot, laneWindow} from "../lib/instruction-view.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -100,12 +100,12 @@ export function summarizeWorkloads(trace, smComponentId, time = 0) {
 
 /** Default camera bounds preserve label readability. A deliberate "whole map"
  * command may fit more tightly; detail views otherwise scroll vertically. */
-export function worldCameraScale({width, height, naturalWidth, naturalHeight, detail = false, wholeMap = false, zoom = 1}) {
+export function worldCameraScale({width, height, naturalWidth, naturalHeight, detail = false, wholeMap = false, autoFit = false, zoom = 1}) {
   const widthScale = Math.min(1, Math.max(1, width) / Math.max(1, naturalWidth));
   const heightScale = Math.min(1, Math.max(1, height) / Math.max(1, naturalHeight));
-  const fitted = wholeMap ? Math.min(widthScale, heightScale)
+  const fitted = wholeMap || autoFit ? Math.min(widthScale, heightScale)
     : detail ? widthScale : Math.min(widthScale, heightScale);
-  return (wholeMap ? fitted : Math.max(.85, fitted)) * zoom;
+  return (wholeMap || autoFit ? fitted : Math.max(.85, fitted)) * zoom;
 }
 
 function element(tag, className, text) {
@@ -219,6 +219,14 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   }
   function fitScene() {
     if (!stage.clientWidth || !stage.clientHeight) return;
+    const fitSm = Boolean(drillSmId && (trace?.meta.capabilities?.includes('instruction_pipeline_stages') || trace?.meta.capabilities?.includes('sm_pipeline')));
+    const panel = root.closest('.world-panel'), inspector = panel?.parentElement?.querySelector('.inspector');
+    if (panel && !document.fullscreenElement && fitSm) {
+      const available = Math.max(280, window.innerHeight - Math.max(0, panel.getBoundingClientRect().top) - 12);
+      const height = `${Math.floor(available)}px`;
+      if (panel.style.height !== height) panel.style.height = height;
+      if (inspector && inspector.style.height !== height) inspector.style.height = height;
+    } else if (panel) {panel.style.removeProperty('height'); inspector?.style.removeProperty('height');}
     const naturalWidth = Math.max(drillSmId ? 260 : 650, stage.clientWidth - 2);
     scene.style.width = `${naturalWidth}px`;
     const overviewBoxes = !drillSmId && index.mode === "architecture" && (presentation === "boxes" || index.physicalSms > 12 || index.sms.length > 12);
@@ -227,7 +235,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     let naturalHeight = Math.max(1, scene.offsetHeight);
     const fitScale = height => overviewBoxes && stage.clientWidth > 600 && !wholeMap
       ? Math.min(1, (stage.clientWidth - 2) / naturalWidth) * zoom
-      : worldCameraScale({width: stage.clientWidth - 2, height: stage.clientHeight - 2, naturalWidth, naturalHeight: height, detail: Boolean(drillSmId) || index.mode === "tracks", wholeMap, zoom});
+      : worldCameraScale({width: stage.clientWidth - 2, height: stage.clientHeight - 2, naturalWidth, naturalHeight: height, detail: Boolean(drillSmId) || index.mode === "tracks", wholeMap, autoFit: fitSm && !scene.querySelector('.gpu-sm-execution[open]'), zoom});
     let scale = fitScale(naturalHeight);
     // The chip can fit a large SM count while its ordinary HTML evidence and
     // navigation text retain an actual 11 px reading size after camera scaling.
@@ -240,6 +248,8 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   }
   const resizeObserver = typeof ResizeObserver === "function" ? new ResizeObserver(fitScene) : null;
   resizeObserver?.observe(stage);
+  for (const header of document.querySelectorAll('.app-header, .trace-summary, .scale-bar, #status')) resizeObserver?.observe(header);
+  window.addEventListener('resize', fitScene);
 
   function nearestSm(id) {
     const visited = new Set();
@@ -429,7 +439,8 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     const modeledPipeline = trace.meta.capabilities?.includes("sm_pipeline");
     const mappedPipeline = modeledPipeline || trace.meta.capabilities?.includes('instruction_pipeline_stages');
     const instructionPoints = instructions.length > 0 && instructions.every(event => event.start === event.end);
-    heading("SM INTERIOR / FORMAL MICROARCHITECTURE", `${sm.label} · ${modeledPipeline ? "教学 SM 模型阶段" : instructions.length ? instructionPoints ? "指令观测点 observer" : "指令区间 observer" : "tile 级 observer"}`);
+    if (!mappedPipeline) heading("SM INTERIOR / FORMAL MICROARCHITECTURE", `${sm.label} · ${instructions.length ? instructionPoints ? "指令观测点 observer" : "指令区间 observer" : "tile 级 observer"}`);
+    const navigation = mappedPipeline ? element('div', 'gpu-sm-navigation') : null;
     if (index.sms.length > 1) {
       const switcher = element('div', 'gpu-sm-switcher'); switcher.setAttribute('aria-label', '切换记录中的 SM');
       switcher.append(element('span', 'gpu-filter-label', 'SM INTERIORS'));
@@ -444,10 +455,10 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
         const count = element('small'); choice.append(element('strong', '', component.label), count);
         smSwitchCounts.set(component.id, count); switcher.append(choice);
       }
-      scene.append(switcher);
+      (navigation ?? scene).append(switcher);
     }
     scene.append(scopeStats(sm.id));
-    if (mappedPipeline) renderFilters(scene, sm.id);
+    if (mappedPipeline) {renderFilters(navigation, sm.id); scene.append(navigation);}
     smPipelineScene = createSmPipelineScene({trace, sm, events: index.intervals.get(sm.id)?.events ?? [],
       onSelectComponent: id => chooseComponent(id, false), onSelectEvent: id => {const event = trace.events.find(event => event.id === id); if (event) chooseEvent(event);}, onResize: fitScene});
     if (mappedPipeline) scene.append(smPipelineScene.element);
@@ -479,7 +490,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
       choice.dataset.gpuCtaId = String(group.threadBlockId); choice.setAttribute("aria-pressed", String(view.scope?.threadBlockId === group.threadBlockId)); row.append(choice);
     }
     if (!groups.length) row.append(element("span", "gpu-filter-label", "来源未提供 threadBlockId"));
-    parent.append(row);
+    if (groups.length || !trace.meta.capabilities?.some(capability => ['instruction_pipeline_stages', 'sm_pipeline'].includes(capability))) parent.append(row);
     const group = groups.find(group => group.threadBlockId === view.scope?.threadBlockId);
     const warpIds = group?.warpIds ?? [...new Set((index.intervals.get(smId)?.events ?? []).map(event => event.args?.warpId).filter(id => id != null))];
     if (warpIds.length) {
@@ -705,7 +716,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   }
 
   setZoom(1); renderScene();
-  return {setTrace, update,
+  return {setTrace, update, resize: fitScene,
     animate(time) {if (Number.isFinite(time)) {view.time = time; boxScene?.animate?.({time, selectedEventId: view.selectedEventId}); smPipelineScene?.animate({time, selectedEventId: view.selectedEventId});}},
     getView() {return {smComponentId: drillSmId, scope: view.scope ? {...view.scope} : null, zoom, wholeMap, showStructure, showTasks, presentation, smPipeline: smPipelineScene?.getView() ?? null};},
     setView(saved = {}) {
@@ -717,6 +728,6 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
       if (drillSmId && saved.smPipeline) smPipelineViews.set(drillSmId, saved.smPipeline);
       update({scope: saved.scope ?? null}); wholeMap = saved.wholeMap === true; renderScene(); renderTasks();
     },
-    destroy() {document.removeEventListener("fullscreenchange", fullscreenChanged); resizeObserver?.disconnect(); boxScene?.destroy?.(); smPipelineScene?.destroy?.(); root.remove();},
+    destroy() {document.removeEventListener("fullscreenchange", fullscreenChanged); window.removeEventListener('resize', fitScene); resizeObserver?.disconnect(); boxScene?.destroy?.(); smPipelineScene?.destroy?.(); root.remove();},
   };
 }

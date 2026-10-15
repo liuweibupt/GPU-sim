@@ -173,3 +173,40 @@
 .gpu-sm-choice.gpu-sm-busy small {color:#9ef9d6;text-shadow:0 0 8px #74e4c1}
 .gpu-instruction-summary {cursor:pointer;color:#b7d7e2;font:12px ui-monospace,monospace;padding:9px 0}
 @media(max-width:520px){.gpu-sm-switcher .gpu-sm-choice{display:none}.gpu-sm-select{max-width:130px}}
+/* Compact SM workspace keeps the component map inside the visible viewport. */
+.sm-screen-view .app-header {min-height:48px;height:48px;padding-block:6px}
+.sm-screen-view #status {margin-block:3px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm-screen-view #status:not(.error) {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.sm-screen-view .trace-summary {display:flex;align-items:center;justify-content:space-between;padding:5px 0;margin:4px 0 7px;gap:12px}
+.sm-screen-view .trace-summary .facts,.sm-screen-view .trace-identification .trace-eyebrow {display:none}
+.sm-screen-view .trace-identification {display:flex;align-items:center;gap:10px;min-width:0}
+.sm-screen-view .trace-identification h2 {font-size:14px;margin:0}
+.sm-screen-view .trace-identification .evidence-badge {font-size:10px;margin:0;white-space:nowrap}
+.sm-screen-view .source-notes {flex:0 0 auto;margin:0}
+.sm-screen-view .source-notes[open] {flex-basis:100%;white-space:normal}
+.sm-screen-view .trace-summary:has(.source-notes[open]) {flex-wrap:wrap}
+.sm-screen-view .scale-bar {position:relative;padding:7px 10px 22px;gap:6px 12px}
+.sm-screen-view .scale-tab {min-height:44px;padding:6px 9px}
+.sm-screen-view .sm-experiment,.sm-screen-view .traffic-experiment {flex-basis:auto;border:0;padding-top:0}
+.sm-screen-view .sm-experiment:not([open]),.sm-screen-view .traffic-experiment:not([open]) {position:absolute;bottom:3px;max-width:none;width:max-content;font-size:10px}
+.sm-screen-view .sm-experiment:not([open]) {right:150px}
+.sm-screen-view .traffic-experiment:not([open]) {right:10px}
+.sm-screen-view .sm-experiment:not([open]) #sm-config-label,.sm-screen-view .traffic-experiment:not([open]) #traffic-config-label {display:none}
+.sm-screen-view #workspace {gap:7px 12px}
+.sm-screen-view #run-context,.sm-screen-view .gpu-sm-detail .gpu-scope-stats,.sm-screen-view .gpu-legend,.sm-screen-view .world-footnote {display:none}
+.sm-screen-view .world-heading {padding-block:8px}
+.sm-screen-view .world-heading .section-kicker {display:none}
+.sm-screen-view .world-heading h2 {font-size:15px}
+.sm-screen-view .gpu-toolbar {padding-bottom:4px}
+.sm-screen-view .gpu-sm-navigation {display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;margin-bottom:6px}
+.sm-screen-view .gpu-sm-navigation .gpu-sm-switcher,.sm-screen-view .gpu-sm-navigation .gpu-cta-scope {margin:0}
+.sm-screen-view .gpu-sm-detail .gpu-sm-execution {padding:4px 8px;margin-bottom:0}
+.sm-screen-view .gpu-instruction-summary {padding:5px 0;font-size:11px}
+.sm-screen-view .sm-pipeline-explanation {display:none}
+.sm-screen-view .gpu-footnote {max-height:16px;font-size:10px;margin-block:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:1100px){.sm-screen-view .inspector{height:auto!important}}
+@media(max-width:700px){
+ .sm-screen-view .app-header {min-height:72px;height:auto}
+ .sm-screen-view .trace-summary,.sm-screen-view .trace-identification {flex-wrap:wrap}
+ .sm-screen-view .trace-identification .evidence-badge {white-space:normal}
+}

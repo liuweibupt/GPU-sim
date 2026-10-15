@@ -63,7 +63,7 @@ node scripts/generate-sm.mjs
 
 - 外层默认在浏览器运行双分区数据流教学模型，132 SM 共完成396个 Tile；可调整桥传播延迟、链路带宽与共享 Tile 策略后重跑。单 Fabric 可作对照。GTSim timing graph 继续作为独立外部后端样例，仍为796区间、5,492 / 6,413 cycles。
 - 内层首次点击 **“SM 内部”** 或 **“加载 SM 光点”** 会载入实际 FlashGPU-Sim [指令生命周期样例](examples/flashgpu-vectoradd-pipeline.json)：在每个已记录 SM 内，光点沿 Dispatch → Operand Collector → 原生执行单元 → Writeback 的示意通路推进，并在实际阶段区间中停留。可切换 SM / 四分区、点击光点检查 PC / warp / 动态指令 ID 与全部原生阶段，暂停、慢放和回退。
-- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
+- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。组件采用紧凑横向布局，并按当前屏幕宽高自动适配；可在一屏内观察组件与光点，画布顶部直接播放/暂停。组件使用简写，完整名称及规则可悬停或点击查看。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
 - **“载入指令运行”** 接受 [FlashGPU-Sim 原生 pipeline observer / ISSUE/STALL 日志](tools/detailed/README.md) 或详细 observer JSON。指令面板显示当前或最近已观测周期，轨道随回放位置更新并保留所选事件。观测点与执行区间分别计数，不从点日志生成完成时间；教学流水线仍可单独运行。
 - 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。数据流全景默认90秒/遍，SM检查120秒/遍；GTSim保持15 / 30秒，指令慢放60秒。这与后端仿真耗时无关。减少动画模式默认暂停。
 

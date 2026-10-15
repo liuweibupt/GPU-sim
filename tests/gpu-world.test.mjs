@@ -116,3 +116,13 @@ test("default camera preserves readable labels while detail views scroll vertica
   // At the default minimum scale, important 13 px labels remain above 11 px.
   assert.ok(13 * worldCameraScale(compact) >= 11);
 });
+
+test('SM automatic fitting keeps the whole scene inside both viewport dimensions', () => {
+  for (const viewport of [{width: 940, height: 480}, {width: 1100, height: 580}]) {
+    const scene = {naturalWidth: 1080, naturalHeight: 690};
+    const scale = worldCameraScale({...viewport, ...scene, detail: true, autoFit: true});
+    assert.ok(scene.naturalWidth * scale <= viewport.width + .001);
+    assert.ok(scene.naturalHeight * scale <= viewport.height + .001);
+    assert.equal(worldCameraScale({...viewport, ...scene, detail: true, autoFit: true, zoom: 1.5}), scale * 1.5);
+  }
+});

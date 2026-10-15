@@ -5,7 +5,7 @@ import {normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from "../lib/detaile
 import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
 import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=sm-1";
 import {simulateSm, DEFAULT_SM_CONFIG} from "../lib/sm-model.js?v=sm-1";
-import { createGpuWorld } from "./gpu-world.js?v=sm-lights-2";
+import { createGpuWorld } from "./gpu-world.js?v=sm-compact-1";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
@@ -157,6 +157,11 @@ function playbackDuration() {
 function renderRunBar() {
   if (!state.trace) return;
   const info = runInfo(state.trace), detail = activeRun === 'detail', traffic = isTraffic();
+  const screenView = detail && observationLevel === 'sm' && (isNativePipeline() || isSmModel());
+  if (document.body.classList.contains('sm-screen-view') !== screenView) {
+    document.body.classList.toggle('sm-screen-view', screenView);
+    requestAnimationFrame(() => world.resize());
+  }
   $('macro-view').setAttribute('aria-pressed', String(!detail && observationLevel === 'gpu'));
   $('micro-view').setAttribute('aria-pressed', String(detail || observationLevel === 'sm'));
   $('macro-view').disabled = !runs.macro && detail;
@@ -394,7 +399,8 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   $("time-input").disabled = !trace.events.length;
   $("seek-time").disabled = !trace.events.length;
   $("timeline-zoom").disabled = totalTime === startTime;
-  $('traffic-play').hidden = !isTraffic();
+  $('traffic-play').hidden = !isTraffic() && !isNativePipeline() && !isSmModel();
+  $('traffic-play').textContent = isTraffic() ? '开始数据流' : '播放光点';
   $('traffic-play').disabled = totalTime === startTime;
   $('traffic-counters').hidden = !isTraffic();
   const traffic = trace.metrics?.traffic;
@@ -799,7 +805,7 @@ function pause() {
   frame = null; lastFrame = null;
   $("play").textContent = "播放";
   $("play").setAttribute("aria-pressed", "false");
-  $('traffic-play').textContent = '开始数据流';
+  $('traffic-play').textContent = isTraffic() ? '开始数据流' : '播放光点';
   $('traffic-play').setAttribute('aria-pressed', 'false');
 }
 
@@ -810,7 +816,7 @@ function togglePlay() {
   state.playing = true;
   $("play").textContent = "暂停";
   $("play").setAttribute("aria-pressed", "true");
-  $('traffic-play').textContent = '暂停数据流';
+  $('traffic-play').textContent = isTraffic() ? '暂停数据流' : '暂停光点';
   $('traffic-play').setAttribute('aria-pressed', 'true');
   let lastRender = 0;
   function tick(now) {
