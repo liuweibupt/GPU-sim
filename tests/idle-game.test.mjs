@@ -1,3 +1,4 @@
+import {getWorkloadPerformance} from '../lib/compute-model.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
@@ -179,7 +180,7 @@ test('chronological chapters evolve from Tensor Core through TMA and TMEM to an 
   }
   assert.equal(getStats(state).chapterIndex, CHAPTERS.length);
   const before = state.completed;
-  tickGame(state, (state.activeJob.work - state.activeJob.progress) / getStats(state).throughput + 1);
+  tickGame(state, (state.activeJob.work - state.activeJob.progress) / getWorkloadPerformance(state.levels,state.activeJob.kind).throughput + 1);
   assert.ok(state.completed > before);
 });
 

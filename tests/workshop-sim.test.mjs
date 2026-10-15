@@ -48,7 +48,7 @@ test('TMA overlap, tensor execution and TMEM spills change actual schedules',()=
 });
 
 test('game rates, hit rates and upgrade previews use the same cached simulation',()=>{
- const state=createGame(0);Object.assign(state.levels,{alu:7,l1:1,dram:1,scheduler:1});
+ const state=createGame(0,{performanceModel:"workshop"});Object.assign(state.levels,{alu:7,l1:1,dram:1,scheduler:1});
  state.activeJob.work=1e6;
  const stats=getStats(state),sim=workshopPerformance(state.levels,'fp32');
  assert.equal(stats.throughput,sim.rate);assert.equal(stats.hitRate,sim.hitRate);
@@ -90,7 +90,7 @@ test('bandwidth and latency critical path costs are separate; concurrency experi
 });
 
 test('a stored order keeps its workload scale when hardware changes; progression and preview agree',()=>{
- const state=createGame(0);Object.assign(state.levels,{alu:15,l1:1,l2:1,dram:1,scheduler:1,tensor:2});
+ const state=createGame(0,{performanceModel:"workshop"});Object.assign(state.levels,{alu:15,l1:1,l2:1,dram:1,scheduler:1,tensor:2});
  state.money=state.totalEarned=1e8;state.activeJob.kind='gemm';state.activeJob.tier=4;state.activeJob.work=1e8;
  const before=getStats(state),expected=workshopPerformance(state.levels,'gemm',4);
  assert.equal(before.throughput,expected.rate);
@@ -101,7 +101,7 @@ test('a stored order keeps its workload scale when hardware changes; progression
 });
 
 test('HBM retires DRAM purchases without losing legacy levels or money',()=>{
- const state=createGame(0);state.money=state.totalEarned=1e8;
+ const state=createGame(0,{performanceModel:"workshop"});state.money=state.totalEarned=1e8;
  Object.assign(state.levels,{l1:1,dram:2,l2:1,scheduler:1,tensor:1});
  assert.equal(canBuyUpgrade(state,'dram'),true);assert.equal(buyUpgrade(state,'hbm'),true);
  const money=state.money;assert.equal(canBuyUpgrade(state,'dram'),false);assert.equal(buyUpgrade(state,'dram'),false);
@@ -122,6 +122,39 @@ test('PvE explicitly retains its analytical economy across saves while the works
  const restored=restoreRace(serializeRace(race,1000),1000);
  const state=restored;
  for(const company of state.companies)assert.equal(company.game.performanceModel,'analytical');
- const standalone=createGame(1000);standalone.levels.alu=7;
+ const standalone=createGame(1000,{performanceModel:"workshop"});standalone.levels.alu=7;
  assert.equal(getStats(standalone).throughput,workshopPerformance(standalone.levels,'fp32').rate);
+});
+
+test('analytical default and runtime switching drive execution, previews and saved/offline progress',()=>{
+ const state=createGame(1000);
+ assert.equal(state.performanceModel,'analytical');
+ Object.assign(state.levels,{alu:7,l1:1,dram:1});
+ state.money=state.totalEarned=1e8;
+ state.activeJob.work=1e8;
+ const analytical=getWorkloadPerformance(state.levels,'fp32');
+ tickGame(state,1);
+ assert.equal(state.activeJob.progress,analytical.throughput);
+ const preview=getUpgradePreview(state,'l1');
+ assert.equal(preview.gain,getWorkloadPerformance({...state.levels,l1:2},'fp32').throughput/analytical.throughput-1);
+ state.performanceModel='workshop';
+ const progress=state.activeJob.progress;
+ tickGame(state,1);
+ assert.equal(state.activeJob.progress,progress+workshopPerformance(state.levels,'fp32').rate);
+ for(const model of ['analytical','workshop']){
+  state.performanceModel=model;
+  const saved=serializeGame(state,1000);
+  const restored=restoreGame(saved,2000).state;
+  const expected=restoreGame(saved,1000).state;
+  tickGame(expected,1);
+  assert.equal(restored.performanceModel,model);
+  assert.equal(restored.activeJob.progress,expected.activeJob.progress);
+ }
+ const legacy=JSON.parse(serializeGame(state,1000));
+ delete legacy.performanceModel;
+ assert.equal(restoreGame(legacy,1000).state.performanceModel,'analytical');
+ legacy.performanceModel='invalid';
+ assert.equal(restoreGame(legacy,1000).state.performanceModel,'analytical');
+ state.performanceModel='workshop';
+ assert.equal(restoreGame(serializeGame(state,1000),1000,{performanceModel:'analytical'}).state.performanceModel,'analytical');
 });

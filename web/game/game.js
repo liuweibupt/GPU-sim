@@ -12,7 +12,7 @@ import {
   startChallenge,
   restoreGame,
   serializeGame,
-} from "../../lib/idle-game.js?v=workshop-2";
+} from "../../lib/idle-game.js?v=models-3";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -241,7 +241,7 @@ function renderShop() {
     const locked = Boolean(missing.length || research);
     const purchasable = canBuyUpgrade(state, upgrade.id);
     const maxed = level >= upgrade.maxLevel;
-    const replaced = upgrade.id === 'dram' && state.levels.hbm > 0;
+    const replaced = state.performanceModel === 'workshop' && upgrade.id === 'dram' && state.levels.hbm > 0;
     const price = getUpgradeCost(state, upgrade.id);
     card.hidden =
       currentFilter !== "all" && categories[upgrade.id] !== currentFilter;
@@ -423,10 +423,18 @@ function renderMentor(stats) {
   $("mission-count").textContent = `${Math.round(progress * 100)}%`;
   $("mentor-chapter").textContent = chapter;
   const perf = stats.performance;
+  const analytical = state.performanceModel === 'analytical';
+  $("resource-sensitivity").parentElement.hidden = analytical;
+  if (analytical) {
+    const labels = {compute:'计算',bandwidth:'访存带宽',latency:'访存延迟'};
+    $("bottleneck").textContent = `${stats.workloadName}：${labels[perf.bottleneck]}受限（公式估算）。`;
+    $("resource-evidence").textContent = `计算 ${perf.computeCycles.toFixed(1)} · 搬运 ${perf.memoryCycles.toFixed(1)} · 延迟等待 ${perf.latencyCycles.toFixed(1)} · 重叠抵扣 ${perf.overlapCycles.toFixed(1)} · 总计 ${perf.cycles.toFixed(1)} 模型 tick。`;
+  } else {
   const percent=value=>`${Math.max(0,value*100).toFixed(1)}%`;
   $("resource-sensitivity").textContent = `分别试算：外部带宽翻倍 → 提速 ${percent(stats.diagnosis.bandwidth)}；响应延迟减半 → ${percent(stats.diagnosis.latency)}；增加 1 个在途槽位 → ${percent(stats.diagnosis.concurrency)}。各项是独立实验，收益不相加。`;
   $("bottleneck").textContent = `${stats.workloadName}：${perf.bottleneckLabel}占关键路径 ${(100 * perf.critical[perf.bottleneck] / perf.cycles).toFixed(0)}%。`;
   $("resource-evidence").textContent = `订单规模 Lv.${perf.tier} · 输入工作集 ${perf.workingSetBytes/1024} KiB · 代表批次 ${perf.tileCount} tiles / ${perf.cycles.toFixed(1)} tick · 外部读写 ${(perf.memoryBytes / 1024).toFixed(0)} KiB · L1 / L2 命中 ${perf.l1Hits} / ${perf.l2Hits}（${perf.reads} 次读取）· ${perf.slots} 个在途槽位。`;
+  }
 
 }
 
@@ -576,8 +584,15 @@ function render() {
   renderHardware(stats);
   renderMentor(stats);
   const service = stats.performance;
-  $("service-model-summary").textContent =
-    `${service.kind.toUpperCase()} · 工作集 ${service.workingSetBytes / 1024} KiB · ${format(service.cycles, 1)} 模型 tick · ${service.tileCount} tiles · ${service.slots} 个在途槽位`;
+  const analytical = state.performanceModel === 'analytical';
+  $("performance-model").value = state.performanceModel;
+  $("service-model-title").textContent = analytical ? "解析模型 · 查看性能估算" : "Tile 资源仿真 · 查看批次统计";
+  $("service-model-description").textContent = analytical
+    ? "根据计算量、分层访存、延迟隐藏与搬运重叠公式估算性能。参数为未实测校准的教学假设。"
+    : "读取、计算、写回按资源和依赖排队，LRU 缓存与订单工作集共同影响完成时间。参数为未实测校准的教学假设。";
+  $("service-model-summary").textContent = analytical
+    ? `${service.kind.toUpperCase()} · 工作集 ${service.features.workingSetBytes / 1024} KiB · ${format(service.cycles,1)} 模型 tick · 估算缓存命中 ${(service.hitRate*100).toFixed(1)}%`
+    : `${service.kind.toUpperCase()} · 工作集 ${service.workingSetBytes / 1024} KiB · ${format(service.cycles, 1)} 模型 tick · ${service.tileCount} tiles · ${service.slots} 个在途槽位`;
   renderOrders();
   renderChapters();
   renderJournal();
@@ -721,6 +736,15 @@ $("chapter-list").addEventListener("click", (event) => {
     save();
     render();
   }
+});
+$("performance-model").addEventListener("change", (event) => {
+  const now = Date.now();
+  tickGame(state, Math.max(0, (now - lastFrame) / 1000));
+  lastFrame = now;
+  state.performanceModel = event.target.value === "workshop" ? "workshop" : "analytical";
+  save();
+  render();
+  toast(state.performanceModel === "analytical" ? "已切换到解析模型" : "已切换到 Tile 资源仿真");
 });
 $("settings-button").addEventListener("click", () =>
   $("settings-dialog").showModal(),
