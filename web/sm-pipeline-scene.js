@@ -1,7 +1,7 @@
 // Formal SM floorplan. The architecture is a definition, while activity is only
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
 import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js";
-import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-compact-1";
+import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-hardware-1";
 import {observationSnapshot} from "../lib/instruction-view.js";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -22,15 +22,18 @@ const SHORT_LABELS = {'warp-scheduler':'Sched', scoreboard:'SB', 'register-file'
   'shared-memory':'SMEM', 'noc-interface':'NoC', 'l0-icache':'L0 I$',
   'icache':'SM I$', fp32:'FP32', fp64:'FP64', int32:'INT32', tensor:'Tensor',
   branch:'Branch', writeback:'WB'};
-const OVERVIEW_LABELS = {...SHORT_LABELS, 'operand-collector':'OC', dispatch:'Disp',
-  tensor:'TC', branch:'BR', 'constant-cache':'C$', texture:'Tex', mbarrier:'mbar'};
-const ROWS = [
-  ["FETCH / DECODE", ["l0-icache", "fetch", "decode"]],
-  ["WARP CONTROL / ISSUE", ["warp-scheduler", "scoreboard", "issue", "dispatch"]],
-  ["OPERAND DELIVERY", ["register-file", "operand-collector"]],
-  ["EXECUTION UNITS", ["fp32", "fp64", "int32", "sfu", "tensor", "lsu", "branch"]],
-  ["COMPLETION", ["writeback"]],
+const OVERVIEW_LABELS = {...SHORT_LABELS, 'operand-collector':'OC', decode:'Dec', dispatch:'Disp',
+  tensor:'Tensor', int32:'I32', branch:'BR', 'constant-cache':'C$', texture:'Tex', mbarrier:'mbar'};
+// NVIDIA GH100 Figure 4 supplies functional hierarchy, not a physical area
+// scale. Explicit trace stages remain individually selectable logical nodes.
+const HARDWARE_ROWS = [
+  ["sm-control-band", ["l0-icache", "warp-scheduler", "dispatch"]],
+  ["sm-register-band", ["register-file"]],
+  ["sm-execution-bank", ["int32", "fp32", "fp64", "tensor"]],
+  ["sm-service-band", ["lsu", "sfu"]],
 ];
+const LOGICAL_STAGES = ["fetch", "decode", "scoreboard", "issue", "operand-collector", "branch", "writeback"];
+const HARDWARE_WEIGHTS = {"warp-scheduler": 2, dispatch: 1, int32: 2, fp32: 4, fp64: 2, tensor: 3, lsu: 4, sfu: 1};
 let nextSceneId = 0;
 
 function dom(tag, className, text) {
@@ -185,9 +188,13 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const nativeById = new Map(trace.components.map(component => [component.id, component]));
   function mappedSource(component) {return nativeById.get(component.id) ?? [...nativeById.values()].find(item => item.args?.architectureComponentId === component.id);}
   const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的指令光点与正式组件`);
-  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-compact-1", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
+  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-hardware-1", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
   const header = dom("div", "sm-pipeline-head"), title = dom("div");
-  title.append(dom("strong", "", "SM INSTRUCTION CITY"), dom("small", "", "每个光点关联一条原生记录 · 点击查看 PC、warp 与阶段区间"));
+  title.append(dom("strong", "", "SM INSTRUCTION CITY"), dom("small", "", "GH100 结构层级 · 原生指令光点 · 点击查看 PC、warp 与阶段区间"));
+  const reference = dom("a", "sm-architecture-reference", "GH100 · NVIDIA Fig. 4");
+  reference.href = SM_ARCHITECTURE.references.find(item => item.id === "hopper-blog").url;
+  reference.target = "_blank"; reference.rel = "noopener noreferrer";
+  reference.title = "参考 NVIDIA 官方功能框图；组件尺寸不代表芯片物理面积"; title.append(reference);
   const tabs = dom("div", "sm-partition-tabs"); tabs.setAttribute("aria-label", "选择 SM 分区"); header.append(title, tabs); root.append(header);
   const explanation = dom("p", "sm-pipeline-explanation"); root.append(explanation);
   const legend = dom("div", "sm-flow-legend"); legend.append(dom("span", "", "类型化连接")); root.append(legend);
@@ -221,14 +228,19 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   function makeCard(component) {
     const id = localId(component), label = LABELS[id] ?? [component.label ?? id, component.purpose ?? "正式结构定义"];
     const card = action("", "sm-component", () => openSpec(component.id));
-    card.dataset.smFormalId = component.id; card.dataset.family = palette(component); card.setAttribute("aria-pressed", String(component.id === selectedFormalId));
+    card.dataset.smFormalId = component.id; card.dataset.family = palette(component); card.dataset.localId = id;
+    card.dataset.physical = String(component.evidenceClass === "public-architecture");
+    card.setAttribute("aria-pressed", String(component.id === selectedFormalId));
     const box = createSmComponentBox({localId: id, family: palette(component)});
     const hardwareCount = component.resources?.hardwareLanes != null ? `${component.resources.hardwareLanes} lanes · ` : component.resources?.hardwareTensorCores != null ? `${component.resources.hardwareTensorCores} core · ` : "";
     const face = dom("span", "sm-component-front"), state = dom("span", "sm-component-state", "未观测 / 结构定义");
     const name = dom('strong', 'sm-component-name');
     name.append(dom('span', 'sm-component-full-name', label[0]), dom('span', 'sm-component-short-name', SHORT_LABELS[id] ?? label[0]),
       dom('span', 'sm-component-overview-name', OVERVIEW_LABELS[id] ?? label[0]));
-    face.append(name, dom("span", "sm-component-subtitle", `${hardwareCount}${label[1]}`), state);
+    const capacity = id === "register-file" ? "64 KiB · 16K × 32-bit" : component.resources?.hardwareLanes ? `${component.resources.hardwareLanes} CUDA cores` : id === "tensor" ? "4th GEN · 1 core" : null;
+    face.append(name);
+    if (capacity) face.append(dom("span", "sm-component-capacity", capacity));
+    face.append(dom("span", "sm-component-subtitle", `${hardwareCount}${label[1]}`), state);
     card.append(box.element, face);
     card.title = `${label[0]} · ${component.purpose ?? "点击查看正式组件契约"}`;
     cards.set(component.id, {card, box, face, state}); return card;
@@ -242,6 +254,11 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     }
     const grid = dom("div", className); for (const component of components) grid.append(makeCard(component)); group.append(grid); return group;
   }
+  function hardwareGroup(components, className) {
+    const group = makeGroup(components, null, `sm-hardware-grid ${className}`);
+    group.lastElementChild.style.gridTemplateColumns = components.map(component => `${HARDWARE_WEIGHTS[localId(component)] ?? 1}fr`).join(" ");
+    return group;
+  }
   function renderBoard() {
     cards.clear(); paths.clear(); pathByPair.clear(); lights.clear(); componentLocations.clear(); board.replaceChildren();
     board.dataset.layout = layout; layoutToggle.textContent = layout === "observed" ? "显示完整架构" : "聚焦来源路径";
@@ -253,27 +270,45 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
       marker.append(svg("path", {d: "M1 1 L7 4 L1 7", fill: "none", stroke: `var(--sm-${type})`, "stroke-width": 1.4, "stroke-linecap": "round", "stroke-linejoin": "round"})); defs.append(marker);
     }
     wires.append(defs);
+    const shared = architecture.components.filter(component => partitionId(component) == null && (layout === "full" || recordedComponents.has(component.id)));
+    const instructionCache = shared.find(component => localId(component) === "icache");
+    if (instructionCache) board.append(makeGroup([instructionCache], null, "sm-sm-icache-grid"));
     const partitionContainer = dom("div", `sm-partitions${partition === "all" ? " sm-all-partitions" : ""}`);
     for (const value of partition === "all" ? [0, 1, 2, 3] : [partition]) {
       const container = dom("section", "sm-partition"); container.setAttribute("aria-label", `SM 分区 P${value}`);
-      const heading = dom("div", "sm-partition-heading"); heading.append(dom("span", "", `PARTITION ${value} / SMSP`), dom("small", "", "独立调度 / 执行资源")); container.append(heading);
+      const heading = dom("div", "sm-partition-heading"); heading.append(dom("span", "", `PARTITION ${value} / SMSP`), dom("small", "", "实线：公开硬件 · 虚线：逻辑阶段")); container.append(heading);
       const components = architecture.components.filter(component => Number(partitionId(component)) === value && partitionId(component) != null && (layout === "full" || recordedComponents.has(component.id)));
       const used = new Set();
-      for (const [stageIndex, [label, ids]] of ROWS.entries()) {
+      for (const [className, ids] of HARDWARE_ROWS) {
         const group = ids.map(id => components.find(component => localId(component) === id)).filter(Boolean); if (!group.length) continue;
-        group.forEach(component => used.add(component.id)); container.append(makeGroup(group, label, `sm-stage-grid sm-row-${Math.min(7, group.length)}`, stageIndex + 1));
+        group.forEach(component => used.add(component.id)); container.append(hardwareGroup(group, className));
       }
-      const remaining = components.filter(component => !used.has(component.id)); if (remaining.length) container.append(makeGroup(remaining, "OTHER DEFINED RESOURCES", "sm-stage-grid"));
+      const logical = LOGICAL_STAGES.map(id => components.find(component => localId(component) === id)).filter(Boolean);
+      if (logical.length) {
+        logical.forEach(component => used.add(component.id));
+        const group = makeGroup(logical, null, "sm-logical-grid");
+        group.classList.add("sm-logical-row"); group.setAttribute("aria-label", "Trace 逻辑阶段"); group.lastElementChild.style.gridTemplateColumns = `repeat(${logical.length},minmax(0,1fr))`; container.append(group);
+      }
+      const remaining = components.filter(component => !used.has(component.id)); if (remaining.length) container.append(makeGroup(remaining, "OTHER DEFINED RESOURCES", "sm-logical-grid"));
       if (!components.length) container.append(dom("p", "sm-partition-unobserved", `P${value} 没有映射的非零阶段区间。选择完整架构可查看结构定义。`));
       partitionContainer.append(container);
     }
     board.append(partitionContainer);
-    const shared = architecture.components.filter(component => partitionId(component) == null && (layout === "full" || recordedComponents.has(component.id)));
     const zone = dom("section", "sm-shared-zone"); zone.setAttribute("aria-label", "SM 共享存储与异步数据路径"); zone.append(dom("h4", "", "SM SHARED RESOURCES / ASYNC DATA PATH"));
     const pool = shared.filter(component => ["l1-cache", "shared-memory"].includes(localId(component)));
-    const other = shared.filter(component => !pool.includes(component)); zone.append(makeGroup(other, null));
-    const poolContainer = dom("div", "sm-shared-pool"); poolContainer.append(dom("p", "sm-shared-pool-label", "统一物理存储池 · 两种独立语义：L1 自动缓存，SMEM 由程序显式寻址与同步"), makeGroup(pool, null)); zone.append(poolContainer);
-    if (shared.length) board.append(zone);
+    const barrier = shared.find(component => localId(component) === "mbarrier");
+    const tma = shared.find(component => localId(component) === "tma");
+    if (tma) zone.append(makeGroup([tma], null, "sm-tma-grid"));
+    if (pool.length || barrier) {
+      const poolContainer = dom("div", "sm-shared-pool"), poolHeading = dom("div", "sm-pool-heading");
+      poolHeading.append(dom("p", "sm-shared-pool-label", pool.length ? "256 KiB · 统一 L1 / SMEM 物理存储池" : "SMEM 同步对象"));
+      if (barrier) {const group = makeGroup([barrier], null, "sm-barrier-grid"); group.title = "mbarrier 是存放于 SMEM 的逻辑屏障对象"; poolHeading.append(group);}
+      poolContainer.append(poolHeading);
+      if (pool.length) poolContainer.append(makeGroup(pool, null, "sm-pool-grid")); zone.append(poolContainer);
+    }
+    const boundary = ["constant-cache", "texture", "noc-interface"].map(id => shared.find(component => localId(component) === id)).filter(Boolean);
+    if (boundary.length) {const group = makeGroup(boundary, null, "sm-boundary-grid"); group.lastElementChild.style.gridTemplateColumns = boundary.map(component => localId(component) === "texture" ? "2fr" : "1fr").join(" "); zone.append(group);}
+    if (shared.some(component => localId(component) !== "icache")) board.append(zone);
     tokenOverlay = svg("svg", {class: "sm-pipeline-token-overlay", "aria-label": "来源区间驱动的指令阶段光点"});
     tokenLayer = svg("g", {class: "sm-pipeline-tokens"}); tokenOverlay.append(tokenLayer); board.append(tokenOverlay);
     for (const [value, tab] of tabNodes) tab.setAttribute("aria-pressed", String(value === partition));
@@ -292,10 +327,10 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
       box.updateGeometry(width, height);
       const front = box.geometry.front;
       Object.assign(face.style, {left: `${front.x}px`, top: `${front.y}px`, width: `${front.width}px`, height: `${front.height}px`, right: "auto", bottom: "auto"});
-      const group = card.closest(".sm-stage-row"), section = card.closest(".sm-partition, .sm-shared-zone");
+      const group = card.closest(".sm-stage-row"), section = card.closest(".sm-partition, .sm-shared-zone") ?? board;
       const groupRect = group.getBoundingClientRect(), sectionRect = section.getBoundingClientRect();
       locations.set(id, {x: (rect.left - bounds.left) / scale, y: (rect.top - bounds.top) / scale, width, height,
-        row: group, section, rowBottom: (groupRect.bottom - bounds.top) / scale,
+        row: group, section, rowTop: (groupRect.top - bounds.top) / scale, rowBottom: (groupRect.bottom - bounds.top) / scale,
         rowIndex: [...section.querySelectorAll(".sm-stage-row")].indexOf(group),
         sectionLeft: (sectionRect.left - bounds.left) / scale, sectionRight: (sectionRect.right - bounds.left) / scale});
     }
@@ -307,9 +342,9 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
       const dy = target.y + target.height / 2 - source.y - source.height / 2;
       const port = (location, side) => {const anchor = smBoxPortAnchor(location.width, location.height, side); return {x: location.x + anchor.x, y: location.y + anchor.y};};
       let d;
-      if (Math.abs(dy) < source.height / 2) {
+      if (source.row === target.row) {
         if (Math.abs(target.x - source.x) > source.width * 1.6) {
-          const from = port(source, "bottom"), to = port(target, "bottom"), lane = Math.max(source.y + source.height, target.y + target.height) + 7;
+          const from = port(source, "bottom"), to = port(target, "bottom"), lane = Math.max(source.rowBottom, target.rowBottom) + 4;
           d = `M${from.x},${from.y} L${from.x},${lane} L${to.x},${lane} L${to.x},${to.y}`;
         } else {
           const right = target.x >= source.x, from = port(source, right ? "right" : "left"), to = port(target, right ? "left" : "right");
@@ -323,8 +358,8 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
         // through unrelated front faces. This is a logical contract, not wiring.
         const left = link.type === "completion" || link.type === "control";
         const from = port(source, dy > 0 ? "bottom" : "top"), to = port(target, dy > 0 ? "top" : "bottom");
-        const sourceLane = dy > 0 ? source.y + source.height + 7 : source.y - 7;
-        const targetLane = dy > 0 ? target.y - 7 : target.y + target.height + 7;
+        const sourceLane = dy > 0 ? source.rowBottom + 4 : source.rowTop - 4;
+        const targetLane = dy > 0 ? target.rowTop - 4 : target.rowBottom + 4;
         const gutter = left ? Math.min(source.sectionLeft, target.sectionLeft) + 7 + linkIndex % 3 * 2 : Math.max(source.sectionRight, target.sectionRight) - 7 - linkIndex % 3 * 2;
         d = `M${from.x},${from.y} L${from.x},${sourceLane} L${gutter},${sourceLane} L${gutter},${targetLane} L${to.x},${targetLane} L${to.x},${to.y}`;
       }
@@ -389,10 +424,12 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
         const ring = svg("circle", {class: "sm-light-ring", r: 8.5});
         const core = svg("circle", {class: "sm-light-core", r: 4.5});
         const hit = svg("circle", {class: "sm-light-hit", r: 14});
-        const title = svg("title"); token.append(trail, halo, ring, core, hit, title);
+        // A bent trail can have a distant bounding-box center. Keep it outside
+        // the interactive group so pointer/keyboard focus targets the light.
+        const title = svg("title"); token.append(halo, ring, core, hit, title);
         const choose = () => onSelectEvent(mark.event.id);
         token.addEventListener("click", choose); token.addEventListener("keydown", event => {if (event.key === "Enter" || event.key === " ") {event.preventDefault(); choose();}});
-        light = {token, trail, title}; lights.set(key, light); tokenLayer.append(token);
+        light = {token, trail, title}; lights.set(key, light); tokenLayer.append(trail, token);
       }
       const route = mark.type === "transfer" ? smPipelineTransferRoute(mark) : [];
       const segments = route.slice(1).map((id, index) => pathByPair.get(`${route[index]}|${id}|${mark.kind}`));
@@ -414,10 +451,12 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
       light.token.setAttribute("transform", `translate(${point.x},${point.y})`);
       const color = mark.type === "transfer" ? `var(--sm-${mark.kind})` : mark.state === "stall" ? "#ffb071" : mark.state === "queue" ? "#ffe094" : "#9effdc";
       light.token.style.setProperty("--flow-color", color);
+      light.trail.setAttribute("transform", `translate(${point.x},${point.y})`);
+      light.trail.style.setProperty("--flow-color", color);
       light.trail.setAttribute("points", trail.map(p => `${p.x - point.x},${p.y - point.y}`).join(" "));
       light.title.textContent = `${mark.event.args?.opcode ?? mark.event.name}\nPC ${mark.event.args?.pc ?? "未提供"} · W${mark.event.args?.warpId ?? "?"} · ${instructionId(mark.event) ?? mark.event.id}\n${mark.type === "transfer" ? route.join(" → ") : mark.componentId}\n${mark.event.start} → ${mark.event.end} ${trace.meta.timeUnit}`;
     }
-    for (const [key, light] of lights) if (!keep.has(key)) {light.token.remove(); lights.delete(key);}
+    for (const [key, light] of lights) if (!keep.has(key)) {light.token.remove(); light.trail.remove(); lights.delete(key);}
     const partitionCounts = new Map([0, 1, 2, 3].map(value => [value, 0]));
     for (const mark of requested) {
       const component = formalById.get(mark.componentId ?? mark.sourceId), value = partitionId(component ?? {});

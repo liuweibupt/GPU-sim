@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {smComponentBoxGeometry, smBoxPortAnchor} from "../web/sm-component-box.js";
 
 test("responsive SM packages retain three shared faces and a positive label surface", () => {
-  for (const [width, height] of [[150, 116], [260, 140], [100, 148], [75, 300], [320, 230], [40, 40]]) {
+  for (const [width, height] of [[150, 116], [260, 140], [100, 148], [75, 300], [320, 230], [40, 40], [70, 24], [900, 48], [140, 80]]) {
     const shape = smComponentBoxGeometry(width, height);
     const {front, top, right} = shape.faces;
     assert.strictEqual(front[0], top[0]);
@@ -27,7 +27,7 @@ test("responsive SM packages retain three shared faces and a positive label surf
 });
 
 test("SM route anchors track physical package contacts as labels resize", () => {
-  for (const [width, height] of [[150, 116], [192, 180], [320, 128]]) {
+  for (const [width, height] of [[150, 116], [192, 180], [320, 128], [70, 24], [900, 48], [140, 80]]) {
     const shape = smComponentBoxGeometry(width, height);
     for (const side of ["top", "right", "bottom", "left"]) assert.deepEqual(smBoxPortAnchor(width, height, side), shape.ports[side]);
     assert.ok(shape.ports.bottom.y > shape.faces.front[2].y);

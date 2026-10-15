@@ -37,7 +37,7 @@
 
 进入任意已记录的 SM 后，可查看四个分区及共享存储区；选择单个分区进一步阅读。图、事件和说明使用同一份 [机器可读规格](lib/sm-architecture.js)，每个组件定义作用、作用域、输入/输出类型、状态、资源、时序、转换条件、释放条件、不变量与来源等级。[完整形式化说明](docs/sm-architecture.md)
 
-SM 内部组件采用与外层城市一致的 **2.5D 三面盒子**：顶面、侧壁、底座和接脚由原生 SVG 绘制，Tensor 阵列、寄存器/缓存存储架、算术单元与 TMA 搬运通道用不同纹样区分。名称与事件状态显示在正面；类型化通路接到盒子端口，移动数据点独立置于上层，可暂停、定位和点击追踪。手机端保持字体可读，在画布内滚动浏览。盒子尺寸、格纹及接脚数量仅为造型，不表示硬件面积、容量或实测端口数。
+SM 内部采用参考 [NVIDIA Hopper 官方 SM 图（Figure 4）](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/) 的 **2.5D 功能结构图**：控制通路是窄条，RF 是宽存储带，FP32/INT32/FP64 是不同规模的执行阵列，Tensor 是较大的矩阵块，四分区下方共用宽的 L1/SMEM 存储池。逻辑追踪阶段保留较小的示意节点，TMA、同步对象和 NoC 边界也使用不同形态。画布按屏幕宽高自动适配，移动光点可暂停、定位和点击追踪；完整组件名称及规则可悬停或点击查看。尺寸表示功能层次，不表示晶片物理面积、延迟或吞吐比例；格纹与接脚数量不表示实测阵列、bank或端口数。[布局依据与边界](docs/sm-architecture.md#功能布局与视觉比例)
 
 - **取指与发射：** L1/L0 指令缓存、Fetch、Decode、Warp Scheduler、Scoreboard、Issue、Dispatch。
 - **操作数与执行：** Register File、Operand Collector、FP32 FPU、FP64 FPU、INT32、SFU、Tensor Core、LSU、Branch/Reconvergence、Writeback。
@@ -63,7 +63,7 @@ node scripts/generate-sm.mjs
 
 - 外层默认在浏览器运行双分区数据流教学模型，132 SM 共完成396个 Tile；可调整桥传播延迟、链路带宽与共享 Tile 策略后重跑。单 Fabric 可作对照。GTSim timing graph 继续作为独立外部后端样例，仍为796区间、5,492 / 6,413 cycles。
 - 内层首次点击 **“SM 内部”** 或 **“加载 SM 光点”** 会载入实际 FlashGPU-Sim [指令生命周期样例](examples/flashgpu-vectoradd-pipeline.json)：在每个已记录 SM 内，光点沿 Dispatch → Operand Collector → 原生执行单元 → Writeback 的示意通路推进，并在实际阶段区间中停留。可切换 SM / 四分区、点击光点检查 PC / warp / 动态指令 ID 与全部原生阶段，暂停、慢放和回退。
-- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。组件采用紧凑横向布局，并按当前屏幕宽高自动适配；可在一屏内观察组件与光点，画布顶部直接播放/暂停。组件使用简写，完整名称及规则可悬停或点击查看。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
+- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。组件按控制、存储、执行和同步职责使用不同尺寸，并按当前屏幕宽高自动适配；可在一屏内观察组件与光点，画布顶部直接播放/暂停。组件使用简写，完整名称及规则可悬停或点击查看。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
 - **“载入指令运行”** 接受 [FlashGPU-Sim 原生 pipeline observer / ISSUE/STALL 日志](tools/detailed/README.md) 或详细 observer JSON。指令面板显示当前或最近已观测周期，轨道随回放位置更新并保留所选事件。观测点与执行区间分别计数，不从点日志生成完成时间；教学流水线仍可单独运行。
 - 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。数据流全景默认90秒/遍，SM检查120秒/遍；GTSim保持15 / 30秒，指令慢放60秒。这与后端仿真耗时无关。减少动画模式默认暂停。
 

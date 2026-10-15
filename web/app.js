@@ -5,7 +5,7 @@ import {normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from "../lib/detaile
 import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
 import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=sm-1";
 import {simulateSm, DEFAULT_SM_CONFIG} from "../lib/sm-model.js?v=sm-1";
-import { createGpuWorld } from "./gpu-world.js?v=sm-compact-1";
+import { createGpuWorld } from "./gpu-world.js?v=sm-hardware-1";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);

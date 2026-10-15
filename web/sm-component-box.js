@@ -54,6 +54,7 @@ function svg(tag, attributes = {}) {
 
 function motifKind(localId, family) {
   if (localId === "tensor" || family === "tensor") return "matrix";
+  if (["fp32", "fp64", "int32"].includes(localId)) return "execution-array";
   if (["register-file", "shared-memory", "l1-cache", "l0-icache", "icache", "constant-cache", "texture"].includes(localId)) return "racks";
   if (["tma", "lsu", "noc-interface", "dispatch"].includes(localId)) return "transfer";
   if (localId === "mbarrier" || localId === "scoreboard") return "gate";
@@ -88,15 +89,26 @@ export function createSmComponentBox({localId, family = "control"} = {}) {
     const polygon = (coordinates, extra = {}) => motif.append(svg("polygon", {points: points(coordinates), ...extra}));
     const kind = motifKind(localId, family);
     if (kind === "matrix") {
-      for (let row = 0; row < 2; row++) for (let column = 0; column < 6; column++) {
-        const u = .12 + column * .125, v = .19 + row * .35;
-        polygon([roof(u, v), roof(u + .082, v), roof(u + .082, v + .22), roof(u, v + .22)], {fill: colors.edge, "fill-opacity": ".12"});
+      for (let row = 0; row < 3; row++) for (let column = 0; column < 4; column++) {
+        const u = .12 + column * .19, v = .12 + row * .26;
+        polygon([roof(u, v), roof(u + .14, v), roof(u + .14, v + .18), roof(u, v + .18)], {fill: colors.edge, "fill-opacity": ".18"});
+      }
+    } else if (kind === "execution-array") {
+      // Repeated execution cells echo NVIDIA's schematic language. The visual
+      // density responds to screen space and does not encode CUDA core counts.
+      const columns = Math.max(3, Math.min(8, Math.floor(w / 22)));
+      const step = .8 / columns;
+      for (let row = 0; row < 2; row++) for (let column = 0; column < columns; column++) {
+        const u = .1 + column * step, v = .15 + row * .4;
+        polygon([roof(u, v), roof(u + step * .75, v), roof(u + step * .75, v + .28), roof(u, v + .28)], {fill: colors.edge, "fill-opacity": ".2"});
       }
     } else if (kind === "racks") {
-      for (let index = 0; index < 5; index++) {
-        const u = .12 + index * .155;
-        polygon([roof(u, .17), roof(u + .105, .17), roof(u + .105, .83), roof(u, .83)], {fill: "#081b28", "fill-opacity": ".3"});
-        line(roof(u + .02, .38), roof(u + .085, .38)); line(roof(u + .02, .62), roof(u + .085, .62));
+      const columns = Math.max(3, Math.min(24, Math.floor(w / 28)));
+      const step = .8 / columns;
+      for (let index = 0; index < columns; index++) {
+        const u = .1 + index * step;
+        polygon([roof(u, .17), roof(u + step * .76, .17), roof(u + step * .76, .83), roof(u, .83)], {fill: "#081b28", "fill-opacity": ".3"});
+        line(roof(u + step * .12, .38), roof(u + step * .62, .38)); line(roof(u + step * .12, .62), roof(u + step * .62, .62));
       }
     } else if (kind === "transfer") {
       for (const v of [.31, .7]) {
@@ -125,9 +137,39 @@ export function createSmComponentBox({localId, family = "control"} = {}) {
       for (const u of [.2, .45, .7]) polygon([roof(u, .22), roof(u + .1, .22), roof(u + .1, .78), roof(u, .78)], {fill: colors.top});
     }
     element.append(motif);
+    // The front has an architectural texture as well as a roof silhouette:
+    // broad banks, repeated ALUs and the tall matrix unit remain distinguishable
+    // when the roof is only a few pixels high. The clear middle band belongs to
+    // the accessible HTML label; artwork never draws over it.
+    const faceMotif = svg("g", {class: "sm-box-front-motif", fill: "none", stroke: `var(--sm-box-edge,${colors.edge})`, "stroke-width": ".7", opacity: ".36"});
+    const frontLine = (u1, v1, u2, v2, extra = {}) => faceMotif.append(svg("line", {x1: round(x + w * u1), y1: round(y + h * v1), x2: round(x + w * u2), y2: round(y + h * v2), ...extra}));
+    const frontCell = (u, v, cellWidth, cellHeight, extra = {}) => faceMotif.append(svg("rect", {x: round(x + w * u), y: round(y + h * v), width: round(w * cellWidth), height: round(h * cellHeight), rx: ".6", ...extra}));
+    if (kind === "execution-array" && h >= 28) {
+      const columns = Math.max(3, Math.min(8, Math.floor(w / 22))), step = .84 / columns;
+      for (const v of [.08, .22, .73, .87]) for (let column = 0; column < columns; column++) {
+        frontCell(.08 + column * step, v, step * .76, .08, {fill: colors.edge, "fill-opacity": ".16"});
+      }
+    } else if (kind === "racks" && h >= 28) {
+      const columns = Math.max(3, Math.min(24, Math.floor(w / 28))), step = .84 / columns;
+      for (let column = 0; column < columns; column++) {
+        const u = .08 + column * step;
+        frontCell(u, .12, step * .76, .14, {fill: "#061b27", "fill-opacity": ".4"});
+        frontCell(u, .76, step * .76, .14, {fill: "#061b27", "fill-opacity": ".4"});
+      }
+      frontLine(.06, .31, .94, .31, {opacity: ".4"}); frontLine(.06, .7, .94, .7, {opacity: ".4"});
+    } else if (kind === "matrix" && h >= 28) {
+      for (const v of [.07, .2, .75, .88]) for (let column = 0; column < 3; column++) {
+        frontCell(.17 + column * .23, v, .18, .075, {fill: colors.edge, "fill-opacity": ".2"});
+      }
+      frontLine(.1, .09, .1, .94); frontLine(.9, .09, .9, .94);
+      frontLine(.1, .09, .24, .09); frontLine(.76, .09, .9, .09);
+      frontLine(.1, .94, .24, .94); frontLine(.76, .94, .9, .94);
+    }
+    element.append(faceMotif);
     // Side grooves and a narrow bezel leave the front clear for HTML labels.
     const bezel = svg("g", {class: "sm-box-bezel", fill: "none", stroke: colors.edge, opacity: ".18", "stroke-width": "1"});
-    bezel.append(svg("path", {d: `M${round(x + 5)} ${round(y + 8)}V${round(base - 7)} M${round(x + 8)} ${round(base - 4)}H${round(x + w - 8)}`}));
+    const insetX = Math.min(5, w * .05), insetY = Math.min(8, h * .16);
+    bezel.append(svg("path", {d: `M${round(x + insetX)} ${round(y + insetY)}V${round(base - insetY)} M${round(x + insetX * 1.6)} ${round(base - insetY * .5)}H${round(x + w - insetX * 1.6)}`}));
     for (const v of [.23, .45, .67]) bezel.append(svg("line", {x1: round(x + w + dx * .22), y1: round(y + h * v - dy * .22), x2: round(x + w + dx * .78), y2: round(y + h * v - dy * .78)}));
     element.append(bezel);
     const pins = svg("g", {class: "sm-box-pins", fill: "#10222b", stroke: colors.pin, "stroke-width": "1.6", "stroke-linecap": "square"});
@@ -136,7 +178,8 @@ export function createSmComponentBox({localId, family = "control"} = {}) {
       pins.append(svg("line", {x1: round(px), y1: round(base), x2: round(px), y2: ports.bottom.y}));
     }
     pins.append(svg("line", {x1: x, y1: ports.left.y, x2: ports.left.x, y2: ports.left.y}));
-    pins.append(svg("rect", {x: round(ports.right.x - 2.2), y: round(ports.right.y - 2.2), width: 4.4, height: 4.4, "stroke-width": ".8", transform: `rotate(-20 ${ports.right.x} ${ports.right.y})`}));
+    const portSize = Math.min(4.4, (width - ports.right.x) * .9);
+    pins.append(svg("rect", {x: round(ports.right.x - portSize / 2), y: round(ports.right.y - portSize / 2), width: round(portSize), height: round(portSize), "stroke-width": String(Math.min(.8, portSize * .35)), transform: `rotate(-20 ${ports.right.x} ${ports.right.y})`}));
     element.append(pins);
     element.append(svg("polygon", {class: "sm-box-edge", points: points(silhouette), fill: "none", stroke: `var(--sm-box-edge,${colors.edge})`, "stroke-width": "1.1", "stroke-linejoin": "round", opacity: ".7"}));
     return geometry;
