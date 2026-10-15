@@ -66,3 +66,34 @@ test('an invalid secondary SM run rejects a workspace atomically', () => {
   assert.throws(() => decodeWorkspace(input), /指令归属/);
   assert.deepEqual(input, before);
 });
+
+test('CTA residency imports reject fabricated resources, membership and instantaneous state evidence', () => {
+  const original = simulateSm({warpCount: 8, residentCtaLimit: 1});
+  for (const mutate of [
+    trace => delete trace.metrics.residency,
+    trace => { trace.meta.capabilities = trace.meta.capabilities.filter(cap => cap !== 'sm_residency'); },
+    trace => { trace.metrics.residency.limits.registers++; },
+    trace => { trace.metrics.residency.history[0].warps++; },
+    trace => { trace.metrics.ctas[0].warpIds[0] = 4; },
+    trace => { trace.metrics.ctas[1].admitted = 0; },
+    trace => { trace.metrics.ctas[0].reservedSharedBytes = 0; },
+    trace => { trace.metrics.ctas[0].sharedOffsetBytes = trace.metrics.residency.limits.sharedBytes; },
+    trace => { trace.metrics.warps[0].history[0].eligible = true; },
+    trace => { trace.metrics.warps[0].history[0].state = 'retired'; },
+    trace => { trace.metrics.instructions[0].threadBlockId = 1; },
+    trace => { trace.metrics.instructions[0].issueEnd++; },
+    trace => { trace.metrics.instructions[0].issue = trace.metrics.instructions[0].start; },
+    trace => { Object.assign(trace.metrics.warps[0].history[0], {state: 'eligible', ready: true, eligible: true, waitReason: null, instructionId: trace.metrics.instructions[0].id}); },
+    trace => { trace.events[0].args.threadBlockId = 1; },
+  ]) {
+    const broken = structuredClone(original); mutate(broken);
+    assert.throws(() => normalizeRun(broken), /SM 流水线契约/);
+  }
+});
+
+test('earlier teaching traces remain importable without manufacturing missing residency', () => {
+  const legacy = fixture();
+  legacy.meta.capabilities = legacy.meta.capabilities.filter(cap => cap !== 'sm_residency');
+  delete legacy.metrics.residency; delete legacy.metrics.ctas; delete legacy.metrics.warps;
+  assert.equal(normalizeRun(legacy).meta.smModelSchemaVersion, 1);
+});

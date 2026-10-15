@@ -19,9 +19,11 @@ H100硬件数量来源于 [NVIDIA Hopper Architecture In-Depth](https://develope
 
 ## 请求与分区缓存
 
-每个SM每轮固定处理一个tile：共享输入与私有输入分别请求，二者全部返回后才能计算，计算后写回HBM，再开始下一轮。此处CTA编号用于任务归属，不模拟真实CTA派发策略或GEMM数值。
+全局 CTA grid 使用明确的线程、寄存器、shared-memory 预算约束驻留槽。教学派发器先覆盖所有有任务可领的 SM，再填额外槽；任一 SM 的 CTA 退休就即时补派。默认 396 CTA 中，264 CTA 在 cycle 0 驻留于全部 132 SM，最多 2 CTA/SM；这不是对真实 launch ramp、NVIDIA 派发顺序或实机 occupancy 的恢复。配置与资源公式见 [Grid 与驻留说明](traffic-model.md#grid-与驻留配置)。
 
-`shared:${round}` 表达本轮相同的逻辑输入身份；缓存/未完成填充的身份还包含分区。开启合并后，同分区的同key请求可加入同一未完成填充，已返回数据可在该分区命中。另一个分区保留自己的填充/驻留状态，不能因为数据key相同就宣布整个GPU唯一一次HBM读取。
+每 CTA 的共享输入与私有输入分别请求，全部返回后才能排队使用本 SM 的 tile 级计算端点。输入等待时 CTA 仍驻留，一个 CTA 计算可与同 SM 另一 CTA 的访存重叠。输出被 L2 路径接受后 CTA 退休并释放驻留槽，下游 HBM 写提交继续完成，不再要求下一 CTA 等待全程 DRAM 提交。这是显式的教学完成边界，不执行 CUDA fence、atomic、跨 CTA 屏障或 GEMM 数值。
+
+`shared:${round}` 表达同一组 CTA 的逻辑输入身份，其中 `round = floor(threadBlockId / numSms)`，不构成全局同步轮次；动态派发后，同组 CTA 不要求分布到不同 SM。缓存/未完成填充的身份还包含本地 bank。开启合并后，同分区的同key请求可加入同一未完成填充，已返回数据可在该分区命中。另一个分区保留自己的填充/驻留状态，不能因为数据key相同就宣布整个GPU唯一一次HBM读取。
 
 这一政策用于展示H100局部L2缓存的定性原则，是理想化教学实现。它以整tile作为对象，尚未按真实地址、32B sector、cache line及有限MSHR执行。缓存只服务约定的共享输入，当前工作负载内不驱逐；不推导真实L2一致性、复制协议或地址hash。
 
@@ -60,7 +62,7 @@ linkNextAccept = serializationEnd
 
 设置层级预算是为了避免默认NoC接口能力不足而人为制造普遍的内存带宽瓶颈。论文要求区分bisection、端点接口和内存带宽；这里的3.2只是配置比，不等于实测的L2/DRAM比，也不证明本模型拥有真实GPU的完整speedup结构。[MICRO2024，Section VI](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)
 
-参数改变可有意制造NoC瓶颈，观察其对排队和完成时间的影响；这属于玩家设定的架构实验。HBM仍以固定服务延迟加字节服务时间的单服务端点建模，不执行DRAM内部pipeline、bank并行或真实命令调度；所以640 B/model-cycle只是配置的字节速率预算，不是模型测得的可达吞吐。回放速度只改变渲染时钟，不改变任何模拟周期。所有带宽与延迟使用本次模型时间域，不能未经换算与真实GHz或GB/s混合。
+参数改变可有意制造NoC瓶颈，观察其对排队和完成时间的影响；这属于玩家设定的架构实验。HBM采用固定服务延迟加字节串行化的聚合吞吐端点：串行化后释放端口，固定延迟可与后续请求重叠，完成依赖仍等待服务end。它不执行DRAM bank、真实命令调度或控制器时序；640 B/model-cycle只是名义字节速率上界，不能推为实机峰值。旧单服务端点把固定延迟也当成全程占用，过度放大了访存等待。回放速度只改变渲染时钟，不改变任何模拟周期。所有带宽与延迟使用本次模型时间域，不能未经换算与真实GHz或GB/s混合。
 
 ## 已支持与尚未实现
 
@@ -72,13 +74,14 @@ linkNextAccept = serializationEnd
 | 串行化占用与传播延迟分离 | flit/wormhole、有限buffer、credit/backpressure |
 | 带宽参数重跑、可重复事件与因果依赖 | H100周期精确性或实测性能验证 |
 | tile输入依赖、计算和写提交 | 与独立SM指令教学模型共享同一微架构状态的联合仿真 |
+| 全局CTA队列、资源上限、驻留/等待/计算区间及退休补派 | NVIDIA真实CTA启动顺序、逐warp联合调度、CUDA完整内存模型 |
 
 Hopper TMA multicast是**显式指令且cluster局部**的另一种操作。PTX CTA mask指定目标CTA，不能用132个SM的共享需求自动替代。当前SM教学示例只执行TMA global→shared单目标子集，NoC沙盘也没有multicast复制树。[PTX规范](https://docs.nvidia.com/cuda/archive/12.8.1/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-cp-async-bulk)
 
 ## 数据与验证
 
-生产者与版本、有效配置、时间域、模型假设及拓扑保存在trace元数据。transfer保留packet/request/data身份、当前跳源目的、端到端源目的、字节数及hop索引；链路资源释放点与数据到达点分别表达。缓存命中、合并、HBM服务、返回和计算之间使用实际完成依赖，不从动画进度倒推就绪。
+生产者与版本、有效配置、时间域、模型假设及拓扑保存在trace元数据。`meta.scheduling.blocks` 保留每 CTA 的派发、输入就绪、计算开始/完成、退休和 HBM 提交时间；驻留按 `[start, retired)` 解释，不能将等待任务的 SM 计作空闲。transfer保留packet/request/data身份、当前跳源目的、端到端源目的、字节数及hop索引；链路资源释放点与数据到达点分别表达。缓存命中、合并、HBM服务、返回和计算之间使用实际完成依赖，不从动画进度倒推就绪。
 
-验收至少包括：所有132SM任务完成；请求/响应字节守恒；跨分区路径确实经过bridge；两个分区的相同共享key分别保留填充；传播重叠不违反串行化互斥；后续hop不早于前hop到达；改变带宽重新生成结果；相同配置重复运行一致。当前运行统计以仓库脚本生成的示例与测试结果为准，不沿用旧单fabric模型的周期/流量数值。
+验收至少包括：足够 grid 时初始驻留覆盖全部132SM；小 grid 合理留空；任何时刻 CTA 驻留不超过资源上限，退休时即时补派且无需等待 HBM 提交；任务全部完成；请求/响应字节守恒；跨分区路径确实经过bridge；两个分区的相同共享key分别保留填充；传播重叠不违反串行化互斥；后续hop不早于前hop到达；改变带宽重新生成结果；相同配置重复运行一致。当前运行统计以仓库脚本生成的示例与测试结果为准，不沿用旧单fabric模型的周期/流量数值。
 
 旧版单fabric、12聚合组、整hop占用资源的模型说明保存在历史提交中；旧导入trace按其自身版本/配置回放，不能用新模型默认参数解释旧时间戳。

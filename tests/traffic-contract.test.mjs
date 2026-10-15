@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {normalizeRun, decodeWorkspace, describeRun} from '../lib/run-state.js';
+import {simulateTraffic} from '../lib/traffic-model.js';
 
 function fixture() {
   const flow = {packetId: 'packet-0', requestId: 'request-0', dataKey: 'shared-A', kind: 'read-response', bytes: 64,
@@ -108,4 +109,20 @@ test('undeclared legacy links retain full occupancy even when an importer suppli
   delete trace.events[2].args.serializationCycles;
   delete trace.events[2].args.propagationCycles;
   assert.throws(() => normalizeRun(trace), /串行化占用发生重叠/);
+});
+
+test('CTA scheduling metadata rejects invalid lifetimes, duplicate identities and resident overcommit', () => {
+  const original = simulateTraffic({numSms: 2, numClusters: 2, l2Banks: 2, hbmStacks: 1, gridBlocks: 6});
+  assert.equal(normalizeRun(original), original);
+  for (const change of [
+    schedule => schedule.gridBlocks++,
+    schedule => schedule.blocks[1].threadBlockId = schedule.blocks[0].threadBlockId,
+    schedule => schedule.blocks[0].smId = 9,
+    schedule => schedule.blocks[0].computeStart = schedule.blocks[0].inputsReady - 1,
+    schedule => schedule.blocks[0].retired = schedule.blocks[0].committed + 1,
+    schedule => schedule.residentBlockLimit = 1,
+  ]) {
+    const invalid = structuredClone(original); change(invalid.meta.scheduling);
+    assert.throws(() => normalizeRun(invalid), /数据流记录/);
+  }
 });

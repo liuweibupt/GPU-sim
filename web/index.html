@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#070d16" />
     <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
     <title>GPU City · GPU 数据流城市</title>
-    <link rel="stylesheet" href="./style.css?v=sm-box-1" />
-    <link rel="stylesheet" href="./multiscale.css?v=sm-hardware-1" />
+    <link rel="stylesheet" href="./style.css?v=sm-residency-2" />
+    <link rel="stylesheet" href="./multiscale.css?v=sm-residency-2" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
@@ -19,15 +19,15 @@
       </div>
       <div class="file-actions" aria-label="文件操作">
         <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="traffic">H100 SXM · 132 SM 数据流</option><option value="flashgpu">FlashGPU-Sim · SM 光点流水线</option><option value="flashgpu-points">FlashGPU-Sim · ISSUE/STALL 日志</option><option value="sm">SM · 流水线教学模型</option><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
-        <button id="load-example" type="button" title="重新加载所选示例">加载示例</button>
+
         <button id="import-trace" type="button" class="accent-button">导入 Trace</button>
-        <details class="file-menu"><summary>工作区与导出 <span aria-hidden="true">⌄</span></summary><div class="file-menu-content"><button id="export-trace" type="button" disabled>导出 Trace JSON</button><button id="import-workspace" type="button">打开工作区</button><button id="save-workspace" type="button" disabled>保存工作区</button></div></details>
+        <details class="file-menu"><summary>工作区与导出 <span aria-hidden="true">⌄</span></summary><div class="file-menu-content"><button id="import-detail" type="button">导入指令运行</button><button id="export-trace" type="button" disabled>导出 Trace JSON</button><button id="import-workspace" type="button">打开工作区</button><button id="save-workspace" type="button" disabled>保存工作区</button></div></details>
       </div>
     </header>
 
     <div id="status" class="status" role="status" aria-live="polite">正在仿真 132 座 SM 城市的数据流…</div>
     <section class="trace-summary" aria-label="执行记录来源">
-      <div class="trace-identification"><p class="eyebrow trace-eyebrow">当前实验 <span class="live-dot" aria-hidden="true"></span></p><h2 id="trace-title">选择一份 Trace 开始</h2><span id="evidence-badge" class="evidence-badge">尚未加载执行记录</span></div>
+      <div class="trace-identification"><h2 id="trace-title">选择一份 Trace 开始</h2><span id="evidence-badge" class="evidence-badge">尚未加载执行记录</span></div>
       <dl id="trace-facts" class="facts"></dl>
       <details class="source-notes"><summary>来源与建模边界</summary><p id="trace-description" class="muted">支持统一 JSON，以及转换器支持的原始格式。文件在浏览器中处理，不上传。</p><p id="source-boundary" class="control-help">架构位置用于探索；时间与依赖来自执行记录。</p></details>
     </section>
@@ -37,28 +37,28 @@
         <div class="scale-tabs" aria-label="观察尺度">
           <button id="macro-view" type="button" class="scale-tab" aria-pressed="true"><span class="scale-index">01</span><span><strong>GPU 全景</strong><small id="macro-backend">教学模型 · 数据包 / Tile</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
           <span class="scale-connector" aria-hidden="true">→</span>
-          <button id="micro-view" type="button" class="scale-tab" aria-pressed="false"><span class="scale-index">02</span><span><strong>SM 内部</strong><small id="micro-backend">指令粒度 · 待载入</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
+          <button id="micro-view" type="button" class="scale-tab" aria-pressed="false"><span class="scale-index">02</span><span><strong>SM 内部</strong><small id="micro-backend">所选 SM · 独立教学运行</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
         </div>
         <div class="run-clock"><span id="run-granularity">Tile 操作</span><span class="run-separator" aria-hidden="true">/</span><span>仿真耗时 <b id="simulation-runtime">未记录</b></span><span id="clock-scope" class="clock-scope">独立仿真时钟</span></div>
-        <button id="load-detail-example" type="button" class="accent-button detail-example">加载 SM 光点 <span aria-hidden="true">↗</span></button>
-        <button id="import-detail" type="button" class="detail-import">载入指令运行 <span aria-hidden="true">＋</span></button>
-        <button id="simulate-sm" type="submit" form="sm-config" class="sm-run">运行教学流水线</button>
+
+
+
         <details class="sm-experiment">
           <summary><span>SM 流水线实验</span><span id="sm-config-label">4 分区 · 可编辑教学时序</span><span aria-hidden="true">⌄</span></summary>
-          <form id="sm-config" class="sm-config">
+          <form id="sm-config" class="sm-config"><button id="simulate-sm" type="submit" class="accent-button">重新运行 SM 模型</button>
             <label for="sm-target">目标 SM<input id="sm-target" type="number" min="0" max="131" step="1" value="0" required /></label>
-            <label for="sm-warps">驻留 Warp<select id="sm-warps"><option value="4">4 warps</option><option value="8" selected>8 warps</option><option value="16">16 warps</option><option value="32">32 warps</option></select></label>
+            <label for="sm-warps">总 Warp<select id="sm-warps"><option value="4">4 warps</option><option value="8" selected>8 warps</option><option value="16">16 warps</option><option value="32">32 warps</option><option value="64">64 warps</option><option value="128">128 warps · 分批驻留</option></select></label>
             <label for="sm-issue-interval">Issue 间隔<select id="sm-issue-interval"><option value="1" selected>1 cycle</option><option value="2">2 cycles</option><option value="4">4 cycles</option></select></label>
             <label for="sm-memory-latency">外部内存服务延迟<select id="sm-memory-latency"><option value="40">40 cycles</option><option value="120" selected>120 cycles</option><option value="240">240 cycles</option></select></label>
             <label for="sm-tensor-latency">Tensor 执行延迟<select id="sm-tensor-latency"><option value="8">8 cycles</option><option value="16">16 cycles</option><option value="24" selected>24 cycles</option><option value="32">32 cycles</option></select></label>
             <label for="sm-bank-stride">SMEM 地址步长<select id="sm-bank-stride"><option value="1" selected>1 word · 无 bank 冲突</option><option value="2">2 words · 2 路冲突</option><option value="32">32 words · 32 路冲突</option></select></label>
-            <p id="sm-config-note" class="sm-config-note">点选城市同步目标 SM。参数只用于下一次独立运行；时序是教学假设，不是 NVIDIA 测量值。</p>
+            <label for="sm-warps-per-cta">每 CTA Warp<select id="sm-warps-per-cta"><option value="4" selected>4 warps</option><option value="8">8 warps</option><option value="16">16 warps</option><option value="32">32 warps</option></select></label><label for="sm-registers">每线程寄存器<select id="sm-registers"><option value="32">32 registers</option><option value="64" selected>64 registers</option><option value="128">128 registers</option></select></label><label for="sm-resident-warps">SM 驻留 Warp 上限<select id="sm-resident-warps"><option value="8">8 warps</option><option value="16">16 warps</option><option value="32">32 warps</option><option value="64" selected>64 warps</option></select></label><p id="sm-config-note" class="sm-config-note">点选城市同步目标 SM。参数只用于下一次独立运行；时序是教学假设，不是 NVIDIA 测量值。</p>
           </form>
         </details>
         <details class="traffic-experiment">
           <summary><span>数据流 / NoC 实验</span><span id="traffic-config-label">H100 SXM · 132 SM</span><span aria-hidden="true">⌄</span></summary>
           <form id="traffic-config" class="traffic-config">
-            <div class="traffic-preset"><span>下一次仿真的架构</span><strong>H100 SXM · 132 SM</strong><small>文献约束抽象 · 时序未校准</small></div>
+            <label for="grid-blocks">Grid / CTA 数<input id="grid-blocks" type="number" min="1" max="4096" value="396" step="1" required /></label><label for="resident-blocks">每 SM 驻留 CTA 上限<select id="resident-blocks"><option value="1">1 CTA</option><option value="2" selected>2 CTA</option><option value="4">4 CTA · 仍受资源约束</option></select></label>
             <label for="noc-topology">互连与缓存策略<select id="noc-topology"><option value="partitioned-crossbar" selected>双分区 Crossbar / 局部 L2</option><option value="uniform-star">单 Fabric / 理想全局缓存（对照）</option></select></label>
             <label for="noc-bandwidth">NoC 有向链路带宽<select id="noc-bandwidth"><option value="16">16 B / cycle</option><option value="32">32 B / cycle</option><option value="64">64 B / cycle</option><option value="128">128 B / cycle</option><option value="256" selected>256 B / cycle</option><option value="512">512 B / cycle</option></select></label>
             <label for="noc-cross-bandwidth">跨分区桥带宽<select id="noc-cross-bandwidth"><option value="256">256 B / cycle</option><option value="512" selected>512 B / cycle</option><option value="1024">1024 B / cycle</option></select></label>
@@ -72,18 +72,19 @@
       </section>
       <p id="run-context" class="run-context">两级视图分别读取各自的仿真记录。</p>
       <div class="workbench">
-        <details class="panel components-panel" aria-labelledby="components-heading" open>
+        <details class="panel components-panel" aria-labelledby="components-heading">
           <summary class="panel-heading"><span><span class="section-kicker">HIERARCHY</span><span id="components-heading" class="panel-title">组件导航</span></span><button id="clear-component" type="button" disabled>全部</button></summary>
           <p class="panel-intro muted">选择资源，联动架构图与事件。</p>
           <div id="component-tree" class="component-tree"><p class="empty">加载 Trace 后显示组件层级。</p></div>
-          <div class="navigator-note"><span class="live-dot" aria-hidden="true"></span><span>绿色指示灯表示该组件存在进行中事件。</span></div>
+          <div class="navigator-note"><span class="live-dot" aria-hidden="true"></span><span>计算为绿色，等待内存为琥珀色；驻留任务不等于正在计算。</span></div>
         </details>
 
         <section class="panel world-panel" aria-labelledby="world-heading">
-          <div class="panel-heading world-heading"><div><p class="section-kicker">GPU WORLD</p><h2 id="world-heading">进入计算城市</h2></div><div class="world-heading-tools"><span id="world-level-tag" class="subtle-tag">GPU / DATA FLOW</span><button id="traffic-play" type="button" class="primary" disabled>开始数据流</button><label class="view-mode-control"><input id="immersive-view" type="checkbox" checked /><span class="view-mode-switch" aria-hidden="true"></span><span>城市优先</span></label></div></div>
-          <div id="traffic-counters" class="traffic-counters" hidden aria-label="当前运行的数据包状态"><span><b id="packets-moving">0</b> 在途</span><span title="已发出且尚未送达，正在排队、等待路由或服务的数据包"><b id="packets-waiting">0</b> 等待</span><span><b id="packets-completed">0</b> 已送达</span><span class="traffic-gain"><b id="shared-read-savings">0</b><span>次 HBM 读取节省<small id="shared-gain-detail">整次运行的合并与缓存复用</small></span></span></div>
+          <div class="panel-heading world-heading"><div><h2 id="world-heading">GPU 执行视图</h2></div><div class="world-heading-tools"><span id="world-level-tag" class="subtle-tag">GPU / DATA FLOW</span><button id="play" type="button" class="primary play-button" disabled>播放</button><label class="loop-control" title="播放到观察窗口末尾后重新播放；暂停和定位仍保持静止"><input id="repeat-playback" type="checkbox" checked /><span>循环</span></label></div></div>
+          <div id="sm-counters" class="traffic-counters sm-counters" hidden aria-label="当前 SM 的 CTA 与 Warp 状态"></div>
+          <div id="traffic-counters" class="traffic-counters" hidden aria-label="当前 SM 与数据包状态"><span title="有 CTA 驻留；包含计算、就绪和等待"><b id="sms-resident">0</b><span>驻留 SM / <span id="sms-total">132</span></span></span><span title="至少有一个 CTA 在计算"><b id="sms-computing">0</b> 计算</span><span title="有驻留 CTA，全部在等内存；与计算计数不重叠"><b id="sms-waiting">0</b> 仅等内存</span><span title="尚未获得驻留槽位的 CTA"><b id="ctas-pending">0</b> CTA 待派发</span><span class="packet-counters"><b id="packets-moving">0</b> 在途包 · <b id="packets-waiting">0</b> 等待 · <b id="packets-completed">0</b> 送达</span></div>
           <div id="gpu-world"><div class="world-loading"><span class="loading-chip" aria-hidden="true"></span><p>正在构建 GPU 视图…</p></div></div>
-          <div class="world-footnote"><span>滚轮深入 · 点选城市 / 任务 · 查看执行证据</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
+          <div class="world-footnote"><span>点选 SM 深入 · 滚动查看组件 · 点选光点追踪</span><span class="world-footnote-detail">布局不代表芯片物理 floorplan</span></div>
         </section>
 
         <aside class="inspector" aria-label="检查器">
@@ -95,7 +96,7 @@
 
       <section class="panel timeline-panel" aria-labelledby="timeline-heading">
         <div class="timeline-toolbar"><div class="panel-heading timeline-title"><div><p class="section-kicker">EXECUTION TIMELINE</p><h2 id="timeline-heading">事件时间线</h2></div><span id="event-count" class="muted">0 个事件</span></div><div class="filters"><label class="search-label" for="event-search"><span class="sr-only">查找事件、PC、阶段或 Warp</span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input id="event-search" type="search" placeholder="搜索 PC、阶段、指令、Warp、事件 ID" /></label><label for="category-filter"><span class="sr-only">事件阶段或类别</span><select id="category-filter"><option value="">全部类别</option></select></label></div><div class="timeline-zoom"><label for="timeline-zoom">缩放 <output id="timeline-zoom-label" for="timeline-zoom">1×</output></label><input id="timeline-zoom" type="range" min="1" max="16" value="1" step="1" /><button id="timeline-focus-selection" type="button" disabled>聚焦事件</button></div></div>
-        <div class="transport" aria-label="执行回放"><div class="transport-buttons"><button id="play" class="primary play-button" type="button" disabled>播放</button><button id="step-back" type="button" disabled title="上一个事件边界 · 左方向键">← 上一边界</button><button id="step" type="button" disabled title="下一个事件边界 · 右方向键">下一边界 →</button><label class="inline-label" for="playback-rate">回放速度<select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select></label><span id="playback-scope" class="playback-scope">全景 · 15s / 遍</span><div class="seek-controls"><label class="sr-only" for="time-input">精确定位时间，单位与 Trace 一致</label><input id="time-input" type="number" step="any" value="0" disabled aria-label="精确定位时间，单位与 Trace 一致" /><button id="seek-time" type="button" disabled>定位</button></div><output id="time-label" for="time-slider time-input">0</output></div><label class="sr-only" for="time-slider">回放时间</label><input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled /></div>
+        <div class="transport" aria-label="执行回放"><div class="transport-buttons"><button id="step-back" type="button" disabled title="上一个事件边界 · 左方向键">← 上一边界</button><button id="step" type="button" disabled title="下一个事件边界 · 右方向键">下一边界 →</button><label class="inline-label" for="playback-rate">回放速度<select id="playback-rate"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select></label><span id="playback-scope" class="playback-scope">全景 · 15s / 遍</span><div class="seek-controls"><label class="sr-only" for="time-input">精确定位时间，单位与 Trace 一致</label><input id="time-input" type="number" step="any" value="0" disabled aria-label="精确定位时间，单位与 Trace 一致" /><button id="seek-time" type="button" disabled>定位</button></div><output id="time-label" for="time-slider time-input">0</output></div><label class="sr-only" for="time-slider">回放时间</label><input id="time-slider" type="range" min="0" max="1" value="0" step="any" disabled /></div>
         <div class="timeline-context-row"><p id="timeline-context" class="muted panel-intro">时间单位由执行记录提供。</p><span class="cursor-legend"><span aria-hidden="true"></span>当前时刻</span></div><div id="timeline" class="timeline" tabindex="0" aria-label="可横向和纵向滚动的事件时间线"><p class="empty">加载 Trace 后显示事件跨度。点击事件可查看依赖与原始字段。</p></div>
         <div class="timeline-bottom"><details class="keyboard-help"><summary>键盘与阅读帮助</summary><p class="control-help"><kbd>空格</kbd> 播放 / 暂停 · <kbd>←</kbd> <kbd>→</kbd> 上一 / 下一事件边界 · <kbd>Home</kbd> <kbd>End</kbd> 起点 / 终点。回放速度仅改变观看速度；进行中事件按 [start, end) 判断。每页最多 80 个事件，横条表示原始时间跨度，菱形表示原始观测点（未记录执行时长或完成），虚线表示当前时刻。</p></details><div class="pagination"><button id="previous-page" type="button" disabled>上一页</button><span id="page-label">第 0 / 0 页</span><button id="next-page" type="button" disabled>下一页</button></div></div>
       </section>
@@ -111,6 +112,6 @@
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
     <input id="detail-file" type="file" accept=".json,.log,.txt,application/json,text/plain" hidden />
-    <script type="module" src="./app.js?v=sm-hardware-1"></script>
+    <script type="module" src="./app.js?v=sm-residency-2"></script>
   </body>
 </html>

@@ -11,23 +11,29 @@
 - 默认使用 **H100 SXM 规模的数据流城市**：完整 132 个 SM、5 个 HBM 服务端点，以及逻辑 L2 / NoC。数量依据 [NVIDIA 规格](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)，路由、带宽和周期采用本仓库明确标注的教学模型。
 - 读请求、HBM 返回、L2 共享分发和写回是可点击的移动数据包；链路和端点排队来自离散事件模型。调 NoC / HBM 带宽、开关共享请求合并后重新仿真，会改变实际完成时间与运输事件。
 - NoC 默认采用**双分区 Crossbar / 局部 L2**：SM 访问本分区缓存，远端内存 miss 才过跨分区桥。链路串行化与传播时间分开，传播延迟不会被误当成全程带宽占用。结构约束参考 [NVIDIA 白皮书](https://resources.nvidia.com/en-us-hopper-architecture/nvidia-h100-tensor-c) 与 [Jin 等 MICRO 2024 论文](https://people.ece.ubc.ca/aamodt/publications/papers/realgpu-noc.micro2024.pdf)，具体聚合拓扑与周期仍是未校准的教学模型。
-- **2.5D 等距硬件城市**按事件区间更新活跃状态、运输进度和排队标记；城市优先视图放大场景，检查器和权威时间线联动。
-- 每个 SM 是一座可进入的计算城市；GPU → SM 为两级场景，CTA/warp 在 SM 内筛选。滚轮向下进入 SM、向上返回，也可使用按钮。
+- **2.5D 等距硬件城市**区分 SM 的驻留、计算与访存等待：绿色表示计算，琥珀色表示全部驻留 CTA 在等内存。默认 396 CTA 在起点覆盖全部 132 SM，每 SM 最多驻留 2 CTA，初始还有 132 CTA 待派；资源释放后立即从全局队列补位。
+- 点击任意 SM 会启动该编号的**独立流水线教学运行**，并保留 GPU 全景的时间与记录；上方“SM 内部”可恢复详细运行。CTA/warp 是 SM 内的筛选范围。盒子内的光点由模型阶段区间驱动，默认循环回放；暂停、定位和单步都保持原始时钟。
 - 当前 GTSim 轨迹支持原生 SM/pipeline 和 CTA/warp 归属联动、进行中与已完成区间计数、tile 数据窗口、任务及依赖检查。未提供独立事件的 L2/HBM/调度器以结构示意呈现。
 - 另有可展开的 GTSim 操作语义与任务依赖面板：按 SM / CTA 查看 Load、Tensor、Store 的并行活动和上下游依赖，共享时间轴可定位访存/计算重叠。它保留原操作区间，**不解释为逐跳 NoC 事务**。
 - 该语义面板把 tile 搬运表示为移动方包，按 2 / 4 B 每元素估算 KiB，已加载 tile 引用用菱形区分。点击任务可追踪依赖，拥挤通道保留清单；GPU 城市里的网络光包则只使用明确的 `transfer` 记录。
-- 时间线支持 1–16× 局部放大、聚焦所选事件、点击定位和精确 cycle/us 输入。深入观察时动画默认放慢；原始仿真时间保持不变。
+- 只保留一个播放入口与一个当前事件列表；组件树、实验参数和来源说明默认折叠。时间线支持 1–16× 局部放大、聚焦事件、精确 cycle/us 定位。桌面默认四分区，手机默认 P0 并允许画布内滚动，避免缩成不可读的小图。
 - 数据流模型、原 GTSim GEMM 与低 L2 带宽对照可直接切换，工作区同时保存选择、任务范围、架构尺度与时间窗口。Profile 导入保留原生轨道。
 
 立体沙盘由本仓库原生 SVG/CSS 绘制，不依赖 WebGL 或外部渲染服务。建筑高度、位置与连线几何不代表实测面积、容量或物理 floorplan；运输只沿当前运行声明的拓扑与 hop 区间移动。旧 GTSim/profile 缺少内部运输事件时不生成车流，配置 SM 占位明确标为未观测。此前生成的六类透明组件美术保留在仓库，提示词见 [manifest.json](web/assets/gpu/manifest.json)。
 
-![132 SM 与双分区 NoC 数据流城市](docs/assets/partitioned-noc.png)
+![132 SM 驻留、计算与访存等待](docs/assets/sm-residency-overview.png)
+
+[本次界面与模型验证](docs/sm-residency-validation.md)
 
 [模型规则与边界](docs/noc-model.md) · [旧单 Fabric 的请求追踪截图](docs/assets/traffic-request.png)
 
 [上一版盒子城市](docs/assets/workbench.png) · [上一版 SM 流水线](docs/assets/box-sm.png)
 
-## 并发共享读取与广播的区别
+## SM 并发、访存等待与共享读取
+
+真实 CUDA 会把 grid 中的 CTA 派到有资源的 SM，**不保证所有 SM 在同一周期启动，也不保证所有驻留 SM 同时发射或计算**。足够大的规则 grid 通常可覆盖多数 SM；小 grid、寄存器/SMEM 资源限制、依赖、访存和尾部都会降低瞬时并行。旧界面只点亮 compute 区间，将访存等待误显为空闲；旧 HBM 模型还把固定延迟串行占满端点，过度压低计算并发。现已分开显示驻留/计算/等待，HBM 固定延迟允许与后续请求重叠，数据仍按实际完成才可消费。spread-first、周期和资源计数是本仓库教学策略，并非 NVIDIA 调度器复现。[CUDA 编程模型](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html#thread-blocks-and-grids) · [Hopper 资源约束](https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html#occupancy)
+
+### 并发共享读取与广播的区别
 
 多个 SM 可以并发请求重叠输入，L2 缓存重用和 pending miss 合并可能减少 HBM 流量，数据仍按各请求单播返回。H100 的局部分区可以分别填充同一数据；默认模型不再保证全 GPU 共用一次填充。合成场景使用整 Tile 合并策略，尚未实现实际 sector/MSHR，也未复现实测 SM↔L2 延迟矩阵。[完整 NoC 模型](docs/noc-model.md) · [论文核查](docs/research/gpu-noc.md)
 
@@ -43,7 +49,9 @@ SM 内部采用参考 [NVIDIA Hopper 官方 SM 图（Figure 4）](https://develo
 - **操作数与执行：** Register File、Operand Collector、FP32 FPU、FP64 FPU、INT32、SFU、Tensor Core、LSU、Branch/Reconvergence、Writeback。
 - **存储与异步通路：** L1 Data/Texture Cache、Shared Memory、TMA、mbarrier、Texture、Constant Cache、NoC/L2 边界。L1/SMEM 共用物理容量预算，但寻址和同步语义不同；TMA 的大块数据无需经过 RF。
 
-点击 **“运行 SM 流水线”**，在所选 SM 上生成独立的教学运行：显式取指/译码/发射/执行/写回，RAW/WAW 与资源等待、普通 load 命中/缺失、SMEM bank 冲突，以及异步 TMA→SMEM→mbarrier→Tensor 消费。可修改 warp 数、Issue 间隔、外部内存与 Tensor 延迟、SMEM 地址步长后重跑；原始事件时间不会随动画速度改变。点选组件查看形式化规则，点选事件查看具体指令、寄存器、等待原因与依赖。
+点击 GPU 中的 SM，或展开 **“SM 流水线实验”**重新运行，在所选 SM 上生成独立的教学运行：显式取指/译码/发射/执行/写回，RAW/WAW 与资源等待、普通 load 命中/缺失、SMEM bank 冲突，以及异步 TMA→SMEM→mbarrier→Tensor 消费。可修改总 warp 数（最多 128）、每 CTA warp、每线程寄存器、驻留 warp 上限、Issue 间隔、外部内存与 Tensor 延迟、SMEM 地址步长后重跑；原始事件时间不会随动画速度改变。点选组件查看形式化规则，点选事件查看具体指令、寄存器、等待原因与依赖。
+
+新增整 CTA 的 FIFO 资源准入与退场：同时受驻留 warp/CTA、四分区寄存器和 SMEM carveout 约束，排队 CTA 在资源释放后复用存储空间。瞬时状态区分 resident、ready、eligible、issuing、inflight 与依赖等待；这些指标有包含或重叠关系，不能相加当作利用率。
 
 这是自行实现的**符号时序教学模型**，不执行张量数值或任意 PTX/SASS，不声称 NVIDIA cycle accuracy。公开结构与容量引用 NVIDIA Hopper/CUDA 资料；Fetch/Decode 等逻辑阶段、队列及周期参数是教学定义。指令缓存与分支只做时序服务，不执行 cache tag/miss 或真实分支掩码；纹理和常量路径只保留结构。有限资源在途容量与上游 credit 已建模，逐组件有限队列及全链路背压仍未实现。旧 GTSim/profile 缺少 SM 内部事件时，只显示结构，不补造流水线活动。
 
@@ -53,7 +61,7 @@ node scripts/generate-sm.mjs
 
 生成的 [SM 教学样例](examples/h100-sm.json) 可导入、导出，或与城市运行共同保存在工作区；两者的时钟与指令/Tile ID 不自动对应。
 
-![SM 内部立体组件与数据通路](docs/assets/sm-pipeline.png)
+![SM 内部盒子与指令光点](docs/assets/sm-residency-pipeline.png)
 
 [查看 TMA 形式化规格与本次运行参数](docs/assets/sm-tma-spec.png)
 
@@ -62,10 +70,10 @@ node scripts/generate-sm.mjs
 **GPU 全景观察 Tile 与数据运输，SM 内部检查任务或载入指令运行**。CTA/warp 是 SM 内的筛选条件，不再是第三张场景。详细运行与宏观运行分别保存。
 
 - 外层默认在浏览器运行双分区数据流教学模型，132 SM 共完成396个 Tile；可调整桥传播延迟、链路带宽与共享 Tile 策略后重跑。单 Fabric 可作对照。GTSim timing graph 继续作为独立外部后端样例，仍为796区间、5,492 / 6,413 cycles。
-- 内层首次点击 **“SM 内部”** 或 **“加载 SM 光点”** 会载入实际 FlashGPU-Sim [指令生命周期样例](examples/flashgpu-vectoradd-pipeline.json)：在每个已记录 SM 内，光点沿 Dispatch → Operand Collector → 原生执行单元 → Writeback 的示意通路推进，并在实际阶段区间中停留。可切换 SM / 四分区、点击光点检查 PC / warp / 动态指令 ID 与全部原生阶段，暂停、慢放和回退。
-- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。组件按控制、存储、执行和同步职责使用不同尺寸，并按当前屏幕宽高自动适配；可在一屏内观察组件与光点，画布顶部直接播放/暂停。组件使用简写，完整名称及规则可悬停或点击查看。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
-- **“载入指令运行”** 接受 [FlashGPU-Sim 原生 pipeline observer / ISSUE/STALL 日志](tools/detailed/README.md) 或详细 observer JSON。指令面板显示当前或最近已观测周期，轨道随回放位置更新并保留所选事件。观测点与执行区间分别计数，不从点日志生成完成时间；教学流水线仍可单独运行。
-- 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。数据流全景默认90秒/遍，SM检查120秒/遍；GTSim保持15 / 30秒，指令慢放60秒。这与后端仿真耗时无关。减少动画模式默认暂停。
+- 内层默认生成所选 SM 的教学运行；从**实验场景**明确选择 FlashGPU-Sim 后，才会载入独立的实际 [指令生命周期样例](examples/flashgpu-vectoradd-pipeline.json)，其记录仅覆盖 2 个 SM，不代表 132 SM 全景负载：在每个已记录 SM 内，光点沿 Dispatch → Operand Collector → 原生执行单元 → Writeback 的示意通路推进，并在实际阶段区间中停留。可切换 SM / 四分区、点击光点检查 PC / warp / 动态指令 ID 与全部原生阶段，暂停、慢放和回退。
+- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。回放循环限定在原生指令实际观测窗口内，原始周期编号保持不变。组件按控制、存储、执行和同步职责使用不同尺寸，并按当前屏幕宽高自动适配；可在一屏内观察组件与光点，画布顶部直接播放/暂停。组件使用简写，完整名称及规则可悬停或点击查看。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
+- **工作区与导出 → “导入指令运行”** 接受 [FlashGPU-Sim 原生 pipeline observer / ISSUE/STALL 日志](tools/detailed/README.md) 或详细 observer JSON。指令面板显示当前或最近已观测周期，轨道随回放位置更新并保留所选事件。观测点与执行区间分别计数，不从点日志生成完成时间；教学流水线仍可单独运行。
+- 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。数据流全景默认90秒/遍，SM检查120秒/遍；GTSim保持15 / 30秒，指令窗口慢放60秒。详细运行默认勾选循环，工作区保留循环选择；减少动画模式默认暂停。这与后端仿真耗时无关。
 
 **Accel-Sim 2.0 尚未接入可执行的输出 observer。** 其输入 `.tracez` / `.traceg` 不含所需的仿真完成时间，不能直接当作执行轨迹。FlashGPU-Sim 已按固定 commit 在本机编译并运行，小型 vectorAdd 经 CPU 参考结果校验后导出原生日志与指令 JSON；[流水线运行清单](examples/flashgpu-vectoradd-pipeline.manifest.json) 保留源码/config/log hash、采集范围与实测墙钟耗时。两种后端各自保留时钟，未把独立运行的 cycle 融合成同一次运行。[接入格式与命令](tools/detailed/README.md) · [多尺度边界](docs/multiscale-simulation.md)
 

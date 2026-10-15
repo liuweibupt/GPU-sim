@@ -22,7 +22,7 @@
 
 core 数量不等于 warp 指令延迟，也不等于每周期可接受任意指令的数量。TMA 在公开图中有命名块，但本规格不根据图形推断物理引擎个数、端口数或队列深度。Fetch、Decode、Issue、Scoreboard、Operand Collector、Writeback 是便于理解和验证的独立逻辑节点；公开图未承诺这些节点在硬件中具有对应的独立流水线寄存器。
 
-当前浏览器教学运行限制为1–32个warp，默认8个；这不是H100的64个驻留warp硬件上限。TMA目标缓冲与scratch各按实际访问跨度计入SMEM预算，超出所选carveout或未覆盖LDS地址范围的参数组合会被拒绝；不通过动画虚构可用容量。
+当前浏览器教学运行可提交1–128个warp，默认8个。**提交数量不同于同时驻留数量**：warp按`warpsPerCta`分组，整个CTA需要同时通过warp/CTA槽、寄存器和SMEM预算后才能取指；资源不足的CTA排队，在较早CTA全部完成后分波进入。每个SM最多驻留64个warp、32个CTA，寄存器或共享内存需求可进一步降低驻留量。TMA目标缓冲与scratch各按实际访问跨度计入SMEM预算；单CTA放不进SM、或TMA未覆盖LDS地址范围的配置会被拒绝。不同CTA可在退场后复用同一物理SMEM槽，逻辑buffer和初始化记录保持独立。
 
 ### 功能布局与视觉比例
 
@@ -146,6 +146,38 @@ issue(i,t) = ready(i,t) ∧ issueBudget(partition,t)>0
 
 成功发射必须在一个原子步骤中登记 `B[(warp,dst)] = i.id` 并提交到目标路径。`RAW` 等待前序写者；`WAW` 等待前序目标寄存器写者。写回时只有 `B[(warp,dst)] === i.id` 才能释放，避免误释放后来生产者。活动掩码、真实寄存器分配粒度、WAR完整数据值语义及Hopper独立线程调度细节尚未执行，不能把这个符号模型当成CUDA功能模拟器。
 
+### CTA准入、退场与瞬时warp状态
+
+当前可执行模型将`warpCount`解释为这个SM独立教学运行的总提交量。`warpsPerCta`默认4，末CTA可包含更少warp；`registersPerThread`默认64，按每warp32线程计算32位寄存器需求。`residentWarpLimit`与`residentCtaLimit`是可调教学上限，不能超过公开的64/32硬件边界。CTA按FIFO整组进入，不拆成部分驻留，也不让后面的较小CTA绕过队首。
+
+准入时原子预留CTA/warp槽、各分区RF和SMEM。教学放置为`warpId % 4`，每分区RF最多16,384个32位寄存器；这是公开容量加显式教学放置的约束，**不实现真实寄存器分配粒度或硬件CTA放置算法**。SMEM carveout从公开支持的配置中选择，并为教学L1保留其逻辑容量；单个CTA的用户buffer不能超过227 KiB。[Hopper Tuning Guide](https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html#unified-shared-memory-l1-texture-cache)还规定CUDA每CTA保留1 KiB SMEM，模型将这部分与用户buffer一起计入准入预算。例如32个单warp CTA、每warp 256 B用户buffer实际占用40 KiB，不能放进8 KiB carveout。每个CTA使用独立连续SMEM区间，用户buffer位于区间前部，末尾1 KiB保留；退场后合并空闲区间供后续CTA复用。CTA只有在全部warp指令和异步TMA都结束后退场，归还资源。所有事件的`args.threadBlockId`和指令生命周期中的`threadBlockId`都指向实际CTA编号，不能再将不同CTA合并为CTA 0。
+
+瞬时状态遵循`eligible ⊆ ready ⊆ resident`，不同计数不能互换：
+
+| 字段 | 含义 |
+| --- | --- |
+| `resident` | CTA仍持有资源的warp，包含取指、依赖等待和最后指令已发射后的排空阶段 |
+| `ready` | 下一条指令已译码，RAW/WAW、完成依赖和异步屏障均满足 |
+| `eligible` | ready且scoreboard/TMA credit、分区issue预算当前可用 |
+| `issuing` | 当前周期正处于实际issue阶段的warp；每分区的发射阶段有独立预算 |
+| `inflight` | 至少一条已发射指令或异步TMA尚未结束的warp；可同时ready或等待 |
+| `waiting` | 已译码的下一条指令被寄存器/完成/屏障依赖阻塞 |
+| `fetching` / `draining` | 下一条指令尚未译码 / 所有指令已选择但CTA仍未退场 |
+| `queued` / `retired` | CTA尚未准入 / 已退场 |
+
+因此大量warp驻留时，某个周期只看到0–4个warp处于issue阶段是正常的；长延迟操作在途时还可能暂时没有issue。不能把发射token数当成SM占用率，也不能从动画上瞬间亮着的组件数推断驻留warp数量。
+
+```js
+import {simulateSm, smActivityAt} from '../lib/sm-model.js';
+const trace = simulateSm({warpCount: 128, warpsPerCta: 4, registersPerThread: 64});
+const state = smActivityAt(trace, 100); // 半开区间[start,end)，退场周期不再计入驻留
+state.counts;     // resident, ready, eligible, issuing, inflight, waiting, fetching, draining, queued, retired
+state.partitions; // 各分区同样口径的warp计数
+state.waitReasons;
+```
+
+`metrics.ctas`记录`userSharedBytes`、`reservedSharedBytes`与总占用`sharedBytes`、物理区间起点、准入/退场周期和等待原因；`metrics.warps[].history`记录事件驱动的head状态变化；`metrics.residency.history`记录每次准入/退场后的资源占用。指令的`selected`是有限credit预留周期，`issue`/`issueEnd`对应实际issue阶段起止；不能从生命周期起点推断发射。`smActivityAt`是读取这些证据的纯helper，不重跑仿真，也不改变时钟。较早教学trace没有`sm_residency`能力时返回`available:false`，前端应显示未观测，不补造驻留或就绪数。导入契约检查CTA/warp归属、含CUDA保留量的资源历史预算、驻留CTA的SMEM区间不重叠、指令包含关系、发射起止与真实阶段对齐，以及ready/eligible确实在head译码和依赖完成之后、选择之前。
+
 ## 5. 延迟、启动间隔与容量
 
 对服务组件 `c`，定义 `L_c` 为启动到完成的服务延迟，`II_c` 为相邻启动的最小间隔，`K_c` 为最大在途操作数，`D_c` 为等待队列深度。
@@ -192,6 +224,7 @@ phaseReady:       pendingArrivals == 0 && pendingTx == 0
 | 覆盖 | 组件/规则 | 当前边界 |
 | --- | --- | --- |
 | 可执行的教学时序与部分语义 | Fetch/Decode/Scheduler/Scoreboard/Issue/Dispatch/RF/Collector/算术单元/LSU/写回 | 显式阶段token、依赖/资源约束；不计算真实kernel数值 |
+| 可执行的驻留与瞬时状态 | CTA FIFO准入、分区RF/SMEM/warp/CTA槽、warp状态历史 | 总提交量可大于同时驻留量；无硬件分配粒度或真实CTA放置算法 |
 | 可执行的教学缓存/共享/异步子集 | L1、SMEM、TMA、mbarrier、外部内存接口 | 有限LRU、规则bank冲突、异步copy与消费依赖；具体规则以 `meta.smPipeline.modelCoverage` 为准 |
 | 仅时序 | L1I、L0I、Branch | 无instruction-cache tag/缺失、真实分支PC/掩码更新或重汇合 |
 | 仅结构 | Texture、Constant Cache | 保留节点、端口、参考资料，无教学活动 |

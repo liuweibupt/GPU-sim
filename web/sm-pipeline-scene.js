@@ -1,7 +1,7 @@
 // Formal SM floorplan. The architecture is a definition, while activity is only
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
 import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js";
-import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-hardware-1";
+import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-residency-2";
 import {observationSnapshot} from "../lib/instruction-view.js";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -188,9 +188,12 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const nativeById = new Map(trace.components.map(component => [component.id, component]));
   function mappedSource(component) {return nativeById.get(component.id) ?? [...nativeById.values()].find(item => item.args?.architectureComponentId === component.id);}
   const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的指令光点与正式组件`);
-  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-hardware-1", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
+  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-residency-2", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
   const header = dom("div", "sm-pipeline-head"), title = dom("div");
-  title.append(dom("strong", "", "SM INSTRUCTION CITY"), dom("small", "", "GH100 结构层级 · 原生指令光点 · 点击查看 PC、warp 与阶段区间"));
+  const teaching = trace.meta.capabilities?.includes('sm_pipeline');
+  title.append(dom("strong", "", `SM ${smNumber} / ${teaching ? '教学流水线' : '原生指令流水线'}`), dom("small", "", teaching
+    ? '独立教学运行 · 与 GPU 全景分别计时 · 光点随真实模型区间移动'
+    : `独立原生运行 · 记录 ${trace.components.filter(component => component.kind === 'sm').length} 个 SM · 光点来自指令阶段记录`));
   const reference = dom("a", "sm-architecture-reference", "GH100 · NVIDIA Fig. 4");
   reference.href = SM_ARCHITECTURE.references.find(item => item.id === "hopper-blog").url;
   reference.target = "_blank"; reference.rel = "noopener noreferrer";
@@ -205,9 +208,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const dialog = dom("dialog", "sm-formal-dialog"); dialog.setAttribute("aria-label", "SM 组件正式规格"); root.append(dialog);
   const recordedComponents = new Set([...evidence.byComponent].filter(([, source]) => source.some(event => event.end > event.start)).map(([id]) => id));
   for (const event of evidence.transfers) for (const id of smPipelineTransferRoute(event.args.smPipelineTransfer)) recordedComponents.add(id);
-  const earliest = events.filter(event => event.end > event.start).sort((a, b) => a.start - b.start).find(event => formalIdByEvent.has(event.id));
-  const firstPartition = partitionId(formalById.get(formalIdByEvent.get(earliest?.id)) ?? {});
-  let partition = firstPartition == null ? 0 : Number(firstPartition), layout = recordedComponents.size ? "observed" : "full";
+  let partition = window.matchMedia?.("(max-width: 700px)").matches ? 0 : "all", layout = recordedComponents.size ? "observed" : "full";
   let selectedFormalId = null, time = 0, scope = null, selectedEventId = null, destroyed = false, geometryFrame = null;
   let snapshot = summarizeSmPipelineEvidence(evidence, 0), tokenLayer, tokenOverlay, wires, evidenceSummary, evidenceList, lastEvidenceSignature = "";
   const markerPrefix = `sm-wire-${smNumber}-${nextSceneId++}`;

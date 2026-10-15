@@ -3,9 +3,10 @@ import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js
 import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-1";
 import {normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from "../lib/detailed-trace.js";
 import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
-import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=sm-1";
-import {simulateSm, DEFAULT_SM_CONFIG} from "../lib/sm-model.js?v=sm-1";
-import { createGpuWorld } from "./gpu-world.js?v=sm-hardware-1";
+import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG, trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-2";
+import {simulateSm, DEFAULT_SM_CONFIG, smActivityAt} from "../lib/sm-model.js?v=sm-residency-2";
+import {replayBounds, advanceReplay} from "../lib/playback.js";
+import { createGpuWorld } from "./gpu-world.js?v=sm-residency-2";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
@@ -16,13 +17,18 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const state = {
   trace: null, time: 0, playing: false, rate: 1, selectedEventId: null,
   selectedComponentId: null, query: "", category: "", page: 0,
-  scope: null, timelineZoom: 1, timelineCenter: null,
+  scope: null, timelineZoom: 1, timelineCenter: null, repeat: true,
 };
 let runs = {macro: null, detail: null};
 let activeRun = 'macro';
 let observationLevel = 'gpu';
 const world = createGpuWorld($("gpu-world"), {
-  onSelectComponent: (id) => selectComponent(id, {preserveScope: true}),
+  onSelectComponent: (id) => {
+    const sm = componentById.get(id), enterModel = activeRun === 'macro' && sm?.kind === 'sm';
+    selectComponent(id, {preserveScope: true});
+    if (enterModel) runSmModel();
+  },
+  onExitSm: () => showMacro(),
   onSelectEvent: (id) => { if (eventById.has(id)) selectEvent(id); },
   onSelectScope: (scope) => selectScope(scope),
   onLevelChange: (level) => { observationLevel = level; renderRunBar(); },
@@ -67,6 +73,7 @@ const smControls = [
   ['sm-warps', 'warpCount'], ['sm-issue-interval', 'issueIntervalCycles'],
   ['sm-memory-latency', 'globalMemoryLatencyCycles'], ['sm-tensor-latency', 'tensorLatencyCycles'],
   ['sm-bank-stride', 'sharedBankStrideWords'],
+  ['sm-registers', 'registersPerThread'], ['sm-warps-per-cta', 'warpsPerCta'], ['sm-resident-warps', 'residentWarpLimit'],
 ];
 
 function syncSmTarget(id) {
@@ -89,7 +96,7 @@ function showSmConfig(config) {
   if (!config) return;
   $('sm-target').value = String(config.smId);
   for (const [id,key] of smControls) {
-    const control = $(id), value = String(config[key]);
+    const control = $(id), value = String(config[key] ?? DEFAULT_SM_CONFIG[key]);
     control.querySelector('option[data-imported]')?.remove();
     if (![...control.options].some(option => option.value === value)) {
       const option = new Option(value, value); option.dataset.imported = 'true'; control.add(option);
@@ -97,7 +104,7 @@ function showSmConfig(config) {
     control.value = value;
   }
   $('sm-config-label').textContent = `SM ${config.smId} · 4 分区 · ${config.warpCount} warps`;
-  $('sm-config-note').textContent = '当前运行的参数已恢复。修改后点击“运行教学流水线”生成新记录；宏观运行保留。';
+  $('sm-config-note').textContent = '当前运行的参数已恢复。修改后点击“重新运行 SM 模型”生成新记录；宏观运行保留。';
 }
 
 function runInfo(trace) {
@@ -106,6 +113,7 @@ function runInfo(trace) {
 
 function trafficConfig() {
   return {...DEFAULT_TRAFFIC_CONFIG, numSms: 132,
+    gridBlocks: Number($('grid-blocks').value), maxResidentBlocksPerSm: Number($('resident-blocks').value),
     nocTopology: $('noc-topology').value,
     nocBytesPerCycle: Number($('noc-bandwidth').value),
     crossPartitionBytesPerCycle: Number($('noc-cross-bandwidth').value),
@@ -125,6 +133,8 @@ function showTrafficConfig(config) {
     }
     control.value = value;
   }
+  $('grid-blocks').value = String(config.gridBlocks ?? config.numSms * config.rounds);
+  $('resident-blocks').value = String(config.maxResidentBlocksPerSm ?? 1);
   $('noc-topology').value = config.nocTopology ?? 'uniform-star';
   $('noc-cross-latency').value = String(config.crossPartitionLatencyCycles ?? DEFAULT_TRAFFIC_CONFIG.crossPartitionLatencyCycles);
   const partitioned = $('noc-topology').value === 'partitioned-crossbar';
@@ -140,9 +150,9 @@ function normalizeImported(input) {
 }
 
 function captureView() {
-  const {time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter} = state;
-  return {time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter,
-    immersive: $('immersive-view')?.checked ?? true, world: world.getView?.()};
+  const {time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter, repeat} = state;
+  return {time, rate, selectedEventId, selectedComponentId, query, category, page, scope, timelineZoom, timelineCenter, repeat,
+    world: world.getView?.()};
 }
 
 function rememberRun() {
@@ -168,18 +178,26 @@ function renderRunBar() {
   const detailedInfo = runs.detail && describeRun(runs.detail.trace);
   const macroInfo = runs.macro && runInfo(runs.macro.trace);
   $('macro-backend').textContent = macroInfo ? `${isTraffic(runs.macro.trace) ? '教学模型' : macroInfo.backend} · ${macroInfo.granularity}` : '宏观运行 · 待载入';
-  $('micro-backend').textContent = detailedInfo ? `${isSmModel(runs.detail.trace) ? '教学模型' : detailedInfo.backend} · ${detailedInfo.granularity}` : 'FlashGPU 指令示例 · 点击载入';
+  $('micro-backend').textContent = detailedInfo ? `${isSmModel(runs.detail.trace) ? '独立教学时钟' : `${detailedInfo.backend} · 独立时钟`}` : '所选 SM · 独立教学运行';
   $('run-granularity').textContent = info.granularity;
+  $('simulation-runtime').parentElement.hidden = info.wallTimeSeconds === null;
+  document.querySelector('.run-separator').hidden = info.wallTimeSeconds === null;
   $('simulation-runtime').textContent = info.wallTimeSeconds === null ? '未记录' : `${number(info.wallTimeSeconds)} s`;
   $('simulation-runtime').title = info.timingScope ?? '来源未记录仿真墙钟耗时；播放速度不代表仿真吞吐。';
   $('clock-scope').textContent = detail ? '详细运行 · 独立时钟' : '宏观运行 · 独立时钟';
   $('clock-scope').title = info.timeDomain;
+  $('world-heading').textContent = observationLevel === 'sm' ? 'SM 内部流水线' : 'GPU 全景';
   $('world-level-tag').textContent = isNativePipeline() ? 'SM / LIVE INSTRUCTIONS' : isSmModel() ? 'SM / PIPELINE MODEL' : detail ? 'SM / INSTRUCTION' : traffic ? `${observationLevel === 'sm' ? 'SM' : 'GPU'} / DATA FLOW` : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
+  const bounds = replayBounds(state.trace, startTime, totalTime);
+  $('playback-scope').title = isNativePipeline() ? `原生观测窗口 ${bounds.start}–${bounds.end} ${state.trace.meta.timeUnit}；时间戳保持原值` : '完整运行时间范围';
   $('playback-scope').textContent = `${detail ? '指令慢放' : observationLevel === 'sm' ? 'SM 慢放' : '全景'} · ${number(playbackDuration() / 1000 / state.rate)}s / 遍`;
+  $('playback-scope').textContent += isNativePipeline() ? ` · 观测窗口 ${bounds.start}–${bounds.end}` : '';
+  $('repeat-playback').checked = state.repeat;
+  $('sm-counters').hidden = !isSmModel();
   $('run-context').textContent = isSmModel()
-    ? `SM ${state.trace.meta.config.smId} 流水线教学模型 · 4 分区，显式执行 Fetch / Decode / Issue、RAW 等待、执行和写回；TMA 异步完成后释放 mbarrier。与城市模型分别运行，时序未按实机校准。`
+    ? `SM ${state.trace.meta.config.smId} 独立流水线教学运行 · 与 GPU 全景分别计时。4 分区，显式执行 Fetch / Decode / Issue、RAW 等待、执行和写回；TMA 异步完成后释放 mbarrier。与城市模型分别运行，时序未按实机校准。`
     : isNativePipeline()
-    ? 'FlashGPU-Sim 原生指令生命周期 · 光点沿实际观测阶段的示意通路移动，在组件内停留；点击光点检查 PC、warp 与阶段。可切换已记录的 SM / 分区，暂停、慢放或定位周期。'
+    ? `FlashGPU-Sim 原生指令生命周期 · 光点沿实际观测阶段的示意通路移动，在组件内停留。此运行记录 ${state.trace.components.filter(component => component.kind === 'sm').length} 个 SM，不代表全卡并发度；与 GPU 全景分别计时。`
     : detail
     ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。${state.trace.meta.capabilities?.includes('instruction_observations') && !state.trace.meta.capabilities?.includes('instruction_spans') ? 'ISSUE / STALL 只表示原生观测点，执行时长与完成时间未记录。' : ''}与宏观模型分别运行，各自保留时钟与选择；不自动对齐或拼接 cycle。`
     : traffic
@@ -329,11 +347,12 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   Object.assign(state, {
     time: 0, selectedEventId: null, selectedComponentId: null,
     query: "", category: "", page: 0, rate: 1,
-    scope: null, timelineZoom: 1, timelineCenter: null,
+    scope: null, timelineZoom: 1, timelineCenter: null, repeat: activeRun === 'detail',
   });
   indexTrace();
   state.time = startTime;
   if (savedView && typeof savedView === "object") {
+    if (typeof savedView.repeat === "boolean") state.repeat = savedView.repeat;
     state.time = Math.max(startTime, Math.min(totalTime, Number(savedView.time) || 0));
     state.selectedEventId = eventById.has(savedView.selectedEventId) ? savedView.selectedEventId : null;
     state.selectedComponentId = componentById.has(savedView.selectedComponentId) ? savedView.selectedComponentId : null;
@@ -345,7 +364,6 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
       ? Object.fromEntries(['smId','threadBlockId','warpId'].filter(key => ['string','number'].includes(typeof savedView.scope[key])).map(key => [key,savedView.scope[key]])) : null;
     state.timelineZoom = Math.max(1, Math.min(16, Number(savedView.timelineZoom) || 1));
     state.timelineCenter = Number.isFinite(savedView.timelineCenter) ? savedView.timelineCenter : null;
-    if (typeof savedView.immersive === "boolean" && $("immersive-view")) $("immersive-view").checked = savedView.immersive;
     descendantIds = descendants(state.selectedComponentId);
   }
   $("event-search").value = state.query;
@@ -383,6 +401,7 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
     if (sm) {state.selectedComponentId = sm.id; descendantIds = descendants(sm.id); world.setView({smComponentId: sm.id});}
   }
   observationLevel = world.getView?.().smComponentId ? 'sm' : 'gpu';
+  syncSmTarget(state.selectedComponentId);
   renderSummary();
   renderComponents();
   renderTimeline();
@@ -399,13 +418,8 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   $("time-input").disabled = !trace.events.length;
   $("seek-time").disabled = !trace.events.length;
   $("timeline-zoom").disabled = totalTime === startTime;
-  $('traffic-play').hidden = !isTraffic() && !isNativePipeline() && !isSmModel();
-  $('traffic-play').textContent = isTraffic() ? '开始数据流' : '播放光点';
-  $('traffic-play').disabled = totalTime === startTime;
   $('traffic-counters').hidden = !isTraffic();
-  const traffic = trace.metrics?.traffic;
-  $('shared-read-savings').textContent = number(traffic?.sharedReadSavings ?? 0);
-  $('shared-gain-detail').textContent = `整次运行：合并 ${number(traffic?.mergedMisses ?? 0)} · 命中 ${number(traffic?.l2Hits ?? 0)}`;
+  document.querySelector('.dataflow-panel').hidden = isTraffic() || isSmModel() || activeRun === 'detail';
   renderRunBar();
 }
 
@@ -527,7 +541,8 @@ function renderComponentInfo() {
   const spans = scopeEvents.filter(event => event.end > event.start);
   const completed = spans.filter(event => event.end <= state.time).length;
   const points = observationSnapshot(scopeEvents, state.time);
-  panel.append(el('p', `${points.total ? `${number(points.observed)} / ${number(points.total)} 个观测点已发生 · ISSUE ${number(points.issue)} · STALL ${number(points.stall)}` : `${number(spans.length)} 个任务区间`} ${spans.length ? `· ${number(active)} 进行中 · ${number(completed)} 个源区间已结束` : ''}`, 'muted'));
+  const nativePoints = state.trace.meta.capabilities?.includes('instruction_observations');
+  panel.append(el('p', `${points.total ? `${number(points.observed)} / ${number(points.total)} 个${nativePoints ? '观测点' : '时点事件'}已发生${nativePoints ? ` · ISSUE ${number(points.issue)} · STALL ${number(points.stall)}` : ''}` : `${number(spans.length)} 个事件区间`} ${spans.length ? `· ${number(active)} 区间进行中 · ${number(completed)} 已结束` : ''}`, 'muted'));
   if (/GTSim/i.test(state.trace.meta.producer)) panel.append(el('p', '当前后端：GTSim tile 操作图。CTA / warp 按任务归属查看；进行中区间数不等于硬件利用率。', 'muted'));
   else panel.append(el('p', `当前后端：${runInfo(state.trace).backend} · ${runInfo(state.trace).granularity}。${isTraffic() ? '运输、排队与计算均来自本次教学仿真。' : '按来源记录展示。'}`, 'muted'));
   if (state.scope) {
@@ -620,11 +635,11 @@ function renderTimeline() {
 
 function renderActiveTasks() {
   const events = filteredEvents();
-  const active = events.filter(activeAt), observations = observationSnapshot(events, state.time);
+  const active = events.filter(event => activeAt(event) && event.category !== "residency"), observations = observationSnapshot(events, state.time);
   const observed = observations.events;
   const shown = [...active, ...observed];
-  $('tasks-heading').textContent = observations.total ? '当前指令观测 / 区间' : '进行中的任务';
-  $("active-count").textContent = observations.total ? `${observations.cycle == null ? '尚无观测' : `${observations.atCursor ? '当前' : '最近'} ${timeText(observations.cycle)} · ${number(observed.length + observations.omitted)} 点`}${active.length ? ` · ${number(active.length)} 区间` : ''}` : `${number(active.length)} 个进行中`;
+  $('tasks-heading').textContent = '当前事件';
+  $("active-count").textContent = observations.total ? `${observations.cycle == null ? '尚无观测' : `${observations.atCursor ? '当前' : '最近'} ${timeText(observations.cycle)} · ${number(observed.length + observations.omitted)} 点`}${active.length ? ` · ${number(active.length)} 区间` : ''}` : `${number(active.length)} 个区间进行中`;
   const list = $("active-tasks");
   const scrollTop = list.scrollTop;
   const focusedEventId = list.contains(document.activeElement) ? document.activeElement.dataset.eventId : null;
@@ -635,7 +650,7 @@ function renderActiveTasks() {
     return;
   }
   if (observations.total && !observations.atCursor && observations.cycle != null) list.append(el('p', `最近已观测周期 ${timeText(observations.cycle)}；当前游标 ${timeText(state.time)} 没有观测点。`, 'muted'));
-  for (const event of shown.slice(0, 200)) {
+  for (const event of shown.slice(0, 40)) {
     const button = el("button", undefined, "task-button");
     button.type = "button";
     button.dataset.eventId = event.id;
@@ -645,7 +660,7 @@ function renderActiveTasks() {
     button.addEventListener("click", () => selectEvent(event.id));
     list.append(button);
   }
-  if (shown.length > 200 || observations.omitted) list.append(el("p", `当前列表最多显示 200 个事件；完整观测保留在时间线，可按阶段或 Warp 筛选。`, "muted"));
+  if (shown.length > 40 || observations.omitted) list.append(el("p", `当前列表最多显示 40 个事件；完整观测保留在时间线，可按阶段或 Warp 筛选。`, "muted"));
   list.scrollTop = scrollTop;
   if (focusedEventId) [...list.querySelectorAll("[data-event-id]")].find((node) => node.dataset.eventId === focusedEventId)?.focus({ preventScroll: true });
 }
@@ -670,6 +685,7 @@ function renderDetails() {
   const panel = $("event-details");
   panel.replaceChildren();
   const event = eventById.get(state.selectedEventId);
+  document.querySelector('.details-panel').hidden = !event;
   $("jump-to-event").disabled = !event;
   $('jump-to-event').textContent = event && event.start === event.end ? '定位观测点' : '定位开始';
   $('jump-to-event').title = event && event.start === event.end ? '将回放定位到来源记录的实际观测周期' : '将回放定位到所选事件的开始时间';
@@ -772,6 +788,7 @@ function renderAtTime() {
   renderActiveTasks();
   renderComponentInfo();
   renderTrafficCounters();
+  renderSmCounters();
   world.update(state);
   dataflow.update(state);
 }
@@ -789,6 +806,23 @@ function renderTrafficCounters() {
   $('packets-moving').textContent = number(moving);
   $('packets-waiting').textContent = number(waiting);
   $('packets-completed').textContent = number(completed);
+  const snapshot = trafficSmSnapshot(state.trace, state.time);
+  $('sms-resident').textContent = snapshot ? number(snapshot.residentSms) : '—';
+  $('sms-computing').textContent = snapshot ? number(snapshot.computingSms) : '—';
+  $('sms-waiting').textContent = snapshot ? number(snapshot.memoryOnlySms) : '—';
+  $('ctas-pending').textContent = snapshot ? number(snapshot.pendingBlocks) : '—';
+  $('sms-total').textContent = number(state.trace.meta.config.numSms);
+}
+
+function renderSmCounters() {
+  if (!isSmModel()) return;
+  const snapshot = smActivityAt(state.trace, state.time), host = $('sm-counters');
+  host.replaceChildren();
+  if (!snapshot?.available) {host.append(el('span', '来源未记录 Warp 驻留状态')); return;}
+  host.title = '就绪指令可能与已发射指令重叠；可发射需满足依赖和资源准入。';
+  for (const [key, label] of [['residentCtas', '驻留 CTA'], ['resident', '驻留 Warp'], ['ready', '就绪'], ['eligible', '可发射'], ['issuing', '发射中'], ['inflight', '有在途指令'], ['waiting', '依赖等待'], ['queued', '待准入']]) {
+    const item = el('span'); item.append(el('b', number(snapshot.counts?.[key] ?? 0)), document.createTextNode(label)); host.append(item);
+  }
 }
 
 function seek(time) {
@@ -805,29 +839,29 @@ function pause() {
   frame = null; lastFrame = null;
   $("play").textContent = "播放";
   $("play").setAttribute("aria-pressed", "false");
-  $('traffic-play').textContent = isTraffic() ? '开始数据流' : '播放光点';
-  $('traffic-play').setAttribute('aria-pressed', 'false');
 }
 
 function togglePlay() {
   if (!state.trace || totalTime === startTime) return;
   if (state.playing) { pause(); return; }
-  if (state.time >= totalTime) seek(startTime);
+  const bounds = replayBounds(state.trace, startTime, totalTime);
+  if (state.time < bounds.start || state.time >= bounds.end) seek(bounds.start);
   state.playing = true;
   $("play").textContent = "暂停";
   $("play").setAttribute("aria-pressed", "true");
-  $('traffic-play').textContent = isTraffic() ? '暂停数据流' : '暂停光点';
-  $('traffic-play').setAttribute('aria-pressed', 'true');
   let lastRender = 0;
   function tick(now) {
     if (!state.playing) return;
     const inspectionDuration = playbackDuration();
-    if (lastFrame !== null) state.time = Math.min(totalTime, state.time + (now - lastFrame) / inspectionDuration * (totalTime - startTime) * state.rate);
+    const previous = state.time;
+    const next = advanceReplay(state.time, lastFrame === null ? 0 : (now - lastFrame) / inspectionDuration * (bounds.end - bounds.start) * state.rate, bounds, state.repeat);
+    state.time = next.time;
+    if (state.time < previous) {state.timelineCenter = null; renderTimeline();}
     lastFrame = now;
     world.animate?.(state.time);
     // Limit expensive active-list updates; no animation is needed for understanding individual steps.
     if (now - lastRender >= 100 || state.time >= totalTime) { renderAtTime(); lastRender = now; }
-    if (state.time >= totalTime) { pause(); return; }
+    if (next.ended) { pause(); return; }
     frame = requestAnimationFrame(tick);
   }
   frame = requestAnimationFrame(tick);
@@ -977,14 +1011,13 @@ async function runSmModel() {
 }
 
 $("play").addEventListener("click", togglePlay);
-$('traffic-play').addEventListener('click', togglePlay);
 $('traffic-config').addEventListener('submit', event => {event.preventDefault(); runTraffic();});
 $('sm-config').addEventListener('submit', event => {event.preventDefault(); runSmModel();});
 for (const id of ['sm-target', ...smControls.map(([id]) => id)]) $(id).addEventListener('change', () => {
-  $('sm-config-note').textContent = '参数已修改。点击“运行教学流水线”生成新运行；当前事件的原始时间保持不变。';
+  $('sm-config-note').textContent = '参数已修改。点击“重新运行 SM 模型”生成新运行；当前事件的原始时间保持不变。';
 });
 showSmConfig(DEFAULT_SM_CONFIG);
-for (const id of ['noc-topology','noc-bandwidth','hbm-bandwidth','coalesce-shared','noc-cross-bandwidth','noc-cross-latency']) $(id).addEventListener('change', () => {
+for (const id of ['grid-blocks','resident-blocks','noc-topology','noc-bandwidth','hbm-bandwidth','coalesce-shared','noc-cross-bandwidth','noc-cross-latency']) $(id).addEventListener('change', () => {
   const partitioned = $('noc-topology').value === 'partitioned-crossbar';
   $('noc-cross-bandwidth').disabled = !partitioned;
   $('noc-cross-latency').disabled = !partitioned;
@@ -1000,7 +1033,6 @@ $("clear-component").addEventListener("click", () => selectComponent(null));
 $("previous-page").addEventListener("click", () => { state.page--; renderTimeline(); });
 $("next-page").addEventListener("click", () => { state.page++; renderTimeline(); });
 $("jump-to-event").addEventListener("click", () => { pause(); const event = eventById.get(state.selectedEventId); if (event) seek(event.start); });
-$("load-example").addEventListener("click", ()=>loadExample());
 $("sample-select").addEventListener("change",()=>loadExample());
 $("timeline-zoom").addEventListener('input',(event)=>{
   state.timelineZoom = Number(event.target.value); state.timelineCenter = state.time; state.page = 0;
@@ -1023,19 +1055,20 @@ $("time-input").addEventListener('keydown',event=>{if(event.key==='Enter')seekIn
 $("import-trace").addEventListener("click", () => $("trace-file").click());
 $("import-workspace").addEventListener("click", () => $("workspace-file").click());
 $("import-detail").addEventListener('click', () => $('detail-file').click());
-$('load-detail-example').addEventListener('click', () => loadExample('flashgpu'));
+
 $("detail-file").addEventListener('change', event => { importDetail(event.target.files[0]); event.target.value = ''; });
-$("macro-view").addEventListener('click', () => {
+function showMacro() {
   ++loadSequence;
-  if (activeRun !== 'macro') { activateRun('macro'); return; }
+  if (activeRun !== 'macro' && !activateRun('macro')) return;
   selectComponent(null); world.setView({smComponentId: null, scope: null}); observationLevel = 'gpu'; renderRunBar();
-});
-$("micro-view").addEventListener('click', () => {
-  ++loadSequence;
+}
+$('macro-view').addEventListener('click', showMacro);
+$('micro-view').addEventListener('click', () => {
   if (runs.detail && activeRun !== 'detail') { activateRun('detail'); return; }
-  if (!runs.detail) {loadExample('flashgpu'); return;}
-  enterSm();
+  if (activeRun === 'detail') {enterSm(); return;}
+  runSmModel();
 });
+$('repeat-playback').addEventListener('change', event => {state.repeat = event.target.checked;});
 $("trace-file").addEventListener("change", (event) => { importFile(event.target.files[0], false); event.target.value = ""; });
 $("workspace-file").addEventListener("change", (event) => { importFile(event.target.files[0], true); event.target.value = ""; });
 $("export-trace").addEventListener("click", () => { if (state.trace && download(state.trace, "trace")) announce("Trace 已导出，原始时间单位、指标与事件保留。未上传任何文件。"); });

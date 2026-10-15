@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {DEFAULT_SM_CONFIG, simulateSm} from '../lib/sm-model.js';
+import {DEFAULT_SM_CONFIG, simulateSm, smActivityAt} from '../lib/sm-model.js';
 import {SM_ARCHITECTURE, instantiateSmArchitecture, validateSmArchitecture} from '../lib/sm-architecture.js';
 import {validateTrace} from '../lib/trace.js';
 import {validateSmTrace} from '../lib/sm-contract.js';
@@ -317,12 +317,116 @@ test('successive rounds reuse two physical buffers per warp only after the previ
 });
 
 test('invalid inputs and impossible unified-memory allocations fail before event execution', () => {
-  for (const invalid of [null, [], '8', {smId: -1}, {smId: 132}, {warpCount: 0}, {warpCount: 33},
+  for (const invalid of [null, [], '8', {smId: -1}, {smId: 132}, {warpCount: 0}, {warpCount: 129},
     {warpCount: NaN}, {partitionCount: 8}, {rounds: 0}, {scoreboardEntries: 0}, {fetchLatencyCycles: 0},
     {tensorLatencyCycles: 1.5}, {tensorInitiationIntervalCycles: Infinity}, {sharedBankStrideWords: 0},
     {sharedBankStrideWords: 33}, {l1HitEvery: -1}, {tmaInFlightLimit: 0}, {tmaBytesPerCycle: 0},
-    {warpCount: 32, tmaBytes: 65536}, {warpCount: 32, tmaBytes: 4096, l1CapacityLines: 1024},
+    {warpCount: 32, tmaBytes: 65536}, {warpCount: 32, warpsPerCta: 32, tmaBytes: 4096, l1CapacityLines: 1024},
     {tmaBytes: 1024, sharedBankStrideWords: 32}, {tmaBytes: 1025},
-    {warpCount: 32, tmaBytes: 4096, sharedBankStrideWords: 32},
+    {warpCount: 32, warpsPerCta: 32, tmaBytes: 4096, sharedBankStrideWords: 32},
+    {warpsPerCta: 0}, {registersPerThread: 256}, {residentWarpLimit: 0}, {residentCtaLimit: 33},
+    {warpsPerCta: 4, residentWarpLimit: 3}, {warpCount: 32, warpsPerCta: 32, registersPerThread: 255},
     {fakeLatency: 5}, {toString: 1}]) assert.throws(() => simulateSm(invalid), JSON.stringify(invalid));
+});
+
+test('whole CTA resource admission waits for retirement, reuses SMEM and preserves all submitted work', () => {
+  const trace = simulateSm({warpCount: 16, residentCtaLimit: 1});
+  assert.equal(trace.metrics.ctas.length, 4);
+  assert.equal(trace.metrics.sm.maxResidentCtas, 1);
+  assert.equal(trace.metrics.sm.maxResidentWarps, 4);
+  assert.equal(trace.metrics.sharedMemoryAllocation.physicalBuffers, 8);
+  assert.equal(trace.metrics.sharedMemoryAllocation.logicalBuffers, 32);
+  assert.equal(trace.metrics.sm.completedInstructions, 16 * 14);
+  assert.ok(trace.metrics.sm.ctaAdmissionWaitCycles > 0);
+  for (const cta of trace.metrics.ctas) {
+    if (cta.ctaId) assert.equal(cta.admitted, trace.metrics.ctas[cta.ctaId - 1].retired);
+    assert.ok(trace.metrics.instructions.filter(i => i.threadBlockId === cta.ctaId)
+      .every(i => i.start >= cta.admitted && Math.max(i.end, i.asyncEnd ?? i.end) <= cta.retired));
+  }
+  assert.ok(trace.metrics.ctas[1].admissionWaitReasons.includes('cta-slots'));
+  const first = trace.metrics.sharedBuffers.find(b => b.warpId === 0 && b.role === 'tma-destination');
+  const reused = trace.metrics.sharedBuffers.find(b => b.warpId === 4 && b.role === 'tma-destination');
+  assert.equal(first.baseOffsetBytes, reused.baseOffsetBytes);
+  assert.equal(validateSmTrace(trace), trace);
+});
+
+test('register, warp and unified shared-memory budgets independently bound residency', () => {
+  const cases = [
+    [{warpCount: 32, registersPerThread: 255}, 'register-capacity'],
+    [{warpCount: 16, residentWarpLimit: 8}, 'warp-slots'],
+    [{warpCount: 32, l1CapacityLines: 1024}, 'shared-memory-capacity'],
+    [{warpCount: 32, sharedBankStrideWords: 32}, 'shared-memory-capacity'],
+  ];
+  for (const [config, expectedReason] of cases) {
+    const trace = simulateSm(config), {limits, history} = trace.metrics.residency;
+    assert.ok(trace.metrics.ctas.some(cta => cta.admissionWaitReasons.includes(expectedReason)), expectedReason);
+    for (const state of history) {
+      assert.ok(state.ctas <= limits.ctas && state.warps <= limits.warps && state.registers <= limits.registers && state.sharedBytes <= limits.sharedBytes);
+      assert.ok(state.partitionRegisters.every(count => count <= limits.registersPerPartition));
+    }
+    assert.equal(trace.metrics.sm.completedInstructions, config.warpCount * 14);
+    validateSmTrace(trace);
+  }
+});
+
+test('128 submitted warps run in whole-CTA waves without increasing hardware residency', () => {
+  const trace = simulateSm({warpCount: 128, tmaBytes: 128, registersPerThread: 16});
+  assert.equal(trace.metrics.ctas.length, 32);
+  assert.equal(trace.metrics.sm.completedInstructions, 128 * 14);
+  assert.equal(trace.metrics.sm.maxResidentWarps, 64);
+  assert.equal(smActivityAt(trace, 0).counts.queued, 64);
+  assert.equal(trace.metrics.residency.history.at(-1).warps, 0);
+  validateSmTrace(trace);
+});
+
+test('CUDA reserves an additional 1 KiB per CTA beyond its user buffers', () => {
+  const trace = simulateSm({warpCount: 32, warpsPerCta: 1, tmaBytes: 128, registersPerThread: 16});
+  assert.equal(trace.metrics.ctas.length, 32);
+  assert.equal(trace.metrics.ctas[0].userSharedBytes, 256);
+  assert.equal(trace.metrics.ctas[0].reservedSharedBytes, 1024);
+  assert.equal(trace.metrics.ctas[0].sharedBytes, 1280);
+  assert.equal(trace.metrics.sharedMemoryAllocation.allocatedBytes, 40960);
+  assert.equal(trace.metrics.sharedMemoryAllocation.selectedCarveoutBytes, 65536);
+  assert.equal(trace.metrics.sharedMemoryAllocation.reservedBytesPerCta, 1024);
+  for (const buffer of trace.metrics.sharedBuffers) {
+    const cta = trace.metrics.ctas[buffer.ctaId];
+    assert.ok(buffer.baseOffsetBytes >= cta.sharedOffsetBytes);
+    assert.ok(buffer.baseOffsetBytes + buffer.sizeBytes <= cta.sharedOffsetBytes + cta.userSharedBytes);
+  }
+  validateSmTrace(trace);
+});
+
+test('instantaneous warp evidence separates residency, dependency readiness, eligibility, issue and outstanding work', () => {
+  const trace = simulateSm({warpCount: 8, residentCtaLimit: 1, tmaInFlightLimit: 1, scoreboardEntries: 1});
+  const initial = smActivityAt(trace, 0);
+  assert.equal(initial.counts.resident, 4);
+  assert.equal(initial.counts.queued, 4);
+  assert.equal(initial.counts.residentCtas, 1);
+  assert.equal(initial.counts.queuedCtas, 1);
+  let resourceWait = false, dependencyWait = false, outstandingWithoutIssue = false;
+  for (let time = 0; time <= trace.metrics.sm.makespan; time++) {
+    const activity = smActivityAt(trace, time), count = activity.counts;
+    assert.ok(count.eligible <= count.ready && count.ready <= count.resident);
+    assert.ok(count.issuing <= count.resident && count.inflight <= count.resident);
+    assert.equal(count.resident + count.queued + count.retired, 8);
+    assert.equal(activity.partitions.reduce((sum, p) => sum + p.resident, 0), count.resident);
+    const expectedIssuing = new Set(trace.metrics.instructions.filter(i => i.issue <= time && time < i.issueEnd).map(i => i.warpId)).size;
+    assert.equal(count.issuing, expectedIssuing);
+    resourceWait ||= count.ready > count.eligible;
+    dependencyWait ||= activity.waitReasons.RAW > 0;
+    outstandingWithoutIssue ||= count.inflight > 0 && count.issuing === 0;
+  }
+  assert.ok(resourceWait && dependencyWait && outstandingWithoutIssue);
+  const finished = smActivityAt(trace, trace.metrics.sm.makespan);
+  assert.equal(finished.counts.resident, 0);
+  assert.equal(finished.counts.inflight, 0);
+  assert.equal(finished.counts.retired, 8);
+  const endFirstCta = trace.metrics.ctas[0].retired;
+  assert.equal(smActivityAt(trace, endFirstCta).warps.find(w => w.warpId === 0).resident, false);
+  assert.equal(smActivityAt(trace, endFirstCta).warps.find(w => w.warpId === 4).resident, true);
+  assert.equal(smActivityAt(trace, 0, {partitionId: 0}).counts.resident, 1);
+  const legacy = structuredClone(baseline); delete legacy.metrics.residency; delete legacy.metrics.warps;
+  assert.equal(smActivityAt(legacy, 0).available, false);
+  assert.throws(() => smActivityAt(trace, -1), RangeError);
+  assert.throws(() => smActivityAt(trace, Infinity), RangeError);
 });

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {DEFAULT_TRAFFIC_CONFIG, simulateTraffic} from '../lib/traffic-model.js';
+import {DEFAULT_TRAFFIC_CONFIG, simulateTraffic, trafficResidency, trafficSmSnapshot} from '../lib/traffic-model.js';
 import {validateTrace} from '../lib/trace.js';
 import {validateTrafficTrace} from '../lib/traffic-contract.js';
 
@@ -68,7 +68,7 @@ test('a shared key fills once per local L2 partition and fans out distinct local
     const outgoing = finalPackets.filter(e => e.args.flow.dataKey === dataKey && e.args.flow.kind === 'read-response' && e.args.flow.destinationId.startsWith('sm-'));
     assert.equal(outgoing.length, config.numSms);
     assert.equal(new Set(outgoing.map(e => e.args.flow.packetId)).size, config.numSms);
-    assert.equal(new Set(outgoing.map(e => e.args.flow.destinationId)).size, config.numSms);
+    assert.equal(new Set(outgoing.map(e => e.args.flow.requestId)).size, config.numSms);
     const fills = new Map(incoming.map(e => [e.args.flow.destinationId, e]));
     assert.ok(outgoing.every(e => e.start >= fills.get(e.args.flow.originId).end));
     assert.ok(outgoing.every(e => e.args.flow.originPartitionId === e.args.flow.destinationPartitionId));
@@ -77,22 +77,29 @@ test('a shared key fills once per local L2 partition and fans out distinct local
   assert.equal(baseline.metrics.traffic.mergedMisses + baseline.metrics.traffic.l2Hits, baseline.metrics.traffic.sharedReadSavings);
 });
 
-test('compute waits for both modeled input responses, and the next tile waits for its write commit', () => {
+test('compute waits for both inputs and freed CTA slots refill after L2 acceptance without waiting for HBM', () => {
   const byId = new Map(baseline.events.map(e => [e.id, e]));
   for (const computed of baseline.events.filter(e => e.args.stage === 'compute')) {
-    const inputs = computed.dependencies.map(id => byId.get(id)).filter(e => e.args.stage === 'transfer' && e.args.flow.kind === 'read-response');
+    const ready = computed.dependencies.flatMap(id => {
+      const dependency = byId.get(id);
+      return dependency.args.stage === 'queue' ? dependency.dependencies.map(id => byId.get(id)) : [dependency];
+    });
+    const inputs = ready.filter(e => e.args.stage === 'transfer' && e.args.flow.kind === 'read-response');
     assert.equal(inputs.length, 2);
     assert.deepEqual(new Set(inputs.map(e => e.args.flow.requestId)), new Set(computed.args.inputRequestIds));
     assert.ok(inputs.every(e => e.end <= computed.start && e.args.flow.destinationId === `sm-${computed.args.smId}`));
   }
-  for (const issue of baseline.events.filter(e => e.args.stage === 'issue' && e.args.round > 0)) {
+  for (const issue of baseline.events.filter(e => e.args.stage === 'issue' && e.start > 0)) {
     assert.equal(issue.dependencies.length, 1);
-    const done = byId.get(issue.dependencies[0]);
-    assert.equal(done.args.stage, 'complete');
-    const committed = byId.get(done.dependencies[0]);
-    assert.equal(committed.args.operation, 'write');
-    assert.ok(committed.componentId.startsWith('hbm-'));
-    assert.equal(issue.start, committed.end);
+    const retired = byId.get(issue.dependencies[0]);
+    assert.equal(retired.args.stage, 'retire');
+    assert.equal(retired.args.smId, issue.args.smId);
+    const accepted = byId.get(retired.dependencies[0]);
+    assert.equal(accepted.args.operation, 'write');
+    assert.ok(accepted.componentId.startsWith('l2-'));
+    assert.equal(issue.start, accepted.end);
+    const oldBlock = baseline.meta.scheduling.blocks.find(block => block.threadBlockId === retired.args.threadBlockId);
+    assert.ok(issue.start < oldBlock.committed);
   }
 });
 
@@ -229,10 +236,16 @@ test('partition-local cache hits never cross the bridge, while remote HBM miss r
     }
   }
   assert.ok(remote > 0 && local > 0);
-  const hits = baseline.events.filter(e => e.args.cacheOutcome === 'hit');
+  const later = simulateTraffic({...small, rounds: 3, hbmLatencyCycles: 1, hbmBytesPerCycle: 4096, maxResidentBlocksPerSm: 1});
+  const hitPackets = new Map();
+  for (const event of transfers(later)) {
+    if (!hitPackets.has(event.args.flow.packetId)) hitPackets.set(event.args.flow.packetId, []);
+    hitPackets.get(event.args.flow.packetId).push(event);
+  }
+  const hits = later.events.filter(e => e.args.cacheOutcome === 'hit');
   assert.ok(hits.length > 0);
   for (const lookup of hits) {
-    const response = [...packets.values()].find(path => path[0].args.flow.requestId === lookup.args.requestId && path[0].args.flow.originId === lookup.componentId);
+    const response = [...hitPackets.values()].find(path => path[0].args.flow.requestId === lookup.args.requestId && path[0].args.flow.originId === lookup.componentId);
     assert.ok(response);
     assert.ok(response.every(e => !bridgeLinks.has(e.args.linkId)));
   }
@@ -258,8 +271,7 @@ test('L2 fixed lookup latency is pipelined independently of its serialized byte 
   assert.ok(lookups.every(e => e.args.issueReleaseCycle - e.start === 1));
   assert.ok(lookups.every(e => e.end - e.args.issueReleaseCycle === DEFAULT_TRAFFIC_CONFIG.l2LatencyCycles));
   assert.ok(lookups.some((e, i) => lookups.slice(0, i).some(previous => previous.componentId === e.componentId && previous.end > e.start)));
-  assert.ok(baseline.events.filter(e => e.componentId.startsWith('hbm-') && e.args.stage === 'service').every(e => e.args.issueReleaseCycle == null));
-  assert.match(baseline.meta.nocModel.hbmService, /nonpipelined/);
+
 });
 
 test('uniform-star keeps single-fabric cache semantics, and odd partition counts keep SM/router locality', () => {
@@ -278,4 +290,105 @@ test('invalid topology profiles, bridge settings and impossible local partition 
   for (const invalid of [{nocTopology: 'mesh'}, {nocTopology: null}, {crossPartitionBytesPerCycle: 0},
     {crossPartitionLatencyCycles: -1}, {crossPartitionBytesPerCycle: 2.5}, {numSms: 2, numClusters: 1},
     {numSms: 2, l2Banks: 1}]) assert.throws(() => simulateTraffic(invalid));
+});
+
+test('all 132 SMs begin with resident work while input waits remain distinct from compute', () => {
+  const initial = trafficSmSnapshot(baseline, 0);
+  assert.equal(initial.residentSms, 132);
+  assert.equal(initial.idleSms, 0);
+  assert.equal(initial.residentBlocks, 264);
+  assert.equal(initial.pendingBlocks, 132);
+  assert.equal(initial.computingSms, 0);
+  assert.equal(initial.memoryOnlySms, 132);
+  assert.ok(initial.sms.every(sm => sm.residentBlocks === 2 && sm.state === 'memory-wait'));
+  const duringCompute = trafficSmSnapshot(baseline, baseline.meta.scheduling.blocks[0].computeStart);
+  assert.ok(duringCompute.computingSms > 0);
+  assert.ok(duringCompute.sms.some(sm => sm.computingBlocks && sm.waitingBlocks));
+  assert.equal(duringCompute.residentSms + duringCompute.idleSms, 132);
+  assert.ok(duringCompute.sms.every(sm => sm.state !== 'idle' || sm.residentBlocks === 0));
+});
+
+test('small grids leave only unscheduled SMs idle; larger grids refill without exceeding residency resources', () => {
+  const tiny = simulateTraffic({...small, gridBlocks: 3});
+  const initial = trafficSmSnapshot(tiny, 0);
+  assert.equal(initial.totalBlocks, 3);
+  assert.equal(initial.residentSms, 3);
+  assert.equal(initial.idleSms, 9);
+  assert.equal(tiny.metrics.traffic.completedTasks, 3);
+  const refilled = simulateTraffic({...small, gridBlocks: 37});
+  const changes = new Set(refilled.meta.scheduling.blocks.flatMap(block => [block.start, block.retired, block.committed]));
+  for (const time of changes) {
+    const snapshot = trafficSmSnapshot(refilled, time);
+    assert.equal(snapshot.pendingBlocks + snapshot.residentBlocks + snapshot.completedBlocks, 37);
+    assert.ok(snapshot.committedBlocks <= snapshot.completedBlocks);
+    assert.ok(snapshot.sms.every(sm => sm.residentBlocks <= refilled.meta.scheduling.residentBlockLimit));
+  }
+  const finished = trafficSmSnapshot(refilled, refilled.metrics.traffic.makespan);
+  assert.equal(finished.residentBlocks, 0);
+  assert.equal(finished.completedBlocks, 37);
+  assert.equal(finished.committedBlocks, 37);
+  assert.equal(finished.idleSms, 12);
+});
+
+test('warp, register, shared memory and configured block limits bound CTA residency independently', () => {
+  const base = {...baseline.meta.config, maxResidentBlocksPerSm: 32, threadsPerBlock: 256,
+    registersPerThread: 16, sharedMemBytesPerBlock: 0};
+  assert.equal(trafficResidency(base).residentBlockLimit, 8);
+  assert.equal(trafficResidency({...base, registersPerThread: 128}).residentBlockLimit, 2);
+  assert.equal(trafficResidency({...base, sharedMemBytesPerBlock: 114 * 1024}).residentBlockLimit, 1,
+    'the 1 KiB per-block reservation is part of the shared-memory budget');
+  assert.equal(trafficResidency({...base, maxResidentBlocksPerSm: 3}).residentBlockLimit, 3);
+  assert.equal(trafficResidency({...base, threadsPerBlock: 1024}).residentBlockLimit, 2);
+  for (const invalid of [{threadsPerBlock: 33}, {gridBlocks: 0}, {gridBlocks: 4097},
+    {maxResidentBlocksPerSm: 0}, {registersPerThread: 256}, {sharedMemBytesPerBlock: 228 * 1024},
+    {threadsPerBlock: 1024, registersPerThread: 255}]) assert.throws(() => simulateTraffic(invalid));
+});
+
+test('resident snapshots distinguish ready queues and honor half-open retirement and legacy traces', () => {
+  const trace = simulateTraffic({numSms: 1, numClusters: 1, l2Banks: 1, hbmStacks: 1, gridBlocks: 4,
+    computeCycles: 1000, sharedBytes: 1, privateBytes: 1, hbmLatencyCycles: 1, nocLatencyCycles: 0});
+  const queued = trace.meta.scheduling.blocks.find(block => block.inputsReady < block.computeStart);
+  assert.ok(queued);
+  const snapshot = trafficSmSnapshot(trace, queued.inputsReady);
+  assert.equal(snapshot.sms[0].state, 'compute');
+  assert.ok(snapshot.sms[0].readyBlocks > 0);
+  assert.equal(snapshot.readySms, 1);
+  const last = trace.meta.scheduling.blocks.at(-1);
+  assert.equal(trafficSmSnapshot(trace, last.retired).residentBlocks, 0);
+  const legacy = structuredClone(trace);
+  delete legacy.meta.scheduling;
+  assert.equal(trafficSmSnapshot(legacy, 0).residentBlocks, 2);
+  assert.equal(trafficSmSnapshot(legacy, trace.metrics.traffic.makespan).residentBlocks, 0);
+  assert.throws(() => trafficSmSnapshot(trace, NaN));
+});
+
+
+test('HBM fixed latency overlaps while its byte serializer and completions remain causal', () => {
+  const services = baseline.events.filter(event => event.componentId.startsWith('hbm-') && event.args.stage === 'service');
+  const byEndpoint = new Map();
+  for (const event of services) {
+    assert.equal(event.args.issueReleaseCycle - event.start, Math.ceil(event.args.bytes / DEFAULT_TRAFFIC_CONFIG.hbmBytesPerCycle));
+    assert.equal(event.end - event.args.issueReleaseCycle, DEFAULT_TRAFFIC_CONFIG.hbmLatencyCycles);
+    if (!byEndpoint.has(event.componentId)) byEndpoint.set(event.componentId, []);
+    byEndpoint.get(event.componentId).push(event);
+  }
+  let overlappingLatency = false;
+  for (const spans of byEndpoint.values()) {
+    spans.sort((a, b) => a.start - b.start);
+    for (let i = 1; i < spans.length; i++) {
+      assert.ok(spans[i].start >= spans[i - 1].args.issueReleaseCycle);
+      if (spans[i].start < spans[i - 1].end) overlappingLatency = true;
+    }
+  }
+  assert.ok(overlappingLatency, 'Aggregate endpoints must admit another transfer before the earlier latency tail finishes.');
+  const byId = new Map(baseline.events.map(event => [event.id, event]));
+  for (const event of baseline.events) if (event.args.flow?.kind === 'read-response' && event.args.flow.originId.startsWith('hbm-') && event.args.hopIndex === 0) {
+    assert.ok(event.dependencies.some(id => byId.get(id)?.args.operation === 'read' && byId.get(id).end <= event.start));
+  }
+  for (const block of baseline.meta.scheduling.blocks) {
+    const write = services.find(event => event.args.operation === 'write' && event.args.threadBlockId === block.threadBlockId);
+    assert.equal(block.committed, write.end);
+  }
+  assert.match(baseline.meta.nocModel.hbmService, /pipelined aggregate/);
+  validateTrafficTrace(baseline);
 });

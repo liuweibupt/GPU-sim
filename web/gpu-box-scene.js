@@ -1,3 +1,4 @@
+import {trafficSmSnapshot} from "../lib/traffic-model.js?v=sm-residency-2";
 // Native SVG isometric scenery. The package floorplan is illustrative; highlights,
 // counters and progress marks are derived exclusively from source event intervals.
 import {createTrafficOverlay, TRAFFIC_OVERLAY_CSS, FLOW_COLORS} from "./traffic-overlay.js?v=traffic-1";
@@ -229,14 +230,15 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   graphic.append(svg("text", {x: 47, y: layout.domains.length ? 79 : 99, class: "gpu-box-group-title"}, layout.domains.length ? "SM COMPUTE DISTRICTS / LOGICAL CACHE DOMAINS" : "SM COMPUTE DISTRICTS"));
   const evidence = html("div", "gpu-traffic-evidence"), evidenceText = html("div", "gpu-traffic-detail"), inspectButton = html("button", "", "查看事件");
   inspectButton.type = "button"; inspectButton.hidden = true; evidence.append(evidenceText, inspectButton);
-  let byId = new Map(), selectedComponentId = null, inspectedEvent = null;
+  let byId = new Map(), selectedComponentId = null, inspectedEvent = null, smActivity = null;
   const sourceEvents = new Map(events.map(event => [event.id, event]));
   inspectButton.addEventListener("click", () => {if (inspectedEvent) onSelectEvent(inspectedEvent.id);});
   function inspectComponent(component) {
     inspectedEvent = null; inspectButton.hidden = true; evidenceText.replaceChildren();
-    const value = byId.get(component.id);
+    const value = byId.get(component.id), activity = smActivity?.sms.find(sm => sm.componentId === component.id);
     evidenceText.append(html("strong", "", component.label ?? component.id), document.createTextNode(component.configuredOnly
       ? " · 仅配置 SM，占位不表示空闲，也没有可推断的任务或流量。"
+      : activity ? ` · ${activity.residentBlocks} 个驻留 CTA / ${activity.computingBlocks} 个计算 / ${activity.waitingBlocks} 个等内存。点击打开此 SM 的独立教学流水线。`
       : ` · ${component.id} · ${value?.active ?? 0} 个进行中区间 / ${value?.endedSpans ?? value?.completed ?? 0} 个已结束区间${value?.pointTotal ? ` / ${value.observed} 个已观测点` : ''}。点击进入 SM。`));
   }
   function inspectFlow(event) {
@@ -249,7 +251,7 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   }
   function defaultEvidence() {
     evidenceText.replaceChildren(html("strong", "", topology ? "显式数据流仿真" : "原始 Trace 结构视图"),
-      document.createTextNode(topology ? " · 悬停 SM 或数据包查看证据；点击光包追踪 request，点击 SM 进入内部。" : " · 当前源未提供 HBM / NoC 传输事件，因此不显示推测车流。虚线 SM 仅来自配置数量。"));
+      document.createTextNode(topology ? " · 悬停 SM 或数据包查看证据；点击光包追踪 request，点击 SM 打开独立教学流水线。" : " · 当前源未提供 HBM / NoC 传输事件，因此不显示推测车流。虚线 SM 仅来自配置数量。"));
   }
   const smNodes = [];
   for (const component of sms) {
@@ -303,6 +305,9 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   for (const [name, color] of [["读请求", FLOW_COLORS["read-request"]], ["响应数据", FLOW_COLORS["read-response"]], ["共享输入分发", FLOW_COLORS.shared], ["写回", FLOW_COLORS.writeback], ["显式队列", "#ffd18a"]]) {
     const item = html("span"), swatch = html("i"); swatch.style.setProperty("--packet-color", color); item.append(swatch, document.createTextNode(name)); legend.append(item);
   }
+  if (trace?.meta?.trafficSchemaVersion) for (const [name, color] of [['SM 计算', '#75e9b8'], ['SM 仅等内存', '#efbc68'], ['SM 就绪', '#89c9f1']]) {
+    const item = html('span'), swatch = html('i'); swatch.style.setProperty('--packet-color', color); item.append(swatch, document.createTextNode(name)); legend.append(item);
+  }
   const summary = html("span", "gpu-traffic-summary"); legend.append(summary); if (traffic) root.append(legend);
   defaultEvidence(); root.append(evidence);
   const picker = html("div", "gpu-box-native-picker"), label = html("label", "", "进入 SM"), select = html("select"); select.setAttribute("aria-label", "选择全部原生 SM");
@@ -315,7 +320,19 @@ function createFullGpuCity({components, configuredSms, trace, topology = trace?.
   }
   return {element: root, animate, update({byId: nextById = new Map(), time = 0, selectedComponentId: nextSelection = null, selectedEventId = null} = {}) {
     byId = nextById; selectedComponentId = nextSelection;
-    for (const {component, group} of smNodes) {const value = byId.get(component.id); group.classList.toggle("gpu-running", !component.configuredOnly && value?.active > 0); group.classList.toggle("gpu-selected", selectedComponentId === component.id); group.setAttribute("aria-pressed", String(selectedComponentId === component.id));}
+    smActivity = trace?.meta?.trafficSchemaVersion ? trafficSmSnapshot(trace, time) : null;
+    const activities = new Map(smActivity?.sms.map(sm => [sm.componentId, sm]) ?? []);
+    for (const {component, group} of smNodes) {
+      const value = byId.get(component.id), activity = activities.get(component.id);
+      group.dataset.smState = activity?.state ?? (component.configuredOnly ? 'unobserved' : value?.active > 0 ? 'observed-interval' : 'no-observed-interval');
+      group.classList.toggle("gpu-running", !component.configuredOnly && (activity ? activity.computingBlocks > 0 : value?.active > 0));
+      group.classList.toggle("gpu-sm-waiting", activity?.state === 'memory-wait');
+      group.classList.toggle("gpu-sm-ready", activity?.state === 'ready');
+      group.classList.toggle("gpu-sm-resident", activity?.residentBlocks > 0);
+      group.classList.toggle("gpu-selected", selectedComponentId === component.id);
+      group.setAttribute("aria-pressed", String(selectedComponentId === component.id));
+      group.setAttribute("aria-label", `${component.label}，${activity ? `${activity.residentBlocks} 个驻留 CTA，${activity.computingBlocks} 个计算，${activity.waitingBlocks} 个等内存` : component.configuredOnly ? '未观测' : `${value?.active ?? 0} 个进行中区间`}，打开独立 SM 教学运行`);
+    }
     for (const {node, group} of infraNodes) group.classList.toggle("gpu-running", byId.get(node.componentId ?? node.id)?.active > 0);
     animate({time, selectedEventId});
     if (selectedComponentId && components.some(component => component.id === selectedComponentId)) select.value = selectedComponentId;
