@@ -47,7 +47,13 @@ notices for any future code, data, or asset reuse.
 The detailed log adapter is independently authored against the documented
 FlashGPU-Sim runtime output grammar at revision
 [`291fbe172332eb481556632a79eb9cfc93cf46bf`](https://github.com/FlashGPU-Sim/FlashGPU-Sim/tree/291fbe172332eb481556632a79eb9cfc93cf46bf).
-No FlashGPU-Sim source, executable, or simulation output is redistributed here.
+The optional runner downloads and builds that unmodified upstream source, retaining
+its original COPYRIGHT and component notices in the checkout. No simulator source
+or executable is vendored here. The bundled `examples/flashgpu-vectoradd.log` and
+JSON are outputs of a native run of this project's independently authored small
+vector-add kernel; the adjacent manifest records hashes, configuration and scope.
+FlashGPU-Sim/GPGPU-Sim attribution and redistribution terms are available in its
+[upstream COPYRIGHT](https://github.com/FlashGPU-Sim/FlashGPU-Sim/blob/291fbe172332eb481556632a79eb9cfc93cf46bf/COPYRIGHT).
 The format sources and limitations are recorded in
 [the adapter guide](tools/detailed/README.md). Accel-Sim 2.0 remains a candidate
 execution backend requiring an output observer; raw SASS inputs are not imported

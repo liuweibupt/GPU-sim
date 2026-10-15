@@ -1,6 +1,6 @@
 # GPU 城市：空间层级、交通粒度与仿真后端
 
-日期：2026-10-14。本文记录当前产品方向及后续实现约束；除“本次实现范围”外，均为设计，不代表后端已接入。统一 trace 的现有协议见 [模型与数据契约](model-and-data-contract.md)，后端公开能力及固定版本见 [仿真器调研](research/simulators.md)。
+日期：2026-10-15。本文记录当前产品方向及后续实现约束；除“本次实现范围”外，均为设计，不代表后端已接入。统一 trace 的现有协议见 [模型与数据契约](model-and-data-contract.md)，后端公开能力及固定版本见 [仿真器调研](research/simulators.md)。
 
 当前还实现了独立 [SM 流水线教学模型](sm-architecture.md)：四分区的 Fetch/Decode/Scheduler/Scoreboard/Issue、操作数与执行路径，以及 L1、SMEM、TMA 和异步 barrier。每项由版本化形式化规格定义，图中未观测组件保持结构展示。该教学运行在 detail 槽保存，不把城市 Tile、旧 GTSim 操作或外部 observer 自动展开成推测指令；本节之后的多后端关联、checkpoint 与局部精化仍是后续设计。
 
@@ -55,7 +55,7 @@ GTSim 回放把一个原生 DAG 操作表示为任务 token，保留原始开始
 
 ### 微观：warp 指令和合并访存请求
 
-后续接入详细后端时，至少区分两个可选择的对象层：
+详细后端区分两个对象层；当前已接入第一层的 FlashGPU-Sim 原生 ISSUE/STALL 观测，存储请求关联仍待接入：
 
 1. **warp 指令 token**：表示动态指令实例，关联 PC/opcode、active mask、warp 身份和该后端提供的 issue/执行/完成阶段。
 2. **访存请求 token**：表示 LSU/cache 侧生成并由存储系统处理的请求，关联地址、大小、sector mask、请求/响应 ID 和确有观测的服务阶段。
@@ -97,8 +97,8 @@ Accel-Sim 2.0 的格式、Hopper 机制和匹配后端要求以其 [正式 relea
 
 本次增加 [详细事件 adapter](../tools/detailed/README.md)：可直接转换 FlashGPU-Sim 原生 `INSTRUCTION_ISSUE` runtime 日志，保留 cycle、SM、scheduler、warp、dynamic warp ID、PC、操作类别和指令文本。其 ISSUE/STALL 记录是时间点，以 `instruction_observations` 声明能力，不补造完成时间。带实际起止时间的自定义后端 observer JSON 可声明 `instruction_spans`；原始 Accel-Sim `.tracez` / `.traceg` 是执行输入，不能通过此入口直接获得仿真 issue/completion。格式核查版本与操作方法见 adapter 文档。
 
-两级分别维护 run、模拟时间域和回放速度；墙钟仿真耗时只有实际记录时才显示，否则为未知。GTSim 的宏观周期与详细后端周期不按比例对齐。详细 run 缺失时界面说明导入方式，SM 内不会把同一批 tile 节点改称逐指令数据。
+两级分别维护 run、模拟时间域和回放速度；墙钟仿真耗时只有实际记录时才显示，否则为未知。GTSim 的宏观周期与详细后端周期不按比例对齐。详细 run 缺失时，点击“SM 内部”载入实际 FlashGPU-Sim vectorAdd 样例；也可手动导入原生日志。指令观测面板与随时间更新的 warp/stage 轨道显示原生 PC、指令文本和调度身份；观测点不计为进行中或已完成的指令。SM 内不会把同一批 tile 节点改称逐指令数据。
 
-L2 物流中心、HBM 仓库及内部设施可以作为架构示意帮助定位，但没有对应事件时不显示为已观测的请求队列、命中率或交通量。本次没有集成 Accel-Sim/GPGPU-Sim/FlashGPU-Sim 本地运行器，也没有实现 CTA 后端热切、checkpoint 或新的 GPU 执行引擎。导入日志的能力与直接启动后端的能力分别表述。
+L2 物流中心、HBM 仓库及内部设施可以作为架构示意帮助定位，但没有对应事件时不显示为已观测的请求队列、命中率或交通量。本次提供可选的 FlashGPU-Sim 固定版本本地运行器：在 CPU 上编译并运行小型 vectorAdd，检查全部输出后保存日志、统一 trace 与来源清单。浏览器仅载入产物；没有实现浏览器启动后端、Accel-Sim 输出 observer、CTA 后端热切或 checkpoint。
 
-本次核查了 FlashGPU-Sim 官方记录格式并验证 adapter；当前环境没有 CUDA `nvcc`，未构建或运行详细模拟器，也未提供伪装成后端产物的指令样例。测试中手写 fixture 显式为 `illustration`。后续依次验收：详细后端的小 kernel 与数值/事件验证、指令到请求的稳定关联、同 workload 独立 run 比较，最后再研究局部精化或混合仿真。每一步同时验证原始时间不变、归属正确、请求不重复计数、未知信息不补造，以及缩放/筛选/回退的交互一致性。
+本次用 CUDA 12.8 原生编译固定 FlashGPU-Sim commit，按官方 H100 配置运行 256 元素 vectorAdd（2 CTA × 128 threads），通过全部元素的 CPU 参考校验。实际原生日志、trace 和源码/config/log hashes 见 [capture manifest](../examples/flashgpu-vectoradd.manifest.json)；日志中重复 PC 的 ISSUE/STALL 保持独立观测，未推断动态指令完成。测试中手写 fixture 仍显式为 `illustration`。后续依次验收：指令完成与请求的稳定关联、同 workload 独立 run 比较，最后再研究局部精化或混合仿真。每一步同时验证原始时间不变、归属正确、请求不重复计数、未知信息不补造，以及缩放/筛选/回退的交互一致性。

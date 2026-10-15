@@ -2,9 +2,10 @@ import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
 import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-1";
 import {normalizeFlashGpuLog} from "../lib/detailed-trace.js";
+import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
 import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=sm-1";
 import {simulateSm, DEFAULT_SM_CONFIG} from "../lib/sm-model.js?v=sm-1";
-import { createGpuWorld } from "./gpu-world.js?v=sm-box-1";
+import { createGpuWorld } from "./gpu-world.js?v=instruction-1";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
@@ -92,7 +93,7 @@ function showSmConfig(config) {
     control.value = value;
   }
   $('sm-config-label').textContent = `SM ${config.smId} · 4 分区 · ${config.warpCount} warps`;
-  $('sm-config-note').textContent = '当前运行的参数已恢复。修改后点击“运行 SM 流水线”生成新记录；宏观运行保留。';
+  $('sm-config-note').textContent = '当前运行的参数已恢复。修改后点击“运行教学流水线”生成新记录；宏观运行保留。';
 }
 
 function runInfo(trace) {
@@ -158,7 +159,7 @@ function renderRunBar() {
   const detailedInfo = runs.detail && describeRun(runs.detail.trace);
   const macroInfo = runs.macro && runInfo(runs.macro.trace);
   $('macro-backend').textContent = macroInfo ? `${isTraffic(runs.macro.trace) ? '教学模型' : macroInfo.backend} · ${macroInfo.granularity}` : '宏观运行 · 待载入';
-  $('micro-backend').textContent = detailedInfo ? `${isSmModel(runs.detail.trace) ? '教学模型' : detailedInfo.backend} · ${detailedInfo.granularity}` : '组件规格 · 可运行流水线模型';
+  $('micro-backend').textContent = detailedInfo ? `${isSmModel(runs.detail.trace) ? '教学模型' : detailedInfo.backend} · ${detailedInfo.granularity}` : 'FlashGPU 指令示例 · 点击载入';
   $('run-granularity').textContent = info.granularity;
   $('simulation-runtime').textContent = info.wallTimeSeconds === null ? '未记录' : `${number(info.wallTimeSeconds)} s`;
   $('simulation-runtime').title = info.timingScope ?? '来源未记录仿真墙钟耗时；播放速度不代表仿真吞吐。';
@@ -169,7 +170,7 @@ function renderRunBar() {
   $('run-context').textContent = isSmModel()
     ? `SM ${state.trace.meta.config.smId} 流水线教学模型 · 4 分区，显式执行 Fetch / Decode / Issue、RAW 等待、执行和写回；TMA 异步完成后释放 mbarrier。与城市模型分别运行，时序未按实机校准。`
     : detail
-    ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。与宏观模型分别运行，各自保留时钟与选择；不自动对齐或拼接 cycle。`
+    ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。${state.trace.meta.capabilities?.includes('instruction_observations') && !state.trace.meta.capabilities?.includes('instruction_spans') ? 'ISSUE / STALL 只表示原生观测点，执行时长与完成时间未记录。' : ''}与宏观模型分别运行，各自保留时钟与选择；不自动对齐或拼接 cycle。`
     : traffic
       ? `GPU City 教学模型 · ${state.trace.meta.config.numSms === 132 && state.trace.meta.config.hbmStacks === 5 ? 'H100 SXM 132 SM 配置' : `${number(state.trace.meta.config.numSms)} SM 教学变体`}。${state.trace.meta.config.nocTopology === 'partitioned-crossbar' ? '双分区 Crossbar / 局部 L2，远端内存 miss 经桥；链路串行化与传播分开。' : '单 Fabric 与理想共享缓存对照。'}${state.trace.meta.config.coalesceShared ? '同缓存域内共享 Tile 复用后逐 SM 单播；不是全 GPU 广播。' : '已禁用共享缓存与请求合并；每请求独立访问 HBM。'}时序未按实机校准。`
     : observationLevel === 'sm'
@@ -226,6 +227,8 @@ function categoryName(event) { return String(event.category ?? "uncategorized");
 function activeAt(event) { return event.start <= state.time && state.time < event.end; }
 function categoryColor(category) {
   const key = category.toLowerCase();
+  if (key === 'issue') return '#69d3aa';
+  if (key.startsWith('stall')) return '#e4b368';
   if (key.includes('queue')) return '#e4b368';
   if (key.includes('response') || key.includes('fanout')) return '#48e2c0';
   if (key.includes('request') || key.includes('noc') || key.includes('hbm')) return '#57b9e9';
@@ -257,7 +260,7 @@ function filteredEvents() {
     eventInComponent(event) &&
     eventInScope(event, state.scope) &&
     (!state.category || categoryName(event) === state.category) &&
-    (!query || `${event.id} ${event.name} ${componentName(event.componentId)}`.toLocaleLowerCase().includes(query))
+    (!query || `${instructionSearchText(event)} ${componentName(event.componentId)}`.toLocaleLowerCase().includes(query))
   );
 }
 
@@ -337,7 +340,7 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
   $("event-search").value = state.query;
   $("playback-rate").value = String(state.rate);
   const categorySelect = $("category-filter");
-  categorySelect.replaceChildren(new Option("全部类别", ""));
+  categorySelect.replaceChildren(new Option(activeRun === 'detail' ? "全部阶段 / 类别" : "全部类别", ""));
   for (const category of [...new Set(trace.events.map(categoryName))].sort()) {
     categorySelect.add(new Option(category, category));
   }
@@ -354,6 +357,8 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
     sampleSelect.value = 'traffic'; showTrafficConfig(trace.meta.config);
   } else if (isSmModel(trace)) {
     sampleSelect.value = 'sm'; showSmConfig(trace.meta.config);
+  } else if (trace.meta.producer === 'FlashGPU-Sim' && /vectoradd/i.test(trace.meta.title ?? '')) {
+    sampleSelect.value = 'flashgpu';
   } else if (/GTSim/.test(trace.meta.producer) && trace.meta.config?.M === 256 && trace.meta.config?.N === 256 && trace.meta.config?.K === 128) {
     sampleSelect.value = trace.meta.config.l2BandwidthBytesPerCycle === 128 ? 'slow-l2' : 'standard';
   } else {
@@ -507,8 +512,10 @@ function renderComponentInfo() {
   panel.append(el('h3', scopeLabel || component?.label || 'GPU 全局观察', 'detail-title'));
   const scopeEvents = state.trace.events.filter(event => eventInComponent(event) && eventInScope(event,state.scope));
   const active = scopeEvents.filter(activeAt).length;
-  const completed = scopeEvents.filter(event => event.end <= state.time).length;
-  panel.append(el('p', `${number(scopeEvents.length)} 个任务区间 · ${number(active)} 进行中 · ${number(completed)} 已完成`, 'muted'));
+  const spans = scopeEvents.filter(event => event.end > event.start);
+  const completed = spans.filter(event => event.end <= state.time).length;
+  const points = observationSnapshot(scopeEvents, state.time);
+  panel.append(el('p', `${points.total ? `${number(points.observed)} / ${number(points.total)} 个观测点已发生 · ISSUE ${number(points.issue)} · STALL ${number(points.stall)}` : `${number(spans.length)} 个任务区间`} ${spans.length ? `· ${number(active)} 进行中 · ${number(completed)} 个源区间已结束` : ''}`, 'muted'));
   if (/GTSim/i.test(state.trace.meta.producer)) panel.append(el('p', '当前后端：GTSim tile 操作图。CTA / warp 按任务归属查看；进行中区间数不等于硬件利用率。', 'muted'));
   else panel.append(el('p', `当前后端：${runInfo(state.trace).backend} · ${runInfo(state.trace).granularity}。${isTraffic() ? '运输、排队与计算均来自本次教学仿真。' : '按来源记录展示。'}`, 'muted'));
   if (state.scope) {
@@ -568,13 +575,17 @@ function renderTimeline() {
     else if (issuePredecessors.has(event.id)) classes.push("issue-dependency");
     else if (after.has(event.id)) classes.push("successor");
     if (event.start === event.end) classes.push("instant-event");
-    const span = svg("rect", {
-      x: Math.min(x(Math.max(event.start,timelineRange.start)), left + plotWidth - 3), y, width: Math.max(3, x(Math.min(event.end,timelineRange.end)) - x(Math.max(event.start,timelineRange.start))), height: 18, rx: 3,
+    const point = event.start === event.end;
+    const pointX = x(event.start);
+    const shape = point ? {d: `M${pointX},${y + 2}l5,7-5,7-5,-7z`} : {
+      x: Math.min(x(Math.max(event.start,timelineRange.start)), left + plotWidth - 3), y, width: Math.max(3, x(Math.min(event.end,timelineRange.end)) - x(Math.max(event.start,timelineRange.start))), height: 18, rx: 3};
+    const span = svg(point ? "path" : "rect", {
+      ...shape,
       fill: categoryColor(categoryName(event)), class: classes.join(" "), tabindex: 0, role: "button", "data-event-id": event.id,
-      "aria-label": `${event.name}，${componentName(event.componentId)}，${timeText(event.start)} 至 ${timeText(event.end)}，查看详情`,
+      "aria-label": `${event.name}，${componentName(event.componentId)}，${point ? `观测点 ${timeText(event.start)}` : `${timeText(event.start)} 至 ${timeText(event.end)}`}，查看详情`,
       "aria-pressed": String(event.id === state.selectedEventId),
     });
-    const spanTitle = svg("title"); spanTitle.textContent = `${event.name}\n${categoryName(event)}\n${timeText(event.start)} → ${timeText(event.end)}`; span.append(spanTitle);
+    const spanTitle = svg("title"); spanTitle.textContent = `${event.name}\n${categoryName(event)}\n${point ? `观测点 @ ${timeText(event.start)}；完成时间未记录` : `${timeText(event.start)} → ${timeText(event.end)}`}`; span.append(spanTitle);
     span.addEventListener("click", () => selectEvent(event.id));
     span.addEventListener("keydown", (key) => {
       if (key.code === "Enter" || key.code === "Space") { key.preventDefault(); key.stopPropagation(); selectEvent(event.id); }
@@ -596,28 +607,33 @@ function renderTimeline() {
 }
 
 function renderActiveTasks() {
-  const active = filteredEvents().filter(activeAt);
-  $("active-count").textContent = `${number(active.length)} 个进行中`;
+  const events = filteredEvents();
+  const active = events.filter(activeAt), observations = observationSnapshot(events, state.time);
+  const observed = observations.events;
+  const shown = [...active, ...observed];
+  $('tasks-heading').textContent = observations.total ? '当前指令观测 / 区间' : '进行中的任务';
+  $("active-count").textContent = observations.total ? `${observations.cycle == null ? '尚无观测' : `${observations.atCursor ? '当前' : '最近'} ${timeText(observations.cycle)} · ${number(observed.length + observations.omitted)} 点`}${active.length ? ` · ${number(active.length)} 区间` : ''}` : `${number(active.length)} 个进行中`;
   const list = $("active-tasks");
   const scrollTop = list.scrollTop;
   const focusedEventId = list.contains(document.activeElement) ? document.activeElement.dataset.eventId : null;
   list.replaceChildren();
-  if (!active.length) {
+  if (!shown.length) {
     const text = totalTime > 0 && state.time >= totalTime ? "已到记录终点。可回到起点播放，或选择时间线中的事件。" : "当前时间与筛选范围内没有进行中任务。试试下一事件边界，或在时间线选择事件。";
     list.append(el("p", text, "empty"));
     return;
   }
-  for (const event of active.slice(0, 200)) {
+  if (observations.total && !observations.atCursor && observations.cycle != null) list.append(el('p', `最近已观测周期 ${timeText(observations.cycle)}；当前游标 ${timeText(state.time)} 没有观测点。`, 'muted'));
+  for (const event of shown.slice(0, 200)) {
     const button = el("button", undefined, "task-button");
     button.type = "button";
     button.dataset.eventId = event.id;
     button.classList.toggle("selected", event.id === state.selectedEventId);
     button.setAttribute("aria-pressed", String(event.id === state.selectedEventId));
-    button.append(el("span", event.name, "task-name"), el("span", `${componentName(event.componentId)} · ${categoryName(event)} · ${timeText(event.start)} → ${timeText(event.end)}`, "task-meta"));
+    button.append(el("span", event.name, "task-name"), el("span", `${componentName(event.componentId)} · ${event.args?.stage ?? categoryName(event)} · ${event.start === event.end ? `观测点 @ ${timeText(event.start)}` : `${timeText(event.start)} → ${timeText(event.end)}`}`, "task-meta"));
     button.addEventListener("click", () => selectEvent(event.id));
     list.append(button);
   }
-  if (active.length > 200) list.append(el("p", `显示前 200 / ${number(active.length)} 个进行中任务。请选择具体组件缩小范围。`, "muted"));
+  if (shown.length > 200 || observations.omitted) list.append(el("p", `当前列表最多显示 200 个事件；完整观测保留在时间线，可按阶段或 Warp 筛选。`, "muted"));
   list.scrollTop = scrollTop;
   if (focusedEventId) [...list.querySelectorAll("[data-event-id]")].find((node) => node.dataset.eventId === focusedEventId)?.focus({ preventScroll: true });
 }
@@ -625,16 +641,17 @@ function renderActiveTasks() {
 function selectEvent(id) {
   state.selectedEventId = id;
   const event = eventById.get(id);
+  const instructionPoint = event?.args?.granularity === 'instruction' && event.start === event.end;
+  if (instructionPoint) {pause(); state.time = event.start;}
   if (event && !intersectsWindow(event,timelineRange)) state.timelineCenter = (event.start+event.end)/2;
   const range = timeWindow({start:startTime,end:totalTime},state.timelineZoom,state.timelineCenter);
   const within = filteredEvents().filter(event=>intersectsWindow(event,range)).sort((a,b)=>a.start-b.start||a.end-b.end||a.id.localeCompare(b.id));
   const index = within.findIndex(event=>event.id===id);
   if(index >= 0) state.page=Math.floor(index/PAGE_SIZE);
   renderTimeline();
-  renderActiveTasks();
   renderDetails();
-  world.update(state);
-  dataflow.update(state);
+  if (instructionPoint) renderAtTime();
+  else {renderActiveTasks(); world.update(state); dataflow.update(state);}
 }
 
 function renderDetails() {
@@ -642,12 +659,15 @@ function renderDetails() {
   panel.replaceChildren();
   const event = eventById.get(state.selectedEventId);
   $("jump-to-event").disabled = !event;
+  $('jump-to-event').textContent = event && event.start === event.end ? '定位观测点' : '定位开始';
+  $('jump-to-event').title = event && event.start === event.end ? '将回放定位到来源记录的实际观测周期' : '将回放定位到所选事件的开始时间';
   $("timeline-focus-selection").disabled = !event;
   if (!event) { panel.append(el("p", "选择时间线或当前任务中的事件。这里保留原始名称、时间与参数。", "empty")); return; }
   panel.append(el("h3", event.name, "detail-title"));
   const facts = el("dl", undefined, "detail-facts");
-  for (const [label, value] of [["ID", event.id], ["组件", `${componentName(event.componentId)} (${event.componentId})`], ["类别", categoryName(event)], ["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]]) facts.append(el("dt", label), el("dd", value));
-  for (const [key,label] of [['smId','SM'],['threadBlockId',isTraffic() || isSmModel() ? '模型 CTA ID' : 'CTA'],['round','任务轮次'],['warpId','Warp'],['partitionId','分区'],['instructionId','指令 ID'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage',isSmModel() ? '模型阶段' : '观测阶段'],['stallReason','等待原因'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
+  const times = event.start === event.end ? [["观测周期", timeText(event.start)], ["执行时长 / 完成", "来源未记录（观测点）"]] : [["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]];
+  for (const [label, value] of [["ID", event.id], ["组件", `${componentName(event.componentId)} (${event.componentId})`], ["类别", categoryName(event)], ...times]) facts.append(el("dt", label), el("dd", value));
+  for (const [key,label] of [['smId','SM'],['threadBlockId',isTraffic() || isSmModel() ? '模型 CTA ID' : 'CTA'],['round','任务轮次'],['warpId','Warp'],['dynamicWarpId','Dynamic Warp'],['schedulerId','Scheduler'],['scoreboardProducer','Scoreboard Producer'],['activeMask','Active mask'],['partitionId','分区'],['instructionId','指令 ID'],['dynamicInstructionId','动态指令 ID'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage',isSmModel() ? '模型阶段' : '观测阶段'],['stallReason','等待原因'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
   if (isTraffic()) for (const [key,label] of [['issueReleaseCycle','串行化资源释放'],['serializationCycles','串行化周期'],['propagationCycles','传播周期']]) {
     if (event.args?.[key] != null) facts.append(el('dt',label),el('dd',timeText(event.args[key])));
   }
@@ -854,15 +874,15 @@ async function loadExample(sample = $("sample-select").value) {
   if (sample === 'traffic') return runTraffic();
   if (sample === 'sm') return runSmModel();
   const sequence = ++loadSequence;
-  announce("正在加载 GTSim GEMM 仿真示例…");
+  announce(sample === 'flashgpu' ? '正在加载 FlashGPU-Sim vectorAdd 原生指令观测…' : "正在加载 GTSim GEMM 仿真示例…");
   try {
-    const filename = sample === 'slow-l2' ? 'gtsim-gemm-slow-l2' : 'gtsim-gemm';
+    const filename = sample === 'flashgpu' ? 'flashgpu-vectoradd' : sample === 'slow-l2' ? 'gtsim-gemm-slow-l2' : 'gtsim-gemm';
     const response = await fetch(new URL(`../examples/${filename}.json`, import.meta.url));
     if (!response.ok) throw new Error(`示例请求失败（HTTP ${response.status}）`);
     const input = await response.json();
     if (sequence !== loadSequence) return;
     setTrace(input);
-    announce(`已加载 GTSim 仿真示例，共 ${number(state.trace.events.length)} 个事件。可单步、选择组件或检查依赖。`);
+    announce(sample === 'flashgpu' ? `已载入 FlashGPU-Sim vectorAdd：${number(state.trace.events.length)} 个原生 ISSUE / STALL 观测点；宏观运行已保留。可按 PC、阶段、指令或 Warp 搜索，单步查看原始周期。` : `已加载 GTSim 仿真示例，共 ${number(state.trace.events.length)} 个事件。可单步、选择组件或检查依赖。`);
   } catch (error) {
     if (sequence === loadSequence) announce(`默认示例暂不可用：${error.message}。请通过 HTTP 启动仓库，或导入本地 JSON 执行记录。`, true);
   }
@@ -923,7 +943,7 @@ $('traffic-play').addEventListener('click', togglePlay);
 $('traffic-config').addEventListener('submit', event => {event.preventDefault(); runTraffic();});
 $('sm-config').addEventListener('submit', event => {event.preventDefault(); runSmModel();});
 for (const id of ['sm-target', ...smControls.map(([id]) => id)]) $(id).addEventListener('change', () => {
-  $('sm-config-note').textContent = '参数已修改。点击“运行 SM 流水线”生成新运行；当前事件的原始时间保持不变。';
+  $('sm-config-note').textContent = '参数已修改。点击“运行教学流水线”生成新运行；当前事件的原始时间保持不变。';
 });
 showSmConfig(DEFAULT_SM_CONFIG);
 for (const id of ['noc-topology','noc-bandwidth','hbm-bandwidth','coalesce-shared','noc-cross-bandwidth','noc-cross-latency']) $(id).addEventListener('change', () => {
@@ -965,6 +985,7 @@ $("time-input").addEventListener('keydown',event=>{if(event.key==='Enter')seekIn
 $("import-trace").addEventListener("click", () => $("trace-file").click());
 $("import-workspace").addEventListener("click", () => $("workspace-file").click());
 $("import-detail").addEventListener('click', () => $('detail-file').click());
+$('load-detail-example').addEventListener('click', () => loadExample('flashgpu'));
 $("detail-file").addEventListener('change', event => { importDetail(event.target.files[0]); event.target.value = ''; });
 $("macro-view").addEventListener('click', () => {
   ++loadSequence;
@@ -974,8 +995,8 @@ $("macro-view").addEventListener('click', () => {
 $("micro-view").addEventListener('click', () => {
   ++loadSequence;
   if (runs.detail && activeRun !== 'detail') { activateRun('detail'); return; }
+  if (!runs.detail) {loadExample('flashgpu'); return;}
   enterSm();
-  if (!runs.detail) announce(`已进入 SM。可点选组件查阅规格，点击“运行 SM 流水线”生成独立教学运行，或载入详细后端的指令记录。`);
 });
 $("trace-file").addEventListener("change", (event) => { importFile(event.target.files[0], false); event.target.value = ""; });
 $("workspace-file").addEventListener("change", (event) => { importFile(event.target.files[0], true); event.target.value = ""; });

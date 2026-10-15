@@ -14,7 +14,7 @@ test('documented entrypoint, module and sample are served; repository metadata i
   const page = await fetch(base + '/');
   assert.equal(page.status,200);
   assert.match(await page.text(), /<title>/);
-  for (const path of ['/web/app.js','/lib/trace.js','/examples/gtsim-gemm.json']) {
+  for (const path of ['/web/app.js','/lib/trace.js','/examples/gtsim-gemm.json','/examples/flashgpu-vectoradd.json','/lib/instruction-view.js']) {
     assert.equal((await fetch(base + path)).status,200,path);
   }
   const asset = await fetch(base + '/web/assets/gpu/sm.png',{method:'HEAD'});

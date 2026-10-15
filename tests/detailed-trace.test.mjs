@@ -25,6 +25,8 @@ test('native FlashGPU observations retain cycles, IDs and text without synthetic
   assert.equal(new Set(trace.events.map(e => e.id)).size, 3); // Repeated PCs are distinct observations.
   assert.equal(trace.events[0].args.pc, '0x123456789abcdef0'); // Never Number(address).
   assert.equal(trace.events[0].args.stage, 'STALL_SCOREBOARD');
+  assert.equal(trace.events[0].category, 'STALL_SCOREBOARD');
+  assert.equal(trace.events[0].args.op, 'INT');
   assert.equal(trace.events[0].args.scoreboardProducer, 'MEM_GLOBAL');
   assert.equal(trace.events[0].args.smId, 1);
   assert.equal(trace.events[0].args.warpId, 3);

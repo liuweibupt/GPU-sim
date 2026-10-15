@@ -34,6 +34,12 @@ test("formal stage states are half-open and seek/rewind deterministic", () => {
   assert.equal(atFive.get(issue).active.length, 0);
   assert.equal(atFive.get(decode).active.length, 0);
   assert.equal(atFive.get(decode).completed, 1);
+  assert.equal(atFive.get(decode).endedSpans, 0);
+  assert.equal(atFive.get(decode).observedPoints, 1);
+  assert.equal(atFive.get(decode).pointsAtCursor, true);
+  assert.deepEqual(atFive.get(decode).points.map(event => event.id), ['point']);
+  assert.equal(summarizeSmPipelineEvidence(evidence, 6).get(decode).pointsAtCursor, false);
+  assert.equal(summarizeSmPipelineEvidence(evidence, 6).get(decode).observationCycle, 5);
   summarizeSmPipelineEvidence(evidence, 100);
   assert.deepEqual(summarizeSmPipelineEvidence(evidence, 3), first);
 });

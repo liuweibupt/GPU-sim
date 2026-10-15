@@ -1,7 +1,8 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
 import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-1";
-import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-box-1";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=instruction-1";
+import {observationSnapshot, laneWindow} from "../lib/instruction-view.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 function countThrough(sorted, time) {
@@ -18,7 +19,7 @@ function indexComponents(trace) {
   const components = trace?.components ?? [];
   const byId = new Map(components.map(component => [component.id, component]));
   const children = new Map();
-  const intervals = new Map(components.map(component => [component.id, {starts: [], ends: [], events: []}]));
+  const intervals = new Map(components.map(component => [component.id, {starts: [], ends: [], events: [], pointStarts: [], issueStarts: [], stallStarts: []}]));
   for (const component of components) {
     const parent = component.parentId ?? null;
     if (!children.has(parent)) children.set(parent, []);
@@ -31,11 +32,16 @@ function indexComponents(trace) {
       visited.add(id);
       const interval = intervals.get(id);
       interval.starts.push(event.start); interval.ends.push(event.end); interval.events.push(event);
+      if (event.start === event.end) {
+        interval.pointStarts.push(event.start);
+        if (event.args?.stage === 'ISSUE') interval.issueStarts.push(event.start);
+        if (event.args?.stage?.startsWith('STALL_')) interval.stallStarts.push(event.start);
+      }
       id = byId.get(id).parentId;
     }
   }
   for (const interval of intervals.values()) {
-    interval.starts.sort((a, b) => a - b); interval.ends.sort((a, b) => a - b);
+    for (const key of ['starts', 'ends', 'pointStarts', 'issueStarts', 'stallStarts']) interval[key].sort((a, b) => a - b);
   }
   const sms = components.filter(component => component.kind === "sm");
   const gpus = components.filter(component => component.kind === "gpu");
@@ -51,8 +57,11 @@ function snapshot(index, trace, time) {
   for (const component of index.components) {
     const interval = index.intervals.get(component.id);
     const completed = countThrough(interval.ends, time);
+    const observed = countThrough(interval.pointStarts, time);
     byId.set(component.id, {...component, total: interval.events.length, completed,
-      active: countThrough(interval.starts, time) - completed});
+      active: countThrough(interval.starts, time) - completed, observed,
+      issue: countThrough(interval.issueStarts, time), stall: countThrough(interval.stallStarts, time), pointTotal: interval.pointStarts.length,
+      endedSpans: completed - observed});
   }
   const events = trace?.events ?? [];
   return {byId, components: [...byId.values()], mode: index.mode,
@@ -170,6 +179,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   let presentation = "boxes", boxScene = null, smPipelineScene = null;
   const smPipelineViews = new Map();
   let cursor = null, lastLevel = "", lastTokenSignature = "", instructionRows = null, instructionRowEvents = [], lastInstructionSignature = "";
+  let laneHost = null, laneSource = [], laneInstruction = false, lastLaneSignature = "";
   const statNodes = new Map(), tokenSites = [], eventNodes = new Map();
   const zoomLevels = [.75, 1, 1.25, 1.5, 2];
   const zoomLabel = element("span", "gpu-zoom-label", "100%");
@@ -279,7 +289,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   function scopeStats(id) {
     const row = element("div", "gpu-scope-stats");
     const pointOnly = detailedEvents(id).length > 0 && (index.intervals.get(id)?.events ?? []).every(event => event.start === event.end);
-    const labels = pointOnly ? [["进行中区间", "active"], ["观测已发生", "completed"], ["观测点", "total"]] : [["进行中", "active"], ["已结束", "completed"], ["原生区间", "total"]];
+    const labels = pointOnly ? [["已观测点", "observed"], ["ISSUE 点", "issue"], ["STALL 点", "stall"], ["总观测点", "pointTotal"]] : [["进行中", "active"], ["源区间已结束", "endedSpans"], ["原生事件", "total"]];
     for (const [label, key] of labels) {
       const item = element("div", "gpu-stat"); item.append(registerStat(id, key, element("b")), document.createTextNode(label)); row.append(item);
     }
@@ -419,18 +429,19 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     const instructionPoints = instructions.length > 0 && instructions.every(event => event.start === event.end);
     heading("SM INTERIOR / FORMAL MICROARCHITECTURE", `${sm.label} · ${modeledPipeline ? "教学 SM 模型阶段" : instructions.length ? instructionPoints ? "指令观测点 observer" : "指令区间 observer" : "tile 级 observer"}`);
     scene.append(scopeStats(sm.id));
+    const execution = element("section", "gpu-sm-execution"); execution.setAttribute("aria-label", "SM 原生工作负载与指令轨迹");
+    const header = element("div", "gpu-section-label"); header.append(element("span", "", instructions.length ? instructionPoints ? "WARP / INSTRUCTION OBSERVATIONS" : "WARP / INSTRUCTION SPANS" : trace.meta.trafficSchemaVersion ? "TASK / TILE OPERATIONS" : "WARP / TILE OPERATIONS"), element("small", "", trace.meta.trafficSchemaVersion ? "逻辑任务归属；未模拟真实 CTA / warp 调度" : "CTA 与 warp 为筛选范围")); execution.append(header);
+    if (instructionPoints) execution.append(element('p', 'gpu-extra-note', '绿色菱形：ISSUE · 琥珀菱形：STALL · 只记录观测时点，未记录指令执行时长或完成时间。'));
+    renderFilters(execution, sm.id);
+    const nativeEvents = instructions.length ? instructions : index.intervals.get(sm.id)?.events ?? [];
+    const events = scoped(nativeEvents);
+    if (instructions.length) renderInstructionRows(execution, events);
+    renderEventLanes(execution, events, Boolean(instructions.length));
+    scene.append(execution);
     smPipelineScene = createSmPipelineScene({trace, sm, events: index.intervals.get(sm.id)?.events ?? [],
       onSelectComponent: id => chooseComponent(id, false), onSelectEvent: id => {const event = trace.events.find(event => event.id === id); if (event) chooseEvent(event);}, onResize: fitScene});
     scene.append(smPipelineScene.element);
     if (smPipelineViews.has(sm.id)) smPipelineScene.setView(smPipelineViews.get(sm.id));
-    const execution = element("section", "gpu-sm-execution"); execution.setAttribute("aria-label", "SM 原生工作负载与指令轨迹");
-    const header = element("div", "gpu-section-label"); header.append(element("span", "", instructions.length ? instructionPoints ? "WARP / INSTRUCTION OBSERVATIONS" : "WARP / INSTRUCTION SPANS" : trace.meta.trafficSchemaVersion ? "TASK / TILE OPERATIONS" : "WARP / TILE OPERATIONS"), element("small", "", trace.meta.trafficSchemaVersion ? "逻辑任务归属；未模拟真实 CTA / warp 调度" : "CTA 与 warp 为筛选范围")); execution.append(header);
-    renderFilters(execution, sm.id);
-    const nativeEvents = instructions.length ? instructions : index.intervals.get(sm.id)?.events ?? [];
-    const events = scoped(nativeEvents);
-    renderEventLanes(execution, events, Boolean(instructions.length));
-    if (instructions.length) renderInstructionRows(execution, events);
-    scene.append(execution);
     footnote.textContent = modeledPipeline ? "SM 教学模型的 Fetch / Issue / 执行 / 写回 / 异步内存阶段来自独立运行；组件时序与资源参数为显式教学配置，未宣称 NVIDIA cycle accurate。未使用的结构组件保持未观测。" : instructions.length ? instructionPoints ? "菱形仅表示原生日志的 ISSUE / STALL 等观测时点；不推断执行时长，观测点不计入进行中区间。PC 与指令文本保留来源语义。" : "原生指令只有明确的 architectureComponentId 映射才能驱动正式组件；未映射阶段不从 opcode 推断。零时长菱形表示观测点。" : "当前保留来源的粗粒度任务、CTA 或 warp 归属；正式 SM 图只定义组件与类型化连接，Fetch / Issue 等状态不从 tile 推断。运行 SM 教学模型或载入映射详细 trace 才显示对应阶段证据。";
   }
   function scoped(events) {
@@ -459,32 +470,41 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     }
   }
   function renderEventLanes(parent, events, instruction) {
-    if (!events.length) {parent.append(element("p", "gpu-task-empty", "当前范围没有原生事件区间。")); return;}
-    const lanes = new Map();
-    for (const event of events) {
-      const dynamicWarp = event.args?.dynamicWarpId == null ? '' : ` D${event.args.dynamicWarpId}`;
-      const key = trace.meta.trafficSchemaVersion ? `T${event.args?.round ?? "?"} / ${event.category ?? "task"}`
-        : `W${event.args?.warpId ?? "?"}${dynamicWarp} / ${event.category ?? index.byId.get(event.componentId)?.label?.split("/").at(-1).trim() ?? "event"}`;
-      if (!lanes.has(key)) lanes.set(key, []); lanes.get(key).push(event);
-    }
-    const entries = [...lanes.entries()].slice(0, 8), width = 960, left = 140, plotWidth = 798, rowHeight = 29, top = 31, height = top + entries.length * rowHeight + 12;
-    const chart = vector("svg", {viewBox: `0 0 ${width} ${height}`, class: "gpu-cta-trace", role: "group", "aria-label": instruction ? "按 warp 与类别分轨的原生指令区间" : "按 warp 与类别分轨的原生 tile 区间"});
-    const start = events.reduce((value, event) => Math.min(value, event.start), Infinity), end = events.reduce((value, event) => Math.max(value, event.end), -Infinity);
+    laneHost = element('div', 'gpu-native-lanes'); laneSource = events; laneInstruction = instruction;
+    parent.append(laneHost); patchEventLanes();
+  }
+  function patchEventLanes() {
+    if (!laneHost) return;
+    const events = laneSource, instruction = laneInstruction;
+    if (!events.length) {laneHost.replaceChildren(element("p", "gpu-task-empty", "当前范围没有原生事件。")); return;}
+    const options = trace.meta.trafficSchemaVersion ? {laneKey: event => `T${event.args?.round ?? "?"} / ${event.category ?? "task"}`} : {};
+    const window = laneWindow(events, view.time, view.selectedEventId, options);
+    const signature = window.events.map(event => event.id).join('|');
+    if (signature === lastLaneSignature) return;
+    lastLaneSignature = signature;
+    const focused = laneHost.contains(document.activeElement) ? document.activeElement.dataset.gpuWarpEventId : null;
+    laneHost.replaceChildren(); eventNodes.clear();
+    const entries = window.lanes, width = 960, left = 195, plotWidth = 743, rowHeight = 29, top = 31, height = top + entries.length * rowHeight + 12;
+    const chart = vector("svg", {viewBox: `0 0 ${width} ${height}`, class: "gpu-cta-trace", role: "group", "aria-label": instruction ? "按 warp 与观测阶段分轨的原生指令轨迹；菱形为观测点" : "按 warp 与类别分轨的原生 tile 区间"});
+    const start = window.start, end = window.end;
     const x = value => left + (value - start) / (end - start || 1) * plotWidth;
-    for (let tick = 0; tick <= 4; tick++) {
-      const value = start + (end - start) * tick / 4;
+    const tickCount = end === start ? 0 : 4;
+    for (let tick = 0; tick <= tickCount; tick++) {
+      const value = start + (end - start) * tick / (tickCount || 1);
       chart.append(vector("line", {x1: x(value), x2: x(value), y1: 22, y2: height - 6, stroke: "#2d4759", "stroke-width": .7}), vector("text", {x: x(value), y: 15, "text-anchor": tick === 4 ? "end" : "start"}, value.toLocaleString(undefined, {maximumFractionDigits: 2})));
     }
     let count = 0;
     for (const [rowIndex, [key, lane]] of entries.entries()) {
       const y = top + rowIndex * rowHeight;
-      chart.append(vector("text", {x: 12, y: y + 13, class: "gpu-lane-label"}, key.length > 19 ? `${key.slice(0, 18)}…` : key), vector("line", {x1: 0, x2: width, y1: y + 23, y2: y + 23, stroke: "#203b4c", "stroke-width": .7}));
-      // A global budget bounds DOM size even for large detailed traces.
-      for (const event of lane.slice(0, Math.min(16, 96 - count))) {
+      const label = vector("text", {x: 12, y: y + 13, class: "gpu-lane-label"}, key.length > 29 ? `${key.slice(0, 28)}…` : key);
+      label.append(vector('title', {}, key));
+      chart.append(label, vector("line", {x1: 0, x2: width, y1: y + 23, y2: y + 23, stroke: "#203b4c", "stroke-width": .7}));
+      for (const event of lane) {
         const type = pipelineType(index.byId.get(event.componentId)), point = event.start === event.end;
+        const stage = event.args?.stage, color = stage === 'ISSUE' ? '#69d3aa' : stage?.startsWith('STALL_') ? '#e4b368' : COLORS[type].line;
         const shape = point ? {d: `M${x(event.start)} ${y + 2}l5 6.5-5 6.5-5-6.5z`} : {x: x(event.start), y, width: Math.max(2, x(event.end) - x(event.start)), height: 17, rx: 2};
-        const span = vector(point ? "path" : "rect", {...shape, fill: COLORS[type].line, class: "gpu-warp-event", "data-gpu-warp-event-id": event.id, "aria-pressed": String(view.selectedEventId === event.id)});
-        accessible(span, `${event.name}，${event.start} 至 ${event.end} ${trace.meta.timeUnit}`, () => chooseEvent(event));
+        const span = vector(point ? "path" : "rect", {...shape, fill: color, class: "gpu-warp-event", "data-gpu-warp-event-id": event.id, "aria-pressed": String(view.selectedEventId === event.id)});
+        accessible(span, `${event.name}，${point ? `观测点 @ ${event.start}` : `${event.start} 至 ${event.end}`} ${trace.meta.timeUnit}`, () => chooseEvent(event));
         span.append(vector("title", {}, `${event.name}\n${point ? `${event.args?.stage ?? "观测点"} @ ${event.start}` : `${event.start} → ${event.end}`} ${trace.meta.timeUnit}${instruction ? `\nPC ${event.args?.pc ?? "未提供"} · ${event.args?.opcode ?? event.args?.instructionText ?? event.args?.op ?? "未提供指令文本"}` : ""}`));
         chart.append(span); eventNodes.set(event.id, {node: span, event}); count++;
       }
@@ -494,9 +514,11 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     chart.append(cursor);
     const laneScroll = element("div", "gpu-lane-scroll"); laneScroll.tabIndex = 0;
     laneScroll.setAttribute("aria-label", "可横向滚动的原始事件轨道"); laneScroll.append(chart);
-    parent.append(laneScroll, element("p", "gpu-extra-note", `来源时间：${trace.meta.timeUnit} · 显示 ${count} / ${events.length} 个区间；重叠区间可能遮叠，完整事件保留在主时间线。`));
+    laneHost.append(laneScroll, element("p", "gpu-extra-note", `来源时间：${trace.meta.timeUnit} · 游标附近及所选事件 ${count} / ${events.length} 个 · ${entries.length} / ${window.totalLanes} 条轨道。菱形为观测点；完整事件保留在主时间线。`));
+    if (focused) [...laneHost.querySelectorAll('[data-gpu-warp-event-id]')].find(node => node.dataset.gpuWarpEventId === focused)?.focus({preventScroll: true});
   }
   function renderInstructionRows(parent, events) {
+    parent.append(element('p', 'gpu-extra-note', '游标附近与所选指令 · 行末保留原始阶段与周期，含前后相邻观测。'));
     const list = element("div", "gpu-instruction-list"); list.setAttribute("aria-label", "原生指令 PC 与 opcode");
     instructionRows = list; instructionRowEvents = events; parent.append(list); patchInstructionRows();
   }
@@ -519,9 +541,9 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     for (const event of visible) {
       const row = button("", "gpu-instruction-row", () => chooseEvent(event)); row.dataset.gpuInstructionEventId = event.id;
       row.setAttribute("aria-pressed", String(view.selectedEventId === event.id));
-      const instruction = event.args?.opcode ?? event.args?.instructionText ?? event.args?.op ?? "指令文本未提供";
+      const instruction = event.args?.instructionText ?? event.args?.opcode ?? event.args?.op ?? "指令文本未提供";
       row.title = `${event.args?.stage ?? "instruction"} · ${instruction}`;
-      row.append(element("span", "", `warp ${event.args?.warpId ?? "?"}`), element("span", "", `PC ${event.args?.pc ?? "未提供"}`), element("span", "gpu-opcode", instruction), element("small", "", event.start === event.end ? `${event.args?.stage ?? "POINT"} @ ${event.start}` : `${event.start} → ${event.end}`));
+      row.append(element("span", "", `W${event.args?.warpId ?? "?"}${event.args?.dynamicWarpId == null ? '' : ` D${event.args.dynamicWarpId}`}`), element("span", "", `PC ${event.args?.pc ?? "未提供"}`), element("span", "gpu-opcode", instruction), element("small", "", event.start === event.end ? `${event.args?.stage ?? "POINT"} @ ${event.start}` : `${event.start} → ${event.end}`));
       instructionRows.append(row);
     }
     if (focused) [...instructionRows.querySelectorAll("[data-gpu-instruction-event-id]")].find(row => row.dataset.gpuInstructionEventId === focused)?.focus({preventScroll: true});
@@ -542,6 +564,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     boxScene?.destroy?.(); boxScene = null;
     if (smPipelineScene) {const previousSm = smPipelineScene.getView().smComponentId; if (previousSm) smPipelineViews.set(previousSm, smPipelineScene.getView()); smPipelineScene.destroy(); smPipelineScene = null;}
     statNodes.clear(); tokenSites.length = 0; eventNodes.clear(); cursor = null; lastTokenSignature = ""; instructionRows = null; instructionRowEvents = []; lastInstructionSignature = "";
+    laneHost = null; laneSource = []; lastLaneSignature = '';
     scene.replaceChildren(); makeBreadcrumb();
     presentationGroup.style.display = drillSmId ? 'none' : '';
     structureSwitch.style.display = drillSmId ? 'none' : '';
@@ -582,7 +605,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     smPipelineScene?.update({time: view.time, selectedEventId: view.selectedEventId, scope: view.scope});
     for (const [id, nodes] of statNodes) {
       const value = stats.byId.get(id);
-      if (value) for (const group of nodes) for (const key of ["active", "completed", "total"]) if (group[key]) group[key].textContent = value[key].toLocaleString();
+      if (value) for (const group of nodes) for (const key of ["active", "completed", "total", "observed", "issue", "stall", "pointTotal", "endedSpans"]) if (group[key]) group[key].textContent = value[key].toLocaleString();
     }
     for (const node of scene.querySelectorAll("[data-gpu-component-id]")) {
       const id = node.dataset.gpuComponentId, value = stats.byId.get(id), component = index.byId.get(id);
@@ -591,6 +614,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
       node.setAttribute("aria-pressed", String(view.selectedComponentId === id));
       node.setAttribute("aria-label", `${component?.label ?? id}，${value?.active ?? 0} 个进行中区间，${value?.completed ?? 0} ${pointOnly ? "个观测已发生" : "个区间已结束"}，${component?.kind === "sm" ? "进入 SM 内部" : "选择组件"}`);
     }
+    patchEventLanes();
     for (const {node, event} of eventNodes.values()) {
       node.setAttribute("aria-pressed", String(event.id === view.selectedEventId)); node.classList.toggle("gpu-event-active", event.start === event.end ? event.start <= view.time : event.start <= view.time && view.time < event.end);
     }
@@ -606,16 +630,18 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     dock.hidden = !showTasks || !trace; if (dock.hidden) return;
     const scopeId = view.selectedComponentId ?? drillSmId;
     const events = scoped(scopeId ? index.intervals.get(scopeId)?.events ?? [] : trace.events);
-    const active = events.filter(event => event.start <= view.time && view.time < event.end); dock.replaceChildren();
-    const heading = element("div", "gpu-task-heading"); heading.append(element("span", "", `${active.length.toLocaleString()} 个原生事件进行中`), element("small", "", "NATIVE EVENT INTERVALS")); dock.append(heading);
-    if (!active.length) dock.append(element("p", "gpu-task-empty", "当前时间没有进行中的事件。"));
+    const active = events.filter(event => event.start <= view.time && view.time < event.end), observations = observationSnapshot(events, view.time, {limit: 6});
+    const shown = [...active, ...observations.events]; dock.replaceChildren();
+    const heading = element("div", "gpu-task-heading"); heading.append(element("span", "", observations.total ? observations.cycle == null ? '当前游标之前尚无观测' : `${observations.atCursor ? '当前' : '最近已观测'}周期 ${observations.cycle} · ${(observations.events.length + observations.omitted).toLocaleString()} 个观测点${active.length ? ` · ${active.length} 个区间进行中` : ''}` : `${active.length.toLocaleString()} 个原生事件进行中`), element("small", "", observations.total ? "NATIVE OBSERVATION POINTS" : "NATIVE EVENT INTERVALS")); dock.append(heading);
+    if (!shown.length) dock.append(element("p", "gpu-task-empty", "当前时间没有进行中的区间或已记录的观测点。"));
     else {
       const grid = element("div", "gpu-task-grid");
-      for (const event of active.slice(0, 6)) {
+      for (const event of shown.slice(0, 6)) {
         const item = button("", "gpu-task", () => chooseEvent(event)); item.dataset.gpuEventId = event.id;
         item.setAttribute("aria-pressed", String(view.selectedEventId === event.id)); item.classList.toggle("gpu-task-selected", view.selectedEventId === event.id);
-        item.append(element("b", "", event.name), element("small", "", `${event.start} → ${event.end} ${trace.meta.timeUnit}`));
-        const progress = element("span", "gpu-task-progress"); progress.style.width = `${100 * (view.time - event.start) / (event.end - event.start)}%`; progress.setAttribute("aria-hidden", "true"); item.append(progress); grid.append(item);
+        item.append(element("b", "", event.name), element("small", "", event.start === event.end ? `${event.args?.stage ?? 'POINT'} @ ${event.start} ${trace.meta.timeUnit}` : `${event.start} → ${event.end} ${trace.meta.timeUnit}`));
+        if (event.end > event.start) {const progress = element("span", "gpu-task-progress"); progress.style.width = `${100 * (view.time - event.start) / (event.end - event.start)}%`; progress.setAttribute("aria-hidden", "true"); item.append(progress);}
+        grid.append(item);
       }
       dock.append(grid);
     }

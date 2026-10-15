@@ -2,6 +2,7 @@
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
 import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js";
 import {createSmComponentBox, smBoxPortAnchor} from "./sm-component-box.js?v=sm-box-1";
+import {observationSnapshot} from "../lib/instruction-view.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const FLOW_TYPES = ["control", "instruction", "operand", "memory", "completion"];
@@ -81,9 +82,14 @@ export function summarizeSmPipelineEvidence(evidence, time, scope = null) {
   const result = new Map();
   for (const [id, source] of evidence.byComponent) {
     const events = source.filter(event => sourceEventsMatch(event, scope));
-    const value = {id, observed: events.length > 0, total: events.length, completed: 0, active: [], queue: [], stall: [], transfer: [], latest: null};
+    const points = observationSnapshot(events, time, {limit: 6});
+    const value = {id, observed: events.length > 0, total: events.length, completed: 0,
+      pointTotal: points.total, observedPoints: points.observed, observationCycle: points.cycle,
+      pointsAtCursor: points.atCursor, points: points.events, endedSpans: 0,
+      active: [], queue: [], stall: [], transfer: [], latest: null};
     for (const event of events) {
       if (event.end <= time) value.completed++;
+      if (event.end > event.start && event.end <= time) value.endedSpans++;
       if (event.start <= time && (!value.latest || event.start >= value.latest.start)) value.latest = event;
       if (event.start <= time && time < event.end) value[eventState(event)].push(event);
     }
@@ -271,7 +277,9 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
       for (const kind of ["active", "stall", "queue", "transfer"]) card.classList.toggle(`sm-evidence-${kind}`, value[kind].length > 0);
       const status = value.stall.length ? `STALL ${value.stall.length} · ${value.stall[0].args?.stallReason ?? "source"}`
         : value.queue.length ? `QUEUE ${value.queue.length}` : value.active.length ? `ACTIVE ${value.active.length} · ${value.active[0].args?.stage ?? "span"}`
-        : value.transfer.length ? `TRANSFER ${value.transfer.length}` : value.observed ? `${value.completed} / ${value.total} 源区间已结束` : "未观测 / 结构定义";
+        : value.transfer.length ? `TRANSFER ${value.transfer.length}`
+        : value.pointTotal ? `${value.observedPoints} / ${value.pointTotal} 点已观测${value.observationCycle == null ? '' : ` · ${value.pointsAtCursor ? '当前' : '最近'} @ ${value.observationCycle}`}`
+        : value.observed ? `${value.endedSpans} / ${value.total} 源区间已结束` : "未观测 / 结构定义";
       state.textContent = status;
       if (formalById.get(id).simulationCoverage === "timing-only" && value.observed) state.textContent = `仅时序 · ${status}`;
       card.setAttribute("aria-label", `${LABELS[localId(formalById.get(id))]?.[0] ?? formalById.get(id).label}，${status}，查看正式规格`);
@@ -279,7 +287,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     const count = [...snapshot.values()].filter(value => value.observed).length;
     const typedTransfers = evidence.transfers.filter(event => sourceEventsMatch(event, scope)).length;
     explanation.replaceChildren(dom("b", "", `${count} / ${architecture.components.length} 个正式组件有当前范围的原始事件证据。`), document.createTextNode(count ? " 其余节点保留结构定义；未观测不等于空闲。" : " 当前来源只提供 tile / 任务或未映射的指令记录；Fetch、Issue 等状态保持未观测。"));
-    footer.textContent = `${typedTransfers} 个显式类型化传输区间 · ${evidence.unmapped.length} 个来源区间未映射到正式组件${evidence.unresolvedTransfers.length ? ` · ${evidence.unresolvedTransfers.length} 个传输没有匹配正式连接，未绘制 token` : ""}。道路表示类型化契约，光点仅代表来源实际记录的 transfer。盒子高度与屋顶图案为示意，不代表物理面积或容量。四分区参考 Hopper，队列与延迟为教学建模。`;
+    footer.textContent = `${typedTransfers} 个显式类型化传输记录 · ${evidence.unmapped.length} 个来源事件未映射到正式组件${evidence.unresolvedTransfers.length ? ` · ${evidence.unresolvedTransfers.length} 个传输没有匹配正式连接，未绘制 token` : ""}。道路表示类型化契约，光点仅代表来源实际记录的非零 transfer 区间。盒子高度与屋顶图案为示意，不代表物理面积或容量。四分区参考 Hopper，队列与延迟为教学建模。`;
   }
   function patchWires() {
     const activeLinks = new Set(smPipelineTransferMarks(evidence, time, scope).map(mark => `${mark.sourceId}|${mark.targetId}|${mark.kind}`));
@@ -347,14 +355,16 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   function patchDialog() {
     if (!selectedFormalId || !evidenceSummary || !evidenceList) return;
     const value = snapshot.get(selectedFormalId); if (!value) return;
-    evidenceSummary.textContent = value.observed ? `t=${time.toLocaleString(undefined, {maximumFractionDigits: 2})} ${trace.meta.timeUnit} · ACTIVE ${value.active.length} / QUEUE ${value.queue.length} / STALL ${value.stall.length} / TRANSFER ${value.transfer.length} · ${value.completed} / ${value.total} 源区间已结束`
+    evidenceSummary.textContent = value.observed ? `t=${time.toLocaleString(undefined, {maximumFractionDigits: 2})} ${trace.meta.timeUnit} · ACTIVE ${value.active.length} / QUEUE ${value.queue.length} / STALL ${value.stall.length} / TRANSFER ${value.transfer.length}${value.pointTotal ? ` · ${value.observedPoints} / ${value.pointTotal} 点已观测${value.observationCycle == null ? '' : ` · ${value.pointsAtCursor ? '当前' : '最近已观测'}周期 ${value.observationCycle}`}` : ` · ${value.endedSpans} / ${value.total} 源区间已结束`}`
       : "当前来源没有此组件的映射事件；状态、占用率、队列深度与延迟均未观测。";
-    const relevant = [...value.stall, ...value.queue, ...value.active, ...value.transfer];
+    const relevant = [...value.stall, ...value.queue, ...value.active, ...value.transfer, ...value.points];
+    const selected = evidence.byComponent.get(selectedFormalId)?.find(event => event.id === selectedEventId && sourceEventsMatch(event, scope));
+    if (selected && !relevant.includes(selected)) relevant.unshift(selected);
     if (!relevant.length && value.latest) relevant.push(value.latest);
     const signature = relevant.slice(0, 6).map(event => event.id).join("|") + selectedEventId;
     if (signature === lastEvidenceSignature) return; lastEvidenceSignature = signature; evidenceList.replaceChildren();
     for (const event of relevant.slice(0, 6)) {
-      const choice = action(`${event.args?.stage ?? event.category ?? "span"} · W${event.args?.warpId ?? "?"} · ${event.args?.opcode ?? event.name} · ${event.start} → ${event.end}${event.args?.stallReason ? ` · ${event.args.stallReason}` : ""}`, "sm-evidence-event", () => onSelectEvent(event.id));
+      const choice = action(`${event.args?.stage ?? event.category ?? "span"} · W${event.args?.warpId ?? "?"} · ${event.args?.opcode ?? event.name} · ${event.start === event.end ? `观测点 @ ${event.start}` : `${event.start} → ${event.end}`}${event.args?.stallReason ? ` · ${event.args.stallReason}` : ""}`, "sm-evidence-event", () => onSelectEvent(event.id));
       choice.dataset.smEvidenceEventId = event.id; choice.setAttribute("aria-pressed", String(event.id === selectedEventId)); evidenceList.append(choice);
     }
   }

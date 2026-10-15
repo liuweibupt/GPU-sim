@@ -1,0 +1,100 @@
+{
+  "format": "gpu-sim-backend-capture-v1",
+  "evidenceKind": "simulation",
+  "capturedAt": "2026-10-15T01:03:10.194Z",
+  "backend": {
+    "name": "FlashGPU-Sim",
+    "repository": "https://github.com/FlashGPU-Sim/FlashGPU-Sim.git",
+    "revision": "291fbe172332eb481556632a79eb9cfc93cf46bf",
+    "buildIdentity": "flashgpu-sim_git-commit-291fbe1_modified_0.0",
+    "trackedSourcesClean": true,
+    "buildMode": "release",
+    "buildArgs": [
+      "make",
+      "-j",
+      "16",
+      "TRACE=1",
+      "FLASH=1"
+    ],
+    "tracingCompiled": true,
+    "runtimeSha256": "b14a7229656f6d869511bf550585d4aacb8026161bd1161a4ef9b24b9d317b32"
+  },
+  "architecture": {
+    "config": "SM90_H100",
+    "sourceConfigSha256": "33f466ab5f33da377499a5a3a01df5fb2112ef5c9da917957365188179c1610b",
+    "effectiveConfigSha256": "4f66981b7543313a5638a6eb0534ae77ce495fd9dfb14cce16a80cdecad921f9",
+    "overrides": {
+      "-trace_enabled": "1",
+      "-trace_components": "INSTRUCTION_ISSUE",
+      "-trace_sampling_core": "-1"
+    },
+    "interconnectConfigSha256": "3796695c663983ca84dd3f1bc8cc0326a5330206afa09cb2d399777c6310d99c",
+    "instructionHintsSha256": "d3e2007fa644e28ac3146d3724229dd55557f7904b1ded54352782f775c2b16c"
+  },
+  "workload": {
+    "source": "tools/detailed/vector-add.cu",
+    "sourceSha256": "3b88902ff347e63f0318d70139b075fa14d62bf380378a8a44be814f82e73bb5",
+    "elements": 256,
+    "blocks": 2,
+    "threadsPerBlock": 128,
+    "compileArgs": [
+      "-std=c++17",
+      "-cudart",
+      "shared",
+      "-gencode",
+      "arch=compute_90a,code=sm_90a",
+      "-gencode",
+      "arch=compute_90a,code=compute_90a",
+      "tools/detailed/vector-add.cu",
+      "-o",
+      "vectorAdd"
+    ],
+    "physicalGpuRequired": false
+  },
+  "toolchain": {
+    "cuda": "Cuda compilation tools, release 12.8, V12.8.93",
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "node": "v18.19.1",
+    "platform": "linux",
+    "openMpThreads": 1
+  },
+  "capture": {
+    "nativeLog": "flashgpu-vectoradd.log",
+    "nativeLogSha256": "89b2070dc5b92a7427227da91e674c72e7514a99c9bdd8f7bae19b8aa0b6ac1c",
+    "nativeLogBytes": 1022563,
+    "normalization": "normalizeFlashGpuLog",
+    "runId": "flashgpu-vectoradd:2026-10-15T01:03:10.194Z:89b2070dc5b9",
+    "timeDomain": "flashgpu.gpu_total_cycle",
+    "traceComponents": [
+      "INSTRUCTION_ISSUE"
+    ],
+    "samplingCore": -1,
+    "observedSmIds": [
+      0,
+      1
+    ],
+    "observedWarpCount": 8,
+    "observedEventCount": 3110,
+    "eventCounts": {
+      "ISSUE": 176,
+      "STALL_SCOREBOARD": 2934
+    },
+    "simulatedCycles": 6212,
+    "wallTimeSeconds": 3.376846945,
+    "timingScope": "Workload process from launch to exit, including simulator startup, PTX extraction, CPU simulation, functional validation, and native stdout/stderr writing; excludes source fetch, simulator/workload compilation, and JSON conversion. OMP_NUM_THREADS=1.",
+    "normalizedTrace": "flashgpu-vectoradd.json",
+    "normalizedTraceSha256": "467471e99df1dabb4dd963479d992fcfd28d80da0b38595a57f0fc147e403689"
+  },
+  "validation": {
+    "processExitCode": 0,
+    "exactElementsChecked": 256,
+    "passed": true,
+    "marker": "Vector addition validation PASSED (256/256 exact results)"
+  },
+  "limitations": [
+    "Execution-driven PTX observations, not SASS input traces.",
+    "ISSUE/STALL points have no instruction completion timestamps.",
+    "Upstream tracing does not guarantee every multi-issue instruction or every stall cause.",
+    "No CTA identity, active mask, dependency edges, memory routes, or mapping to another backend run is inferred."
+  ]
+}

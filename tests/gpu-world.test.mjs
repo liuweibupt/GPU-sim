@@ -44,6 +44,25 @@ test("configured SM count is distinct from listed components and never implies a
   assert.equal(summarizeComponents(trace, 1).unobservedSms, null);
 });
 
+test("native point counters distinguish observations and issue/stall samples from ended spans", () => {
+  const trace = fixture();
+  trace.events.push(
+    {id: "issue", componentId: "sm-0", start: 2, end: 2, args: {stage: "ISSUE"}},
+    {id: "stall", componentId: "sm-0", start: 3, end: 3, args: {stage: "STALL_SCOREBOARD"}},
+  );
+  const during = summarizeComponents(trace, 3).byId.get('sm-0');
+  assert.equal(during.observed, 2);
+  assert.equal(during.issue, 1);
+  assert.equal(during.stall, 1);
+  assert.equal(during.endedSpans, 0);
+  assert.equal(during.active, 1);
+  const after = summarizeComponents(trace, 4).byId.get('sm-0');
+  assert.equal(after.observed, 3);
+  assert.equal(after.pointTotal, 3);
+  assert.equal(after.endedSpans, 1);
+  assert.equal(after.active, 0);
+});
+
 test("Chrome profile track names do not become SM hardware", () => {
   const trace = normalizeTrace({traceEvents: [
     {ph: "M", pid: 1, tid: 2, name: "thread_name", args: {name: "SM 0 Tensor"}},
