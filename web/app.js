@@ -1,11 +1,11 @@
 import { validateTrace } from "../lib/trace.js";
 import { timeWindow, eventInScope, intersectsWindow } from "../lib/view-state.js";
 import {runKind, describeRun, decodeWorkspace, normalizeRun} from "../lib/run-state.js?v=sm-1";
-import {normalizeFlashGpuLog} from "../lib/detailed-trace.js";
+import {normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from "../lib/detailed-trace.js";
 import {observationSnapshot, instructionSearchText} from "../lib/instruction-view.js";
 import {simulateTraffic, DEFAULT_TRAFFIC_CONFIG} from "../lib/traffic-model.js?v=sm-1";
 import {simulateSm, DEFAULT_SM_CONFIG} from "../lib/sm-model.js?v=sm-1";
-import { createGpuWorld } from "./gpu-world.js?v=instruction-1";
+import { createGpuWorld } from "./gpu-world.js?v=sm-lights-2";
 import { createDataflow } from "./dataflow.js?v=traffic-1";
 
 const $ = (id) => document.getElementById(id);
@@ -57,6 +57,10 @@ function isTraffic(trace = state.trace) {
 
 function isSmModel(trace = state.trace) {
   return trace?.meta?.capabilities?.includes('sm_pipeline') === true;
+}
+
+function isNativePipeline(trace = state.trace) {
+  return trace?.meta?.capabilities?.includes('instruction_pipeline_stages') === true;
 }
 
 const smControls = [
@@ -165,10 +169,12 @@ function renderRunBar() {
   $('simulation-runtime').title = info.timingScope ?? '来源未记录仿真墙钟耗时；播放速度不代表仿真吞吐。';
   $('clock-scope').textContent = detail ? '详细运行 · 独立时钟' : '宏观运行 · 独立时钟';
   $('clock-scope').title = info.timeDomain;
-  $('world-level-tag').textContent = isSmModel() ? 'SM / PIPELINE MODEL' : detail ? 'SM / INSTRUCTION' : traffic ? `${observationLevel === 'sm' ? 'SM' : 'GPU'} / DATA FLOW` : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
+  $('world-level-tag').textContent = isNativePipeline() ? 'SM / LIVE INSTRUCTIONS' : isSmModel() ? 'SM / PIPELINE MODEL' : detail ? 'SM / INSTRUCTION' : traffic ? `${observationLevel === 'sm' ? 'SM' : 'GPU'} / DATA FLOW` : observationLevel === 'sm' ? 'SM / TILE' : 'GPU / TILE';
   $('playback-scope').textContent = `${detail ? '指令慢放' : observationLevel === 'sm' ? 'SM 慢放' : '全景'} · ${number(playbackDuration() / 1000 / state.rate)}s / 遍`;
   $('run-context').textContent = isSmModel()
     ? `SM ${state.trace.meta.config.smId} 流水线教学模型 · 4 分区，显式执行 Fetch / Decode / Issue、RAW 等待、执行和写回；TMA 异步完成后释放 mbarrier。与城市模型分别运行，时序未按实机校准。`
+    : isNativePipeline()
+    ? 'FlashGPU-Sim 原生指令生命周期 · 光点沿实际观测阶段的示意通路移动，在组件内停留；点击光点检查 PC、warp 与阶段。可切换已记录的 SM / 分区，暂停、慢放或定位周期。'
     : detail
     ? `${info.backend}${info.version ? ` ${info.version}` : ''} · ${info.granularity}。${state.trace.meta.capabilities?.includes('instruction_observations') && !state.trace.meta.capabilities?.includes('instruction_spans') ? 'ISSUE / STALL 只表示原生观测点，执行时长与完成时间未记录。' : ''}与宏观模型分别运行，各自保留时钟与选择；不自动对齐或拼接 cycle。`
     : traffic
@@ -223,7 +229,7 @@ function number(value) {
 function timeText(value) { return `${number(value)} ${unit()}`.trim(); }
 function componentName(id) { return componentById.get(id)?.label ?? id; }
 function eventName(id) { return eventById.get(id)?.name ?? id; }
-function categoryName(event) { return String(event.category ?? "uncategorized"); }
+function categoryName(event) { return String(event.args?.observationRole && event.args?.nativeEvent ? event.args.stage : event.category ?? "uncategorized"); }
 function activeAt(event) { return event.start <= state.time && state.time < event.end; }
 function categoryColor(category) {
   const key = category.toLowerCase();
@@ -357,8 +363,8 @@ function setTrace(input, savedView = null, slot = null, remember = true) {
     sampleSelect.value = 'traffic'; showTrafficConfig(trace.meta.config);
   } else if (isSmModel(trace)) {
     sampleSelect.value = 'sm'; showSmConfig(trace.meta.config);
-  } else if (trace.meta.producer === 'FlashGPU-Sim' && /vectoradd/i.test(trace.meta.title ?? '')) {
-    sampleSelect.value = 'flashgpu';
+  } else if (trace.meta.producer === 'FlashGPU-Sim' && /vector\s*add/i.test(trace.meta.title ?? '')) {
+    sampleSelect.value = isNativePipeline(trace) ? 'flashgpu' : 'flashgpu-points';
   } else if (/GTSim/.test(trace.meta.producer) && trace.meta.config?.M === 256 && trace.meta.config?.N === 256 && trace.meta.config?.K === 128) {
     sampleSelect.value = trace.meta.config.l2BandwidthBytesPerCycle === 128 ? 'slow-l2' : 'standard';
   } else {
@@ -665,9 +671,12 @@ function renderDetails() {
   if (!event) { panel.append(el("p", "选择时间线或当前任务中的事件。这里保留原始名称、时间与参数。", "empty")); return; }
   panel.append(el("h3", event.name, "detail-title"));
   const facts = el("dl", undefined, "detail-facts");
-  const times = event.start === event.end ? [["观测周期", timeText(event.start)], ["执行时长 / 完成", "来源未记录（观测点）"]] : [["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]];
+  const times = event.start === event.end ? [["观测周期", timeText(event.start)],
+    ...(event.args?.nativeEvent ? [["原生阶段", event.args.nativeEvent], ["阶段区间", "见下方同一动态指令的观测周期"]] : [["执行时长 / 完成", "来源未记录（观测点）"]])]
+    : [["start", timeText(event.start)], ["end", timeText(event.end)], ["duration", timeText(event.end - event.start)]];
   for (const [label, value] of [["ID", event.id], ["组件", `${componentName(event.componentId)} (${event.componentId})`], ["类别", categoryName(event)], ...times]) facts.append(el("dt", label), el("dd", value));
   for (const [key,label] of [['smId','SM'],['threadBlockId',isTraffic() || isSmModel() ? '模型 CTA ID' : 'CTA'],['round','任务轮次'],['warpId','Warp'],['dynamicWarpId','Dynamic Warp'],['schedulerId','Scheduler'],['scoreboardProducer','Scoreboard Producer'],['activeMask','Active mask'],['partitionId','分区'],['instructionId','指令 ID'],['dynamicInstructionId','动态指令 ID'],['op','操作'],['pc','PC'],['opcode','Opcode'],['stage',isSmModel() ? '模型阶段' : '观测阶段'],['stallReason','等待原因'],['instructionText','指令']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
+  for (const [key,label] of [['nativeOp','原生操作类'],['nativeUnit','原生执行单元'],['nativeUnitIndex','原生单元索引'],['collectorId','Collector'],['observationRole','记录类型']]) if(event.args?.[key] != null) facts.append(el('dt',label),el('dd',String(event.args[key])));
   if (isTraffic()) for (const [key,label] of [['issueReleaseCycle','串行化资源释放'],['serializationCycles','串行化周期'],['propagationCycles','传播周期']]) {
     if (event.args?.[key] != null) facts.append(el('dt',label),el('dd',timeText(event.args[key])));
   }
@@ -680,6 +689,20 @@ function renderDetails() {
     if (value != null) facts.append(el('dt',label),el('dd',key.endsWith('Id') && componentById.has(value) ? componentName(value) : String(value)));
   }
   panel.append(facts);
+  if (event.args?.dynamicInstructionId && isNativePipeline()) {
+    const phases = state.trace.events.filter(item => item.args?.observationRole === 'point' &&
+      item.args.dynamicInstructionId === event.args.dynamicInstructionId && item.args.smId === event.args.smId)
+      .sort((a, b) => a.start - b.start || a.args.sourceLine - b.args.sourceLine);
+    panel.append(el('h4', '同一指令的原生生命周期', 'dependency-title'));
+    const list = el('div', undefined, 'dependency-list');
+    for (const phase of phases) {
+      const choice = el('button', `${phase.args.nativeEvent} @ ${timeText(phase.start)}`);
+      choice.type = 'button'; choice.dataset.instructionPhaseId = phase.id;
+      choice.setAttribute('aria-pressed', String(phase.id === event.id));
+      choice.addEventListener('click', () => selectEvent(phase.id)); list.append(choice);
+    }
+    panel.append(list);
+  }
   for (const [label, ids] of [["完成依赖 · 前置事件完成后开始", event.dependencies], ["发射依赖 · 不要求前置事件完成", event.args?.issueDependencies ?? []], ["后继事件 · 含完成与发射边", successors.get(event.id) ?? []]]) {
     panel.append(el("h4", label, "dependency-title"));
     const list = el("div", undefined, "dependency-list");
@@ -860,7 +883,8 @@ async function importDetail(file) {
   try {
     if (file.size > MAX_FILE_BYTES) throw new Error('最多读取 32 MiB；请先截取指令窗口。');
     const contents = await file.text();
-    const trace = /^\s*[\[{]/.test(contents) ? normalizeRun(JSON.parse(contents)) : normalizeFlashGpuLog(contents);
+    const trace = /^\s*[\[{]/.test(contents) ? normalizeRun(JSON.parse(contents))
+      : /^\s*FLASHGPU_PIPELINE(?:_CONFIG)?\s/m.test(contents) ? normalizeFlashGpuPipelineLog(contents) : normalizeFlashGpuLog(contents);
     if (runKind(trace) !== 'detail') throw new Error('需要指令 observer 或 SM 流水线教学运行；宏观 Trace 请使用“导入 Trace”。');
     if (sequence !== loadSequence) return;
     setTrace(trace, null, 'detail');
@@ -874,15 +898,23 @@ async function loadExample(sample = $("sample-select").value) {
   if (sample === 'traffic') return runTraffic();
   if (sample === 'sm') return runSmModel();
   const sequence = ++loadSequence;
-  announce(sample === 'flashgpu' ? '正在加载 FlashGPU-Sim vectorAdd 原生指令观测…' : "正在加载 GTSim GEMM 仿真示例…");
+  const flashgpu = sample === 'flashgpu' || sample === 'flashgpu-points';
+  announce(flashgpu ? '正在加载 FlashGPU-Sim vectorAdd 原生指令运行…' : "正在加载 GTSim GEMM 仿真示例…");
   try {
-    const filename = sample === 'flashgpu' ? 'flashgpu-vectoradd' : sample === 'slow-l2' ? 'gtsim-gemm-slow-l2' : 'gtsim-gemm';
+    const filename = sample === 'flashgpu' ? 'flashgpu-vectoradd-pipeline' : sample === 'flashgpu-points' ? 'flashgpu-vectoradd' : sample === 'slow-l2' ? 'gtsim-gemm-slow-l2' : 'gtsim-gemm';
     const response = await fetch(new URL(`../examples/${filename}.json`, import.meta.url));
     if (!response.ok) throw new Error(`示例请求失败（HTTP ${response.status}）`);
     const input = await response.json();
     if (sequence !== loadSequence) return;
     setTrace(input);
-    announce(sample === 'flashgpu' ? `已载入 FlashGPU-Sim vectorAdd：${number(state.trace.events.length)} 个原生 ISSUE / STALL 观测点；宏观运行已保留。可按 PC、阶段、指令或 Warp 搜索，单步查看原始周期。` : `已加载 GTSim 仿真示例，共 ${number(state.trace.events.length)} 个事件。可单步、选择组件或检查依赖。`);
+    if (isNativePipeline()) {
+      const firstSm = state.trace.components.find(component => component.kind === 'sm');
+      const firstFlow = state.trace.events.find(event => event.args?.smPipelineTransfer && event.end > event.start && `sm-${event.args.smId}` === firstSm?.id);
+      if (firstFlow) seek(firstFlow.start + (firstFlow.end - firstFlow.start) / 2);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) togglePlay();
+    }
+    announce(isNativePipeline() ? '已载入 FlashGPU-Sim SM 光点流水线：每个光点关联原生指令与实际阶段周期。可在画布上切换 SM / 分区、点击光点检查；宏观运行已保留。'
+      : flashgpu ? `已载入 FlashGPU-Sim vectorAdd：${number(state.trace.events.length)} 个原生 ISSUE / STALL 观测点；宏观运行已保留。可按 PC、阶段、指令或 Warp 搜索，单步查看原始周期。` : `已加载 GTSim 仿真示例，共 ${number(state.trace.events.length)} 个事件。可单步、选择组件或检查依赖。`);
   } catch (error) {
     if (sequence === loadSequence) announce(`默认示例暂不可用：${error.message}。请通过 HTTP 启动仓库，或导入本地 JSON 执行记录。`, true);
   }

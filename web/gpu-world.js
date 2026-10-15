@@ -1,7 +1,7 @@
 // Interactive, trace-backed structure view. Geometry and artwork are illustrative;
 // only native component identities and event intervals drive counters/highlights.
 import {createGpuBoxScene, GPU_BOX_SCENE_CSS} from "./gpu-box-scene.js?v=sm-1";
-import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=instruction-1";
+import {createSmPipelineScene} from "./sm-pipeline-scene.js?v=sm-lights-2";
 import {observationSnapshot, laneWindow} from "../lib/instruction-view.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -181,6 +181,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   let cursor = null, lastLevel = "", lastTokenSignature = "", instructionRows = null, instructionRowEvents = [], lastInstructionSignature = "";
   let laneHost = null, laneSource = [], laneInstruction = false, lastLaneSignature = "";
   const statNodes = new Map(), tokenSites = [], eventNodes = new Map();
+  const smSwitchCounts = new Map();
   const zoomLevels = [.75, 1, 1.25, 1.5, 2];
   const zoomLabel = element("span", "gpu-zoom-label", "100%");
   const presentationGroup = element("div", "gpu-presentation");
@@ -426,23 +427,44 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   function renderSm() {
     const sm = index.byId.get(drillSmId), instructions = detailedEvents(sm.id);
     const modeledPipeline = trace.meta.capabilities?.includes("sm_pipeline");
+    const mappedPipeline = modeledPipeline || trace.meta.capabilities?.includes('instruction_pipeline_stages');
     const instructionPoints = instructions.length > 0 && instructions.every(event => event.start === event.end);
     heading("SM INTERIOR / FORMAL MICROARCHITECTURE", `${sm.label} · ${modeledPipeline ? "教学 SM 模型阶段" : instructions.length ? instructionPoints ? "指令观测点 observer" : "指令区间 observer" : "tile 级 observer"}`);
+    if (index.sms.length > 1) {
+      const switcher = element('div', 'gpu-sm-switcher'); switcher.setAttribute('aria-label', '切换记录中的 SM');
+      switcher.append(element('span', 'gpu-filter-label', 'SM INTERIORS'));
+      const select = element('select', 'gpu-sm-select'); select.setAttribute('aria-label', '选择 SM 内部');
+      for (const component of index.sms) {
+        const option = element('option', '', component.label); option.value = component.id; select.append(option);
+      }
+      select.value = sm.id; select.addEventListener('change', () => chooseComponent(select.value)); switcher.append(select);
+      for (const component of index.sms.slice(0, 12)) {
+        const choice = button('', 'gpu-tool gpu-sm-choice', () => chooseComponent(component.id));
+        choice.dataset.gpuSmChoice = component.id; choice.setAttribute('aria-pressed', String(component.id === sm.id));
+        const count = element('small'); choice.append(element('strong', '', component.label), count);
+        smSwitchCounts.set(component.id, count); switcher.append(choice);
+      }
+      scene.append(switcher);
+    }
     scene.append(scopeStats(sm.id));
-    const execution = element("section", "gpu-sm-execution"); execution.setAttribute("aria-label", "SM 原生工作负载与指令轨迹");
+    if (mappedPipeline) renderFilters(scene, sm.id);
+    smPipelineScene = createSmPipelineScene({trace, sm, events: index.intervals.get(sm.id)?.events ?? [],
+      onSelectComponent: id => chooseComponent(id, false), onSelectEvent: id => {const event = trace.events.find(event => event.id === id); if (event) chooseEvent(event);}, onResize: fitScene});
+    if (mappedPipeline) scene.append(smPipelineScene.element);
+    const execution = element(mappedPipeline ? 'details' : 'section', "gpu-sm-execution"); execution.setAttribute("aria-label", "SM 原生工作负载与指令轨迹");
+    if (mappedPipeline) execution.append(element('summary', 'gpu-instruction-summary', '指令列表与阶段轨迹'));
     const header = element("div", "gpu-section-label"); header.append(element("span", "", instructions.length ? instructionPoints ? "WARP / INSTRUCTION OBSERVATIONS" : "WARP / INSTRUCTION SPANS" : trace.meta.trafficSchemaVersion ? "TASK / TILE OPERATIONS" : "WARP / TILE OPERATIONS"), element("small", "", trace.meta.trafficSchemaVersion ? "逻辑任务归属；未模拟真实 CTA / warp 调度" : "CTA 与 warp 为筛选范围")); execution.append(header);
     if (instructionPoints) execution.append(element('p', 'gpu-extra-note', '绿色菱形：ISSUE · 琥珀菱形：STALL · 只记录观测时点，未记录指令执行时长或完成时间。'));
-    renderFilters(execution, sm.id);
+    if (!mappedPipeline) renderFilters(execution, sm.id);
     const nativeEvents = instructions.length ? instructions : index.intervals.get(sm.id)?.events ?? [];
     const events = scoped(nativeEvents);
     if (instructions.length) renderInstructionRows(execution, events);
     renderEventLanes(execution, events, Boolean(instructions.length));
     scene.append(execution);
-    smPipelineScene = createSmPipelineScene({trace, sm, events: index.intervals.get(sm.id)?.events ?? [],
-      onSelectComponent: id => chooseComponent(id, false), onSelectEvent: id => {const event = trace.events.find(event => event.id === id); if (event) chooseEvent(event);}, onResize: fitScene});
-    scene.append(smPipelineScene.element);
+    if (!mappedPipeline) scene.append(smPipelineScene.element);
+    execution.addEventListener('toggle', fitScene);
     if (smPipelineViews.has(sm.id)) smPipelineScene.setView(smPipelineViews.get(sm.id));
-    footnote.textContent = modeledPipeline ? "SM 教学模型的 Fetch / Issue / 执行 / 写回 / 异步内存阶段来自独立运行；组件时序与资源参数为显式教学配置，未宣称 NVIDIA cycle accurate。未使用的结构组件保持未观测。" : instructions.length ? instructionPoints ? "菱形仅表示原生日志的 ISSUE / STALL 等观测时点；不推断执行时长，观测点不计入进行中区间。PC 与指令文本保留来源语义。" : "原生指令只有明确的 architectureComponentId 映射才能驱动正式组件；未映射阶段不从 opcode 推断。零时长菱形表示观测点。" : "当前保留来源的粗粒度任务、CTA 或 warp 归属；正式 SM 图只定义组件与类型化连接，Fetch / Issue 等状态不从 tile 推断。运行 SM 教学模型或载入映射详细 trace 才显示对应阶段证据。";
+    footnote.textContent = modeledPipeline ? "SM 教学模型的 Fetch / Issue / 执行 / 写回 / 异步内存阶段来自独立运行；组件时序与资源参数为显式教学配置，未宣称 NVIDIA cycle accurate。未使用的结构组件保持未观测。" : mappedPipeline ? '光点关联同一条原生动态指令：在观测阶段内停留，在实际端点周期之间沿示意通路移动。位置表示回放进度；未记录阶段保持未观测。' : instructions.length ? instructionPoints ? "菱形仅表示原生日志的 ISSUE / STALL 等观测时点；不推断执行时长，观测点不计入进行中区间。PC 与指令文本保留来源语义。" : "原生指令只有明确的 architectureComponentId 映射才能驱动正式组件；未映射阶段不从 opcode 推断。零时长菱形表示观测点。" : "当前保留来源的粗粒度任务、CTA 或 warp 归属；正式 SM 图只定义组件与类型化连接，Fetch / Issue 等状态不从 tile 推断。运行 SM 教学模型或载入映射详细 trace 才显示对应阶段证据。";
   }
   function scoped(events) {
     if (!view.scope) return events;
@@ -564,6 +586,7 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     boxScene?.destroy?.(); boxScene = null;
     if (smPipelineScene) {const previousSm = smPipelineScene.getView().smComponentId; if (previousSm) smPipelineViews.set(previousSm, smPipelineScene.getView()); smPipelineScene.destroy(); smPipelineScene = null;}
     statNodes.clear(); tokenSites.length = 0; eventNodes.clear(); cursor = null; lastTokenSignature = ""; instructionRows = null; instructionRowEvents = []; lastInstructionSignature = "";
+    smSwitchCounts.clear();
     laneHost = null; laneSource = []; lastLaneSignature = '';
     scene.replaceChildren(); makeBreadcrumb();
     presentationGroup.style.display = drillSmId ? 'none' : '';
@@ -601,6 +624,11 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
   }
   function patchCounters() {
     if (!stats) return;
+    for (const [id, label] of smSwitchCounts) {
+      const active = (index.intervals.get(id)?.events ?? []).filter(event => event.start <= view.time && view.time < event.end);
+      const count = new Set(active.map(event => event.args?.dynamicInstructionId ?? event.args?.instructionId ?? event.id)).size;
+      label.textContent = `${count} 条在途指令`; label.parentElement.classList.toggle('gpu-sm-busy', count > 0);
+    }
     boxScene?.update({byId: stats.byId, time: view.time, selectedComponentId: view.selectedComponentId, selectedEventId: view.selectedEventId});
     smPipelineScene?.update({time: view.time, selectedEventId: view.selectedEventId, scope: view.scope});
     for (const [id, nodes] of statNodes) {
@@ -648,6 +676,9 @@ export function createGpuWorld(container, {onSelectComponent = () => {}, onSelec
     if (focused) [...dock.querySelectorAll("[data-gpu-event-id]")].find(node => node.dataset.gpuEventId === focused)?.focus({preventScroll: true});
   }
   function setTrace(nextTrace) {
+    // Partition/layout preferences belong to a run; restored workspaces supply
+    // their own view after loading. A new source must not inherit stale layouts.
+    smPipelineScene?.destroy(); smPipelineScene = null; smPipelineViews.clear();
     trace = nextTrace; index = indexComponents(trace); drillSmId = null; wholeMap = false; zoom = 1; lastLevel = "";
     view = {time: 0, selectedComponentId: null, selectedEventId: null, scope: null}; stats = snapshot(index, trace, 0); renderScene(); renderTasks();
   }

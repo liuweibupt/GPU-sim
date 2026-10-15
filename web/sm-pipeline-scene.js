@@ -1,7 +1,7 @@
 // Formal SM floorplan. The architecture is a definition, while activity is only
 // evidence explicitly mapped by a source trace. Tile names never imply stages.
 import {instantiateSmArchitecture, SM_ARCHITECTURE} from "../lib/sm-architecture.js";
-import {createSmComponentBox, smBoxPortAnchor} from "./sm-component-box.js?v=sm-box-1";
+import {createSmComponentBox, smBoxPortAnchor, smComponentBoxGeometry} from "./sm-component-box.js?v=sm-lights-2";
 import {observationSnapshot} from "../lib/instruction-view.js";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -53,6 +53,24 @@ function eventState(event) {
   return "active";
 }
 
+/** A route may cross several formal links; its measured interval stays intact. */
+export function smPipelineTransferRoute(transfer = {}) {
+  const route = transfer.route ?? [transfer.sourceId, transfer.targetId];
+  return Array.isArray(route) && route.length >= 2 && route[0] === transfer.sourceId && route.at(-1) === transfer.targetId ? route : [];
+}
+
+/** Distance-weighted interpolation does not invent intermediate stage times. */
+export function smPipelineRoutePosition(lengths, progress) {
+  if (!Array.isArray(lengths) || !lengths.length || lengths.some(length => !Number.isFinite(length) || length < 0) || !Number.isFinite(progress)) return null;
+  const total = lengths.reduce((sum, length) => sum + length, 0); if (!total) return null;
+  let distance = Math.max(0, Math.min(1, progress)) * total;
+  for (let index = 0; index < lengths.length; index++) {
+    if (distance < lengths[index] || index === lengths.length - 1) return {index, distance: Math.min(lengths[index], distance)};
+    distance -= lengths[index];
+  }
+  return null;
+}
+
 /** Exact IDs or explicit source mappings are the only admissible evidence. */
 export function indexSmPipelineEvidence(architecture, events = [], components = []) {
   const ids = new Set(architecture.components.map(component => component.id));
@@ -70,7 +88,8 @@ export function indexSmPipelineEvidence(architecture, events = [], components = 
     if (id) byComponent.get(id).push(event); else unmapped.push(event);
     const transfer = event.args?.smPipelineTransfer;
     if (transfer) {
-      if (typedLinks.has(`${transfer.sourceId}|${transfer.targetId}|${transfer.kind}`)) transfers.push(event);
+      const route = smPipelineTransferRoute(transfer);
+      if (route.length && route.slice(1).every((id, index) => typedLinks.has(`${route[index]}|${id}|${transfer.kind}`))) transfers.push(event);
       else unresolvedTransfers.push(event);
     }
   }
@@ -110,6 +129,27 @@ export function smPipelineTransferMarks(evidence, time, scope = null, limit = 64
   return result;
 }
 
+/** Residency lights require explicit, nonzero component intervals as well. */
+export function smPipelineStageMarks(evidence, time, scope = null, limit = 64) {
+  const marks = [];
+  if (!Number.isFinite(time) || limit <= 0) return marks;
+  for (const [componentId, events] of evidence.byComponent) for (const event of events) {
+    if (event.args?.smPipelineTransfer || !sourceEventsMatch(event, scope) || event.end <= event.start || event.start > time || time >= event.end) continue;
+    marks.push({event, componentId, state: eventState(event), progress: (time - event.start) / (event.end - event.start)});
+    if (marks.length >= limit) return marks;
+  }
+  return marks;
+}
+
+/** Roof positions are visual slots, never assertions about physical FU lanes. */
+export function smPipelineStagePoint(width, height, progress, slot = 0) {
+  if (!Number.isFinite(progress) || !Number.isFinite(slot)) throw new RangeError("Light progress and slot must be finite");
+  const {front, dx, dy} = smComponentBoxGeometry(width, height);
+  const u = .18 + Math.max(0, Math.min(1, progress)) * .64;
+  const v = .28 + ((Math.floor(slot) % 3 + 3) % 3) * .22;
+  return {x: front.x + front.width * u + dx * v, y: front.y - dy * v};
+}
+
 function display(value) {
   if (value == null) return "来源未定义";
   if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
@@ -134,23 +174,33 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const architecture = instantiateSmArchitecture(smNumber);
   const evidence = indexSmPipelineEvidence(architecture, events, trace.components);
   const formalById = new Map(architecture.components.map(component => [component.id, component]));
+  const formalIdByEvent = new Map([...evidence.byComponent].flatMap(([id, source]) => source.map(event => [event.id, id])));
   const nativeById = new Map(trace.components.map(component => [component.id, component]));
   function mappedSource(component) {return nativeById.get(component.id) ?? [...nativeById.values()].find(item => item.args?.architectureComponentId === component.id);}
-  const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的正式流水线与组件定义`);
-  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-box-1", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
+  const root = dom("section", "sm-pipeline-scene"); root.setAttribute("aria-label", `${sm.label} 的指令光点与正式组件`);
+  const style = dom("link"); style.rel = "stylesheet"; style.href = new URL("./sm-pipeline.css?v=sm-lights-2", import.meta.url).href; style.addEventListener("load", () => {queueGeometry(); onResize();}); root.append(style);
   const header = dom("div", "sm-pipeline-head"), title = dom("div");
-  title.append(dom("strong", "", "SM COMPONENT CITY / 4 PARTITIONS"), dom("small", "", "立体组件沙盘 · 点击盒子查看正式契约 · 移动光点来自 trace"));
+  title.append(dom("strong", "", "SM INSTRUCTION CITY"), dom("small", "", "每个光点关联一条原生记录 · 点击查看 PC、warp 与阶段区间"));
   const tabs = dom("div", "sm-partition-tabs"); tabs.setAttribute("aria-label", "选择 SM 分区"); header.append(title, tabs); root.append(header);
   const explanation = dom("p", "sm-pipeline-explanation"); root.append(explanation);
   const legend = dom("div", "sm-flow-legend"); legend.append(dom("span", "", "类型化连接")); root.append(legend);
+  const activity = dom("div", "sm-light-status"); activity.setAttribute("aria-label", "当前指令光点数量"); root.append(activity);
   const boardScroll = dom("div", "sm-pipeline-scroll");
   const board = dom("div", "sm-pipeline-board"); boardScroll.append(board); root.append(boardScroll);
   const footer = dom("p", "sm-pipeline-footer"); root.append(footer);
   const dialog = dom("dialog", "sm-formal-dialog"); dialog.setAttribute("aria-label", "SM 组件正式规格"); root.append(dialog);
-  let partition = 0, selectedFormalId = null, time = 0, scope = null, selectedEventId = null, destroyed = false, geometryFrame = null;
+  const recordedComponents = new Set([...evidence.byComponent].filter(([, source]) => source.some(event => event.end > event.start)).map(([id]) => id));
+  for (const event of evidence.transfers) for (const id of smPipelineTransferRoute(event.args.smPipelineTransfer)) recordedComponents.add(id);
+  const earliest = events.filter(event => event.end > event.start).sort((a, b) => a.start - b.start).find(event => formalIdByEvent.has(event.id));
+  const firstPartition = partitionId(formalById.get(formalIdByEvent.get(earliest?.id)) ?? {});
+  let partition = firstPartition == null ? 0 : Number(firstPartition), layout = recordedComponents.size ? "observed" : "full";
+  let selectedFormalId = null, time = 0, scope = null, selectedEventId = null, destroyed = false, geometryFrame = null;
   let snapshot = summarizeSmPipelineEvidence(evidence, 0), tokenLayer, tokenOverlay, wires, evidenceSummary, evidenceList, lastEvidenceSignature = "";
   const markerPrefix = `sm-wire-${smNumber}-${nextSceneId++}`;
-  const enabledTypes = new Set(FLOW_TYPES), cards = new Map(), paths = new Map(), pathByPair = new Map(), tabNodes = new Map();
+  const enabledTypes = new Set(FLOW_TYPES), cards = new Map(), paths = new Map(), pathByPair = new Map(), tabNodes = new Map(), lights = new Map(), componentLocations = new Map();
+  const eventById = new Map(events.map(event => [event.id, event]));
+  const layoutToggle = action("", "sm-layout-toggle", () => {layout = layout === "observed" ? "full" : "observed"; renderBoard();});
+  layoutToggle.disabled = !recordedComponents.size; legend.append(layoutToggle);
 
   for (const type of FLOW_TYPES) {
     const toggle = action("", "sm-flow-toggle", () => {enabledTypes.has(type) ? enabledTypes.delete(type) : enabledTypes.add(type); toggle.setAttribute("aria-pressed", String(enabledTypes.has(type))); patchWires(); patchTokens();});
@@ -183,7 +233,9 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     const grid = dom("div", className); for (const component of components) grid.append(makeCard(component)); group.append(grid); return group;
   }
   function renderBoard() {
-    cards.clear(); paths.clear(); pathByPair.clear(); board.replaceChildren();
+    cards.clear(); paths.clear(); pathByPair.clear(); lights.clear(); componentLocations.clear(); board.replaceChildren();
+    board.dataset.layout = layout; layoutToggle.textContent = layout === "observed" ? "显示完整架构" : "聚焦来源路径";
+    layoutToggle.setAttribute("aria-pressed", String(layout === "observed"));
     wires = svg("svg", {class: "sm-pipeline-links", "aria-hidden": "true"}); board.append(wires);
     const defs = svg("defs");
     for (const type of FLOW_TYPES) {
@@ -195,23 +247,24 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     for (const value of partition === "all" ? [0, 1, 2, 3] : [partition]) {
       const container = dom("section", "sm-partition"); container.setAttribute("aria-label", `SM 分区 P${value}`);
       const heading = dom("div", "sm-partition-heading"); heading.append(dom("span", "", `PARTITION ${value} / SMSP`), dom("small", "", "独立调度 / 执行资源")); container.append(heading);
-      const components = architecture.components.filter(component => Number(partitionId(component)) === value && partitionId(component) != null);
+      const components = architecture.components.filter(component => Number(partitionId(component)) === value && partitionId(component) != null && (layout === "full" || recordedComponents.has(component.id)));
       const used = new Set();
       for (const [stageIndex, [label, ids]] of ROWS.entries()) {
         const group = ids.map(id => components.find(component => localId(component) === id)).filter(Boolean); if (!group.length) continue;
-        group.forEach(component => used.add(component.id)); container.append(makeGroup(group, label, `sm-stage-grid sm-row-${Math.min(4, group.length)}`, stageIndex + 1));
+        group.forEach(component => used.add(component.id)); container.append(makeGroup(group, label, `sm-stage-grid sm-row-${Math.min(7, group.length)}`, stageIndex + 1));
       }
       const remaining = components.filter(component => !used.has(component.id)); if (remaining.length) container.append(makeGroup(remaining, "OTHER DEFINED RESOURCES", "sm-stage-grid"));
+      if (!components.length) container.append(dom("p", "sm-partition-unobserved", `P${value} 没有映射的非零阶段区间。选择完整架构可查看结构定义。`));
       partitionContainer.append(container);
     }
     board.append(partitionContainer);
-    const shared = architecture.components.filter(component => partitionId(component) == null);
+    const shared = architecture.components.filter(component => partitionId(component) == null && (layout === "full" || recordedComponents.has(component.id)));
     const zone = dom("section", "sm-shared-zone"); zone.setAttribute("aria-label", "SM 共享存储与异步数据路径"); zone.append(dom("h4", "", "SM SHARED RESOURCES / ASYNC DATA PATH"));
     const pool = shared.filter(component => ["l1-cache", "shared-memory"].includes(localId(component)));
     const other = shared.filter(component => !pool.includes(component)); zone.append(makeGroup(other, null));
     const poolContainer = dom("div", "sm-shared-pool"); poolContainer.append(dom("p", "sm-shared-pool-label", "统一物理存储池 · 两种独立语义：L1 自动缓存，SMEM 由程序显式寻址与同步"), makeGroup(pool, null)); zone.append(poolContainer);
-    board.append(zone);
-    tokenOverlay = svg("svg", {class: "sm-pipeline-token-overlay", "aria-label": "来源记录的组件间传输"});
+    if (shared.length) board.append(zone);
+    tokenOverlay = svg("svg", {class: "sm-pipeline-token-overlay", "aria-label": "来源区间驱动的指令阶段光点"});
     tokenLayer = svg("g", {class: "sm-pipeline-tokens"}); tokenOverlay.append(tokenLayer); board.append(tokenOverlay);
     for (const [value, tab] of tabNodes) tab.setAttribute("aria-pressed", String(value === partition));
     patchCards(); queueGeometry(); onResize();
@@ -223,7 +276,7 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   function drawGeometry() {
     if (destroyed || !root.isConnected || !board.clientWidth) return;
     const bounds = board.getBoundingClientRect(), scale = bounds.width / board.offsetWidth || 1;
-    const locations = new Map();
+    const locations = componentLocations; locations.clear();
     for (const [id, {card, box, face}] of cards) {
       const rect = card.getBoundingClientRect(), width = rect.width / scale, height = rect.height / scale;
       box.updateGeometry(width, height);
@@ -266,7 +319,9 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
         d = `M${from.x},${from.y} L${from.x},${sourceLane} L${gutter},${sourceLane} L${gutter},${targetLane} L${to.x},${targetLane} L${to.x},${to.y}`;
       }
       const path = svg("path", {d, class: "sm-formal-link", "data-type": link.type, "data-sm-link-id": link.id, "marker-end": `url(#${markerPrefix}-${link.type})`}); path.style.setProperty("--flow-color", `var(--sm-${link.type})`);
-      paths.set(link.id, path); pathByPair.set(`${link.source}|${link.target}|${link.type}`, {path, link}); wires.append(path);
+      paths.set(link.id, path); wires.append(path);
+      let length = 0; try {length = path.getTotalLength();} catch {}
+      pathByPair.set(`${link.source}|${link.target}|${link.type}`, {path, link, length});
     }
     patchWires(); patchTokens();
   }
@@ -287,10 +342,12 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
     const count = [...snapshot.values()].filter(value => value.observed).length;
     const typedTransfers = evidence.transfers.filter(event => sourceEventsMatch(event, scope)).length;
     explanation.replaceChildren(dom("b", "", `${count} / ${architecture.components.length} 个正式组件有当前范围的原始事件证据。`), document.createTextNode(count ? " 其余节点保留结构定义；未观测不等于空闲。" : " 当前来源只提供 tile / 任务或未映射的指令记录；Fetch、Issue 等状态保持未观测。"));
-    footer.textContent = `${typedTransfers} 个显式类型化传输记录 · ${evidence.unmapped.length} 个来源事件未映射到正式组件${evidence.unresolvedTransfers.length ? ` · ${evidence.unresolvedTransfers.length} 个传输没有匹配正式连接，未绘制 token` : ""}。道路表示类型化契约，光点仅代表来源实际记录的非零 transfer 区间。盒子高度与屋顶图案为示意，不代表物理面积或容量。四分区参考 Hopper，队列与延迟为教学建模。`;
+    footer.textContent = `${typedTransfers} 个显式类型化阶段转移 · ${evidence.unmapped.length} 个来源事件未映射${evidence.unresolvedTransfers.length ? ` · ${evidence.unresolvedTransfers.length} 个转移没有匹配正式连接，未绘制` : ""}。光点仅在原始非零区间内存在；道路上按区间进度插值，屋顶上表示组件驻留，不代表物理连线延迟或真实执行 lane。${layout === "observed" ? "来源路径隐藏未观测组件，可切换完整架构。" : "未观测组件保持结构定义。"}暂停、单步和回退均由同一 trace 时间驱动。`;
   }
   function patchWires() {
-    const activeLinks = new Set(smPipelineTransferMarks(evidence, time, scope).map(mark => `${mark.sourceId}|${mark.targetId}|${mark.kind}`));
+    const activeLinks = new Set(smPipelineTransferMarks(evidence, time, scope, Infinity).flatMap(mark => {
+      const route = smPipelineTransferRoute(mark); return route.slice(1).map((id, index) => `${route[index]}|${id}|${mark.kind}`);
+    }));
     for (const link of architecture.links) {
       const path = paths.get(link.id); if (!path) continue;
       path.style.display = enabledTypes.has(link.type) ? "" : "none";
@@ -300,16 +357,70 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   }
   function patchTokens() {
     if (!tokenLayer) return;
-    tokenLayer.replaceChildren();
-    for (const mark of smPipelineTransferMarks(evidence, time, scope)) {
-      if (!enabledTypes.has(mark.kind)) continue;
-      const geometry = pathByPair.get(`${mark.sourceId}|${mark.targetId}|${mark.kind}`); if (!geometry) continue;
-      let point; try {point = geometry.path.getPointAtLength(geometry.path.getTotalLength() * mark.progress);} catch {continue;}
-      const token = svg("g", {class: "sm-pipeline-token", transform: `translate(${point.x},${point.y})`, role: "button", tabindex: 0, "data-sm-transfer-event-id": mark.event.id, "aria-label": `${mark.event.name}，${FLOW_LABELS[mark.kind]}传输`});
-      token.style.setProperty("--flow-color", `var(--sm-${mark.kind})`); token.append(svg("circle", {r: selectedEventId === mark.event.id ? 5 : 3.5}));
-      const title = svg("title"); title.textContent = `${mark.event.name}\n${mark.sourceId} → ${mark.targetId}\n${mark.event.start} → ${mark.event.end} ${trace.meta.timeUnit}`; token.append(title);
-      const choose = () => onSelectEvent(mark.event.id); token.addEventListener("click", choose); token.addEventListener("keydown", event => {if (event.key === "Enter" || event.key === " ") {event.preventDefault(); choose();}}); tokenLayer.append(token);
+    const transfers = smPipelineTransferMarks(evidence, time, scope, Infinity), stages = smPipelineStageMarks(evidence, time, scope, Infinity);
+    const selected = eventById.get(selectedEventId), instructionId = event => event?.args?.dynamicInstructionId ?? event?.args?.instructionId;
+    const selectedInstruction = instructionId(selected);
+    const isSelected = mark => mark.event.id === selectedEventId || selectedInstruction != null && instructionId(mark.event) === selectedInstruction;
+    const requested = [
+      ...transfers.filter(mark => enabledTypes.has(mark.kind)).map(mark => ({...mark, type: "transfer"})),
+      ...stages.map(mark => ({...mark, type: "stage"})),
+    ];
+    // Filter before the drawing cap: another partition cannot starve this one.
+    const visible = requested.filter(mark => mark.type === "stage" ? componentLocations.has(mark.componentId) : smPipelineTransferRoute(mark).slice(1).every((id, index) => pathByPair.has(`${smPipelineTransferRoute(mark)[index]}|${id}|${mark.kind}`)));
+    visible.sort((a, b) => Number(isSelected(b)) - Number(isSelected(a)));
+    const drawn = visible.slice(0, 96), keep = new Set();
+    for (const mark of drawn) {
+      const key = `${mark.type}:${mark.event.id}`; keep.add(key);
+      let light = lights.get(key);
+      if (!light) {
+        const token = svg("g", {class: "sm-pipeline-token", role: "button", tabindex: 0});
+        const trail = svg("polyline", {class: "sm-light-trail", fill: "none"});
+        const halo = svg("circle", {class: "sm-light-halo", r: 12});
+        const ring = svg("circle", {class: "sm-light-ring", r: 8.5});
+        const core = svg("circle", {class: "sm-light-core", r: 4.5});
+        const hit = svg("circle", {class: "sm-light-hit", r: 14});
+        const title = svg("title"); token.append(trail, halo, ring, core, hit, title);
+        const choose = () => onSelectEvent(mark.event.id);
+        token.addEventListener("click", choose); token.addEventListener("keydown", event => {if (event.key === "Enter" || event.key === " ") {event.preventDefault(); choose();}});
+        light = {token, trail, title}; lights.set(key, light); tokenLayer.append(token);
+      }
+      const route = mark.type === "transfer" ? smPipelineTransferRoute(mark) : [];
+      const segments = route.slice(1).map((id, index) => pathByPair.get(`${route[index]}|${id}|${mark.kind}`));
+      const location = componentLocations.get(mark.componentId), slot = Number(mark.event.args?.warpId) || 0;
+      const at = progress => {
+        if (mark.type === "stage") {const p = smPipelineStagePoint(location.width, location.height, progress, slot); return {x: location.x + p.x, y: location.y + p.y};}
+        const position = smPipelineRoutePosition(segments.map(segment => segment.length), progress);
+        return position ? segments[position.index].path.getPointAtLength(position.distance) : null;
+      };
+      let point, trail; try {
+        point = at(mark.progress); if (!point) {light.token.style.display = "none"; continue;}
+        trail = [.09, .065, .04, .02, 0].map(delta => at(Math.max(0, mark.progress - delta))).filter(Boolean);
+      } catch {light.token.style.display = "none"; continue;}
+      light.token.style.display = "";
+      light.token.setAttribute("data-sm-light-kind", mark.type);
+      light.token.setAttribute(mark.type === "transfer" ? "data-sm-transfer-event-id" : "data-sm-stage-event-id", mark.event.id);
+      light.token.setAttribute("aria-pressed", String(isSelected(mark)));
+      light.token.setAttribute("aria-label", `${mark.event.name}，W${mark.event.args?.warpId ?? "?"}，${mark.type === "transfer" ? `${FLOW_LABELS[mark.kind]}阶段转移` : `${mark.event.args?.stage ?? mark.state}组件区间`}`);
+      light.token.setAttribute("transform", `translate(${point.x},${point.y})`);
+      const color = mark.type === "transfer" ? `var(--sm-${mark.kind})` : mark.state === "stall" ? "#ffb071" : mark.state === "queue" ? "#ffe094" : "#9effdc";
+      light.token.style.setProperty("--flow-color", color);
+      light.trail.setAttribute("points", trail.map(p => `${p.x - point.x},${p.y - point.y}`).join(" "));
+      light.title.textContent = `${mark.event.args?.opcode ?? mark.event.name}\nPC ${mark.event.args?.pc ?? "未提供"} · W${mark.event.args?.warpId ?? "?"} · ${instructionId(mark.event) ?? mark.event.id}\n${mark.type === "transfer" ? route.join(" → ") : mark.componentId}\n${mark.event.start} → ${mark.event.end} ${trace.meta.timeUnit}`;
     }
+    for (const [key, light] of lights) if (!keep.has(key)) {light.token.remove(); lights.delete(key);}
+    const partitionCounts = new Map([0, 1, 2, 3].map(value => [value, 0]));
+    for (const mark of requested) {
+      const component = formalById.get(mark.componentId ?? mark.sourceId), value = partitionId(component ?? {});
+      if (value != null) partitionCounts.set(Number(value), (partitionCounts.get(Number(value)) ?? 0) + 1);
+    }
+    for (const [value, tab] of tabNodes) {
+      const count = value === "all" ? requested.length : partitionCounts.get(value);
+      tab.textContent = `${value === "all" ? "四分区" : `P${value}`}${count ? ` · ${count}` : ""}`;
+      tab.classList.toggle("sm-partition-has-lights", count > 0);
+    }
+    const status = `t=${time.toLocaleString(undefined, {maximumFractionDigits: 2})} ${trace.meta.timeUnit} · 当前视图 ${drawn.length} 光点${visible.length > drawn.length ? ` / ${visible.length}（最多绘制 96）` : ""} · SM 全部 ${transfers.length} 转移 / ${stages.length} 组件区间`;
+    activity.dataset.active = String(drawn.length > 0);
+    if (activity.textContent !== status) activity.textContent = status;
   }
   function definitionSection(label, value) {
     const section = dom("section", "sm-formal-section"); section.append(dom("h4", "", label), dom("pre", "sm-formal-definition", display(value))); return section;
@@ -371,10 +482,22 @@ export function createSmPipelineScene({trace, sm, events = [], onSelectEvent = (
   const observer = typeof ResizeObserver === "function" ? new ResizeObserver(() => {queueGeometry(); onResize();}) : null; observer?.observe(board);
   renderBoard();
   return {element: root,
-    update(view = {}) {time = Number.isFinite(view.time) ? view.time : time; scope = view.scope ?? null; selectedEventId = view.selectedEventId ?? null; snapshot = summarizeSmPipelineEvidence(evidence, time, scope); patchCards(); patchWires(); patchTokens(); patchDialog();},
+    update(view = {}) {
+      time = Number.isFinite(view.time) ? view.time : time; scope = view.scope ?? null;
+      const nextSelected = view.selectedEventId ?? null, changedSelection = nextSelected !== selectedEventId; selectedEventId = nextSelected;
+      let reveal = false;
+      if (changedSelection && partition !== "all") {
+        const event = eventById.get(selectedEventId), target = formalIdByEvent.get(selectedEventId) ?? event?.args?.smPipelineTransfer?.sourceId;
+        const nativePartition = partitionId(formalById.get(target) ?? {});
+        if (nativePartition != null && Number(nativePartition) !== partition) {partition = Number(nativePartition); reveal = true;}
+      }
+      snapshot = summarizeSmPipelineEvidence(evidence, time, scope);
+      if (reveal) renderBoard(); else {patchCards(); patchWires(); patchTokens();}
+      patchDialog();
+    },
     animate(view = {}) {if (Number.isFinite(view.time)) {time = view.time; patchTokens();}},
-    getView() {return {smComponentId: sm.id, partition, selectedFormalId};},
-    setView(view = {}) {if ([0, 1, 2, 3, "all"].includes(view.partition)) partition = view.partition; if (formalById.has(view.selectedFormalId)) selectedFormalId = view.selectedFormalId; renderBoard();},
+    getView() {return {smComponentId: sm.id, partition, selectedFormalId, layout};},
+    setView(view = {}) {if ([0, 1, 2, 3, "all"].includes(view.partition)) partition = view.partition; if (formalById.has(view.selectedFormalId)) selectedFormalId = view.selectedFormalId; if (["observed", "full"].includes(view.layout)) layout = view.layout; renderBoard();},
     destroy() {destroyed = true; observer?.disconnect(); if (geometryFrame !== null) cancelAnimationFrame(geometryFrame); if (dialog.open) dialog.close(); root.remove();},
   };
 }

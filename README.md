@@ -62,15 +62,18 @@ node scripts/generate-sm.mjs
 **GPU 全景观察 Tile 与数据运输，SM 内部检查任务或载入指令运行**。CTA/warp 是 SM 内的筛选条件，不再是第三张场景。详细运行与宏观运行分别保存。
 
 - 外层默认在浏览器运行双分区数据流教学模型，132 SM 共完成396个 Tile；可调整桥传播延迟、链路带宽与共享 Tile 策略后重跑。单 Fabric 可作对照。GTSim timing graph 继续作为独立外部后端样例，仍为796区间、5,492 / 6,413 cycles。
-- 内层首次点击 **“SM 内部”** 会载入实际运行 FlashGPU-Sim 生成的 [vectorAdd 指令样例](examples/flashgpu-vectoradd.json)，也可点 **“加载指令示例”** 或在实验场景中选择它。保留原生 cycle、PC、指令文本、SM、scheduler、warp、dynamic warp 和 scoreboard producer；可按 ISSUE/STALL 筛选、搜索 PC、定位和单步查看。宏观运行及其回放位置保留。
-- **“载入指令运行”** 接受 [FlashGPU-Sim 原生 ISSUE/STALL 日志](tools/detailed/README.md) 或详细 observer JSON。指令面板显示当前或最近已观测周期，轨道随回放位置更新并保留所选事件。观测点与执行区间分别计数，不从点日志生成完成时间；教学流水线仍可单独运行。
+- 内层首次点击 **“SM 内部”** 或 **“加载 SM 光点”** 会载入实际 FlashGPU-Sim [指令生命周期样例](examples/flashgpu-vectoradd-pipeline.json)：在每个已记录 SM 内，光点沿 Dispatch → Operand Collector → 原生执行单元 → Writeback 的示意通路推进，并在实际阶段区间中停留。可切换 SM / 四分区、点击光点检查 PC / warp / 动态指令 ID 与全部原生阶段，暂停、慢放和回退。
+- 新增只读 observer 补丁记录 176 条动态指令的 1,136 个实际阶段点，生成 488 个移动区间与 190 个驻留区间；2 个有记录的 SM、8 个 warp 都有原生光点。默认聚焦来源路径，完整架构仍可展开。光点位置按实际端点周期插值，几何是可视化布局。原 ISSUE/STALL [点日志样例](examples/flashgpu-vectoradd.json) 保留为独立场景。
+- **“载入指令运行”** 接受 [FlashGPU-Sim 原生 pipeline observer / ISSUE/STALL 日志](tools/detailed/README.md) 或详细 observer JSON。指令面板显示当前或最近已观测周期，轨道随回放位置更新并保留所选事件。观测点与执行区间分别计数，不从点日志生成完成时间；教学流水线仍可单独运行。
 - 两份运行分别保存回放位置、速度、选择和镜头；工作区 v2 一起保存，仍可打开 v1。数据流全景默认90秒/遍，SM检查120秒/遍；GTSim保持15 / 30秒，指令慢放60秒。这与后端仿真耗时无关。减少动画模式默认暂停。
 
-**Accel-Sim 2.0 尚未接入可执行的输出 observer。** 其输入 `.tracez` / `.traceg` 不含所需的仿真完成时间，不能直接当作执行轨迹。FlashGPU-Sim 已按固定 commit 在本机编译并运行，小型 vectorAdd 经 CPU 参考结果校验后导出原生日志与指令 JSON；[运行清单](examples/flashgpu-vectoradd.manifest.json) 保留源码/config/log hash、采集范围与实测墙钟耗时。两种后端各自保留时钟，未把独立运行的 cycle 融合成同一次运行。[接入格式与命令](tools/detailed/README.md) · [多尺度边界](docs/multiscale-simulation.md)
+**Accel-Sim 2.0 尚未接入可执行的输出 observer。** 其输入 `.tracez` / `.traceg` 不含所需的仿真完成时间，不能直接当作执行轨迹。FlashGPU-Sim 已按固定 commit 在本机编译并运行，小型 vectorAdd 经 CPU 参考结果校验后导出原生日志与指令 JSON；[流水线运行清单](examples/flashgpu-vectoradd-pipeline.manifest.json) 保留源码/config/log hash、采集范围与实测墙钟耗时。两种后端各自保留时钟，未把独立运行的 cycle 融合成同一次运行。[接入格式与命令](tools/detailed/README.md) · [多尺度边界](docs/multiscale-simulation.md)
 
 ![两级仿真与等距 GPU 城市](docs/assets/two-level-workbench.png)
 
-[两级回放验证](docs/two-level-validation.md) · [原生指令接入验证](docs/instruction-validation.md)
+[两级回放验证](docs/two-level-validation.md) · [原生指令接入验证](docs/instruction-validation.md) · [SM 光点验证](docs/sm-light-validation.md)
+
+![原生指令光点在 SM 内部流动](docs/assets/sm-native-lights.png)
 
 ## 运行功能原型
 
@@ -114,7 +117,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 当前具备可重仿真的简化数据流模型、独立 SM 流水线教学模型，以及“外部仿真器 → 可追溯事件 → 可检查回放”链路。它们分别保留运行来源和时钟。立体城市是2.5D交互渲染；尚无自由旋转3D世界、任意CUDA/Triton执行、自由拼装硬件或多人服务。
 
-已接入 FlashGPU-Sim 的原生指令 ISSUE/STALL 观测；下一步增加指令完成与存储请求关联，让宏观 tile 任务与微观 transaction 可以关联探索。首先采用同一 workload 的独立 run 与受控比较，再研究 checkpoint / 局部精化；不任意抽出一个 CTA 热切模拟器。详细仿真允许耗时，后台运行、GPU 时间和动画速度分别管理。并行完善有限队列、带宽、调度与背压的可编辑模型，以及世界建设、预算与可选挑战。
+已接入 FlashGPU-Sim 的原生指令阶段、完成与 SM 光点回放；下一步增加存储请求关联，让宏观 tile 任务与微观 transaction 可以关联探索。首先采用同一 workload 的独立 run 与受控比较，再研究 checkpoint / 局部精化；不任意抽出一个 CTA 热切模拟器。详细仿真允许耗时，后台运行、GPU 时间和动画速度分别管理。并行完善有限队列、带宽、调度与背压的可编辑模型，以及世界建设、预算与可选挑战。
 
 ## 致谢与项目来源
 
@@ -127,7 +130,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 | [GTSim / GPU-Tile-Sim](https://github.com/SJTU-ReArch-Group/GTSim)，Yitong Ding、Jiawei Huang 等作者与 SJTU-ReArch-Group 贡献者 | **已接入的外部时序后端。** Adapter 下载并编译固定版本的原始 core 与 GEMM builder，读取原生节点时间；两个GTSim样例均由它生成。MIT 版权声明属于 Jiawei Huang，完整保留于 [第三方声明](THIRD_PARTY_NOTICES.md)，版本与 archive hash 见 [锁定清单](tools/gtsim/upstream.json)。 |
 | [Gem5SimCity](https://github.com/Entropy-xcy/Gem5SimCity)，Entropy-xcy 与项目贡献者 | **形态与交互的直接参考。** 借鉴真实 simulator→trace→交互回放的分层及计算机结构城市化、组件建筑与可见数据通路的表达。本项目的外层 SM 城市及内部组件盒子采用自行实现的 SVG；viewer 和 observer 自行实现，未复制其源码、trace 或美术资产。核查版本与对应设计见 [参考分析](docs/research/gem5-simcity.md)。 |
 | [Daisen / Akita](https://github.com/sarchlab/akita/tree/main/daisen)，Yifan Sun、Yixuan Zhang、Ali Mosallaei、Michael D. Shah、Cody Dunne、David Kaeli 及项目贡献者 | **GPU 可视化研究与交互参考。** 借鉴任务、组件、时间与依赖联动的思路；当前未集成其代码。 |
-| [FlashGPU-Sim](https://github.com/FlashGPU-Sim/FlashGPU-Sim) 的作者与贡献者 | **已接入的外部指令后端。** 固定版本原生编译并运行 vectorAdd，读取 ISSUE/STALL 日志；代码与运行器见 [adapter](tools/detailed/README.md)。不从点记录推断执行完成或存储路径。 |
+| [FlashGPU-Sim](https://github.com/FlashGPU-Sim/FlashGPU-Sim) 的作者与贡献者 | **已接入的外部指令后端。** 固定版本编译并运行 vectorAdd，读取 ISSUE/STALL 和只读 observer 的动态指令阶段日志；代码与运行器见 [adapter](tools/detailed/README.md)。不从点记录推断执行完成或存储路径。 |
 | [Accel-Sim](https://accel-sim.github.io/)、[GPGPU-Sim / AerialVision](https://github.com/gpgpu-sim/gpgpu-sim_distribution)、[MGPUSim](https://github.com/sarchlab/mgpusim)、[Multi2Sim](https://github.com/Multi2Sim/multi2sim) 的作者与贡献者 | **相关工作与后续 adapter 研究。** 已比较模型、数据粒度、版本和公开能力；这些工具尚不是本原型已接入的执行后端。 |
 | [Perfetto](https://perfetto.dev/docs/getting-started/other-formats)、[PyTorch / Kineto](https://github.com/pytorch/kineto)、[NVIDIA Nsight](https://developer.nvidia.com/tools-overview)、[AMD RGP](https://gpuopen.com/rgp/) 的作者与贡献者 | **数据格式与性能工具参考。** 当前自行实现 Chrome/PyTorch duration JSON importer；Nsight、RGP 的原生报告尚未直接接入。 |
 | [Minecraft](https://www.minecraft.net/) 的 Mojang Studios、[Factorio](https://www.factorio.com/) 的 Wube Software、[Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii/about) 的 Colossal Order / Paradox Interactive、[Zachtronics](https://www.zachtronics.com/)、[Tomorrow Corporation](https://tomorrowcorporation.com/)，以及 [GPU Puzzles](https://github.com/srush/GPU-Puzzles) 的 Sasha Rush 与贡献者 | **开放创作、可见物流、城市经营与工程教学的玩法参考。** 对应官方来源与机制分析见 [游戏调研](docs/research/games.md)，当前未使用其代码或游戏资产。 |

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {readFile, writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {normalizeDetailedTrace, normalizeFlashGpuLog} from '../../lib/detailed-trace.js';
+import {normalizeDetailedTrace, normalizeFlashGpuLog, normalizeFlashGpuPipelineLog} from '../../lib/detailed-trace.js';
 
 const usage = 'node tools/detailed/convert.mjs --input simulation.log --output detail.json [--run-id ID] [--revision SHA] [--backend-version VERSION] [--wall-time-seconds SECONDS --timing-scope SCOPE]';
 const options = new Map();
@@ -25,7 +25,7 @@ try {
   if (options.has('--timing-scope')) meta.timingScope = options.get('--timing-scope');
   const trace = isJson
     ? normalizeDetailedTrace({...input, meta: {...input.meta, ...meta}, metrics: {...input.metrics, ...(meta.wallTimeSeconds == null ? {} : {wallTimeSeconds: meta.wallTimeSeconds}), ...(meta.timingScope == null ? {} : {timingScope: meta.timingScope})}})
-    : normalizeFlashGpuLog(raw, meta);
+    : /^\s*FLASHGPU_PIPELINE(?:_CONFIG)?\s/m.test(raw) ? normalizeFlashGpuPipelineLog(raw, meta) : normalizeFlashGpuLog(raw, meta);
   trace.source = {...(trace.source ?? {format: 'canonical-instruction-trace', raw: input}), importedArtifactSha256: sha256};
   if (trace.source.sha256 == null) trace.source.sha256 = sha256;
   await writeFile(options.get('--output'), `${JSON.stringify(trace, null, 2)}\n`);

@@ -4,6 +4,10 @@
 
 当前还实现了独立 [SM 流水线教学模型](sm-architecture.md)：四分区的 Fetch/Decode/Scheduler/Scoreboard/Issue、操作数与执行路径，以及 L1、SMEM、TMA 和异步 barrier。每项由版本化形式化规格定义，图中未观测组件保持结构展示。该教学运行在 detail 槽保存，不把城市 Tile、旧 GTSim 操作或外部 observer 自动展开成推测指令；本节之后的多后端关联、checkpoint 与局部精化仍是后续设计。
 
+## 已接入的 SM 光点回放
+
+默认详细样例使用 FlashGPU-Sim 原生 observer 的动态指令阶段：Dispatch → Operand Collector → 实际执行单元 → Writeback，以及真实组件驻留。当前 vectorAdd 记录 2 个 SM、8 个 warp、176 条动态指令；任一有记录的 SM / 分区都能选择查看光点。只读后端补丁、原始阶段、实际端点区间及验证见 [SM 光点验证](sm-light-validation.md)。几何位置是示意插值，不是物理线路或存储事务的观测；原 ISSUE/STALL 点日志和独立教学运行仍保留。
+
 ## 一个 GPU 世界，多座 SM 城市
 
 GPU 全景是一个区域，**每个 SM 是一座可进入的城市**。放大进入 SM 后，看执行单元、寄存器、L1/shared memory、调度与工作队伍；继续按 CTA、warp 和操作筛选，观察任务在哪里执行、在等什么。
@@ -55,7 +59,7 @@ GTSim 回放把一个原生 DAG 操作表示为任务 token，保留原始开始
 
 ### 微观：warp 指令和合并访存请求
 
-详细后端区分两个对象层；当前已接入第一层的 FlashGPU-Sim 原生 ISSUE/STALL 观测，存储请求关联仍待接入：
+详细后端区分两个对象层；当前已接入第一层的 FlashGPU-Sim 原生生命周期阶段与 ISSUE/STALL 点观测，存储请求关联仍待接入：
 
 1. **warp 指令 token**：表示动态指令实例，关联 PC/opcode、active mask、warp 身份和该后端提供的 issue/执行/完成阶段。
 2. **访存请求 token**：表示 LSU/cache 侧生成并由存储系统处理的请求，关联地址、大小、sector mask、请求/响应 ID 和确有观测的服务阶段。
@@ -70,7 +74,7 @@ shared-memory bank 访问、普通缓存请求和异步搬运各有语义；只�
 | --- | --- | --- |
 | GTSim tile 图 | 宏观任务归属、原生时序和依赖回放 | 固定 builder/config/版本；保留 timing-only 边界 |
 | Accel-Sim / GPGPU-Sim | 动态指令输入与详细性能模型实验 | 匹配 tracer/模型版本；增加或核实输出事件观测点；输入 SASS 不自动包含仿真的 cache/NoC 阶段 |
-| FlashGPU-Sim | 详细执行、异步机制与存储/互连事件的候选后端 | 按 kernel 与硬件能力确认 tracing 覆盖、标识符、时间域及数值验证 |
+| FlashGPU-Sim | 已接入动态指令阶段与组件光点；存储/互连事件后续接入 | 按 kernel 与硬件能力确认 tracing 覆盖、标识符、时间域及数值验证 |
 | 实机 profile | 已有 activity、区间与采样指标的观察 | 保留原轨道和测量窗口；没有内部事务就不补造 SM 数据交通 |
 
 Accel-Sim 2.0 的格式、Hopper 机制和匹配后端要求以其 [正式 release](https://github.com/accel-sim/accel-sim-framework/releases/tag/v2.0.0) 为准；FlashGPU 的 warp issue、MMA/TMA、L2、NoC 等选择性输出以 [官方 runtime tracing 文档](https://github.com/FlashGPU-Sim/FlashGPU-Sim/blob/flash/docs/tracing.md) 为准。上表是集成设计，并非已接入能力清单。
@@ -101,4 +105,4 @@ Accel-Sim 2.0 的格式、Hopper 机制和匹配后端要求以其 [正式 relea
 
 L2 物流中心、HBM 仓库及内部设施可以作为架构示意帮助定位，但没有对应事件时不显示为已观测的请求队列、命中率或交通量。本次提供可选的 FlashGPU-Sim 固定版本本地运行器：在 CPU 上编译并运行小型 vectorAdd，检查全部输出后保存日志、统一 trace 与来源清单。浏览器仅载入产物；没有实现浏览器启动后端、Accel-Sim 输出 observer、CTA 后端热切或 checkpoint。
 
-本次用 CUDA 12.8 原生编译固定 FlashGPU-Sim commit，按官方 H100 配置运行 256 元素 vectorAdd（2 CTA × 128 threads），通过全部元素的 CPU 参考校验。实际原生日志、trace 和源码/config/log hashes 见 [capture manifest](../examples/flashgpu-vectoradd.manifest.json)；日志中重复 PC 的 ISSUE/STALL 保持独立观测，未推断动态指令完成。测试中手写 fixture 仍显式为 `illustration`。后续依次验收：指令完成与请求的稳定关联、同 workload 独立 run 比较，最后再研究局部精化或混合仿真。每一步同时验证原始时间不变、归属正确、请求不重复计数、未知信息不补造，以及缩放/筛选/回退的交互一致性。
+本次用 CUDA 12.8 原生编译固定 FlashGPU-Sim commit，按官方 H100 配置运行 256 元素 vectorAdd（2 CTA × 128 threads），通过全部元素的 CPU 参考校验。实际原生日志、trace 和源码/config/log hashes 见 [capture manifest](../examples/flashgpu-vectoradd.manifest.json)；日志中重复 PC 的 ISSUE/STALL 保持独立观测，未推断动态指令完成。测试中手写 fixture 仍显式为 `illustration`。后续依次验收：指令与请求的稳定关联、同 workload 独立 run 比较，最后再研究局部精化或混合仿真。每一步同时验证原始时间不变、归属正确、请求不重复计数、未知信息不补造，以及缩放/筛选/回退的交互一致性。

@@ -1,6 +1,6 @@
 # SM 原生指令 trace 接入验证
 
-日期：2026-10-15。当前接入 FlashGPU-Sim 的实际输出；Accel-Sim 2.0 尚需输出 observer。
+日期：2026-10-15。本页记录原 ISSUE/STALL 点日志的首次接入；后续新增的原生阶段与组件内光点见 [SM 光点验证](sm-light-validation.md)。Accel-Sim 2.0 尚需输出 observer。
 
 ## 原生后端与产物
 

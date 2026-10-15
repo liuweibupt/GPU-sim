@@ -1,6 +1,6 @@
 # Detailed instruction output → SM viewer
 
-The viewer accepts two forms of **simulation output**:
+The viewer accepts these forms of **simulation output**:
 
 - Native FlashGPU-Sim `INSTRUCTION_ISSUE` runtime log records, as timestamped
   instruction observations. A pinned optional CPU-only build/run path and an
@@ -9,6 +9,55 @@ The viewer accepts two forms of **simulation output**:
   that actually records instruction intervals or points. Accel-Sim requires such
   an output observer; this contract is **not** an importer for its input SASS
   `.tracez` / `.traceg` files.
+
+## SM instruction lights (default detailed sample)
+
+The default SM view now uses the [native pipeline capture](../../examples/flashgpu-vectoradd-pipeline.json).
+A small [observer patch](flashgpu-pipeline-observer.patch) records actual instruction
+UIDs and `ISSUE`, `OPERAND_COLLECT`, `OPERAND_READY`, `EXECUTE`, `EXECUTE_END`,
+`WRITEBACK`, `COMPLETE` hook cycles from the pinned FlashGPU-Sim source. It does
+not alter pipeline scheduling/timing state. The patch is applied to a clean pinned
+checkout, built, run with `GPU_SIM_PIPELINE_OBSERVER=1`, then removed from the tracked
+sources. Original notices for the patch context are retained in
+[FLASHGPU_COPYRIGHT.txt](FLASHGPU_COPYRIGHT.txt).
+
+```bash
+node tools/detailed/run-flashgpu.mjs --cuda /usr/local/cuda-12.8 \
+  --output /tmp/flashgpu-vectoradd-pipeline --jobs 16 --pipeline
+node tools/detailed/convert.mjs --input /tmp/flashgpu-vectoradd-pipeline.log \
+  --output /tmp/imported-pipeline.json
+```
+
+The actual validated capture has 176 completed dynamic instructions, 1,136 native
+points, 488 measured stage-transition intervals and 190 residence intervals, across
+2 observed SMs / 8 warps. All 256 vector-add outputs pass the CPU check; the simulator
+still reports the baseline's 6,212 cycles. [Native log](../../examples/flashgpu-vectoradd-pipeline.log)
+and [manifest](../../examples/flashgpu-vectoradd-pipeline.manifest.json) retain patch/config/log/JSON
+hashes, hook locations, actual unit/partition configuration and measured scope.
+
+In the workbench, click **SM 内部** or **加载 SM 光点**. The component city is primary;
+the instruction list is expandable. Select an observed SM and partition, or the
+four-partition overview. Glowing moving lights identify instruction transitions;
+lights inside components identify recorded residence intervals. Click a light to
+inspect PC, warp, dynamic UID, and jump between that instruction's native stages.
+Pause/seek/rewind calculate positions directly from simulated time. Untimed activity
+is never extended into fabricated instruction intervals.
+
+`normalizeFlashGpuPipelineLog(log, metadata?)` recognizes `FLASHGPU_PIPELINE_CONFIG`
+and `FLASHGPU_PIPELINE` JSONL lines. It validates the actual sub-core configuration,
+scheduler→partition map, native functional-unit identity, stable UID identity and
+stage order. Only retained observations of the same UID/SM form interval endpoints.
+Incomplete windows remain incomplete. Generic observer JSON from other backends
+retains explicit component mappings without claiming this native hook contract.
+
+The drawing follows a logical schematic. Native ISSUE insertion maps to Dispatch;
+collector allocation/readiness map to Operand Collector; native execution-unit
+identity selects the drawn FU. A shared native MEM unit is placed by the issuing
+partition for inspection, without asserting separate physical LSU instances.
+Load EXECUTE→WRITEBACK intervals include memory wait; they are lifecycle progression,
+not measured wire or memory-transaction transit. Stores may COMPLETE at native LSU
+retirement before global visibility. Missing writeback/cache/NoC stages remain
+unknown. [Detailed validation](../../docs/sm-light-validation.md).
 
 ## Run the native instruction example
 
@@ -44,8 +93,7 @@ It rejects a failed process, missing simulation statistics or failed functional
 validation before writing normalized JSON. Building is a separate offline task;
 the browser never launches a simulator or uploads input files.
 
-In the workbench, click **加载指令示例**, choose **FlashGPU-Sim · vectorAdd 指令**,
-or click **SM 内部** when no detailed run is loaded. The macro run is retained.
+For the original point-only example, choose **FlashGPU-Sim · ISSUE/STALL 日志**. The macro run is retained.
 The native observation panel precedes the architecture illustration; the bounded
 warp/stage lanes follow the replay cursor and retain the selected event. Search
 includes PC, raw instruction text, stage, warp and scheduler. The category filter

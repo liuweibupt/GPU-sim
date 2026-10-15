@@ -1,0 +1,549 @@
+{
+  "format": "gpu-sim-backend-capture-v1",
+  "evidenceKind": "simulation",
+  "capturedAt": "2026-10-15T01:18:39.536Z",
+  "backend": {
+    "name": "FlashGPU-Sim",
+    "repository": "https://github.com/FlashGPU-Sim/FlashGPU-Sim.git",
+    "revision": "291fbe172332eb481556632a79eb9cfc93cf46bf",
+    "buildIdentity": "flashgpu-sim_git-commit-291fbe1_modified_2.0",
+    "trackedSourcesClean": false,
+    "baseTrackedSourcesClean": true,
+    "observerPatch": "tools/detailed/flashgpu-pipeline-observer.patch",
+    "observerPatchSha256": "230b1d5ffed4032d4991cb2ea9577662fce0cb29cff3592a13015ae6f8375229",
+    "patchedDiffSha256": "cde00c330992ec144ddb7b1f38219cc50ed86121066c63ff903111762821e612",
+    "observer": {
+      "format": "FLASHGPU_PIPELINE JSONL schemaVersion=1",
+      "enabledBy": "GPU_SIM_PIPELINE_OBSERVER=1",
+      "timingStateMutations": false,
+      "hooks": [
+        {
+          "event": "ISSUE",
+          "hook": "shader_core_ctx::issue_warp",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            1868
+          ]
+        },
+        {
+          "event": "OPERAND_COLLECT",
+          "hook": "opndcoll_rfu_t::collector_unit_t::allocate",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            6943
+          ]
+        },
+        {
+          "event": "OPERAND_READY",
+          "hook": "opndcoll_rfu_t::collector_unit_t::dispatch",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            6952
+          ]
+        },
+        {
+          "event": "EXECUTE",
+          "hook": "shader_core_ctx::execute",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            3284,
+            3288
+          ]
+        },
+        {
+          "event": "EXECUTE_END",
+          "hook": "pipelined_simd_unit::cycle",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            4377
+          ]
+        },
+        {
+          "event": "WRITEBACK",
+          "hook": "shader_core_ctx::writeback + ldst_unit::writeback (final successful RF completion)",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            3539,
+            4619
+          ]
+        },
+        {
+          "event": "COMPLETE",
+          "hook": "shader_core_ctx::warp_inst_complete",
+          "source": "src/gpgpu-sim/shader.cc",
+          "patchedSourceLines": [
+            3459
+          ]
+        }
+      ]
+    },
+    "buildMode": "release",
+    "cleanArgs": [
+      "make",
+      "clean",
+      "TRACE=1",
+      "FLASH=1"
+    ],
+    "buildArgs": [
+      "make",
+      "-j",
+      "16",
+      "TRACE=1",
+      "FLASH=1"
+    ],
+    "tracingCompiled": true,
+    "runtimeSha256": "44c130fd9bebc4f73a77f03a0dc84c3aa6dcbd8c504f7eb08aed03afb556a8aa",
+    "trackedSourcesRestoredAfterCapture": true
+  },
+  "architecture": {
+    "config": "SM90_H100",
+    "sourceConfigSha256": "33f466ab5f33da377499a5a3a01df5fb2112ef5c9da917957365188179c1610b",
+    "effectiveConfigSha256": "4f66981b7543313a5638a6eb0534ae77ce495fd9dfb14cce16a80cdecad921f9",
+    "overrides": {
+      "-trace_enabled": "1",
+      "-trace_components": "INSTRUCTION_ISSUE",
+      "-trace_sampling_core": "-1"
+    },
+    "interconnectConfigSha256": "3796695c663983ca84dd3f1bc8cc0326a5330206afa09cb2d399777c6310d99c",
+    "instructionHintsSha256": "d3e2007fa644e28ac3146d3724229dd55557f7904b1ded54352782f775c2b16c",
+    "partitionMapping": {
+      "source": "Captured shader_core_config::sub_core_model + get_schd_id + native FU get_issue_reg_id; never warp modulo",
+      "configurations": [
+        {
+          "smId": 0,
+          "subCoreModel": true,
+          "schedulerCount": 4,
+          "schedulerPartitionMap": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "smId": 1,
+          "subCoreModel": true,
+          "schedulerCount": 4,
+          "schedulerPartitionMap": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    }
+  },
+  "workload": {
+    "source": "tools/detailed/vector-add.cu",
+    "sourceSha256": "3b88902ff347e63f0318d70139b075fa14d62bf380378a8a44be814f82e73bb5",
+    "elements": 256,
+    "blocks": 2,
+    "threadsPerBlock": 128,
+    "compileArgs": [
+      "-std=c++17",
+      "-cudart",
+      "shared",
+      "-gencode",
+      "arch=compute_90a,code=sm_90a",
+      "-gencode",
+      "arch=compute_90a,code=compute_90a",
+      "tools/detailed/vector-add.cu",
+      "-o",
+      "vectorAdd"
+    ],
+    "physicalGpuRequired": false
+  },
+  "toolchain": {
+    "cuda": "Cuda compilation tools, release 12.8, V12.8.93",
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "node": "v18.19.1",
+    "platform": "linux",
+    "openMpThreads": 1
+  },
+  "capture": {
+    "nativeLog": "flashgpu-vectoradd-pipeline.log",
+    "nativeLogSha256": "6dd942eb10fc80e7bd164c74e1002356e6e9f35c1c70189d8ba3ba830c34b6f9",
+    "nativeLogBytes": 1441498,
+    "normalization": "normalizeFlashGpuPipelineLog",
+    "runId": "flashgpu-vectoradd:2026-10-15T01:18:39.536Z:6dd942eb10fc",
+    "timeDomain": "flashgpu.gpu_total_cycle",
+    "traceComponents": [
+      "INSTRUCTION_ISSUE"
+    ],
+    "samplingCore": -1,
+    "observedSmIds": [
+      0,
+      1
+    ],
+    "observedWarpCount": 8,
+    "observedEventCount": 1814,
+    "eventCounts": {
+      "ISSUE": 176,
+      "OPERAND_COLLECT": 176,
+      "OPERAND_READY": 176,
+      "EXECUTE": 176,
+      "COMPLETE": 176,
+      "EXECUTE_END": 120,
+      "WRITEBACK": 136,
+      "native-stage-transition": 488,
+      "native-stage-residence": 190
+    },
+    "simulatedCycles": 6212,
+    "wallTimeSeconds": 3.193459781,
+    "timingScope": "Workload process from launch to exit, including simulator startup, PTX extraction, CPU simulation, functional validation, and native stdout/stderr writing; excludes source fetch, simulator/workload compilation, and JSON conversion. OMP_NUM_THREADS=1.",
+    "observer": {
+      "nativeConfigurations": [
+        {
+          "schemaVersion": 1,
+          "smId": 0,
+          "subCoreModel": true,
+          "schedulerCount": 4,
+          "registerBankCount": 16,
+          "genericCollectorCount": 16,
+          "schedulerPartitionMap": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "unitComponentMap": {
+            "SP": "fp32",
+            "INT": "int32",
+            "DP": "fp64",
+            "SFU": "sfu",
+            "TENSOR_CORE": "tensor",
+            "MEM": "lsu"
+          },
+          "nativeUnits": [
+            {
+              "index": 0,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 1,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 2,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 3,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 4,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 5,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 6,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 7,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 8,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 9,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 10,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 11,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 12,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 13,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 14,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 15,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 16,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 17,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 18,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 19,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 20,
+              "name": "TMA",
+              "issuePartitioned": false
+            },
+            {
+              "index": 21,
+              "name": "CP_ASYNC",
+              "issuePartitioned": false
+            },
+            {
+              "index": 22,
+              "name": "MEM ",
+              "issuePartitioned": false
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "smId": 1,
+          "subCoreModel": true,
+          "schedulerCount": 4,
+          "registerBankCount": 16,
+          "genericCollectorCount": 16,
+          "schedulerPartitionMap": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "unitComponentMap": {
+            "SP": "fp32",
+            "INT": "int32",
+            "DP": "fp64",
+            "SFU": "sfu",
+            "TENSOR_CORE": "tensor",
+            "MEM": "lsu"
+          },
+          "nativeUnits": [
+            {
+              "index": 0,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 1,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 2,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 3,
+              "name": "SP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 4,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 5,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 6,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 7,
+              "name": "DP ",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 8,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 9,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 10,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 11,
+              "name": "INT ",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 12,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 13,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 14,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 15,
+              "name": "SFU",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 16,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 0
+            },
+            {
+              "index": 17,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 1
+            },
+            {
+              "index": 18,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 2
+            },
+            {
+              "index": 19,
+              "name": "TENSOR_CORE",
+              "issuePartitioned": true,
+              "issuePartitionId": 3
+            },
+            {
+              "index": 20,
+              "name": "TMA",
+              "issuePartitioned": false
+            },
+            {
+              "index": 21,
+              "name": "CP_ASYNC",
+              "issuePartitioned": false
+            },
+            {
+              "index": 22,
+              "name": "MEM ",
+              "issuePartitioned": false
+            }
+          ]
+        }
+      ],
+      "nativeStageCounts": {
+        "ISSUE": 176,
+        "OPERAND_COLLECT": 176,
+        "OPERAND_READY": 176,
+        "EXECUTE": 176,
+        "COMPLETE": 176,
+        "EXECUTE_END": 120,
+        "WRITEBACK": 136
+      },
+      "observedInstructionCount": 176,
+      "completedInstructionCount": 176,
+      "allIssuedInstructionsCompleted": true,
+      "nonzeroSpanCount": 678,
+      "movementSpanCount": 488
+    },
+    "normalizedTrace": "flashgpu-vectoradd-pipeline.json",
+    "normalizedTraceSha256": "1c010e8bd6a666276f6bb643b2fa5ab4278139bb99fe87c4ea126ddc5033a772"
+  },
+  "validation": {
+    "processExitCode": 0,
+    "exactElementsChecked": 256,
+    "passed": true,
+    "marker": "Vector addition validation PASSED (256/256 exact results)"
+  },
+  "limitations": [
+    "Execution-driven PTX observations, not SASS input traces.",
+    "Moving dots interpolate between measured observer hook endpoints; intermediate physical wire positions are not observed.",
+    "FU execute / complete bounds may include execution and memory wait; no cache level, network route or per-request memory transaction timing is inferred.",
+    "Stores COMPLETE means native LSU pipeline retirement, not global visibility or memory acknowledgement.",
+    "A load may complete through the L1 latency path without a separately observed RF writeback hook; no writeback point is synthesized.",
+    "Native STALL_SCOREBOARD remains the original broad backend reason; no RAW-only attribution is inferred.",
+    "No cross-backend run alignment is inferred."
+  ]
+}

@@ -47,10 +47,14 @@ notices for any future code, data, or asset reuse.
 The detailed log adapter is independently authored against the documented
 FlashGPU-Sim runtime output grammar at revision
 [`291fbe172332eb481556632a79eb9cfc93cf46bf`](https://github.com/FlashGPU-Sim/FlashGPU-Sim/tree/291fbe172332eb481556632a79eb9cfc93cf46bf).
-The optional runner downloads and builds that unmodified upstream source, retaining
-its original COPYRIGHT and component notices in the checkout. No simulator source
-or executable is vendored here. The bundled `examples/flashgpu-vectoradd.log` and
-JSON are outputs of a native run of this project's independently authored small
+The optional runner downloads that upstream source, retaining its original
+COPYRIGHT and component notices in the checkout. The plain ISSUE/STALL capture
+builds it unmodified; `--pipeline` applies a small independently authored read-only
+observer patch and restores the tracked sources after capture. The patch includes
+limited upstream context from `shader.cc` / `shader.h`; their original notices and
+the upstream COPYRIGHT are retained in [FLASHGPU_COPYRIGHT.txt](tools/detailed/FLASHGPU_COPYRIGHT.txt).
+No complete simulator source tree or executable is vendored here. The bundled `examples/flashgpu-vectoradd.log` and
+JSON, plus the separate `flashgpu-vectoradd-pipeline` capture, are outputs of native runs of this project's independently authored small
 vector-add kernel; the adjacent manifest records hashes, configuration and scope.
 FlashGPU-Sim/GPGPU-Sim attribution and redistribution terms are available in its
 [upstream COPYRIGHT](https://github.com/FlashGPU-Sim/FlashGPU-Sim/blob/291fbe172332eb481556632a79eb9cfc93cf46bf/COPYRIGHT).

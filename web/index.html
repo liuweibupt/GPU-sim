@@ -8,7 +8,7 @@
     <meta name="description" content="GPU 计算城市：在可交互的 GPU 架构视图中探索真实 kernel 的执行记录、资源与事件依赖。" />
     <title>GPU City · GPU 数据流城市</title>
     <link rel="stylesheet" href="./style.css?v=sm-box-1" />
-    <link rel="stylesheet" href="./multiscale.css?v=instruction-1" />
+    <link rel="stylesheet" href="./multiscale.css?v=sm-lights-2" />
   </head>
   <body>
     <a class="skip-link" href="#workspace">跳到工作区</a>
@@ -18,7 +18,7 @@
         <div><p class="eyebrow">GPU CITY <span class="brand-divider">/</span> 计算城市</p><h1>GPU 计算城市 <span class="version-tag">ALPHA</span></h1></div>
       </div>
       <div class="file-actions" aria-label="文件操作">
-        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="traffic">H100 SXM · 132 SM 数据流</option><option value="flashgpu">FlashGPU-Sim · vectorAdd 指令</option><option value="sm">SM · 流水线教学模型</option><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
+        <label class="sample-label" for="sample-select">实验场景<select id="sample-select"><option value="traffic">H100 SXM · 132 SM 数据流</option><option value="flashgpu">FlashGPU-Sim · SM 光点流水线</option><option value="flashgpu-points">FlashGPU-Sim · ISSUE/STALL 日志</option><option value="sm">SM · 流水线教学模型</option><option value="standard">GTSim · GEMM</option><option value="slow-l2">GTSim · 慢速 L2 对照</option></select></label>
         <button id="load-example" type="button" title="重新加载所选示例">加载示例</button>
         <button id="import-trace" type="button" class="accent-button">导入 Trace</button>
         <details class="file-menu"><summary>工作区与导出 <span aria-hidden="true">⌄</span></summary><div class="file-menu-content"><button id="export-trace" type="button" disabled>导出 Trace JSON</button><button id="import-workspace" type="button">打开工作区</button><button id="save-workspace" type="button" disabled>保存工作区</button></div></details>
@@ -40,7 +40,7 @@
           <button id="micro-view" type="button" class="scale-tab" aria-pressed="false"><span class="scale-index">02</span><span><strong>SM 内部</strong><small id="micro-backend">指令粒度 · 待载入</small></span><span class="scale-tab-arrow" aria-hidden="true">↗</span></button>
         </div>
         <div class="run-clock"><span id="run-granularity">Tile 操作</span><span class="run-separator" aria-hidden="true">/</span><span>仿真耗时 <b id="simulation-runtime">未记录</b></span><span id="clock-scope" class="clock-scope">独立仿真时钟</span></div>
-        <button id="load-detail-example" type="button" class="accent-button detail-example">加载指令示例 <span aria-hidden="true">↗</span></button>
+        <button id="load-detail-example" type="button" class="accent-button detail-example">加载 SM 光点 <span aria-hidden="true">↗</span></button>
         <button id="import-detail" type="button" class="detail-import">载入指令运行 <span aria-hidden="true">＋</span></button>
         <button id="simulate-sm" type="submit" form="sm-config" class="sm-run">运行教学流水线</button>
         <details class="sm-experiment">
@@ -111,6 +111,6 @@
     <input id="trace-file" type="file" accept=".json,application/json" hidden />
     <input id="workspace-file" type="file" accept=".json,application/json" hidden />
     <input id="detail-file" type="file" accept=".json,.log,.txt,application/json,text/plain" hidden />
-    <script type="module" src="./app.js?v=instruction-1"></script>
+    <script type="module" src="./app.js?v=sm-lights-2"></script>
   </body>
 </html>

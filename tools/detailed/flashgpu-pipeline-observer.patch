@@ -1,0 +1,200 @@
+diff --git a/src/gpgpu-sim/shader.cc b/src/gpgpu-sim/shader.cc
+index 9e5c8ab..a91b747 100644
+--- a/src/gpgpu-sim/shader.cc
++++ b/src/gpgpu-sim/shader.cc
+@@ -35,6 +35,7 @@
+ #include <limits.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <sstream>
+ #include "../../libcuda/gpgpu_context.h"
+ #include "../cuda-sim/cuda-sim.h"
+ #include "../cuda-sim/ptx-stats.h"
+@@ -61,6 +62,25 @@
+ 
+ namespace {
+ 
++// JSON string quoting keeps raw PTX text intact, including source filenames.
++std::string pipeline_json_string(const std::string &input) {
++  std::string result = "\"";
++  for (std::string::const_iterator it = input.begin(); it != input.end(); ++it) {
++    const unsigned char ch = static_cast<unsigned char>(*it);
++    if (ch == '"' || ch == '\\') {
++      result += '\\';
++      result += ch;
++    } else if (ch < 0x20) {
++      char escaped[7];
++      snprintf(escaped, sizeof(escaped), "\\u%04x", ch);
++      result += escaped;
++    } else {
++      result += ch;
++    }
++  }
++  return result + "\"";
++}
++
+ bool is_ordinary_shared_load(const warp_inst_t *inst) {
+   return inst != NULL && inst->op == LOAD_OP &&
+          inst->space.get_type() == shared_space;
+@@ -1845,6 +1865,7 @@ void shader_core_ctx::issue_warp(register_set &pipe_reg_set,
+       active_mask, warp_id, m_gpu->gpu_tot_sim_cycle + m_gpu->gpu_sim_cycle,
+       m_warp[warp_id]->get_dynamic_warp_id(), sch_id,
+       m_warp[warp_id]->get_streamID());  // dynamic instruction information
++  pipeline_observe("ISSUE", **pipe_reg);
+ 
+   // Reset per-lane dynamic fields before functional execution.  The functional
+   // model fills the dyn ptx instruction, while the pipeline register only holds
+@@ -3260,8 +3281,12 @@ void shader_core_ctx::execute() {
+           (resbus = test_res_bus((*ready_reg)->latency)) != -1) {
+         assert((*ready_reg)->latency < MAX_ALU_LATENCY);
+         m_result_bus[resbus]->set((*ready_reg)->latency);
++        pipeline_observe("EXECUTE", **ready_reg, m_fu[n]->get_name(), n,
++                         partition_issue ? static_cast<int>(reg_id) : -1);
+         m_fu[n]->issue(issue_inst);
+       } else if (!schedule_wb_now) {
++        pipeline_observe("EXECUTE", **ready_reg, m_fu[n]->get_name(), n,
++                         partition_issue ? static_cast<int>(reg_id) : -1);
+         m_fu[n]->issue(issue_inst);
+       } else {
+         // stall issue (cannot reserve result bus)
+@@ -3357,7 +3382,81 @@ void shader_core_ctx::unset_depbar(const warp_inst_t &inst) {
+   }
+ }
+ 
++void shader_core_ctx::pipeline_observe(const char *event,
++                                      const warp_inst_t &inst,
++                                      const char *native_unit, int unit_index,
++                                      int issue_partition, int collector_id) {
++  static const bool enabled = getenv("GPU_SIM_PIPELINE_OBSERVER") != NULL &&
++      strcmp(getenv("GPU_SIM_PIPELINE_OBSERVER"), "1") == 0;
++  if (!enabled || inst.empty()) return;
++  // The capture runner fixes OMP_NUM_THREADS=1; flockfile also keeps each JSONL
++  // record intact with respect to upstream stdout diagnostics.
++  flockfile(stdout);
++  static std::set<unsigned> configured_sms;
++  if (configured_sms.insert(m_sid).second) {
++    std::ostringstream config;
++    config << "FLASHGPU_PIPELINE_CONFIG {\"schemaVersion\":1,\"smId\":" << m_sid
++           << ",\"subCoreModel\":" << (m_config->sub_core_model ? "true" : "false")
++           << ",\"schedulerCount\":" << m_config->gpgpu_num_sched_per_core
++           << ",\"registerBankCount\":" << m_config->gpgpu_num_reg_banks
++           << ",\"genericCollectorCount\":" << m_config->gpgpu_operand_collector_num_units_gen
++           << ",\"schedulerPartitionMap\":[";
++    if (m_config->sub_core_model) {
++      for (unsigned i = 0; i < m_config->gpgpu_num_sched_per_core; ++i) {
++        if (i) config << ',';
++        config << i;
++      }
++    }
++    config << "],\"unitComponentMap\":{\"SP\":\"fp32\",\"INT\":\"int32\","
++              "\"DP\":\"fp64\",\"SFU\":\"sfu\",\"TENSOR_CORE\":\"tensor\","
++              "\"MEM\":\"lsu\"},\"nativeUnits\":[";
++    for (unsigned n = 0; n < m_num_function_units; ++n) {
++      if (n) config << ',';
++      const bool partitioned = m_config->sub_core_model &&
++                               m_fu[n]->is_issue_partitioned();
++      config << "{\"index\":" << n << ",\"name\":"
++             << pipeline_json_string(m_fu[n]->get_name())
++             << ",\"issuePartitioned\":" << (partitioned ? "true" : "false");
++      if (partitioned)
++        config << ",\"issuePartitionId\":" << m_fu[n]->get_issue_reg_id();
++      config << '}';
++    }
++    config << "]}";
++    printf("%s\n", config.str().c_str());
++  }
++  std::ostringstream line;
++  line << "FLASHGPU_PIPELINE {\"schemaVersion\":1,\"cycle\":"
++       << m_gpu->gpu_tot_sim_cycle + m_gpu->gpu_sim_cycle
++       << ",\"smId\":" << m_sid << ",\"warpId\":" << inst.warp_id()
++       << ",\"dynamicWarpId\":" << inst.dynamic_warp_id()
++       << ",\"dynamicInstructionId\":\"flashgpu:uid-" << inst.get_uid() << '"'
++       << ",\"pc\":\"0x" << std::hex << inst.pc << std::dec << '"'
++       << ",\"event\":" << pipeline_json_string(event)
++       << ",\"schedulerId\":" << inst.get_schd_id();
++  if (m_config->sub_core_model)
++    line << ",\"partitionId\":" << inst.get_schd_id();
++  line << ",\"nativeOp\":"
++       << pipeline_json_string(Trace::instruction_issue_op_name(inst.op))
++       << ",\"activeMask\":\"0x" << std::hex
++       << inst.get_active_mask().to_ullong() << std::dec << '"'
++       << ",\"instructionText\":" << pipeline_json_string(
++              m_config->gpgpu_ctx->func_sim->ptx_get_insn_str(inst.pc));
++  if (native_unit != NULL)
++    line << ",\"nativeUnit\":" << pipeline_json_string(native_unit);
++  if (unit_index >= 0) line << ",\"nativeUnitIndex\":" << unit_index;
++  if (issue_partition >= 0)
++    line << ",\"nativeIssuePartitioned\":true,\"nativeIssuePartitionId\":"
++         << issue_partition;
++  else if (unit_index >= 0)
++    line << ",\"nativeIssuePartitioned\":false";
++  if (collector_id >= 0) line << ",\"collectorId\":" << collector_id;
++  line << '}';
++  printf("%s\n", line.str().c_str());
++  funlockfile(stdout);
++}
++
+ void shader_core_ctx::warp_inst_complete(const warp_inst_t &inst) {
++  pipeline_observe("COMPLETE", inst);
+ #if 0
+       printf("[warp_inst_complete] uid=%u core=%u warp=%u pc=%#x @ time=%llu \n",
+              inst.get_uid(), m_sid, inst.warp_id(), inst.pc,  m_gpu->gpu_tot_sim_cycle +  m_gpu->gpu_sim_cycle);
+@@ -3436,7 +3535,8 @@ void shader_core_ctx::writeback() {
+      * no stalling).
+      */
+ 
+-    m_operand_collector.writeback(*pipe_reg);
++    if (m_operand_collector.writeback(*pipe_reg))
++      pipeline_observe("WRITEBACK", *pipe_reg);
+     unsigned warp_id = pipe_reg->warp_id();
+     if (pipe_reg->is_wgmma_warpgroup()) {
+       for (unsigned i = 0; i < pipe_reg->wgmma_warpgroup_size(); ++i) {
+@@ -4274,6 +4374,7 @@ void pipelined_simd_unit::cycle() {
+       occupied >>= 1;
+       return;
+     }
++    m_core->pipeline_observe("EXECUTE_END", *m_pipeline_reg[0], get_name());
+     m_result_port->move_in(m_pipeline_reg[0]);
+     assert(active_insts_in_pipeline > 0);
+     active_insts_in_pipeline--;
+@@ -4515,6 +4616,7 @@ void ldst_unit::writeback() {
+         }
+       }
+       if (insn_completed) {
++        m_core->pipeline_observe("WRITEBACK", m_next_wb);
+         m_core->warp_inst_complete(m_next_wb);
+         if (m_next_wb.m_is_ldgsts && m_next_wb.active_count() > 0) {
+           m_core->unset_depbar(m_next_wb);
+@@ -6838,6 +6940,8 @@ bool opndcoll_rfu_t::collector_unit_t::allocate(register_set *pipeline_reg_set,
+         m_src_op[op] = op_t();
+     }
+     pipeline_reg_set->move_out_to(m_sub_core_model, m_reg_id, m_warp);
++    m_rfu->shader_core()->pipeline_observe("OPERAND_COLLECT", *m_warp,
++                                          NULL, -1, -1, m_cuid);
+     return true;
+   }
+   return false;
+@@ -6845,6 +6949,8 @@ bool opndcoll_rfu_t::collector_unit_t::allocate(register_set *pipeline_reg_set,
+ 
+ void opndcoll_rfu_t::collector_unit_t::dispatch() {
+   assert(m_not_ready.none());
++  m_rfu->shader_core()->pipeline_observe("OPERAND_READY", *m_warp,
++                                        NULL, -1, -1, m_cuid);
+   m_output_register->move_in(m_sub_core_model, m_reg_id, m_warp);
+   m_free = true;
+   m_output_register = NULL;
+diff --git a/src/gpgpu-sim/shader.h b/src/gpgpu-sim/shader.h
+index a942f89..4c7afa5 100644
+--- a/src/gpgpu-sim/shader.h
++++ b/src/gpgpu-sim/shader.h
+@@ -2888,6 +2888,10 @@ class shader_core_ctx : public core_t {
+   void store_ack(class mem_fetch *mf);
+   bool warp_waiting_at_mem_barrier(unsigned warp_id);
+   void set_max_cta(const kernel_info_t &kernel);
++  // Optional external lifecycle observer; never alters timing or pipeline state.
++  void pipeline_observe(const char *event, const warp_inst_t &inst,
++                        const char *native_unit = NULL, int unit_index = -1,
++                        int issue_partition = -1, int collector_id = -1);
+   void warp_inst_complete(const warp_inst_t &inst);
+   void complete_inst_without_writeback(warp_inst_t *inst);
+   void begin_alu_scoreboard_forwarding(const warp_inst_t &inst);

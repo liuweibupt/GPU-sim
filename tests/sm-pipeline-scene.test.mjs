@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {instantiateSmArchitecture, smComponentId} from "../lib/sm-architecture.js";
 import {simulateSm} from "../lib/sm-model.js";
-import {indexSmPipelineEvidence, summarizeSmPipelineEvidence, smPipelineTransferMarks} from "../web/sm-pipeline-scene.js";
+import {indexSmPipelineEvidence, summarizeSmPipelineEvidence, smPipelineTransferMarks, smPipelineStageMarks, smPipelineStagePoint, smPipelineTransferRoute, smPipelineRoutePosition} from "../web/sm-pipeline-scene.js";
 
 const architecture = instantiateSmArchitecture(0);
 const fetch = smComponentId(0, "fetch", 0), decode = smComponentId(0, "decode", 0), issue = smComponentId(0, "issue", 0);
@@ -102,4 +102,51 @@ test("every teaching-model transfer has a formally typed route, including async 
   const marks = smPipelineTransferMarks(evidence, time);
   assert.ok(marks.some(mark => mark.event.id === sample.id && mark.progress === .5));
   assert.deepEqual(smPipelineTransferMarks(evidence, time), marks);
+});
+
+test("component lights use only mapped residency intervals and keep their exact half-open boundaries", () => {
+  const transfer = {sourceId: fetch, targetId: decode, kind: "instruction"};
+  const source = [stage("work", fetch, 2, 6, {stage: "fetch"}), stage("waiting", issue, 3, 8, {stage: "stall", stallReason: "RAW"}),
+    stage("point", fetch, 4, 4), stage("hop", fetch, 2, 6, {smPipelineTransfer: transfer}), stage("unmapped", "sm-0.compute", 2, 6),
+    stage("other-warp", decode, 2, 6, {warpId: 1})];
+  const evidence = indexSmPipelineEvidence(architecture, source);
+  const marks = smPipelineStageMarks(evidence, 4, {warpId: 0});
+  assert.deepEqual(marks.map(mark => [mark.event.id, mark.state, mark.progress]), [["work", "active", .5], ["waiting", "stall", .2]]);
+  assert.equal(smPipelineStageMarks(evidence, 6, {warpId: 0}).some(mark => mark.event.id === "work"), false);
+  assert.equal(smPipelineStageMarks(evidence, 4, null, 1).length, 1);
+  assert.deepEqual(smPipelineStageMarks(evidence, 4, null, 0), []);
+  assert.deepEqual(smPipelineStageMarks(evidence, NaN), []);
+  smPipelineStageMarks(evidence, 100); assert.deepEqual(smPipelineStageMarks(evidence, 4, {warpId: 0}), marks);
+});
+
+test("multi-link light routes require every typed connection and preserve the supplied interval", () => {
+  const dispatch = smComponentId(0, "dispatch", 0), collector = smComponentId(0, "operand-collector", 0);
+  const transfer = {sourceId: issue, targetId: collector, kind: "instruction", route: [issue, dispatch, collector]};
+  const events = [stage("valid-route", issue, 10, 20, {smPipelineTransfer: transfer}),
+    stage("bad-hop", issue, 10, 20, {smPipelineTransfer: {...transfer, route: [issue, fetch, collector]}}),
+    stage("bad-end", issue, 10, 20, {smPipelineTransfer: {...transfer, route: [dispatch, collector]}})];
+  const evidence = indexSmPipelineEvidence(architecture, events);
+  assert.deepEqual(evidence.transfers.map(event => event.id), ["valid-route"]);
+  assert.equal(evidence.unresolvedTransfers.length, 2);
+  assert.equal(smPipelineTransferMarks(evidence, 15)[0].progress, .5);
+  assert.deepEqual(smPipelineTransferRoute(transfer), [issue, dispatch, collector]);
+  assert.deepEqual(smPipelineTransferRoute({sourceId: issue, targetId: dispatch}), [issue, dispatch]);
+  assert.deepEqual(smPipelineRoutePosition([20, 80], .5), {index: 1, distance: 30});
+  assert.deepEqual(smPipelineRoutePosition([20, 80], .2), {index: 1, distance: 0});
+  assert.deepEqual(smPipelineRoutePosition([20, 80], 1), {index: 1, distance: 80});
+  assert.deepEqual(smPipelineRoutePosition([0, 80], 0), {index: 1, distance: 0});
+  assert.equal(smPipelineRoutePosition([0, 0], .5), null);
+  assert.equal(smPipelineRoutePosition([20, -1], .5), null);
+});
+
+test("residency light positions stay on the decorative roof and are deterministic during seek", () => {
+  for (const [width, height] of [[100, 99], [300, 112], [72, 122]]) for (const slot of [0, 1, 2, 7]) {
+    const start = smPipelineStagePoint(width, height, 0, slot), end = smPipelineStagePoint(width, height, 1, slot);
+    assert.ok(start.x >= 0 && end.x < width && start.y > 0 && start.y < height);
+    assert.equal(start.y, end.y); assert.ok(end.x > start.x);
+    assert.deepEqual(smPipelineStagePoint(width, height, .5, slot), smPipelineStagePoint(width, height, .5, slot));
+  }
+  assert.deepEqual(smPipelineStagePoint(100, 99, -1), smPipelineStagePoint(100, 99, 0));
+  assert.deepEqual(smPipelineStagePoint(100, 99, 2), smPipelineStagePoint(100, 99, 1));
+  assert.throws(() => smPipelineStagePoint(100, 99, NaN), RangeError);
 });
