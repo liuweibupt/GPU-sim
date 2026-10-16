@@ -12,7 +12,14 @@ import {
   startChallenge,
   restoreGame,
   serializeGame,
-} from "../../lib/idle-game.js?v=analytical-only-1";
+} from "../../lib/idle-game.js?v=systems-ecosystem-1";
+
+import {
+  BUSINESS_UPGRADES,
+  getBusinessStats,
+  getBusinessUpgradeStatus,
+  buyBusinessUpgrade,
+} from "../../lib/business-game.js?v=systems-ecosystem-1";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -85,6 +92,14 @@ const iconPaths = {
   hbm: "m3 7 9-4 9 4-9 4zM3 12l9 4 9-4M3 17l9 4 9-4",
   tma: "M3 7h14m-4-4 4 4-4 4M7 17h14m-4-4 4 4-4 4M3 17h1m16-10h1",
   tmem: "M4 4h16v16H4zM8 8h8v8H8zM12 4v4m0 8v4M4 12h4m8 0h4",
+  pcie: "M3 8h18v8H3zM7 16v4m5-4v4m5-4v4M7 5v3m5-3v3m5-3v3",
+  cuda: "m8 5-6 7 6 7m8-14 6 7-6 7M14 3l-4 18",
+  libraries: "M4 4h5v16H4zm7 0h4v16h-4zm6 1 4-1 3 15-4 1z",
+  nvlink: "M2 4h7v7H2zm13 9h7v7h-7zM9 7h9v6M6 11v6h9",
+  ib_partner: "M3 5h7v5H3zm11 9h7v5h-7zM10 7h8v7M6 10v6h8",
+  mellanox: "M3 20V9l9-6 9 6v11H3zM9 20v-7h6v7M7 9h1m8 0h1",
+  rack: "M5 2h14v20H5zM5 8h14M5 15h14M8 5h1m-1 7h1m-1 7h1",
+  developers: "M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21v-3a6 6 0 0 1 12 0v3M16 4a4 4 0 0 1 0 8m2 3a5 5 0 0 1 4 5v1",
 };
 const icon = (id) =>
   `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${iconPaths[id] || iconPaths.alu}"/></svg>`;
@@ -236,6 +251,41 @@ function createShop() {
     (upgrade) =>
       `<article class="upgrade-card" id="upgrade-${upgrade.id}" data-category="${categories[upgrade.id]}"><div class="upgrade-top"><div class="upgrade-icon">${icon(upgrade.id)}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${technicalNames[upgrade.id]}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><p class="upgrade-benefit"></p><button class="upgrade-buy" data-buy="${upgrade.id}" aria-label="购买${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
   ).join("");
+}
+
+function createBusinessShop() {
+  $("business-grid").innerHTML = BUSINESS_UPGRADES.map((upgrade) =>
+    `<article class="upgrade-card business-card" id="business-${upgrade.id}"><div class="upgrade-top"><div class="upgrade-icon">${icon(upgrade.id)}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${escapeHTML(upgrade.subtitle)}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><p class="business-benefit">${escapeHTML(upgrade.benefit)}</p><p class="upgrade-benefit business-status"></p><button class="upgrade-buy" data-business-buy="${upgrade.id}" aria-label="研发${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
+  ).join("");
+}
+
+function renderBusiness(stats) {
+  const business = stats.business;
+  $("business-investment").textContent = cash(business.investmentValue);
+  $("business-premium").textContent = `×${format(business.revenueMultiplier, 2)}`;
+  $("business-project").textContent = `×${format(business.projectMultiplier, 2)}`;
+  $("business-racks").textContent = format(business.rackCount);
+  $("business-summary").textContent = `${business.summary} · 工坊研发一次付费`;
+  for (const upgrade of BUSINESS_UPGRADES) {
+    const status = getBusinessUpgradeStatus(state, upgrade.id);
+    const card = $(`business-${upgrade.id}`);
+    card.classList.toggle("locked", !status.ok && !status.maxed);
+    card.classList.toggle("purchasable", status.ok);
+    card.classList.toggle("installed", status.level > 0);
+    card.querySelector(".upgrade-level").textContent = status.maxed
+      ? "研发完成"
+      : status.level ? `LV.${String(status.level).padStart(2, "0")}` : "待研发";
+    card.querySelector(".business-status").textContent = status.maxed
+      ? "已完成此项研发"
+      : status.ok ? "前置已齐备 · 可以投资" : status.reason;
+    const button = card.querySelector("button");
+    button.disabled = !status.ok;
+    button.title = status.reason || `投资 ${cash(status.cost)}，${upgrade.benefit}`;
+    button.querySelector("span").textContent = status.maxed
+      ? "已完成 ✓"
+      : status.ok ? status.level ? "继续研发 ↗" : "投资研发 +" : "尚未就绪";
+    button.querySelector("strong").textContent = status.maxed ? "MAX" : cash(status.cost);
+  }
 }
 
 function renderShop() {
@@ -414,13 +464,13 @@ function renderMentor(stats) {
   }
   if (lv.tmem) {
     quote = "当年那颗 ALU，<br />大概也没想到，<br />今天会这么热闹。";
-    target = "按自己的节奏，完成剩余应用委托";
+    target = "发展软件生态与机柜系统，完成剩余应用委托";
     progress = state.won.length / CHAPTERS.length;
     chapter = "经营 / AI 工厂";
   }
   if (state.won.length === CHAPTERS.length) {
     quote = "从一颗 ALU 到一座工厂。<br />好，现在，<br />把下一单拿来。";
-    target = "全部应用已交付 · 继续自由经营";
+    target = "全部应用已交付 · 继续研发互联、机柜与软件生态";
     progress = 1;
     chapter = "终章 / 故事继续";
   }
@@ -442,6 +492,7 @@ function renderMentor(stats) {
 }
 
 function renderOrders() {
+  const premium = getBusinessStats(state).revenueMultiplier;
   const jobs = [state.activeJob, ...state.queue].filter(Boolean).slice(0, 4);
   $("queue-count").textContent = `${state.queue.length} 笔排队`;
   const activeJob = state.activeJob;
@@ -462,7 +513,7 @@ function renderOrders() {
         .map((job, index) => {
           const active = job === state.activeJob;
           const percent = Math.min(100, (job.progress / job.work) * 100);
-          return `<div class="order-row"><div class="order-client"><span class="client-icon">${["π", "∑", "⌘", "λ"][job.id % 4]}</span><div class="client-details"><strong>${escapeHTML(job.client)}</strong><small>#${String(job.id).padStart(5, "0")} · ${escapeHTML(kindLabel[job.kind] || job.name)}</small></div></div><span class="order-expression">${escapeHTML(job.expression)}</span>${active ? `<div class="order-progress"><div class="progress-track"><span style="width:${percent}%"></span></div><span>${Math.floor(percent)}%</span></div>` : `<div class="order-progress waiting">排队中 · 第 ${index} 位</div>`}<span class="order-reward">${cash(job.reward)}</span></div>`;
+          return `<div class="order-row"><div class="order-client"><span class="client-icon">${["π", "∑", "⌘", "λ"][job.id % 4]}</span><div class="client-details"><strong>${escapeHTML(job.client)}</strong><small>#${String(job.id).padStart(5, "0")} · ${escapeHTML(kindLabel[job.kind] || job.name)}</small></div></div><span class="order-expression">${escapeHTML(job.expression)}</span>${active ? `<div class="order-progress"><div class="progress-track"><span style="width:${percent}%"></span></div><span>${Math.floor(percent)}%</span></div>` : `<div class="order-progress waiting">排队中 · 第 ${index} 位</div>`}<span class="order-reward">${cash(Math.round(job.reward * premium * 100) / 100)}</span></div>`;
         })
         .join("")
     : '<div class="journal-empty">已清空订单队列，下一位客户正在路上…</div>';
@@ -584,6 +635,7 @@ function render() {
   $("research-progress").style.width =
     `${nextResearch ? Math.min(100, (state.totalEarned / nextResearch.unlockEarned) * 100) : 100}%`;
   renderShop();
+  renderBusiness(stats);
   renderHardware(stats);
   renderMentor(stats);
   const service = stats.performance;
@@ -676,6 +728,27 @@ $("upgrade-grid").addEventListener("click", (event) => {
     save();
     render();
   }
+});
+$("business-grid").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-business-buy]");
+  if (!button) return;
+  const id = button.dataset.businessBuy;
+  const result = buyBusinessUpgrade(state, id);
+  if (!result.ok) return toast(result.reason, "error");
+  const upgrade = BUSINESS_UPGRADES.find((item) => item.id === id);
+  if (result.level === 1) {
+    state.story.push({
+      id: `business-upgrade-${id}`,
+      type: "upgrade",
+      message: `黄Sir 完成了${upgrade.name}研发。${upgrade.benefit}。`,
+      elapsed: state.elapsed,
+    });
+    state.story = state.story.slice(-40);
+  }
+  toast(`${upgrade.name} 研发完成 · ${upgrade.benefit}`, "reward");
+  playSound("upgrade");
+  save();
+  render();
 });
 function focusModule(event) {
   const module = event.target.closest("[data-module]");
@@ -833,6 +906,7 @@ window.addEventListener("storage", (event) => {
 });
 
 createShop();
+createBusinessShop();
 applyPreferences();
 render();
 if (migratedTileModel) toast("Tile 模式已移除，已保留进度并迁移到解析模型。");

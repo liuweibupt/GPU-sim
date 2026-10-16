@@ -5,13 +5,14 @@ import {
   getRaceStats,
   tickRace,
   buyRaceUpgrade,
+  buyRaceBusinessUpgrade,
   canBuyRaceUpgrade,
   getRaceUpgradeCost,
   manualRaceCompute,
   startRaceProject,
   restoreRace,
   serializeRace,
-} from "../../../lib/pve-race.js?v=analytical-only-1";
+} from "../../../lib/pve-race.js?v=systems-ecosystem-1";
 import {
   getFinanceStats,
   quoteIPO,
@@ -19,11 +20,16 @@ import {
   quoteBuyback,
   executeBuyback,
   updateValuation,
-} from "../../../lib/pve-market.js?v=analytical-only-1";
+} from "../../../lib/pve-market.js?v=systems-ecosystem-1";
 import {
   MODEL_INFO,
   getWorkloadPerformance,
 } from "../../../lib/compute-model.js";
+
+import {
+  BUSINESS_UPGRADES,
+  getBusinessUpgradeStatus,
+} from "../../../lib/business-game.js?v=systems-ecosystem-1";
 
 const SAVE_KEY = "huang-sir-pve-v1";
 const $ = (id) => document.getElementById(id);
@@ -86,6 +92,14 @@ const partGlyph = {
   hbm: "▰",
   tma: "⇢",
   tmem: "▧",
+  pcie: "⇆",
+  cuda: "⌘",
+  libraries: "▤",
+  nvlink: "⤨",
+  ib_partner: "⇄",
+  mellanox: "◇",
+  rack: "▥",
+  developers: "⌬",
 };
 const bottlenecks = {
   compute: "计算吞吐",
@@ -201,6 +215,49 @@ function buildShop() {
   ).join("");
   $("market-company-tabs").innerHTML = tabs;
   $("large-market-tabs").innerHTML = tabs;
+}
+
+function buildBusinessShop() {
+  $("business-grid").innerHTML = BUSINESS_UPGRADES.map((upgrade) =>
+    `<article class="upgrade-card business-card" id="business-${upgrade.id}"><div class="upgrade-top"><div class="upgrade-icon part-glyph">${partGlyph[upgrade.id]}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${escapeHTML(upgrade.subtitle)}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><p class="business-benefit">${escapeHTML(upgrade.benefit)}</p><p class="business-recurring">每级运营 +${cash(upgrade.recurringCost)}/s</p><p class="upgrade-benefit business-status"></p><button class="upgrade-buy" data-business-buy="${upgrade.id}" aria-label="研发${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
+  ).join("");
+}
+
+function businessRoute(business) {
+  return { none: "未选网络", partner: "IB 合作", acquire: "团队并购" }[business.networkRoute] || business.networkRoute;
+}
+
+function renderBusiness(stats) {
+  const company = rawCompany();
+  const business = stats.player.business;
+  $("business-demand").textContent = `+${cash(business.demandBonus)}/s`;
+  $("business-premium").textContent = `×${number(business.revenueMultiplier, 2)}`;
+  $("business-project").textContent = `×${number(business.projectMultiplier, 2)}`;
+  $("business-racks").textContent = number(business.rackCount);
+  $("business-upkeep").textContent = `${cash(business.operatingCost)}/s`;
+  $("business-summary").textContent = business.summary;
+  for (const upgrade of BUSINESS_UPGRADES) {
+    const status = getBusinessUpgradeStatus(company.game, upgrade.id);
+    const unavailable = paused || stats.player.finance.bankrupt;
+    const reason = stats.player.finance.bankrupt ? "公司已停止经营" : paused ? "全场已暂停，继续后可投资" : status.reason;
+    const card = $(`business-${upgrade.id}`);
+    card.classList.toggle("locked", !status.ok && !status.maxed);
+    card.classList.toggle("purchasable", status.ok && !unavailable);
+    card.classList.toggle("installed", status.level > 0);
+    card.querySelector(".upgrade-level").textContent = status.maxed
+      ? "研发完成"
+      : status.level ? `LV.${String(status.level).padStart(2, "0")}` : "待研发";
+    card.querySelector(".business-status").textContent = status.maxed
+      ? "已完成此项研发"
+      : reason || "前置已齐备 · 可以投资";
+    const button = card.querySelector("button");
+    button.disabled = !status.ok || unavailable;
+    button.title = reason || `投资 ${cash(status.cost)}，运营增加 ${cash(upgrade.recurringCost)}/s`;
+    button.querySelector("span").textContent = status.maxed
+      ? "已完成 ✓"
+      : unavailable ? "暂不可投资" : status.ok ? status.level ? "继续研发 ↗" : "投资研发 +" : "尚未就绪";
+    button.querySelector("strong").textContent = status.maxed ? "MAX" : cash(status.cost);
+  }
 }
 
 function renderShop(stats) {
@@ -536,7 +593,7 @@ function renderLeaderboard(stats) {
   $("leaderboard").innerHTML = stats.rankings
     .map(
       (company, index) =>
-        `<div class="leaderboard-row"><span class="leaderboard-rank">0${index + 1}</span><div class="leaderboard-company">${company.id === "grey" ? '<span class="leaderboard-avatar grey-avatar">▦</span>' : `<img class="leaderboard-avatar ${company.id}" src="${company.id === "player" ? "../assets/huang-sir-avatar.svg" : "./assets/lisa-avatar.svg"}" alt=""/>`}<div><strong>${escapeHTML(company.name)} ${company.finance.listed ? '<span class="listed-small">IPO</span>' : ""}</strong><small>${company.finance.bankrupt ? "已破产" : `${company.aluCount} ALU · ${company.cacheLabel} · ${phases[company.project.phase]}`}</small></div></div><div class="leaderboard-value">${cash(company.totalEarned)}<small>累计经营收入</small></div></div>`,
+        `<div class="leaderboard-row"><span class="leaderboard-rank">0${index + 1}</span><div class="leaderboard-company">${company.id === "grey" ? '<span class="leaderboard-avatar grey-avatar">▦</span>' : `<img class="leaderboard-avatar ${company.id}" src="${company.id === "player" ? "../assets/huang-sir-avatar.svg" : "./assets/lisa-avatar.svg"}" alt=""/>`}<div><strong>${escapeHTML(company.name)} ${company.finance.listed ? '<span class="listed-small">IPO</span>' : ""}</strong><small>${company.finance.bankrupt ? "已破产" : `${company.aluCount} ALU · ${company.cacheLabel} · ${phases[company.project.phase]}`}</small><small class="company-business-line">生态 LV.${number(company.business.softwareLevel)} · 机柜 ${number(company.business.rackCount)} · ${escapeHTML(businessRoute(company.business))}</small></div></div><div class="leaderboard-value">${cash(company.totalEarned)}<small>累计经营收入</small></div></div>`,
     )
     .join("");
   const signature = JSON.stringify(race.logs.slice(-12));
@@ -608,6 +665,7 @@ function render() {
   renderFinance(player);
   renderProject(player);
   renderShop(stats);
+  renderBusiness(stats);
   renderStocks(stats);
   renderLeaderboard(stats);
   renderModel();
@@ -622,6 +680,17 @@ $("upgrade-grid").addEventListener("click", (event) => {
     save();
     render();
   } else toast(result.reason, "error");
+});
+$("business-grid").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-business-buy]");
+  if (!button || paused) return;
+  const id = button.dataset.businessBuy;
+  const result = buyRaceBusinessUpgrade(race, id);
+  if (!result.ok) return toast(result.reason, "error");
+  const upgrade = BUSINESS_UPGRADES.find((item) => item.id === id);
+  toast(`${upgrade.name} 研发完成 · 运营费用增加 ${cash(upgrade.recurringCost)}/s`, "reward");
+  save();
+  render();
 });
 $("compute-button").addEventListener("click", () => {
   if (paused) return;
@@ -744,6 +813,7 @@ window.addEventListener("storage", (event) => {
 });
 
 buildShop();
+buildBusinessShop();
 render();
 save();
 if (!savedStorage) toast("浏览器未允许保存创业赛进度。", "error");

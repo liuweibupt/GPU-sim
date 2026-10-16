@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame, UPGRADES, buyUpgrade, getStats} from '../lib/idle-game.js';
+import {buyBusinessUpgrade, getBusinessStats} from '../lib/business-game.js';
 import {createFinance, restoreFinance, getFinanceStats, getMarketDemand, getProjectedRevenue,
   quoteIPO, executeIPO, quoteBuyback, executeBuyback, settleFinance, updateValuation} from '../lib/pve-market.js';
 
@@ -276,4 +277,52 @@ test('IPO rejects a cash-cap overflow instead of issuing shares for clipped proc
   const before = structuredClone(c);
   assert.equal(executeIPO(c).ok, false);
   assert.deepEqual(c, before);
+});
+
+test('system and ecosystem investments affect demand, costs and assets without contaminating hardware', () => {
+  const c = company();
+  equip(c, {alu: 7, l1: 2, dram: 1, l2: 2, scheduler: 2, tensor: 2, hbm: 1});
+  c.game.money = 60000;
+  const baseFinance = getFinanceStats(c);
+  const baseStats = getStats(c.game);
+  const baseDemand = getMarketDemand(c);
+  const earned = c.game.totalEarned;
+  const costs = c.finance.totalCosts;
+  for (const id of ['cuda', 'pcie', 'libraries', 'nvlink', 'ib_partner', 'rack', 'developers']) {
+    assert.equal(buyBusinessUpgrade(c.game, id).ok, true, id);
+  }
+  const business = getBusinessStats(c.game);
+  const stats = getStats(c.game);
+  const finance = getFinanceStats(c);
+  assert.ok(business.demandBonus > 0);
+  assert.ok(business.operatingCost > 0);
+  assert.ok(business.investmentValue > 0);
+  near(getMarketDemand(c), baseDemand + business.demandBonus);
+  near(finance.operatingCost, baseFinance.operatingCost + business.operatingCost);
+  near(finance.equipmentValue, baseFinance.equipmentValue + business.investmentValue);
+  near(stats.incomeRate, baseStats.incomeRate * business.revenueMultiplier);
+  assert.equal(stats.power, baseStats.power);
+  assert.equal(c.game.totalEarned, earned);
+  assert.equal(c.finance.totalRevenue, 0);
+  assert.equal(c.finance.totalCosts, costs);
+  c.project.phase = 'training';
+  near(getProjectedRevenue(c), Math.min(stats.incomeRate, getMarketDemand(c)) * .3);
+  // The same hardware key still represents only hardware in the shared cache.
+  const plain = company();
+  equip(plain, c.game.levels);
+  near(getFinanceStats(plain).operatingCost, baseFinance.operatingCost);
+  near(getFinanceStats(plain).equipmentValue, baseFinance.equipmentValue);
+});
+
+test('finance reads sanitize system saves and never mutate the source business', () => {
+  const c = company();
+  c.game.business = {levels: {cuda: 1e99, pcie: -10, rack: 100, mellanox: Infinity}, networkRoute: 'acquire'};
+  const before = structuredClone(c);
+  const stats = getFinanceStats(c);
+  assert.deepEqual(c, before);
+  assert.ok(Number.isFinite(stats.operatingCost));
+  assert.ok(Number.isFinite(stats.equipmentValue));
+  const plain = getFinanceStats(company());
+  near(stats.operatingCost, plain.operatingCost);
+  near(stats.equipmentValue, plain.equipmentValue);
 });

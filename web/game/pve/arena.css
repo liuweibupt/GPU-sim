@@ -1838,3 +1838,47 @@
     white-space: nowrap;
   }
 }
+
+.race-business .business-overview {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.race-business .business-overview strong {
+  font-size: 23px;
+}
+.company-business-line {
+  color: #8fac9b !important;
+  line-height: 1.6;
+}
+@media (max-width: 900px) {
+  .race-business .business-overview {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .race-business .business-overview > div {
+    border-bottom: 1px solid #35443b;
+  }
+  .race-business .business-overview > div:nth-child(3) {
+    border-right: 0;
+  }
+  .race-business .business-overview > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+}
+@media (max-width: 600px) {
+  .race-business .business-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .race-business .business-overview > div {
+    border-right: 1px solid #35443b;
+    border-bottom: 1px solid #35443b;
+  }
+  .race-business .business-overview > div:nth-child(2n) {
+    border-right: 0;
+  }
+  .race-business .business-overview > div:last-child {
+    grid-column: 1 / -1;
+    border: 0;
+  }
+  .race-business .business-overview strong {
+    font-size: 22px;
+  }
+}

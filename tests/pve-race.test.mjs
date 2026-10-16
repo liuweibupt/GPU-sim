@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {RACE_COMPANIES, RACE_MILESTONES, GPT3_REQUIREMENTS, PROJECT_PROFILE, RACE_UPGRADES, createRace, tickRace, getRaceStats, getRaceUpgradeCost, canBuyRaceUpgrade, buyRaceUpgrade, manualRaceCompute, startRaceProject, restoreRace, serializeRace} from '../lib/pve-race.js';
+import {RACE_COMPANIES, RACE_MILESTONES, GPT3_REQUIREMENTS, PROJECT_PROFILE, RACE_UPGRADES, createRace, tickRace, getRaceStats, getRaceUpgradeCost, canBuyRaceUpgrade, buyRaceUpgrade, buyRaceBusinessUpgrade, manualRaceCompute, startRaceProject, restoreRace, serializeRace} from '../lib/pve-race.js';
 import {getFinanceStats, executeIPO} from '../lib/pve-market.js';
+import {getBusinessStats, getBusinessUpgradeStatus} from '../lib/business-game.js';
 import {getWorkloadPerformance} from '../lib/compute-model.js';
 
 const playerFor = race => race.companies.find(company => company.id === 'player');
@@ -236,6 +237,7 @@ test('bankrupt companies freeze jobs, investment and projects', () => {
   const game = structuredClone(player.game);
   const project = structuredClone(player.project);
   assert.equal(buyRaceUpgrade(race, 'alu').ok, false);
+  assert.equal(buyRaceBusinessUpgrade(race, 'cuda').ok, false);
   assert.equal(startRaceProject(race).ok, false);
   assert.deepEqual(manualRaceCompute(race), []);
   tickRace(race, 30);
@@ -324,4 +326,105 @@ test('save sanitation rebuilds canonical names, jobs, requirements, stock state 
   assert.ok(playerFor(restored).game.activeJob.work > 0);
   assert.ok(playerFor(restored).game.activeJob.reward < 100);
   assert.equal(RACE_UPGRADES.length, 10);
+});
+
+test('business purchases spend cash once without creating orders, sales or financing income', () => {
+  const race = createRace(0);
+  const player = playerFor(race);
+  assert.equal(buyRaceBusinessUpgrade(race, 'unknown').ok, false);
+  assert.equal(buyRaceBusinessUpgrade(race, 'cuda').ok, false);
+  establishProject(player);
+  const before = {money: player.game.money, earned: player.game.totalEarned,
+    revenue: player.finance.totalRevenue, costs: player.finance.totalCosts, completed: player.game.completed};
+  const quote = getBusinessUpgradeStatus(player.game, 'cuda');
+  assert.equal(quote.ok, true);
+  const result = buyRaceBusinessUpgrade(race, 'cuda');
+  assert.equal(result.ok, true);
+  assert.equal(player.game.money, before.money - quote.cost);
+  assert.equal(player.game.totalEarned, before.earned);
+  assert.equal(player.finance.totalRevenue, before.revenue);
+  assert.equal(player.finance.totalCosts, before.costs);
+  assert.equal(player.game.completed, before.completed);
+  assert.deepEqual(getRaceStats(race).player.business, getBusinessStats(player.game));
+  assert.ok(race.logs.some(event => event.type === 'business-upgrade' && event.companyId === 'player'));
+  assert.ok(player.finance.history.length > 0);
+});
+
+test('software and interconnect project benefits apply once to the measured service rate', () => {
+  const race = createRace(0);
+  const player = playerFor(race);
+  establishProject(player);
+  player.game.money = 30000;
+  const base = getRaceStats(race).player.projectRate;
+  for (const id of ['cuda', 'pcie', 'libraries', 'nvlink', 'ib_partner', 'rack']) assert.equal(buyRaceBusinessUpgrade(race, id).ok, true, id);
+  assert.equal(startRaceProject(race).ok, true);
+  const business = getBusinessStats(player.game);
+  assert.ok(business.projectMultiplier > 1);
+  const rate = getRaceStats(race).player.projectRate;
+  assert.ok(Math.abs(rate - base * business.projectMultiplier) < 1e-8);
+  tickRace(race, 1);
+  assert.ok(Math.abs(player.project.progress - rate) < 1e-8);
+});
+
+test('IB procurement strategies remain exclusive in the business race', () => {
+  const race = createRace(0);
+  const player = playerFor(race);
+  establishProject(player);
+  player.game.totalEarned = 20000;
+  player.game.money = 50000;
+  assert.equal(buyRaceBusinessUpgrade(race, 'pcie').ok, true);
+  assert.equal(buyRaceBusinessUpgrade(race, 'ib_partner').ok, true);
+  const before = structuredClone(player.game);
+  assert.equal(buyRaceBusinessUpgrade(race, 'mellanox').ok, false);
+  assert.deepEqual(player.game, before);
+  assert.equal(getBusinessStats(player.game).networkRoute, 'partner');
+});
+
+test('saved system businesses and model work use the same offline company clock', () => {
+  const race = createRace(0);
+  const player = playerFor(race);
+  establishProject(player);
+  for (const id of ['cuda', 'pcie', 'libraries']) assert.equal(buyRaceBusinessUpgrade(race, id).ok, true, id);
+  startRaceProject(race);
+  tickRace(race, 40);
+  const serialized = serializeRace(race, 40000);
+  const restored = restoreRace(serialized, 160000);
+  const direct = structuredClone(race);
+  tickRace(direct, 120);
+  assert.ok(restored);
+  for (let index = 0; index < restored.companies.length; index += 1) {
+    const actual = restored.companies[index];
+    const expected = direct.companies[index];
+    assert.deepEqual(actual.game.business, expected.game.business);
+    assert.equal(actual.game.totalEarned, expected.game.totalEarned);
+    assert.ok(Math.abs(actual.game.money - expected.game.money) < 1e-8);
+    assert.ok(Math.abs(actual.project.progress - expected.project.progress) < 1e-8);
+    assert.ok(Math.abs(actual.finance.totalCosts - expected.finance.totalCosts) < 1e-8);
+  }
+});
+
+test('rivals retain their hardware plan and make distinct solvent optional business investments', () => {
+  const race = createRace(0);
+  const [lisa, grey] = race.companies.filter(company => company.id !== 'player');
+  for (const rival of [lisa, grey]) {
+    establishProject(rival);
+    for (const upgrade of RACE_UPGRADES) rival.game.levels[upgrade.id] = Math.min(2, upgrade.maxLevel);
+    rival.game.levels.alu = 7;
+    rival.game.totalEarned = 50000;
+    rival.game.money = 100000;
+    rival.aiPlanIndex = 25;
+    rival.project = {phase: 'complete', progress: 20000, work: 10000, commercialProgress: 10000, startedAt: 0, trainedAt: 0, completedAt: 0};
+  }
+  tickRace(race, 12);
+  assert.equal(getBusinessStats(lisa.game).networkRoute, 'acquire');
+  assert.equal(getBusinessStats(grey.game).networkRoute, 'partner');
+  assert.ok(getBusinessStats(lisa.game).rackCount > 0);
+  assert.ok(getBusinessStats(grey.game).rackCount > 0);
+  for (const rival of [lisa, grey]) {
+    const finance = getFinanceStats(rival);
+    assert.ok(finance.netFlow > 0);
+    assert.ok(rival.game.money >= finance.reserve);
+    assert.equal(finance.bankrupt, false);
+  }
+  assert.ok(race.logs.some(event => event.type === 'rival-business-upgrade'));
 });

@@ -1,6 +1,7 @@
 import {getWorkloadPerformance} from '../lib/compute-model.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {buyBusinessUpgrade, getBusinessStats} from '../lib/business-game.js';
 import {
   UPGRADES, CHAPTERS, createGame, getStats, getUpgradeCost, canBuyUpgrade,
   buyUpgrade, tickGame, manualCompute, startChallenge, restoreGame, serializeGame,
@@ -19,6 +20,64 @@ function buyLevels(state, levels) {
 
 const starterHardware = {alu: 7, l1: 2, dram: 1, l2: 1, scheduler: 1};
 const fullHardware = {alu: 12, clock: 4, l1: 3, dram: 3, l2: 3, scheduler: 3, tensor: 4, hbm: 3, tma: 3, tmem: 3};
+
+test('software ecosystem earns a customer premium without changing single GPU throughput', () => {
+  const state = createGame(0);
+  buyLevels(state, fullHardware);
+  state.money = 10000;
+  const before = getStats(state);
+  const earned = state.totalEarned;
+  assert.equal(buyBusinessUpgrade(state, 'cuda').ok, true);
+  const after = getStats(state);
+  assert.equal(state.totalEarned, earned, 'research spending is not operating revenue');
+  assert.equal(after.throughput, before.throughput);
+  assert.deepEqual(after.performance, before.performance);
+  assert.ok(after.incomeRate > before.incomeRate);
+  const job = {...state.activeJob};
+  const cash = state.money;
+  const events = tickGame(state, job.work / getWorkloadPerformance(state.levels, job.kind).throughput);
+  const reward = Math.round(job.reward * after.business.revenueMultiplier * 100) / 100;
+  assert.equal(state.completed, 1);
+  assert.equal(state.money, cash + reward);
+  assert.equal(state.totalEarned, earned + reward);
+  assert.equal(events.find(event => event.type === 'job-complete').reward, reward);
+});
+
+test('networked racks accelerate large application delivery and survive offline save recovery', () => {
+  const base = createGame(0);
+  buyLevels(base, fullHardware);
+  base.money = 100000;
+  base.won = CHAPTERS.slice(0, 6).map(chapter => chapter.id);
+  const system = structuredClone(base);
+  for (const id of ['cuda', 'pcie', 'libraries', 'nvlink', 'ib_partner', 'rack']) {
+    assert.equal(buyBusinessUpgrade(system, id).ok, true, id);
+  }
+  assert.equal(startChallenge(base, 'training').ok, true);
+  assert.equal(startChallenge(system, 'training').ok, true);
+  tickGame(base, 10);
+  tickGame(system, 10);
+  assert.ok(system.challenge.progress > base.challenge.progress);
+  assert.equal(getStats(system).throughput, getStats(base).throughput);
+  const saved = serializeGame(system, 10000);
+  const restored = restoreGame(saved, 20000);
+  const uninterrupted = structuredClone(system);
+  tickGame(uninterrupted, 10);
+  assert.equal(restored.offline.seconds, 10);
+  assert.deepEqual(restored.state.business, system.business);
+  assert.deepEqual(restored.state.challenge, uninterrupted.challenge);
+  assert.deepEqual(restored.state.won, uninterrupted.won);
+  assert.equal(restored.state.money, uninterrupted.money);
+});
+
+test('old workshop saves gain an empty business tree and corrupt unlocks cannot fabricate a system', () => {
+  const legacy = createGame(0);
+  delete legacy.business;
+  const restored = restoreGame(legacy, 0).state;
+  assert.equal(getBusinessStats(restored).installedCount, 0);
+  assert.equal(getStats(restored).incomeRate, getStats(createGame(0)).incomeRate);
+  legacy.business = {version: 1, levels: {cuda: 3, pcie: 3, libraries: 3, nvlink: 3, ib_partner: 1, rack: 3}};
+  assert.equal(getBusinessStats(restoreGame(legacy, 0).state).installedCount, 0);
+});
 
 test('the garage starts with exactly one ALU, no cache, no memory and real FP32 contracts', () => {
   const state = createGame(1000);
