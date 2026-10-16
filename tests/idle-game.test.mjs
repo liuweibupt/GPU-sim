@@ -4,8 +4,9 @@ import assert from 'node:assert/strict';
 import {buyBusinessUpgrade, getBusinessStats} from '../lib/business-game.js';
 import {
   UPGRADES, CHAPTERS, createGame, getStats, getUpgradeCost, canBuyUpgrade,
-  buyUpgrade, tickGame, manualCompute, startChallenge, restoreGame, serializeGame,
+  buyUpgrade, buyGameBusinessUpgrade, chooseGameNarrative, tickGame, manualCompute, startChallenge, restoreGame, serializeGame,
 } from '../lib/idle-game.js';
+import {getNarrativeView} from '../lib/game-narrative.js';
 
 function buyLevels(state, levels) {
   state.money = 1e12;
@@ -20,6 +21,64 @@ function buyLevels(state, levels) {
 
 const starterHardware = {alu: 7, l1: 2, dram: 1, l2: 1, scheduler: 1};
 const fullHardware = {alu: 12, clock: 4, l1: 3, dram: 3, l2: 3, scheduler: 3, tensor: 4, hbm: 3, tma: 3, tmem: 3};
+
+test('client letters emerge from real investment and responses change business without adding cash', () => {
+  const game = createGame(0);
+  buyLevels(game, fullHardware);
+  game.money = 100000;
+  assert.equal(getNarrativeView(game).pending, null);
+  assert.equal(buyGameBusinessUpgrade(game, 'cuda').ok, true);
+  const letter = getNarrativeView(game).pending;
+  assert.equal(letter.id, 'software-letter');
+  assert.equal(letter.options.length, 2);
+  const alternative = structuredClone(game);
+  const money = game.money;
+  const income = game.totalEarned;
+  assert.equal(chooseGameNarrative(game, letter.id, 'commons').ok, true);
+  assert.equal(chooseGameNarrative(alternative, letter.id, 'anchor').ok, true);
+  assert.equal(game.money, money);
+  assert.equal(game.totalEarned, income);
+  assert.notEqual(getStats(game).business.revenueMultiplier, getStats(alternative).business.revenueMultiplier);
+  assert.equal(getStats(game).throughput, getStats(alternative).throughput);
+  tickGame(game, 120);
+  tickGame(alternative, 120);
+  assert.notEqual(game.money, alternative.money, 'responses affect actual delivered invoices');
+  assert.ok(getNarrativeView(game).events.length >= 2);
+  assert.equal(chooseGameNarrative(game, letter.id, 'anchor').ok, false, 'a sent reply cannot be silently rewritten');
+});
+
+test('narrative consequences and their delayed letters persist through offline catch-up', () => {
+  const game = createGame(0);
+  buyLevels(game, fullHardware);
+  game.money = 100000;
+  assert.equal(buyGameBusinessUpgrade(game, 'cuda').ok, true);
+  assert.equal(chooseGameNarrative(game, 'software-letter', 'commons').ok, true);
+  tickGame(game, 20);
+  const saved = serializeGame(game, 20000);
+  const continuous = structuredClone(game);
+  tickGame(continuous, 100);
+  const resumed = restoreGame(saved, 120000).state;
+  assert.equal(resumed.money, continuous.money);
+  assert.equal(resumed.totalEarned, continuous.totalEarned);
+  assert.deepEqual(getNarrativeView(resumed), getNarrativeView(continuous));
+  assert.deepEqual(resumed.narrative.decisions, game.narrative.decisions);
+});
+
+test('protecting renewals and expanding delivery retain different real benefits in the workshop', () => {
+  const careful = createGame(0);
+  buyLevels(careful, fullHardware);
+  careful.money = 100000;
+  for (const id of ['cuda', 'pcie', 'libraries', 'ib_partner']) assert.equal(buyGameBusinessUpgrade(careful, id).ok, true);
+  assert.equal(chooseGameNarrative(careful, 'software-letter', 'commons').ok, true);
+  assert.equal(chooseGameNarrative(careful, 'network-night', 'shared').ok, true);
+  const expand = structuredClone(careful);
+  assert.equal(chooseGameNarrative(careful, 'deployment-window', 'careful').ok, true);
+  assert.equal(chooseGameNarrative(expand, 'deployment-window', 'expand').ok, true);
+  assert.ok(getStats(careful).business.projectMultiplier < getStats(expand).business.projectMultiplier);
+  tickGame(careful, 120);
+  tickGame(expand, 120);
+  assert.ok(careful.money > expand.money, 'retained customer renewals matter even when workshop upkeep is not charged');
+});
 
 test('software ecosystem earns a customer premium without changing single GPU throughput', () => {
   const state = createGame(0);

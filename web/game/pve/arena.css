@@ -1839,6 +1839,23 @@
   }
 }
 
+.race-main-column > .narrative-panel {
+  margin-bottom: 0;
+}
+.race-main-column .narrative-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.race-main-column .narrative-choice {
+  min-height: 104px;
+}
+@media (max-width: 720px) {
+  .race-main-column .narrative-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .race-main-column .narrative-choice {
+    min-height: 82px;
+  }
+}
 .race-business .business-overview {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }

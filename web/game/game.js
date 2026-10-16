@@ -12,14 +12,16 @@ import {
   startChallenge,
   restoreGame,
   serializeGame,
-} from "../../lib/idle-game.js?v=systems-ecosystem-1";
+  chooseGameNarrative,
+  buyGameBusinessUpgrade,
+} from "../../lib/idle-game.js?v=narrative-branches-1";
 
 import {
   BUSINESS_UPGRADES,
   getBusinessStats,
   getBusinessUpgradeStatus,
-  buyBusinessUpgrade,
-} from "../../lib/business-game.js?v=systems-ecosystem-1";
+} from "../../lib/business-game.js?v=narrative-branches-1";
+import { getNarrativeView } from "../../lib/game-narrative.js?v=narrative-branches-1";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -255,7 +257,7 @@ function createShop() {
 
 function createBusinessShop() {
   $("business-grid").innerHTML = BUSINESS_UPGRADES.map((upgrade) =>
-    `<article class="upgrade-card business-card" id="business-${upgrade.id}"><div class="upgrade-top"><div class="upgrade-icon">${icon(upgrade.id)}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${escapeHTML(upgrade.subtitle)}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><p class="business-benefit">${escapeHTML(upgrade.benefit)}</p><p class="upgrade-benefit business-status"></p><button class="upgrade-buy" data-business-buy="${upgrade.id}" aria-label="研发${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
+    `<article class="upgrade-card business-card" id="business-${upgrade.id}"><div class="upgrade-top"><div class="upgrade-icon">${icon(upgrade.id)}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${escapeHTML(upgrade.subtitle)}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><details class="business-budget"><summary>预算与验收条件</summary><p class="business-benefit">${escapeHTML(upgrade.benefit)}</p><p class="business-recurring">工坊研发一次付费，无持续运营费用。</p><p class="upgrade-benefit business-status"></p></details><button class="upgrade-buy" data-business-buy="${upgrade.id}" aria-label="研发${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
   ).join("");
 }
 
@@ -265,10 +267,18 @@ function renderBusiness(stats) {
   $("business-premium").textContent = `×${format(business.revenueMultiplier, 2)}`;
   $("business-project").textContent = `×${format(business.projectMultiplier, 2)}`;
   $("business-racks").textContent = format(business.rackCount);
-  $("business-summary").textContent = `${business.summary} · 工坊研发一次付费`;
+  $("business-ledger-summary").textContent = `${business.summary} · 工坊研发一次付费`;
+  $("business-summary").textContent = business.rackCount
+    ? "机房的风扇彻夜不停。交付组又把一张客户留言压在了工单下面。"
+    : business.softwareLevel
+      ? "群聊里开始有人替陌生人解答问题。那几页文档，正在离开这间车库。"
+      : "焊台旁放着几份手写提案。工程师们还没回家，等你来聊聊。";
+  let invitations = 0;
   for (const upgrade of BUSINESS_UPGRADES) {
     const status = getBusinessUpgradeStatus(state, upgrade.id);
     const card = $(`business-${upgrade.id}`);
+    card.hidden = !status.level && status.missing.some((item) => !item.startsWith("资金 "));
+    if (!card.hidden) invitations++;
     card.classList.toggle("locked", !status.ok && !status.maxed);
     card.classList.toggle("purchasable", status.ok);
     card.classList.toggle("installed", status.level > 0);
@@ -277,15 +287,42 @@ function renderBusiness(stats) {
       : status.level ? `LV.${String(status.level).padStart(2, "0")}` : "待研发";
     card.querySelector(".business-status").textContent = status.maxed
       ? "已完成此项研发"
-      : status.ok ? "前置已齐备 · 可以投资" : status.reason;
+      : status.ok ? "预算已备齐，验收条件已满足。" : status.reason;
     const button = card.querySelector("button");
     button.disabled = !status.ok;
-    button.title = status.reason || `投资 ${cash(status.cost)}，${upgrade.benefit}`;
+    button.title = status.reason || `研发预算 ${cash(status.cost)}`;
     button.querySelector("span").textContent = status.maxed
       ? "已完成 ✓"
-      : status.ok ? status.level ? "继续研发 ↗" : "投资研发 +" : "尚未就绪";
+      : status.ok ? status.level ? "追加研发 ↗" : "批准提案 +" : "预算待备齐";
     button.querySelector("strong").textContent = status.maxed ? "MAX" : cash(status.cost);
   }
+  $("business-empty").hidden = invitations > 0;
+}
+
+let narrativeSignature = "";
+function narrativeParagraphs(value) {
+  return String(Array.isArray(value) ? value.join("\n") : value || "")
+    .split(/\n+/).filter(Boolean).map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join("");
+}
+function renderNarrative() {
+  const view = getNarrativeView(state, { mode: "workshop" });
+  const signature = JSON.stringify(view);
+  if (signature === narrativeSignature) return;
+  narrativeSignature = signature;
+  $("narrative-state").textContent = view.pending ? "有一封信等你回" : view.ending ? "这一页已经写下" : "车库仍在营业";
+  $("narrative-current").innerHTML = view.pending
+    ? `<article class="narrative-letter"><div class="letter-sender"><span class="letter-mark" aria-hidden="true">✉</span><span>${escapeHTML(view.pending.speaker)}</span></div><h3 id="narrative-letter-title" tabindex="-1">${escapeHTML(view.pending.title)}</h3><div class="letter-body">${narrativeParagraphs(view.pending.body)}</div><div class="narrative-options" role="group" aria-labelledby="narrative-letter-title">${view.pending.options.map((option) => `<button type="button" class="narrative-choice" data-narrative-event="${escapeHTML(view.pending.id)}" data-narrative-option="${escapeHTML(option.id)}"><strong>${escapeHTML(option.label)}<span aria-hidden="true">↗</span></strong><span>${escapeHTML(option.detail)}</span></button>`).join("")}</div><p class="letter-footnote">信可以稍后回。工坊的订单照常流转。</p></article>`
+    : '<p class="narrative-quiet">桌上暂时没有未回的信。窗外天色渐暗，车间里的键盘声还在继续。</p>';
+  const recent = view.events.filter((event) => !event.id.startsWith("ending:")).slice(-4).reverse();
+  const latest = recent[0];
+  $("narrative-latest").hidden = !latest;
+  $("narrative-latest").innerHTML = latest ? `<div class="narrative-event-meta"><span>${escapeHTML(latest.speaker)} · 最近的回音</span><time>${time(latest.elapsed || 0)}</time></div><strong>${escapeHTML(latest.title)}</strong><div>${narrativeParagraphs(latest.body)}</div>` : "";
+  $("narrative-history").hidden = recent.length < 2;
+  $("narrative-events").innerHTML = recent.slice(1).map((event) => `<li><div class="narrative-event-meta"><span>${escapeHTML(event.speaker)}</span><time>${time(event.elapsed || 0)}</time></div><strong>${escapeHTML(event.title)}</strong><div>${narrativeParagraphs(event.body)}</div></li>`).join("");
+  $("narrative-ending").hidden = !view.ending;
+  $("narrative-ending").innerHTML = view.ending
+    ? `<span class="narrative-ending-label">多年后，人们这样记得这间工坊</span><h3 tabindex="-1">${escapeHTML(view.ending.title)}</h3>${narrativeParagraphs(view.ending.body)}<div class="narrative-epilogue">${narrativeParagraphs(view.ending.epilogue)}</div><button type="button" class="outline-button" data-narrative-continue>回到仍亮着灯的工坊 <span aria-hidden="true">→</span></button><small>这一页已存档，经营仍会继续。</small>`
+    : "";
 }
 
 function renderShop() {
@@ -422,57 +459,39 @@ function requirementText(id, minimum) {
 function renderMentor(stats) {
   const lv = state.levels;
   let quote =
-    "先别急着改变世界。<br />把这单浮点数算完，<br />我们就有钱买缓存了。";
-  let target = "攒够 $24，安装第一块 L1 Cache";
-  let progress = Math.min(1, state.money / 24);
+    "钥匙只有两把。<br />一把在你手里，<br />一把今晚留在车库。";
+  let target = state.activeJob ? `${state.activeJob.client}的订单正在处理` : "门口的营业灯还亮着";
+  let progress = state.activeJob ? Math.min(1, state.activeJob.progress / state.activeJob.work) : 0;
   let chapter = "序章 / 车库创业";
   if (lv.l1) {
     quote = "常用的数据放手边，<br />省下来的每一次等待，<br />都是利润。";
-    target = "安装 DRAM，让数据有个家";
-    progress = lv.dram ? 1 : Math.min(1, state.money / 65);
     chapter = "研发 / 存储起步";
   }
   if (lv.dram) {
-    quote = "任务是客户的梦想，<br />硬件是我们的工具。<br />下一步，你来选。";
-    target = `发展并行工坊 · 当前 ${stats.aluCount} 颗 ALU`;
-    progress = Math.min(1, stats.aluCount / 8);
+    quote = "刚接到客户的电话。<br />他问，明天还能不能<br />找到今天接电话的人。";
     chapter = "经营 / 并行工坊";
   }
   if (stats.aluCount >= 8 && lv.l2) {
     quote =
       "有人送来一堆猫的照片。<br />这次不只算小数，<br />我们要让机器看懂世界。";
-    target = "应用任务：挑战 AlexNet";
-    progress = state.won.includes("alexnet") ? 1 : 0;
     chapter = "委托 / 视觉时代";
   }
   if (lv.tensor) {
     quote = "矩阵乘法来了，<br />咱们给它安排一个<br />真正的专业工位。";
-    target = "继续研发高带宽显存 HBM";
-    progress = lv.hbm
-      ? 1
-      : Math.min(1, state.money / getUpgradeCost(state, "hbm"));
     chapter = "研发 / 张量时代";
   }
   if (lv.tma) {
     quote =
       "计算的同时，<br />下一批数据已经在路上。<br />等箱子的日子，过去了。";
-    target = "研发 TMEM，安放张量中间结果";
-    progress = lv.tmem
-      ? 1
-      : Math.min(1, state.money / getUpgradeCost(state, "tmem"));
     chapter = "研发 / 异步时代";
   }
   if (lv.tmem) {
     quote = "当年那颗 ALU，<br />大概也没想到，<br />今天会这么热闹。";
-    target = "发展软件生态与机柜系统，完成剩余应用委托";
-    progress = state.won.length / CHAPTERS.length;
     chapter = "经营 / AI 工厂";
   }
   if (state.won.length === CHAPTERS.length) {
-    quote = "从一颗 ALU 到一座工厂。<br />好，现在，<br />把下一单拿来。";
-    target = "全部应用已交付 · 继续研发互联、机柜与软件生态";
-    progress = 1;
-    chapter = "终章 / 故事继续";
+    quote = "最早那张收据，<br />我还留着。<br />上面的字都快褪色了。";
+    chapter = "经营 / 灯火未熄";
   }
   $("mentor-quote").innerHTML = quote;
   $("mission-text").textContent = target;
@@ -638,6 +657,7 @@ function render() {
   renderBusiness(stats);
   renderHardware(stats);
   renderMentor(stats);
+  renderNarrative();
   const service = stats.performance;
   $("service-model-summary").textContent =
     `${service.kind.toUpperCase()} · 工作集 ${format(service.features.workingSetBytes / 1024, 1)} KiB · ${format(service.cycles, 1)} 逻辑周期 · 估算缓存命中 ${format(service.hitRate * 100, 1)}%`;
@@ -661,7 +681,7 @@ function setView(view) {
     `${view === "history" ? "应用任务" : view === "journal" ? "经营日志" : "算力工坊"}<span class="heading-dot">.</span>`;
   $("page-subtitle").textContent =
     view === "history"
-      ? "客户带来新需求，你用自己的 GPU 交付。研发路线，由你决定。"
+      ? "客户带来新需求，有的写在合同里，有的藏在交付后的电话里。"
       : view === "journal"
         ? "从第一笔收入，到第一座 AI 工厂，记住每个小小的进步。"
         : "一颗 ALU，一个车库。下一个计算时代，由你建造。";
@@ -733,22 +753,28 @@ $("business-grid").addEventListener("click", (event) => {
   const button = event.target.closest("[data-business-buy]");
   if (!button) return;
   const id = button.dataset.businessBuy;
-  const result = buyBusinessUpgrade(state, id);
+  const result = buyGameBusinessUpgrade(state, id);
   if (!result.ok) return toast(result.reason, "error");
   const upgrade = BUSINESS_UPGRADES.find((item) => item.id === id);
-  if (result.level === 1) {
-    state.story.push({
-      id: `business-upgrade-${id}`,
-      type: "upgrade",
-      message: `黄Sir 完成了${upgrade.name}研发。${upgrade.benefit}。`,
-      elapsed: state.elapsed,
-    });
-    state.story = state.story.slice(-40);
-  }
-  toast(`${upgrade.name} 研发完成 · ${upgrade.benefit}`, "reward");
+  toast(`${upgrade.name}：提案已落地。`, "reward");
   playSound("upgrade");
   save();
   render();
+});
+$("narrative-current").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-narrative-option]");
+  if (!button) return;
+  const result = chooseGameNarrative(state, button.dataset.narrativeEvent, button.dataset.narrativeOption);
+  if (!result.ok) return toast(result.reason, "error");
+  save();
+  render();
+  $("narrative-title").focus({ preventScroll: true });
+  toast("回信已寄出。", "reward");
+});
+$("narrative-ending").addEventListener("click", (event) => {
+  if (!event.target.closest("[data-narrative-continue]")) return;
+  $("compute-button").scrollIntoView({ behavior: preferences.reduceMotion ? "instant" : "smooth", block: "center" });
+  $("compute-button").focus({ preventScroll: true });
 });
 function focusModule(event) {
   const module = event.target.closest("[data-module]");

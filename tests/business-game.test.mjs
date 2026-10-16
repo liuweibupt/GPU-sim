@@ -83,7 +83,7 @@ test('supplier and acquisition routes trade capital for upkeep and remain exclus
   assert.ok(partnerStats.operatingCost > acquiredStats.operatingCost);
   assert.equal(buyBusinessUpgrade(partner, 'mellanox').ok, false);
   assert.equal(buyBusinessUpgrade(acquired, 'ib_partner').ok, false);
-  assert.match(getBusinessUpgradeStatus(partner, 'mellanox').reason, /已选择/);
+  assert.match(getBusinessUpgradeStatus(partner, 'mellanox').reason, /合约仍在执行/);
 });
 
 test('software improves customer value and projects independently of the single-GPU model', () => {
@@ -109,7 +109,7 @@ test('PCIe racks work without NVLink, while NVLink pays off only in networked ra
   assert.equal(getBusinessStats(game).projectMultiplier, softwareOnly);
   assert.equal(game.business.levels.pcie, 1, 'PCIe coexists with NVLink');
   assert.equal(buyBusinessUpgrade(game, 'rack').ok, false);
-  assert.match(getBusinessUpgradeStatus(game, 'rack').reason, /供应商合作或收购/);
+  assert.match(getBusinessUpgradeStatus(game, 'rack').reason, /网络.*尚未落实/);
   purchase(game, 'ib_partner');
   assert.equal(getBusinessStats(game).projectMultiplier, softwareOnly, 'network alone does not activate NVLink');
   purchase(game, 'rack');

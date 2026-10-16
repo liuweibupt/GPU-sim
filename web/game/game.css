@@ -2411,7 +2411,208 @@ dialog p:not(.eyebrow) {
   line-height: 1.6;
 }
 
-/* Business research is a second progression track beside chip components. */
+/* Letters reveal the people affected by the company's current commitments. */
+.narrative-panel {
+  margin-bottom: 20px;
+  border-color: #4b5341;
+  background: linear-gradient(120deg, #20251c, #151c17 65%);
+}
+.narrative-panel .panel-heading {
+  min-height: 67px;
+  border-bottom-color: #3a4333;
+}
+.narrative-panel .panel-heading > div {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+.narrative-panel .panel-heading h2 { font-size: 15px; }
+.narrative-kicker {
+  color: #a2ad8e;
+  font: 8px var(--mono);
+  letter-spacing: 1.4px;
+}
+.narrative-state {
+  color: #bdcca8;
+  font-size: 10px;
+  text-align: right;
+}
+.narrative-letter { padding: 23px 25px 15px; }
+.letter-sender {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b9c5a7;
+  font-size: 11px;
+}
+.letter-mark { font-size: 17px; color: #d3d7b4; }
+.narrative-letter h3, .narrative-ending h3 {
+  margin: 11px 0 15px;
+  color: #e8ebd8;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.letter-body {
+  max-width: 78ch;
+  color: #c2cbbb;
+  font-size: 13px;
+  line-height: 1.95;
+}
+.letter-body p + p { margin-top: 9px; }
+.narrative-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 21px 0 12px;
+}
+.narrative-choice {
+  min-width: 0;
+  min-height: 92px;
+  padding: 14px 15px;
+  border: 1px solid #536149;
+  border-radius: 7px;
+  background: #293122;
+  text-align: left;
+  transition: background .15s, border-color .15s;
+}
+.narrative-choice:not(:disabled):hover {
+  background: #323e2a;
+  border-color: #a6be8b;
+}
+.narrative-choice strong {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #e3ebd5;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.narrative-choice strong > span { color: #b8cc9f; }
+.narrative-choice > span {
+  display: block;
+  margin-top: 7px;
+  color: #aeba9f;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.narrative-choice:disabled { opacity: .55; cursor: default; }
+.narrative-choice:focus-visible,
+.narrative-panel button:focus-visible,
+.narrative-panel summary:focus-visible,
+.business-budget summary:focus-visible,
+.business-ledger > summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+.letter-footnote, .narrative-quiet {
+  color: #91a080;
+  font-size: 10px;
+  line-height: 1.9;
+}
+.narrative-quiet { margin: 0; padding: 19px 25px; }
+.narrative-history { border-top: 1px solid #35402e; padding: 0 25px 8px; }
+.narrative-history summary {
+  width: fit-content;
+  min-height: 42px;
+  padding: 13px 0 8px;
+  color: #b8c4a6;
+  font-size: 11px;
+  cursor: pointer;
+}
+.narrative-history ol { list-style: none; padding: 0; margin: 0; }
+.narrative-history li { border-top: 1px solid #303b2a; padding: 14px 0; }
+.narrative-event-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #8e9d80;
+  font-size: 9px;
+  line-height: 1.8;
+  margin-bottom: 6px;
+}
+.narrative-event-meta time { font-family: var(--mono); white-space: nowrap; }
+.narrative-history li > strong, .narrative-latest > strong {
+  display: block;
+  color: #c7d2bb;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+.narrative-history li p, .narrative-latest p {
+  color: #a0ae94;
+  font-size: 11px;
+  line-height: 1.9;
+  max-width: 85ch;
+}
+.narrative-latest {
+  border-top: 1px solid #35402e;
+  background: #182019;
+  padding: 17px 25px;
+}
+.narrative-ending {
+  padding: 23px 25px;
+  border-top: 1px solid #756344;
+  background: linear-gradient(125deg, #363022, #24251d);
+}
+.narrative-ending-label {
+  color: #d1bc8e;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.narrative-ending > p, .narrative-epilogue p {
+  max-width: 80ch;
+  color: #cec8b4;
+  font-size: 12px;
+  line-height: 1.95;
+  margin: 9px 0;
+}
+.narrative-epilogue {
+  border-left: 2px solid #8a7852;
+  padding-left: 15px;
+  margin: 16px 0 21px;
+}
+.narrative-ending > small {
+  display: block;
+  color: #a79e86;
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.business-ledger { margin: 0 0 16px; }
+.business-ledger > summary, .business-budget summary {
+  color: #a8b69a;
+  font-size: 10px;
+  cursor: pointer;
+  line-height: 1.8;
+  padding: 8px 0;
+  width: fit-content;
+}
+.business-ledger > summary { min-height: 38px; margin-bottom: 8px; }
+.business-budget { margin: 3px 0 8px; }
+.business-budget .business-status { min-height: 0; margin-bottom: 4px; }
+.business-empty {
+  color: #8e9d85;
+  border: 1px dashed #364331;
+  border-radius: 7px;
+  padding: 17px;
+  font-size: 11px;
+  line-height: 1.9;
+}
+@media (max-width: 720px) {
+  .narrative-panel .panel-heading { padding: 12px 16px; }
+  .narrative-kicker { font-size: 7px; letter-spacing: 1px; }
+  .narrative-state { font-size: 9px; max-width: 110px; }
+  .narrative-letter { padding: 18px 16px 12px; }
+  .narrative-letter h3, .narrative-ending h3 { font-size: 17px; }
+  .letter-body { font-size: 12px; }
+  .narrative-options { grid-template-columns: minmax(0, 1fr); margin-top: 16px; }
+  .narrative-choice { min-height: 82px; padding: 12px 13px; }
+  .narrative-history { padding: 0 16px 8px; }
+  .narrative-latest, .narrative-ending { padding: 17px 16px; }
+  .narrative-quiet { padding: 17px 16px; }
+}
+
+/* Research invitations arrive as the laboratory becomes able to act on them. */
 .business-section {
   margin-top: 30px;
   padding-top: 24px;

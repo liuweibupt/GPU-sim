@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {RACE_COMPANIES, RACE_MILESTONES, GPT3_REQUIREMENTS, PROJECT_PROFILE, RACE_UPGRADES, createRace, tickRace, getRaceStats, getRaceUpgradeCost, canBuyRaceUpgrade, buyRaceUpgrade, buyRaceBusinessUpgrade, manualRaceCompute, startRaceProject, restoreRace, serializeRace} from '../lib/pve-race.js';
+import {RACE_COMPANIES, RACE_MILESTONES, GPT3_REQUIREMENTS, PROJECT_PROFILE, RACE_UPGRADES, createRace, tickRace, getRaceStats, getRaceUpgradeCost, canBuyRaceUpgrade, buyRaceUpgrade, buyRaceBusinessUpgrade, chooseRaceNarrative, manualRaceCompute, startRaceProject, restoreRace, serializeRace} from '../lib/pve-race.js';
 import {getFinanceStats, executeIPO} from '../lib/pve-market.js';
 import {getBusinessStats, getBusinessUpgradeStatus} from '../lib/business-game.js';
 import {getWorkloadPerformance} from '../lib/compute-model.js';
@@ -12,6 +12,15 @@ function establishProject(company) {
   company.game.totalEarned = 10000;
   company.game.money = 3000;
   for (const [id, required] of Object.entries(GPT3_REQUIREMENTS)) company.game.levels[id] = required;
+}
+
+function establishCorrespondence(race) {
+  const player = playerFor(race);
+  establishProject(player);
+  player.game.totalEarned = 20000;
+  player.game.money = 50000;
+  for (const id of ['cuda', 'pcie', 'libraries', 'ib_partner', 'rack']) assert.equal(buyRaceBusinessUpgrade(race, id).ok, true, id);
+  return player;
 }
 
 test('three companies open independent businesses with one ALU and no cash, cache or memory', () => {
@@ -234,12 +243,14 @@ test('bankrupt companies freeze jobs, investment and projects', () => {
   establishProject(player);
   startRaceProject(race);
   player.finance.bankrupt = true;
-  const game = structuredClone(player.game);
   const project = structuredClone(player.project);
   assert.equal(buyRaceUpgrade(race, 'alu').ok, false);
   assert.equal(buyRaceBusinessUpgrade(race, 'cuda').ok, false);
   assert.equal(startRaceProject(race).ok, false);
   assert.deepEqual(manualRaceCompute(race), []);
+  tickRace(race, 1);
+  assert.equal(getRaceStats(race).player.narrative.ending.id, 'closure');
+  const game = structuredClone(player.game);
   tickRace(race, 30);
   assert.deepEqual(player.game, game);
   assert.deepEqual(player.project, project);
@@ -427,4 +438,138 @@ test('rivals retain their hardware plan and make distinct solvent optional busin
     assert.equal(finance.bankrupt, false);
   }
   assert.ok(race.logs.some(event => event.type === 'rival-business-upgrade'));
+});
+
+test('a letter changes actual customer prices, demand and support costs without creating sales', () => {
+  const race = createRace(0);
+  const player = establishCorrespondence(race);
+  const before = getRaceStats(race).player;
+  const opening = {cash: player.game.money, earned: player.game.totalEarned,
+    revenue: player.finance.totalRevenue, costs: player.finance.totalCosts};
+  assert.equal(before.narrative.pending.id, 'software-letter');
+  assert.equal(chooseRaceNarrative(race, 'software-letter', 'anchor').ok, true);
+  const after = getRaceStats(race).player;
+  assert.equal(after.marketDemand, before.marketDemand - 1);
+  assert.ok(Math.abs(after.finance.operatingCost - before.finance.operatingCost - .18) < 1e-8);
+  assert.ok(Math.abs(after.business.revenueMultiplier / before.business.revenueMultiplier - 1.12) < 1e-8);
+  assert.equal(after.incomeRate, after.finance.incomeRate);
+  assert.equal(player.game.money, opening.cash);
+  assert.equal(player.game.totalEarned, opening.earned);
+  assert.equal(player.finance.totalRevenue, opening.revenue);
+  assert.equal(player.finance.totalCosts, opening.costs);
+  const invoice = player.game.activeJob;
+  invoice.progress = invoice.work - .01;
+  const reward = Math.round(invoice.reward * after.business.revenueMultiplier * 100) / 100;
+  manualRaceCompute(race);
+  assert.ok(Math.abs(player.game.totalEarned - opening.earned - reward) < 1e-8);
+  assert.ok(Math.abs(player.finance.totalRevenue - opening.revenue - reward) < 1e-8);
+  assert.equal(player.finance.totalCosts, opening.costs, 'answering or manually completing an invoice does not advance operating time');
+  assert.equal(chooseRaceNarrative(race, 'software-letter', 'commons').ok, false, 'the same letter cannot be answered twice');
+});
+
+test('offline letters retain the same shared-clock chronology and economic consequences', () => {
+  const race = createRace(0);
+  establishCorrespondence(race);
+  assert.equal(chooseRaceNarrative(race, 'software-letter', 'commons').ok, true);
+  tickRace(race, 10);
+  assert.equal(chooseRaceNarrative(race, 'network-night', 'shared').ok, true);
+  const snapshot = serializeRace(race, 10000);
+  const direct = structuredClone(race);
+  tickRace(direct, 90);
+  const loaded = restoreRace(snapshot, 100000);
+  assert.ok(loaded);
+  assert.deepEqual(playerFor(loaded).game.narrative, playerFor(direct).game.narrative);
+  assert.deepEqual(getRaceStats(loaded).player.narrative.events.filter(event => event.id.endsWith(':later')).map(event => event.elapsed), [60, 70]);
+  for (const key of ['money', 'totalEarned']) assert.ok(Math.abs(playerFor(loaded).game[key] - playerFor(direct).game[key]) < 1e-8, key);
+  for (const key of ['totalCosts', 'totalRevenue']) assert.ok(Math.abs(playerFor(loaded).finance[key] - playerFor(direct).finance[key]) < 1e-8, key);
+});
+
+test('a rival headline leaves the player story open and a later delivery earns its own permanent ending', () => {
+  const race = createRace(0);
+  const player = establishCorrespondence(race);
+  for (const [eventId, optionId] of [['software-letter', 'commons'], ['network-night', 'shared'], ['deployment-window', 'careful']]) {
+    assert.equal(chooseRaceNarrative(race, eventId, optionId).ok, true);
+  }
+  const lisa = race.companies.find(company => company.id === 'lisa');
+  establishProject(lisa);
+  lisa.project = {phase: 'commercial', progress: 20000, work: 10000, commercialProgress: 9999, startedAt: 0, trainedAt: 0, completedAt: null};
+  tickRace(race, 1);
+  assert.equal(race.winnerId, 'lisa');
+  assert.equal(getRaceStats(race).player.narrative.ending, null);
+  player.project = {phase: 'commercial', progress: 20000, work: 10000, commercialProgress: 9999, startedAt: 0, trainedAt: 1, completedAt: null};
+  tickRace(race, 1);
+  const ending = structuredClone(getRaceStats(race).player.narrative.ending);
+  assert.equal(ending.id, 'common-language');
+  assert.equal(ending.evidence.result, 'late');
+  assert.equal(getRaceStats(race).player.narrative.pending, null);
+  assert.equal(chooseRaceNarrative(race, 'deployment-window', 'expand').ok, false);
+  tickRace(race, 100);
+  assert.deepEqual(getRaceStats(race).player.narrative.ending, ending);
+  const restored = restoreRace(serializeRace(race, 102000), 102000);
+  assert.ok(restored);
+  assert.deepEqual(getRaceStats(restored).player.narrative.ending, ending);
+});
+
+test('bankruptcy closes pending mail and freezes the awarded archive through offline time', () => {
+  const race = createRace(0);
+  const player = establishCorrespondence(race);
+  assert.equal(chooseRaceNarrative(race, 'software-letter', 'anchor').ok, true);
+  player.game.money = 0;
+  player.finance.debt = getFinanceStats(player).creditLimit - .01;
+  player.game.activeJob.work = 1e9;
+  player.game.queue = [];
+  player.game.arrivalClock = 1000;
+  tickRace(race, 1);
+  assert.equal(player.finance.bankrupt, true);
+  const archive = structuredClone(player.game.narrative);
+  assert.equal(archive.ending.id, 'closure');
+  assert.equal(getRaceStats(race).player.narrative.pending, null);
+  assert.equal(chooseRaceNarrative(race, 'network-night', 'dedicated').ok, false);
+  tickRace(race, 120);
+  assert.deepEqual(player.game.narrative, archive);
+  const restored = restoreRace(serializeRace(race, 121000), 241000);
+  assert.ok(restored);
+  assert.deepEqual(playerFor(restored).game.narrative, archive);
+  assert.equal(getRaceStats(restored).player.finance.incomeRate, 0);
+});
+
+test('a tie between rivals does not claim that the later player delivery shared their headline', () => {
+  const race = createRace(0);
+  const player = establishCorrespondence(race);
+  for (const company of race.companies.filter(company => company.id !== 'player')) {
+    establishProject(company);
+    company.project = {phase: 'commercial', progress: 20000, work: 10000, commercialProgress: 9999, startedAt: 0, trainedAt: 0, completedAt: null};
+  }
+  tickRace(race, 1);
+  assert.equal(race.winnerId, 'tie');
+  assert.deepEqual(race.milestones.commercial.winnerIds, ['lisa', 'grey']);
+  player.project = {phase: 'commercial', progress: 20000, work: 10000, commercialProgress: 9999, startedAt: 0, trainedAt: 1, completedAt: null};
+  tickRace(race, 1);
+  const ending = getRaceStats(race).player.narrative.ending;
+  assert.equal(ending.evidence.result, 'late');
+  const restored = restoreRace(serializeRace(race, 2000), 2000);
+  assert.ok(restored);
+  assert.deepEqual(getRaceStats(restored).player.narrative.ending, ending);
+});
+
+test('a completed save from before letters existed can revisit its history before receiving an ending', () => {
+  const race = createRace(0);
+  const player = establishCorrespondence(race);
+  player.project = {phase: 'complete', progress: 20000, work: 10000, commercialProgress: 10000, startedAt: 0, trainedAt: 0, completedAt: 0};
+  player.milestones = {firstCapital: 0, gpt3: 0, commercial: 0};
+  race.milestones.commercial = {winnerIds: ['player'], elapsed: 0};
+  race.winnerId = 'player';
+  race.status = 'finished';
+  delete player.game.narrative;
+  const loaded = restoreRace(serializeRace(race, 0), 0);
+  assert.ok(loaded);
+  assert.equal(getRaceStats(loaded).player.narrative.ending, null);
+  assert.equal(getRaceStats(loaded).player.narrative.pending.id, 'software-letter');
+  for (const [eventId, optionId] of [['software-letter', 'anchor'], ['network-night', 'dedicated'], ['deployment-window', 'expand']]) {
+    assert.equal(chooseRaceNarrative(loaded, eventId, optionId).ok, true);
+  }
+  const ending = getRaceStats(loaded).player.narrative.ending;
+  assert.equal(ending.id, 'signed-horizon');
+  assert.equal(ending.evidence.result, 'won');
+  assert.equal(ending.evidence.decisionCount, 3);
 });

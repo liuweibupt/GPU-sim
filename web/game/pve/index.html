@@ -14,9 +14,9 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c8f58b'/%3E%3Cpath d='m9 9 22 22M31 9 9 31M9 9h7M9 9v7M31 9h-7m7 0v7' fill='none' stroke='%231c2715' stroke-width='3'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="../game.css?v=systems-ecosystem-1" />
-    <link rel="stylesheet" href="./arena.css?v=systems-ecosystem-1" />
-    <script type="module" src="./arena.js?v=systems-ecosystem-1"></script>
+    <link rel="stylesheet" href="../game.css?v=narrative-branches-1" />
+    <link rel="stylesheet" href="./arena.css?v=narrative-branches-1" />
+    <script type="module" src="./arena.js?v=narrative-branches-1"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到创业赛</a>
@@ -166,7 +166,7 @@
               <div class="panel-heading">
                 <div>
                   <span class="section-number">01</span>
-                  <h2 id="arena-title">同一起点，不同选择</h2>
+                  <h2 id="arena-title" tabindex="-1">隔壁的灯也亮着</h2>
                   <span class="pill">LIVE ECONOMY</span>
                 </div>
                 <span id="leader-note" class="live-label"
@@ -185,7 +185,7 @@
                     class="founder-art"
                   />
                   <div class="founder-quote" id="player-quote">
-                    “先挣第一桶金，<br />再谈改变世界。”
+                    “灯还亮着，<br />你那边的电话<br />响了吗？”
                   </div>
                   <div class="founder-lineup" id="player-lineup">
                     1 ALU · 无缓存 · 无显存
@@ -197,7 +197,7 @@
                 <div class="founder-side lisa-side">
                   <div class="founder-title">
                     <span class="founder-team">RED TEAM / AI 对手</span>
-                    <h3>Lisa<span>稳健扩张，持续研发</span></h3>
+                    <h3>Lisa<span>她的电话也在响</span></h3>
                   </div>
                   <img
                     src="./assets/lisa.svg"
@@ -223,6 +223,17 @@
               </div>
             </section>
 
+            <section class="narrative-panel panel" aria-labelledby="narrative-title">
+              <div class="panel-heading">
+                <div><span class="narrative-kicker">AFTER THE MEETING</span><h2 id="narrative-title" tabindex="-1">桌上的来信</h2></div>
+                <span class="narrative-state" id="narrative-state">车间的灯还亮着</span>
+              </div>
+              <div id="narrative-current"></div>
+              <div id="narrative-latest" class="narrative-latest" aria-live="polite"></div>
+              <section id="narrative-ending" class="narrative-ending" aria-label="公司的这一页" hidden></section>
+              <details id="narrative-history" class="narrative-history" hidden><summary>翻开往来信件</summary><ol id="narrative-events"></ol></details>
+            </section>
+
             <section class="company-dashboard" aria-label="你的公司数据">
               <article>
                 <span>现金余额</span><strong id="cash-value">$0.00</strong
@@ -246,8 +257,8 @@
             <section id="risk-panel" class="risk-panel">
               <div>
                 <span id="risk-icon">◇</span
-                ><strong id="risk-title">先求生，再求快。</strong>
-                <p id="risk-copy">留一点现金周转，研发不是唯一的支出。</p>
+                ><strong id="risk-title">今天的账已经对齐。</strong>
+                <p id="risk-copy">财务室把运营账本送到了你的桌上。</p>
               </div>
               <div class="debt-meter">
                 <span>负债</span>
@@ -275,7 +286,7 @@
               <div class="project-content">
                 <div>
                   <p class="project-story" id="project-story">
-                    客户要的不再是一串数字，而是一台能续写故事的机器。先备齐计算、存储与调度，再把它变成产品。
+                    客户寄来半页未完的文字：如果这台机器能接着写下去呢？实验室里，新的计划有了名字。
                   </p>
                   <div
                     class="project-requirements"
@@ -457,11 +468,13 @@
           <div class="section-heading">
             <div>
               <span class="section-number">05</span>
-              <h2 id="business-title">系统与软件生态</h2>
-              <span class="section-description">把算力变成客户愿意持续使用的平台。</span>
+              <h2 id="business-title">实验室的灯还亮着</h2>
+              <span class="section-description">白板上的提案，来自真正要把机器用起来的人。</span>
             </div>
-            <span class="business-badge">PLATFORM STRATEGY</span>
+            <span class="business-badge">AFTER HOURS</span>
           </div>
+          <p class="business-summary" id="business-summary">实验室的白板还没擦。几位工程师把新的提案留在了你的桌上。</p>
+          <details class="business-ledger"><summary>翻开研发与运营账本</summary>
           <div class="business-overview">
             <div><span>客户需求加成</span><strong id="business-demand">+$0.00/s</strong><small>新增客户预算 / 秒</small></div>
             <div><span>客户溢价</span><strong id="business-premium">×1.00</strong><small>日常订单报酬</small></div>
@@ -469,12 +482,13 @@
             <div><span>机柜研发</span><strong id="business-racks">0</strong><small>系统规模等级</small></div>
             <div><span>生态运营费用</span><strong id="business-upkeep">$0.00/s</strong><small>已计入总运营成本</small></div>
           </div>
-          <p class="business-summary" id="business-summary">软件生态 LV.0 · 尚未选择网络路线</p>
+          <p class="business-summary" id="business-ledger-summary">软件生态 LV.0 · 实验室筹备中</p>
           <p class="business-explainer">PCIe、NVLink、IB 与机柜研发改善系统交付，CUDA 与开发者生态带来订单溢价，计算库改善系统交付。日常营业收入受客户总预算限制，达到上限后需要拓展需求。每项投入都有持续费用，购买前留意净现金流。</p>
+          </details>
           <div class="business-grid" id="business-grid"></div>
-          <p class="business-route-note"><span>采购路线选择</span>IB 供应商合作：低前期投入、高持续费用；团队并购：高前期投入、低持续费用。两条路径互斥，一次经营只能选择其一。</p>
+          <p class="business-empty" id="business-empty">工程师正把客户的抱怨记进笔记本。新的提案准备好后，会放到这张桌上。</p>
           <details class="business-history">
-            <summary>真实技术，架空经营：互联从哪里来？</summary>
+            <summary>史官附注</summary>
             <p>NVLink 是 NVIDIA 自研的 GPU 互联技术；PCIe 是行业标准。NVIDIA 于 2020 年完成对 Mellanox 的收购，扩展 InfiniBand（IB）与以太网能力。游戏里的团队并购借鉴这一商业路径，研发价格、收益与采购选择均为架空设定。</p>
           </details>
         </section>
@@ -527,7 +541,7 @@
         <div class="dialog-heading">
           <div>
             <p class="eyebrow">EVERY DECISION HAS A COST.</p>
-            <h2>创业赛怎么赢？</h2>
+            <h2>车库的钥匙交给你了</h2>
           </div>
           <button class="icon-button" aria-label="关闭规则">✕</button>
         </div>
@@ -537,27 +551,27 @@
             开始，AI 对手会自主投资。
           </li>
           <li>
-            <strong>接单赚钱，选择研发。</strong
-            >现金用于硬件、互联、机柜与软件生态，经营收入开放图纸。单 GPU 吞吐决定算力，生态带来客户溢价，互联系统改善项目交付。
+            <strong>订单自动流转。</strong
+            >机器会接单、计算、结算；点击「参与计算」或按空格可亲自加入。硬件、互联与软件提案会随着公司成长来到桌上，回信记录你与客户和团队的约定。
           </li>
           <li>
-            <strong>争夺三个先发时刻。</strong>累计经营收入 $1,000、完成 GPT-3
-            训练、拿下商业首单，分别记录最早到达者。
+            <strong>报纸只记得第一个。</strong>累计经营收入 $1,000、完成 GPT-3
+            训练、拿下商业首单，分别记录最早到达者。公司后来留下的故事，还会由客户、工程师和你的承诺来书写。
           </li>
           <li>
             <strong>IPO 和回购各有代价。</strong
             >融资稀释股权，回购消耗现金；股价不是现金余额。
           </li>
           <li>
-            <strong>留意净现金流。</strong
-            >硬件与生态持续产生成本，训练期间日常收入下降。IB 合作与团队并购的投入、持续费用不同且互斥；现金用完可透支，负债达到信用额度就会破产。
+            <strong>账本每天都在更新。</strong
+            >硬件、网络服务与客户承诺会产生持续费用，预算与验收条件可在各份提案内展开。训练期间日常收入下降；现金用完可透支，负债达到信用额度就会破产。
           </li>
         </ol>
         <p>
           比赛有独立存档，离线双方同步经营，最多计入 8
-          小时。先发冠军产生后，其余公司可以继续经营。随时可暂停全场或重开。
+          小时。第一则商业头条出现后，公司仍会继续经营。来信可稍后回复，故事的这一页写完后也可以留在赛场。随时可暂停全场或重开。
         </p>
-        <button class="primary-button full-width">开始关注竞争 →</button>
+        <button class="primary-button full-width">推开车库的门 →</button>
       </form>
     </dialog>
     <dialog id="restart-dialog">

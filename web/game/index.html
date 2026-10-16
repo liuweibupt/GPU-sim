@@ -14,8 +14,8 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c7f58a'/%3E%3Cpath d='M10 10h20v20H10zm5 5v10h10V15z' fill='%23151d13' fill-rule='evenodd'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="./game.css?v=systems-ecosystem-1" />
-    <script type="module" src="./game.js?v=systems-ecosystem-1"></script>
+    <link rel="stylesheet" href="./game.css?v=narrative-branches-1" />
+    <script type="module" src="./game.js?v=narrative-branches-1"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到游戏</a>
@@ -202,6 +202,16 @@
         </div>
 
         <section id="workshop-view" class="view-panel">
+          <section class="narrative-panel panel" aria-labelledby="narrative-title">
+            <div class="panel-heading">
+              <div><span class="narrative-kicker">LETTERS FROM THE GARAGE</span><h2 id="narrative-title" tabindex="-1">工坊来信</h2></div>
+              <span class="narrative-state" id="narrative-state">车库仍在营业</span>
+            </div>
+            <div id="narrative-current"></div>
+            <div id="narrative-latest" class="narrative-latest" aria-live="polite"></div>
+            <section id="narrative-ending" class="narrative-ending" aria-label="工坊的这一页" hidden></section>
+            <details id="narrative-history" class="narrative-history" hidden><summary>翻开往来信件</summary><ol id="narrative-events"></ol></details>
+          </section>
           <div class="workshop-grid">
             <section
               class="panel hardware-panel"
@@ -274,7 +284,7 @@
                 </button>
               </div>
             </section>
-            <aside class="mentor-panel panel" aria-label="黄Sir的建议">
+            <aside class="mentor-panel panel" aria-label="黄Sir的车库记事">
               <div class="mentor-top">
                 <span class="mentor-label"
                   ><span class="status-dot"></span>FOUNDER'S NOTE</span
@@ -285,7 +295,7 @@
               <div class="speech">
                 <span class="quote-mark">“</span>
                 <p id="mentor-quote">
-                  先别急着改变世界。<br />把这单浮点数算完，<br />我们就有钱买缓存了。
+                  钥匙只有两把。<br />一把在你手里，<br />一把今晚留在车库。
                 </p>
               </div>
               <div class="portrait-stage">
@@ -304,9 +314,9 @@
               </div>
               <div class="mentor-task">
                 <div class="task-top">
-                  <span>眼前的小目标</span><span id="mission-count">0 / 1</span>
+                  <span>此刻的车间</span><span id="mission-count">0%</span>
                 </div>
-                <p id="mission-text">攒够 $24，安装第一块 L1 Cache</p>
+                <p id="mission-text">第一份订单正在处理</p>
                 <div class="progress-track">
                   <span id="mission-progress"></span>
                 </div>
@@ -369,23 +379,26 @@
             <div class="section-heading">
               <div>
                 <span class="section-number">03</span>
-                <h2 id="business-title">系统与软件生态</h2>
-                <span class="section-description">从一颗芯片，到客户愿意采用的平台。</span>
+                <h2 id="business-title">工坊议事桌</h2>
+                <span class="section-description">电话那头的人，带来的不只是技术问题。</span>
               </div>
-              <span class="business-badge">BUILD A PLATFORM</span>
+              <span class="business-badge">AFTER HOURS</span>
             </div>
+            <p class="business-summary" id="business-summary">焊台旁放着几份手写提案。工程师们还没回家，等你来聊聊。</p>
+            <details class="business-ledger"><summary>翻开研发账本</summary>
             <div class="business-overview">
               <div><span>研发累计投入</span><strong id="business-investment">$0.00</strong><small>平台建设成本</small></div>
               <div><span>客户溢价</span><strong id="business-premium">×1.00</strong><small>日常订单报酬</small></div>
               <div><span>系统交付效率</span><strong id="business-project">×1.00</strong><small>训练 / 注意力 / AI 工厂</small></div>
               <div><span>机柜研发</span><strong id="business-racks">0</strong><small>系统规模等级</small></div>
             </div>
-            <p class="business-summary" id="business-summary">软件生态 LV.0 · 工坊研发一次付费</p>
+            <p class="business-summary" id="business-ledger-summary">软件生态 LV.0 · 工坊研发一次付费</p>
             <p class="business-explainer">PCIe 接入、NVLink 节点内互联、IB 跨节点网络与机柜协同，加速训练、注意力与 AI 工厂委托；CUDA 与开发者生态提高日常订单价值，计算库改善系统交付。这里的经营加成独立于单 GPU 吞吐解析模型。工坊只收取一次研发投入，客户需求点数只用于创业赛。</p>
+            </details>
             <div class="business-grid" id="business-grid"></div>
-            <p class="business-route-note"><span>采购路线选择</span>IB 供应商合作：前期投入较低、PvE 持续费用较高；团队并购：前期投入较高、PvE 持续费用较低。两条路径互斥。</p>
+            <p class="business-empty" id="business-empty">工程师正把客户的抱怨记进笔记本。新的提案准备好后，会放到这张桌上。</p>
             <details class="business-history">
-              <summary>真实技术，架空经营：互联从哪里来？</summary>
+              <summary>史官附注</summary>
               <p>NVLink 是 NVIDIA 自研的 GPU 互联技术；PCIe 是行业标准。NVIDIA 于 2020 年完成对 Mellanox 的收购，扩展 InfiniBand（IB）与以太网能力。游戏里的团队并购借鉴这一商业路径，研发价格、收益与采购选择均为架空设定。</p>
             </details>
           </section>

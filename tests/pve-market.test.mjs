@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGame, UPGRADES, buyUpgrade, getStats} from '../lib/idle-game.js';
 import {buyBusinessUpgrade, getBusinessStats} from '../lib/business-game.js';
+import {chooseNarrativeOption} from '../lib/game-narrative.js';
 import {createFinance, restoreFinance, getFinanceStats, getMarketDemand, getProjectedRevenue,
   quoteIPO, executeIPO, quoteBuyback, executeBuyback, settleFinance, updateValuation} from '../lib/pve-market.js';
 
@@ -325,4 +326,29 @@ test('finance reads sanitize system saves and never mutate the source business',
   const plain = getFinanceStats(company());
   near(stats.operatingCost, plain.operatingCost);
   near(stats.equipmentValue, plain.equipmentValue);
+});
+
+test('canonical customer commitments survive pure finance reads and balance through settlement', () => {
+  const c = company();
+  equip(c, {alu: 7, l1: 2, dram: 1, l2: 2, scheduler: 2, tensor: 2, hbm: 1});
+  c.game.money = 5000;
+  assert.equal(buyBusinessUpgrade(c.game, 'cuda').ok, true);
+  const baseline = getFinanceStats(c);
+  const demand = getMarketDemand(c);
+  assert.equal(chooseNarrativeOption(c.game, 'software-letter', 'anchor', {mode: 'pve', elapsed: 0}).ok, true);
+  c.game.narrative.effects = {revenueMultiplier: 1e99, demandBonus: 1e99, operatingCost: -1e99};
+  c.game.narrative.events.push({id: 'injected', title: '<script>', body: '<script>', elapsed: 0});
+  const source = structuredClone(c);
+  const stats = getFinanceStats(c);
+  assert.deepEqual(c, source, 'reading a company must not rewrite its saved letters');
+  near(stats.operatingCost, baseline.operatingCost + .18);
+  near(getMarketDemand(c), demand - 1);
+  near(stats.incomeRate, Math.min(getStats(c.game).incomeRate, getMarketDemand(c)));
+  near(stats.equipmentValue, baseline.equipmentValue, 'a support promise is not equipment');
+  c.finance.debt = 30;
+  const opening = c.game.money - c.finance.debt;
+  settle(c, 10, 20, 10);
+  near(c.game.money - c.finance.debt, opening + 20 - stats.operatingCost * 10);
+  near(c.finance.totalRevenue, 20);
+  near(c.finance.totalCosts, stats.operatingCost * 10);
 });

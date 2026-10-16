@@ -12,7 +12,8 @@ import {
   startRaceProject,
   restoreRace,
   serializeRace,
-} from "../../../lib/pve-race.js?v=systems-ecosystem-1";
+  chooseRaceNarrative,
+} from "../../../lib/pve-race.js?v=narrative-branches-1";
 import {
   getFinanceStats,
   quoteIPO,
@@ -20,7 +21,7 @@ import {
   quoteBuyback,
   executeBuyback,
   updateValuation,
-} from "../../../lib/pve-market.js?v=systems-ecosystem-1";
+} from "../../../lib/pve-market.js?v=narrative-branches-1";
 import {
   MODEL_INFO,
   getWorkloadPerformance,
@@ -29,7 +30,7 @@ import {
 import {
   BUSINESS_UPGRADES,
   getBusinessUpgradeStatus,
-} from "../../../lib/business-game.js?v=systems-ecosystem-1";
+} from "../../../lib/business-game.js?v=narrative-branches-1";
 
 const SAVE_KEY = "huang-sir-pve-v1";
 const $ = (id) => document.getElementById(id);
@@ -219,28 +220,36 @@ function buildShop() {
 
 function buildBusinessShop() {
   $("business-grid").innerHTML = BUSINESS_UPGRADES.map((upgrade) =>
-    `<article class="upgrade-card business-card" id="business-${upgrade.id}"><div class="upgrade-top"><div class="upgrade-icon part-glyph">${partGlyph[upgrade.id]}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${escapeHTML(upgrade.subtitle)}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><p class="business-benefit">${escapeHTML(upgrade.benefit)}</p><p class="business-recurring">每级运营 +${cash(upgrade.recurringCost)}/s</p><p class="upgrade-benefit business-status"></p><button class="upgrade-buy" data-business-buy="${upgrade.id}" aria-label="研发${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
+    `<article class="upgrade-card business-card" id="business-${upgrade.id}"><div class="upgrade-top"><div class="upgrade-icon part-glyph">${partGlyph[upgrade.id]}</div><span class="upgrade-level"></span></div><h3>${escapeHTML(upgrade.name)}<span>${escapeHTML(upgrade.subtitle)}</span></h3><p class="upgrade-description">${escapeHTML(upgrade.description)}</p><details class="business-budget"><summary>预算与验收条件</summary><p class="business-benefit">${escapeHTML(upgrade.benefit)}</p><p class="business-recurring">每级持续运营费用 +${cash(upgrade.recurringCost)}/s</p><p class="upgrade-benefit business-status"></p></details><button class="upgrade-buy" data-business-buy="${upgrade.id}" aria-label="研发${escapeHTML(upgrade.name)}"><span></span><strong></strong></button></article>`,
   ).join("");
 }
 
 function businessRoute(business) {
-  return { none: "未选网络", partner: "IB 合作", acquire: "团队并购" }[business.networkRoute] || business.networkRoute;
+  return { none: "网络实验室筹备中", partner: "IB 服务已签约", acquire: "网络团队已入驻" }[business.networkRoute] || business.networkRoute;
 }
 
 function renderBusiness(stats) {
   const company = rawCompany();
   const business = stats.player.business;
-  $("business-demand").textContent = `+${cash(business.demandBonus)}/s`;
+  $("business-demand").textContent = `${business.demandBonus < 0 ? "−" : "+"}${cash(Math.abs(business.demandBonus))}/s`;
   $("business-premium").textContent = `×${number(business.revenueMultiplier, 2)}`;
   $("business-project").textContent = `×${number(business.projectMultiplier, 2)}`;
   $("business-racks").textContent = number(business.rackCount);
   $("business-upkeep").textContent = `${cash(business.operatingCost)}/s`;
-  $("business-summary").textContent = business.summary;
+  $("business-ledger-summary").textContent = business.summary;
+  $("business-summary").textContent = business.rackCount
+    ? "凌晨的机房里，交付组还在对最后一排指示灯。客户明早会来。"
+    : business.softwareLevel
+      ? "开发者群里又亮起几个头像。有人留下故障日志，也有人留下了改好的补丁。"
+      : "实验室的白板还没擦。几位工程师把新的提案留在了你的桌上。";
+  let invitations = 0;
   for (const upgrade of BUSINESS_UPGRADES) {
     const status = getBusinessUpgradeStatus(company.game, upgrade.id);
     const unavailable = paused || stats.player.finance.bankrupt;
     const reason = stats.player.finance.bankrupt ? "公司已停止经营" : paused ? "全场已暂停，继续后可投资" : status.reason;
     const card = $(`business-${upgrade.id}`);
+    card.hidden = !status.level && status.missing.some((item) => !item.startsWith("资金 "));
+    if (!card.hidden) invitations++;
     card.classList.toggle("locked", !status.ok && !status.maxed);
     card.classList.toggle("purchasable", status.ok && !unavailable);
     card.classList.toggle("installed", status.level > 0);
@@ -249,15 +258,42 @@ function renderBusiness(stats) {
       : status.level ? `LV.${String(status.level).padStart(2, "0")}` : "待研发";
     card.querySelector(".business-status").textContent = status.maxed
       ? "已完成此项研发"
-      : reason || "前置已齐备 · 可以投资";
+      : reason || "预算已备齐，验收条件已满足。";
     const button = card.querySelector("button");
     button.disabled = !status.ok || unavailable;
     button.title = reason || `投资 ${cash(status.cost)}，运营增加 ${cash(upgrade.recurringCost)}/s`;
     button.querySelector("span").textContent = status.maxed
       ? "已完成 ✓"
-      : unavailable ? "暂不可投资" : status.ok ? status.level ? "继续研发 ↗" : "投资研发 +" : "尚未就绪";
+      : unavailable ? "暂不可签批" : status.ok ? status.level ? "追加研发 ↗" : "批准提案 +" : "预算待备齐";
     button.querySelector("strong").textContent = status.maxed ? "MAX" : cash(status.cost);
   }
+  $("business-empty").hidden = invitations > 0;
+}
+
+let narrativeSignature = "";
+function narrativeParagraphs(value) {
+  return String(Array.isArray(value) ? value.join("\n") : value || "")
+    .split(/\n+/).filter(Boolean).map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join("");
+}
+function renderNarrative(player) {
+  const view = player.narrative;
+  const signature = JSON.stringify([view, paused]);
+  if (signature === narrativeSignature) return;
+  narrativeSignature = signature;
+  $("narrative-state").textContent = view.pending ? "有一封信等你回" : view.ending ? "这一页已经写下" : "车间的灯还亮着";
+  $("narrative-current").innerHTML = view.pending
+    ? `<article class="narrative-letter"><div class="letter-sender"><span class="letter-mark" aria-hidden="true">✉</span><span>${escapeHTML(view.pending.speaker)}</span></div><h3 id="narrative-letter-title" tabindex="-1">${escapeHTML(view.pending.title)}</h3><div class="letter-body">${narrativeParagraphs(view.pending.body)}</div><div class="narrative-options" role="group" aria-labelledby="narrative-letter-title">${view.pending.options.map((option) => `<button type="button" class="narrative-choice" data-narrative-event="${escapeHTML(view.pending.id)}" data-narrative-option="${escapeHTML(option.id)}" ${paused || player.finance.bankrupt ? "disabled" : ""}><strong>${escapeHTML(option.label)}<span aria-hidden="true">↗</span></strong><span>${escapeHTML(option.detail)}</span></button>`).join("")}</div><p class="letter-footnote">${paused ? "赛场已暂停，继续全场后可以回信。" : "信可以稍后回。来往的订单与对手的消息仍在继续。"}</p></article>`
+    : '<p class="narrative-quiet">桌上暂时没有未回的信。走廊那头传来风扇声，工程师还守在屏幕前。</p>';
+  const recent = view.events.filter((event) => !event.id.startsWith("ending:")).slice(-4).reverse();
+  const latest = recent[0];
+  $("narrative-latest").hidden = !latest;
+  $("narrative-latest").innerHTML = latest ? `<div class="narrative-event-meta"><span>${escapeHTML(latest.speaker)} · 最近的回音</span><time>${clock(latest.elapsed || 0)}</time></div><strong>${escapeHTML(latest.title)}</strong><div>${narrativeParagraphs(latest.body)}</div>` : "";
+  $("narrative-history").hidden = recent.length < 2;
+  $("narrative-events").innerHTML = recent.slice(1).map((event) => `<li><div class="narrative-event-meta"><span>${escapeHTML(event.speaker)}</span><time>${clock(event.elapsed || 0)}</time></div><strong>${escapeHTML(event.title)}</strong><div>${narrativeParagraphs(event.body)}</div></li>`).join("");
+  $("narrative-ending").hidden = !view.ending;
+  $("narrative-ending").innerHTML = view.ending
+    ? `<span class="narrative-ending-label">多年后，人们这样记得这间公司</span><h3 tabindex="-1">${escapeHTML(view.ending.title)}</h3>${narrativeParagraphs(view.ending.body)}<div class="narrative-epilogue">${narrativeParagraphs(view.ending.epilogue)}</div><button type="button" class="outline-button" data-narrative-continue>合上信，回到赛场 <span aria-hidden="true">→</span></button><small>${player.finance.bankrupt ? "这一页已存档，对手的故事仍在继续。" : "这一页已存档，你仍可继续经营。"}</small>`
+    : "";
 }
 
 function renderShop(stats) {
@@ -375,7 +411,7 @@ function renderMilestones() {
   if (bankrupt) {
     $("winner-banner").className = "winner-banner lisa";
     $("winner-banner").textContent =
-      "你的公司已经触及破产线，停止接单与研发。对手仍在发展，可以重开赛场尝试新的经营策略。";
+      "银行收回了最后一笔授信。车间停止接单与研发，桌上的信与这一页故事留了下来。对手仍在发展。";
   } else if (race.winnerId) {
     const winner =
       race.winnerId === "tie"
@@ -383,7 +419,7 @@ function renderMilestones() {
         : companyInfo(race.winnerId).name;
     $("winner-banner").className = `winner-banner ${race.winnerId}`;
     $("winner-banner").textContent =
-      `⚑ ${winner}拿下商业首单。先发优势已经产生，赛场继续经营；你仍可完成项目、研发与回购。`;
+      `⚑ 今日头条：${winner}率先交付商业首单。这是赛场的第一个头条，你的公司会被怎样记住，还写在此后的每一天里。经营继续。`;
   }
 }
 
@@ -406,7 +442,7 @@ function renderFinance(player) {
     ? "已触及破产线"
     : finance.runway !== null
       ? `按当前现金流约 ${shortClock(finance.runway)} 后触线`
-      : "净现金流为正 · 留意升级后支出";
+      : "当前净现金流为正";
   $("debt-progress").style.width = `${finance.bankruptcyRatio * 100}%`;
   const highRisk =
     finance.bankrupt ||
@@ -418,17 +454,17 @@ function renderFinance(player) {
   $("risk-title").textContent = finance.bankrupt
     ? "公司已破产。"
     : highRisk
-      ? "现金流告急，扩张要缓一缓。"
+      ? "财务室来了一通急电。"
       : warning
-        ? "现金流承压，别只盯着算力。"
-        : "先求生，再求快。";
+        ? "账本上出现了红字。"
+        : "今天的账已经对齐。";
   $("risk-copy").textContent = finance.bankrupt
-    ? "运营欠款达到信用额度，停止经营。重开可以尝试更均衡的研发与融资。"
+    ? "运营欠款达到信用额度，公司停止经营。往来的信件与经营记录仍然保留。"
     : finance.netFlow < 0
-      ? `当前预计每秒亏损 ${cash(-finance.netFlow)}。补充新业务或融资，回购要格外谨慎。`
+      ? `财务递来报表：当前预计每秒亏损 ${cash(-finance.netFlow)}，运营费用仍在扣除。`
       : finance.debt > 0
         ? "订单结算有间隔，收入到账会优先偿还欠款。现金为零并不立即破产。"
-        : "留一点现金周转。升级会增加运营成本，训练期间日常收入也会下降。";
+        : "硬件、团队与客户服务都在产生运营费用，训练时日常订单可用的算力会减少。";
   const ipo = quoteIPO(company);
   $("ipo-button").disabled = !ipo.ok;
   $("ipo-button").textContent = finance.listed
@@ -489,10 +525,10 @@ function renderProject(player) {
     phase === "training"
       ? `70% 算力正在训练模型，日常自动收入预计 ${cash(player.finance.incomeRate)}/s。完成训练后自动转入商业首单交付。`
       : phase === "commercial"
-        ? "模型已经完成。现在要把它变成客户愿意购买的产品，抢先交付第一份商业订单。"
+        ? "演示屏上终于出现了完整的句子。客户没有鼓掌，只问：明天能接进我们的系统吗？第一份商业订单正在交付。"
         : phase === "complete"
-          ? "模型与产品都已交付。扩张、回购或继续观察对手，创业的故事还在继续。"
-          : "客户要的不再是一串数字，而是一台能续写故事的机器。先备齐计算、存储与调度，再把它变成产品。";
+          ? "客户签下了验收单。走出会议室，你听见工程师已经在讨论下一次故障演练。"
+          : "客户寄来半页未完的文字：如果这台机器能接着写下去呢？实验室里，新的计划有了名字。";
 }
 
 function chartSVG(stats, width, height) {
@@ -651,10 +687,10 @@ function render() {
   }
   $("compute-button").disabled = paused || player.finance.bankrupt;
   $("player-quote").innerHTML = player.finance.bankrupt
-    ? "“下一次，<br />给现金流留个座位。”"
+    ? "“那张最早的收据，<br />我还留着。”"
     : player.project.phase === "training"
       ? "“把这个模型跑通，<br />我们的窗口就来了。”"
-      : "“先挣第一桶金，<br />再谈改变世界。”";
+      : "“灯还亮着，<br />你那边的电话<br />响了吗？”";
   $("lisa-quote").innerHTML =
     lisa.project.phase === "training"
       ? "“别只看发布会，<br />模型已经在跑了。”"
@@ -666,6 +702,7 @@ function render() {
   renderProject(player);
   renderShop(stats);
   renderBusiness(stats);
+  renderNarrative(player);
   renderStocks(stats);
   renderLeaderboard(stats);
   renderModel();
@@ -691,6 +728,21 @@ $("business-grid").addEventListener("click", (event) => {
   toast(`${upgrade.name} 研发完成 · 运营费用增加 ${cash(upgrade.recurringCost)}/s`, "reward");
   save();
   render();
+});
+$("narrative-current").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-narrative-option]");
+  if (!button || paused) return;
+  const result = chooseRaceNarrative(race, button.dataset.narrativeEvent, button.dataset.narrativeOption);
+  if (!result.ok) return toast(result.reason, "error");
+  save();
+  render();
+  $("narrative-title").focus({ preventScroll: true });
+  toast("回信已寄出。", "reward");
+});
+$("narrative-ending").addEventListener("click", (event) => {
+  if (!event.target.closest("[data-narrative-continue]")) return;
+  $("arena-title").scrollIntoView({ behavior: "smooth", block: "center" });
+  $("arena-title").focus({ preventScroll: true });
 });
 $("compute-button").addEventListener("click", () => {
   if (paused) return;
