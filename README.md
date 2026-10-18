@@ -2,7 +2,7 @@
 
 目标是一个面向计算机体系结构、AI systems 和 AI infra 用户的开放 GPU 实验世界：既能探索真实 kernel/profile，也能修改 GPU 模型。玩法借鉴模拟城市的建设与交通治理、Minecraft 的自由创作，以及 Factorio 的可见物流。
 
-开发顺序是**先保证模型、事件和交互功能正确，再增加城市渲染和游戏机制**。本仓库目前交付相关工作调研、产品与模型设计，以及一个可运行的事件回放原型。
+开发顺序是**先保证模型、事件和交互功能正确，再增加城市渲染和游戏机制**。本仓库包含相关工作调研、产品与模型设计、可运行的仿真回放，以及经营游戏和试产探索原型。
 
 **[在线工作台](https://liuweibupt.github.io/GPU-sim/)** · [SM 组件形式化规格](docs/sm-architecture.md) · [数据流模型](docs/traffic-model.md) · [发布流程](docs/deployment.md) · [多尺度仿真设计](docs/multiscale-simulation.md)
 
@@ -19,6 +19,16 @@
 工坊使用计算—存储—重叠解析模型：根据运算量、工作集、缓存容量、带宽与延迟隐藏推导处理速度，不再提供实验性的 Tile 资源模式。瓶颈提示与商店升级预览使用同一套周期计算。旧存档的资金、硬件和订单进度保留，原 Tile 模式存档恢复后使用解析模型继续结算。详细边界见 [工坊模型说明](docs/idle-game-design.md#解析性能模型)。
 
 浏览器每 5 秒自动存档，支持导入/导出、离线收益（最多 8 小时）、减少动画和确认重置。订单速度与缓存命中率来自工坊的独立教学模型；关卡、模型参数与价格为游戏设定，不代表实机性能。[完整玩法与剧情策划](docs/idle-game-design.md) · [验证记录](docs/idle-game-validation.md)
+
+## GPU 试产实验室
+
+[在线试产实验室](https://liuweibupt.github.io/GPU-sim/web/game/lab/) · [本地入口](http://127.0.0.1:4173/web/game/lab/) · [先导试运行方案](docs/research/gpu-exploration-pilot.md)
+
+从三份客户委托探索计算、供数与数据复用：先留下预测，在有限试产额度内调整计算单元、显存通道或缓存，再运行试产，比较周期分解并记录解释。减少资源会释放额度，允许重新分配；额度是虚构的教学约束，不代表实际价格、面积或功耗。每次试产使用与经营模式相同的解析教学模型，固定当前场景的负载与其余参数。对象的表现由本次结果驱动，不是逐周期硬件执行轨迹；教学参数没有用实机标定。
+
+默认是可切换对象与抽象框图的自由探索。`?condition=objects` 和 `?condition=abstract` 分别锁定一种表示，两者共用任务、模型、操作、数值和比较工具；URL 指定条件不等于随机分组。历史试产和操作保留在当前页面会话，可显式下载本地 JSON 日志，刷新会开始新会话；没有后台收集或上传。自由切换记录与固定条件记录分开标记。
+
+这一版本用于先导试运行和交互迭代，尚未开展参与者实验，也没有验证学习收益。正式研究仍需独立审核平行测验、完成适用研究程序并预先确定分组与分析。[交互与日志验证](docs/exploration-lab-validation.md)
 
 ## 创业 PvE：与 Lisa 争夺 GPT-3 时刻
 
@@ -129,7 +139,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 ## 调研与设计
 
-基础工具调研与来源核查日期：2026-10-14；HCI 投稿与指标方案更新至 2026-10-18。项目状态按官方仓库、原作者论文和文档区分，论文结果不等于公开版能力。
+基础工具调研与来源核查日期：2026-10-14；HCI 投稿与指标方案更新至 2026-10-19。项目状态按官方仓库、原作者论文和文档区分，论文结果不等于公开版能力。
 
 | 文档 | 内容 |
 | --- | --- |
@@ -145,7 +155,8 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 | [GPU 仿真器调研](docs/research/simulators.md) | Accel-Sim 2.0、GTSim、FlashGPU-Sim，以及 GPGPU-Sim、MGPUSim、Multi2Sim |
 | [可视化与 profiler 调研](docs/research/visualization.md) | Daisen、AerialVision、GPUVision、Nsight、RGP、Perfetto 等 |
 | [游戏与交互调研](docs/research/games.md) | 城市建造、Minecraft、Factorio、Zachtronics、GPU 教学项目的可移植机制 |
-| [HCI 投稿与指标方案](docs/research/hci-publication-plan.md) | CHI/CSCW/VIS 定位、10 篇学术近邻、唯一主要终点、对照实验、样本规划与后续优化 |
+| [HCI 投稿与指标方案](docs/research/hci-publication-plan.md) | CHI/CSCW/VIS 定位、学术近邻、GPU 对象化与抽象交互对照、迁移指标及样本规划 |
+| [GPU 探索先导方案](docs/research/gpu-exploration-pilot.md) | 三场景任务、固定条件入口、本地日志、测验审核与试运行检查 |
 | [Gem5SimCity 参考核查](docs/research/gem5-simcity.md) | 用户指定示例的真实仿真接入、源码交互、表现性简化与正确性边界 |
 
 ## 当前能力与后续开发

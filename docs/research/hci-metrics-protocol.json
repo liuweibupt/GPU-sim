@@ -1,87 +1,407 @@
 {
-  "protocol_id": "gpu-sim-hci-counterfactual-bridge-v0",
-  "status": "proposed_not_implemented",
-  "date": "2026-10-18",
-  "baseline_commit": "b27079f",
+  "protocol_id": "gpu-sim-hci-object-representation-v1",
+  "status": "local_exploration_prototype_formal_study_not_ready",
+  "date": "2026-10-19",
   "contains_real_study_results": false,
   "assessment_file": "docs/research/hci-assessment-draft.md",
   "scope": {
-    "claim_target": "Transfer of explicitly taught analytical GPU concepts to unseen, assumption-specified workload scenarios",
+    "claim_target": "Effect of graphical, manipulable GPU resource representations versus matched abstract interactive representations on unseen-task understanding of compute, bandwidth, and cache reuse.",
     "current_model_status": "Uncalibrated analytical teaching assumptions; not real CUDA execution or a silicon predictor",
     "formal_primary_task_requirements": {
       "total_scenarios": 8,
       "minimum_changed_representation_or_structure_scenarios": 4,
-      "prespecified_reporting_subsets": ["near_transfer_parameter_variation", "changed_representation_or_structure"],
+      "prespecified_reporting_subsets": [
+        "near_transfer_parameter_variation",
+        "changed_representation_or_structure"
+      ],
       "answer_key": "Independent evidence and hardware-expert review, not only the game's output",
-      "claim_boundary": "If improvement is confined to parameter-variation items, claim near transfer only. The public numerical draft is not a validated final inventory."
+      "claim_boundary": "If improvement is confined to parameter-variation items, claim near transfer only. The public numerical draft is not a validated final inventory.",
+      "topic_coverage": "Only compute/bandwidth/cache-reuse concepts actually taught in both conditions; eight scenarios is a provisional instrument target, not a finalized inventory."
     },
     "assessment_construct_validity": "The eight numerical micro-scenarios in the draft are illustrative near-transfer/procedural-application tasks, not a ready primary efficacy inventory. Formal primary scenarios require independently reviewed changes in representations and structural conditions, such as novel timing or memory-trace tables, with evidence-grounded keys beyond pure number substitutions. If such validation and evidence are unavailable, restrict claims to the near-transfer of the stated simplified formulas.",
-    "assessed_concepts": ["compute versus bandwidth", "cache reuse versus streaming", "capacity versus bandwidth", "bounded latency hiding", "bounded compute-transfer overlap", "matrix-operation fraction"],
-    "excluded_from_primary_score": ["NVLink", "InfiniBand", "PCIe topology", "rack cooling", "energy prediction", "business profit", "story ending", "ethical route preference", "real CUDA optimization"],
+    "assessed_concepts": [
+      "compute versus bandwidth",
+      "cache reuse versus streaming",
+      "cache capacity versus transfer bandwidth"
+    ],
+    "excluded_from_primary_score": [
+      "NVLink",
+      "InfiniBand",
+      "PCIe topology",
+      "rack cooling",
+      "energy prediction",
+      "business profit",
+      "story ending",
+      "ethical route preference",
+      "real CUDA optimization",
+      "bounded latency hiding until matched instruction and independent tasks exist",
+      "bounded overlap until matched instruction and independent tasks exist",
+      "matrix-operation fraction until matched instruction and independent tasks exist",
+      "VR embodiment",
+      "physical tangible manipulation",
+      "recall of synthetic trial-allocation credits",
+      "real chip cost, area or power optimization"
+    ],
     "future_pool_requirement": "Add a concept only after an explicit model or validated lesson, independent answer-key review, and matched exposure in every relevant condition."
   },
   "mandatory_before_randomized_study": [
-    "Implement one shared linkage engine and freeze its model version, parameter definitions, assumptions, workload inputs, action semantics, and outputs for ALL A/B/C conditions.",
-    "B is the shared engine with an ordinary unlinked evidence presentation; it is not the untouched old game if C changes underlying computation.",
-    "A/B/C expose the same raw facts, available diagnostic interventions, worked-example content, and six optional diagnostic opportunities in the same bounded learning window.",
-    "B/C have identical narrative, choices, progression, consequences, artwork, rules, and economic assumptions; C changes inspectable bridge presentation and access only.",
-    "If bridge presentation also adds facts or instructional content, declare the treatment an information-plus-scaffolding bundle instead of an isolated interface effect.",
-    "Freeze independently reviewed assessment keys, parallel-form assignment, scoring rubric, exclusion rules, missingness plan, and analysis code before confirmatory data collection.",
-    "Obtain applicable institutional ethics review and participant consent before recruitment or research telemetry collection."
+    "Freeze shared model, three scenarios, baseline states, parameter definitions, action semantics, comparison tools and explanations for O/A.",
+    "Verify every identical state/action gives identical values regardless of presentation; expose the same facts, optional diagnostic actions and worked examples in both modes.",
+    "Match task framing, learning time, feedback, parameter ranges, tutorial content and comparison/explanation availability. If extra information cannot be matched, declare the intervention a design bundle rather than a pure representation effect.",
+    "Treat current URL locking only as interface control. Implement or document external prespecified person-level random allocation and secure allocation records before confirmatory use.",
+    "Freeze independently reviewed outcome forms, scoring, exclusions, missingness plan, timing and analysis before confirmatory data collection.",
+    "Complete applicable institutional ethics review, consent, data management and contact/follow-up procedures before recruitment or research collection."
   ],
   "design": {
     "sample_unit": "person",
     "randomization_unit": "person",
-    "assignment": "Between-person randomized A/B/C assignment, stratified by prespecified baseline GPU-concept knowledge bands",
+    "assignment": "Proposed external between-person randomized O/A assignment, stratified by prespecified objective baseline knowledge bands; not implemented in the prototype.",
     "conditions": {
-      "A": {"name": "same-model interactive workbench", "presentation": "Neutral task framing, common engine, facts, inputs, interventions and feedback"},
-      "B": {"name": "narrative game with ordinary evidence", "presentation": "Same narrative game as C; raw assumptions and performance/economy evidence accessible in ordinary separate panels"},
-      "C": {"name": "same narrative game with inspectable counterfactual bridge", "presentation": "Optional decision-to-assumption-to-resource-to-consequence inspection and alternative comparisons, using the same underlying engine and facts as B"}
+      "O": {
+        "name": "graphical object-based interactive representation",
+        "url_query": "condition=objects",
+        "presentation": "Select GPU resource objects and inspect data-flow relationships; same actions, numeric facts, reference material, feedback and comparison tools as A."
+      },
+      "A": {
+        "name": "abstract interactive representation",
+        "url_query": "condition=abstract",
+        "presentation": "Manipulate the same parameters through an abstract interface; same model, tasks, facts, feedback and comparison tools as O."
+      }
     },
     "learning_window_minutes": 25,
-    "suggested_full_session_minutes": [70, 85],
+    "suggested_full_session_minutes": [
+      70,
+      85
+    ],
     "session_components": "Consent 5 min; pretest 15-20; common introduction 5; learning 25; posttest 15-20; questionnaires 5-10. Optional interview time is additional.",
     "common_optional_diagnostic_opportunities": 6,
-    "primary_contrast": "C minus B",
-    "primary_contrast_interpretation": "Intention-to-treat effect of bridge availability within matched narrative and mechanics",
-    "contextual_contrast": "C minus A",
-    "contextual_contrast_interpretation": "Whole presentation bundle comparison; does not separately identify narrative, agency, or game progression effects",
-    "separate_future_ablations": ["narrative on/off with mechanics fixed", "consequential versus cosmetic choices", "bridge explanation versus counterfactual manipulation"],
-    "controls": ["identical device/task constraints", "identical raw facts and formula reference", "identical tutorial objectives", "identical learning duration", "matched scenario seeds where relevant", "identical outcome tasks and questionnaire order"],
-    "assessment_forms": ["F1", "F2", "F3"],
-    "form_assignment": "Counterbalance parallel forms across T0/T1/T2 and conditions; numbers and surface stories differ without changing target mechanisms."
+    "primary_contrast": "O minus A",
+    "primary_contrast_interpretation": "Intention-to-treat effect of the implemented graphical object representation relative to a matched abstract interactive representation; not VR, physical embodiment, story, or entire-game efficacy.",
+    "separate_future_ablations": [
+      "narrative on/off with actions and facts fixed",
+      "comparison support available/unavailable",
+      "consequential versus cosmetic business choices",
+      "VR or tangible representation only after a separately justified design"
+    ],
+    "controls": [
+      "identical device/task constraints",
+      "identical raw facts and formula reference",
+      "identical tutorial objectives",
+      "identical learning duration",
+      "matched scenario seeds where relevant",
+      "identical outcome tasks and questionnaire order",
+      "identical comparison and explanation tools",
+      "identical raw number availability and model-source labels",
+      "assessments independent of either learning interface",
+      "identical synthetic trial-allocation limits and rejection feedback"
+    ],
+    "assessment_forms": [
+      "F1",
+      "F2",
+      "F3"
+    ],
+    "form_assignment": "Counterbalance F1/F2/F3 across T0/T1/T2 and O/A. Use neutral novel representations; changing numbers alone is near transfer."
   },
   "timeline": [
-    {"id": "T0", "when": "before randomization or exposure", "measures": ["baseline objective concept knowledge", "parallel-form transfer", "causal explanations", "confidence", "boundary errors and uncertainty", "prior programming/GPU and game experience"], "notes": "Stratification thresholds and analysis covariates fixed in advance; self-reported expertise does not replace objective baseline knowledge."},
-    {"id": "L", "when": "25-minute bounded learning window", "measures": ["exposure events", "optional diagnostic interventions", "bridge availability and use", "model/action state"], "notes": "No think-aloud in the confirmatory experiment; it changes reasoning and is reserved for formative testing."},
-    {"id": "T1", "when": "immediately after learning", "measures": ["transfer_T1", "causal_T1", "calibration_T1", "boundary_errors_T1"], "notes": "No simulator/web; common formula sheet; assessment timing and instructions identical across conditions."},
-    {"id": "Q1", "when": "after T1, same order in every condition", "measures": ["imi_interest", "imi_choice", "rtlx"], "notes": "Optional secondary questionnaires refer back to the learning activity. Placing them after the primary test avoids questionnaire priming of the primary outcome."},
-    {"id": "V5", "when": "after Q1, optional additional activity of up to five real minutes", "measures": ["voluntary_extra_activity"], "notes": "Give every condition the same optional invitation; compensation does not depend on accepting or continuing. Record invitation receipt, acceptance, and real activity separately. This exposure is after T1 and recorded for interpretation of T2."},
-    {"id": "T2", "when": "day 7 plus or minus 2 days", "measures": ["transfer_T2", "causal_T2", "calibration_T2", "boundary_errors_T2"], "notes": "Use a new counterbalanced parallel form; record interim exposure to the game or external GPU learning."}
+    {
+      "id": "T0",
+      "when": "before randomization or exposure",
+      "measures": [
+        "baseline objective concept knowledge",
+        "parallel-form transfer",
+        "causal explanations",
+        "confidence",
+        "boundary errors and uncertainty",
+        "prior programming/GPU and game experience"
+      ],
+      "notes": "Stratification thresholds and analysis covariates fixed in advance; self-reported expertise does not replace objective baseline knowledge."
+    },
+    {
+      "id": "L",
+      "when": "25-minute bounded learning window",
+      "measures": [
+        "actual presentation exposure",
+        "common diagnostic actions and comparisons",
+        "model/action state",
+        "prediction and explanation submissions",
+        "visibility and real elapsed time"
+      ],
+      "notes": "No think-aloud in the confirmatory experiment; it changes reasoning and is reserved for formative testing."
+    },
+    {
+      "id": "T1",
+      "when": "immediately after learning",
+      "measures": [
+        "transfer_T1",
+        "causal_T1",
+        "calibration_T1",
+        "boundary_errors_T1"
+      ],
+      "notes": "No simulator/web; common formula sheet; assessment timing and instructions identical across conditions."
+    },
+    {
+      "id": "Q1",
+      "when": "after T1, same order in every condition",
+      "measures": [
+        "imi_interest",
+        "imi_choice",
+        "rtlx"
+      ],
+      "notes": "Optional secondary questionnaires refer back to the learning activity. Placing them after the primary test avoids questionnaire priming of the primary outcome."
+    },
+    {
+      "id": "V5",
+      "when": "after Q1, optional additional activity of up to five real minutes",
+      "measures": [
+        "voluntary_extra_activity"
+      ],
+      "notes": "Give every condition the same optional invitation; compensation does not depend on accepting or continuing. Record invitation receipt, acceptance, and real activity separately. This exposure is after T1 and recorded for interpretation of T2."
+    },
+    {
+      "id": "T2",
+      "when": "day 7 plus or minus 2 days",
+      "measures": [
+        "transfer_T2",
+        "causal_T2",
+        "calibration_T2",
+        "boundary_errors_T2"
+      ],
+      "notes": "Use a new counterbalanced parallel form; record interim exposure to the game or external GPU learning."
+    }
   ],
   "metrics": [
-    {"id": "transfer_T1", "tier": "primary", "construct": "Unseen-workload conceptual transfer", "instrument": "Eight expert-reviewed illustrative scenario types, each with two objectively keyed items", "formula": "100 * correct_items / 16", "denominator": 16, "unit": "percentage points", "scoring": "Each item is scored 0 or 1, not necessarily a binary-choice question. An explicitly blank/skipped item is 0. A missing session is not a zero score.", "time": ["T1"], "baseline": "Same construct using a different counterbalanced form at T0", "direction": "higher", "limitations": "Draft custom assessment, not a validated inventory or proof of real CUDA transfer."},
-    {"id": "causal_T1", "tier": "key_secondary", "construct": "Counterfactual causal explanation quality", "instrument": "Four prespecified explanation prompts, four rubric points each", "formula": "100 * rubric_points / 16", "denominator": 16, "rubric": ["correct limiting resource", "correct intervention-to-resource-to-time mechanism", "correct counterfactual under changed assumptions", "valid boundary or ineffective alternative"], "time": ["T1"], "direction": "higher", "blinding": "Two independent raters blinded to condition and time; rubric frozen before study, agreement reported and disagreements adjudicated by a prespecified rule.", "inferential_gate": "Confirmatory test only after primary C-B transfer test passes the prespecified alpha=.05 gate."},
-    {"id": "transfer_T2", "tier": "secondary", "construct": "Delayed unseen-workload transfer", "formula": "100 * correct_items / 16", "denominator": 16, "time": ["T2"], "direction": "higher", "notes": "New parallel form, retention/continued-learning result interpreted with follow-up missingness and interim exposure."},
-    {"id": "causal_T2", "tier": "secondary", "construct": "Delayed causal explanation quality", "formula": "100 * rubric_points / 16", "denominator": 16, "time": ["T2"], "direction": "higher"},
-    {"id": "imi_interest", "tier": "optional_secondary", "construct": "Interest/enjoyment in the learning activity", "instrument": "Official IMI 22-item version: its seven interest/enjoyment items", "formula": "mean(seven item scores after official reverse scoring)", "denominator": 7, "range": [1, 7], "time": ["Q1"], "notes": "Use one declared instrument version. Do not combine subscales into an invented engagement total."},
-    {"id": "imi_choice", "tier": "optional_secondary", "construct": "Perceived choice/voluntariness in the learning activity", "instrument": "Official IMI 22-item version: its five perceived-choice items", "formula": "mean(five item scores after official reverse scoring)", "denominator": 5, "range": [1, 7], "time": ["Q1"], "notes": "This does not establish consequential narrative agency. Agency manipulation checks or a distinct agency experiment require separate operationalization."},
-    {"id": "rtlx", "tier": "optional_secondary", "construct": "Subjective task workload", "instrument": "Raw NASA-TLX, all six original dimensions", "formula": "sum(six direction-aligned ratings) / 6", "denominator": 6, "range": [0, 100], "time": ["Q1"], "direction": "lower workload, not automatically better learning", "notes": "Follow the instrument's performance anchors. RTLX is unweighted; do not label it the original weighted TLX or intrinsic/extraneous cognitive load."},
-    {"id": "calibration", "tier": "exploratory", "construct": "Confidence-correctness correspondence", "formula": "sum((p_i - y_i)^2) / 8", "denominator": 8, "range": [0, 1], "time": ["T0", "T1", "T2"], "inputs": "p_i is probability that the intervention answer is correct, in [0,1]; y_i is its binary objective correctness", "companion_reports": ["accuracy across the eight intervention items", "mean(p_i-y_i)", "counts with confidence >= .8 and incorrect"], "notes": "Collect confidence before feedback. Interpret jointly with accuracy; eight items give imprecise individual estimates, and Brier is not pure metacognitive ability. Missing probabilities are not silently imputed to zero."},
-    {"id": "boundary_errors", "tier": "exploratory", "construct": "Incorrect generalization and possible negative learning", "formula": "explicitly_incorrect_boundary_items / 6", "denominator": 6, "time": ["T0", "T1", "T2"], "response_categories": ["correct belief", "explicitly incorrect belief", "explicitly uncertain or do not know"], "companion_formula": "correct_to_explicitly_incorrect_target_transitions / number_of_baseline_correct_targets", "uncertainty_formula": "explicitly_uncertain_boundary_items / 6", "zero_denominator": null, "notes": "Six independently reviewed boundary propositions with equivalent target concepts across forms. Uncertainty and missing responses are not wrong beliefs; report them separately. Report transitions as diagnostic evidence, not certain conceptual deterioration from one noisy response. Do not insert unmodeled networking or business truth into the hardware score."},
-    {"id": "diagnostic_probe_completion", "tier": "exploratory", "construct": "Observable diagnostic exploration", "formula": "common_opportunities_with_a_completed_valid_comparison / 6", "denominator": 6, "time": ["L"], "valid_comparison": "Baseline and intervention share workload and other modeled parameters; exactly one declared factor changes; both corresponding outcomes are exposed.", "notes": "Completion is not itself proof of causal understanding. Record opportunity exposure separately; do not reward arbitrary clicks or condition analyses on completion."},
-    {"id": "bridge_uptake", "tier": "exploratory", "construct": "Use of the optional intervention", "formula": "C_assigned_people_opening_bridge_at_least_once / all_C_assigned_people", "denominator": "all randomized people assigned C, with missing telemetry explicitly identified", "time": ["L"], "notes": "Also report opened/exposed opportunities with their counts. Clicker versus non-clicker learning differences are self-selected associations, not causal treatment effects."},
-    {"id": "voluntary_extra_activity", "tier": "exploratory", "construct": "Behavioral uptake of optional additional activity", "formula": "people_confirmed_starting_optional_activity / people_receiving_the_same_optional_invitation", "denominator": "People for whom invitation receipt is confirmed; report nonreceipt and missing invitation/response telemetry by condition", "time": ["V5"], "companion_measure": "Real foreground activity time: sum monotonic intervals in which the optional activity is selected, visible, and not explicitly paused, capped at 300000 ms; confirmed declines are 0, unknown time remains missing.", "events": ["optional_invitation_rendered", "optional_invitation_accepted_or_declined", "optional_activity_started_or_ended", "visibility_or_pause_change", "real_monotonic_elapsed_ms"], "notes": "Same invitation and maximum five real minutes in each condition, with compensation unchanged. Foreground time and acceptance are engagement diagnostics, not proof of intrinsic motivation or learning. Distinguish this phase from the fixed 25-minute intervention."},
-    {"id": "assumption_sensitive_business_reasoning", "tier": "exploratory_qualitative", "construct": "Reasoning about conjectural business and software-ecosystem choices", "instrument": "Separate rubric in assessment draft", "formula": "No primary numerical learning composite", "denominator": "Eligible responses and observed counts reported separately", "time": ["optional interview after T1 or T2"], "notes": "No unique optimal ethical/commercial route is presumed. Profit, route selection, and endings remain gameplay outcomes."}
+    {
+      "id": "transfer_T1",
+      "tier": "primary",
+      "construct": "Unseen-workload conceptual transfer",
+      "instrument": "Eight expert-reviewed illustrative scenario types, each with two objectively keyed items",
+      "formula": "100 * correct_items / 16",
+      "denominator": 16,
+      "unit": "percentage points",
+      "scoring": "Each item is scored 0 or 1, not necessarily a binary-choice question. An explicitly blank/skipped item is 0. A missing session is not a zero score.",
+      "time": [
+        "T1"
+      ],
+      "baseline": "Same construct using a different counterbalanced form at T0",
+      "direction": "higher",
+      "limitations": "Custom unvalidated instrument target; only compute/bandwidth/reuse taught equally; not a validated inventory or real CUDA transfer."
+    },
+    {
+      "id": "causal_T1",
+      "tier": "key_secondary",
+      "construct": "Counterfactual causal explanation quality",
+      "instrument": "Four prespecified explanation prompts, four rubric points each",
+      "formula": "100 * rubric_points / 16",
+      "denominator": 16,
+      "rubric": [
+        "correct limiting resource",
+        "correct intervention-to-resource-to-time mechanism",
+        "correct counterfactual under changed assumptions",
+        "valid boundary or ineffective alternative"
+      ],
+      "time": [
+        "T1"
+      ],
+      "direction": "higher",
+      "blinding": "Two independent raters blinded to condition and time; rubric frozen before study, agreement reported and disagreements adjudicated by a prespecified rule.",
+      "inferential_gate": "Confirmatory test only after primary O-A transfer test passes the prespecified alpha=.05 gate."
+    },
+    {
+      "id": "transfer_T2",
+      "tier": "secondary",
+      "construct": "Delayed unseen-workload transfer",
+      "formula": "100 * correct_items / 16",
+      "denominator": 16,
+      "time": [
+        "T2"
+      ],
+      "direction": "higher",
+      "notes": "New parallel form, retention/continued-learning result interpreted with follow-up missingness and interim exposure."
+    },
+    {
+      "id": "causal_T2",
+      "tier": "secondary",
+      "construct": "Delayed causal explanation quality",
+      "formula": "100 * rubric_points / 16",
+      "denominator": 16,
+      "time": [
+        "T2"
+      ],
+      "direction": "higher"
+    },
+    {
+      "id": "imi_interest",
+      "tier": "optional_secondary",
+      "construct": "Interest/enjoyment in the learning activity",
+      "instrument": "Official IMI 22-item version: its seven interest/enjoyment items",
+      "formula": "mean(seven item scores after official reverse scoring)",
+      "denominator": 7,
+      "range": [
+        1,
+        7
+      ],
+      "time": [
+        "Q1"
+      ],
+      "notes": "Use one declared instrument version. Do not combine subscales into an invented engagement total."
+    },
+    {
+      "id": "imi_choice",
+      "tier": "optional_secondary",
+      "construct": "Perceived choice/voluntariness in the learning activity",
+      "instrument": "Official IMI 22-item version: its five perceived-choice items",
+      "formula": "mean(five item scores after official reverse scoring)",
+      "denominator": 5,
+      "range": [
+        1,
+        7
+      ],
+      "time": [
+        "Q1"
+      ],
+      "notes": "This does not establish consequential narrative agency. Agency manipulation checks or a distinct agency experiment require separate operationalization."
+    },
+    {
+      "id": "rtlx",
+      "tier": "optional_secondary",
+      "construct": "Subjective task workload",
+      "instrument": "Raw NASA-TLX, all six original dimensions",
+      "formula": "sum(six direction-aligned ratings) / 6",
+      "denominator": 6,
+      "range": [
+        0,
+        100
+      ],
+      "time": [
+        "Q1"
+      ],
+      "direction": "lower workload, not automatically better learning",
+      "notes": "Follow the instrument's performance anchors. RTLX is unweighted; do not label it the original weighted TLX or intrinsic/extraneous cognitive load."
+    },
+    {
+      "id": "calibration",
+      "tier": "exploratory",
+      "construct": "Confidence-correctness correspondence",
+      "formula": "sum((p_i - y_i)^2) / 8",
+      "denominator": 8,
+      "range": [
+        0,
+        1
+      ],
+      "time": [
+        "T0",
+        "T1",
+        "T2"
+      ],
+      "inputs": "p_i is probability that the intervention answer is correct, in [0,1]; y_i is its binary objective correctness",
+      "companion_reports": [
+        "accuracy across the eight intervention items",
+        "mean(p_i-y_i)",
+        "counts with confidence >= .8 and incorrect"
+      ],
+      "notes": "Collect confidence before feedback. Interpret jointly with accuracy; eight items give imprecise individual estimates, and Brier is not pure metacognitive ability. Missing probabilities are not silently imputed to zero."
+    },
+    {
+      "id": "boundary_errors",
+      "tier": "exploratory",
+      "construct": "Incorrect generalization and possible negative learning",
+      "formula": "explicitly_incorrect_boundary_items / 6",
+      "denominator": 6,
+      "time": [
+        "T0",
+        "T1",
+        "T2"
+      ],
+      "response_categories": [
+        "correct belief",
+        "explicitly incorrect belief",
+        "explicitly uncertain or do not know"
+      ],
+      "companion_formula": "correct_to_explicitly_incorrect_target_transitions / number_of_baseline_correct_targets",
+      "uncertainty_formula": "explicitly_uncertain_boundary_items / 6",
+      "zero_denominator": null,
+      "notes": "Six independently reviewed boundary propositions with equivalent target concepts across forms. Uncertainty and missing responses are not wrong beliefs; report them separately. Report transitions as diagnostic evidence, not certain conceptual deterioration from one noisy response. Do not insert unmodeled networking or business truth into the hardware score."
+    },
+    {
+      "id": "diagnostic_probe_completion",
+      "tier": "exploratory",
+      "construct": "Observable diagnostic exploration",
+      "formula": "common_opportunities_with_a_completed_valid_comparison / 6",
+      "denominator": 6,
+      "time": [
+        "L"
+      ],
+      "valid_comparison": "Baseline and intervention share workload and other modeled parameters; exactly one declared factor changes; both corresponding outcomes are exposed.",
+      "notes": "Completion is not proof of causal understanding. Six formal diagnostic opportunities is a provisional plan, not a promise that the current three-scene prototype delivers a frozen six-task study."
+    },
+    {
+      "id": "comparison_uptake",
+      "tier": "exploratory",
+      "construct": "Use of comparison tools available in both representations",
+      "formula": "people_opening_common_comparison_at_least_once / all_people_assigned_to_that_condition",
+      "denominator": "All assigned people within each condition, with missing telemetry identified",
+      "time": [
+        "L"
+      ],
+      "notes": "Descriptive discoverability/use diagnostic. Clicking versus not clicking is self-selected and not a causal contrast. Additional tool-specific events may still require implementation."
+    },
+    {
+      "id": "voluntary_extra_activity",
+      "tier": "exploratory",
+      "construct": "Behavioral uptake of optional additional activity",
+      "formula": "people_confirmed_starting_optional_activity / people_receiving_the_same_optional_invitation",
+      "denominator": "People for whom invitation receipt is confirmed; report nonreceipt and missing invitation/response telemetry by condition",
+      "time": [
+        "V5"
+      ],
+      "companion_measure": "Real foreground activity time: sum monotonic intervals in which the optional activity is selected, visible, and not explicitly paused, capped at 300000 ms; confirmed declines are 0, unknown time remains missing.",
+      "events": [
+        "optional_invitation_rendered",
+        "optional_invitation_accepted_or_declined",
+        "optional_activity_started_or_ended",
+        "visibility_or_pause_change",
+        "real_monotonic_elapsed_ms"
+      ],
+      "notes": "Same invitation and maximum five real minutes in each condition, with compensation unchanged. Foreground time and acceptance are engagement diagnostics, not proof of intrinsic motivation or learning. Distinguish this phase from the fixed 25-minute intervention."
+    },
+    {
+      "id": "assumption_sensitive_business_reasoning",
+      "tier": "exploratory_qualitative",
+      "construct": "Reasoning about conjectural business and software-ecosystem choices",
+      "instrument": "Separate rubric in assessment draft",
+      "formula": "No primary numerical learning composite",
+      "denominator": "Eligible responses and observed counts reported separately",
+      "time": [
+        "optional interview after T1 or T2"
+      ],
+      "notes": "No unique optimal ethical/commercial route is presumed. Profit, route selection, and endings remain gameplay outcomes."
+    }
   ],
   "analysis": {
-    "estimand": "Intention-to-treat C-B difference in person-level T1 transfer percentage points",
+    "estimand": "Intention-to-treat O-A difference in person-level T1 transfer percentage points",
     "primary_model": "Prespecified ANCOVA of T1 transfer on condition, T0 score, and counterbalanced form; include only additional baseline covariates declared before data collection.",
     "alpha": 0.05,
     "sidedness": "two-sided",
-    "hierarchy": ["C-B transfer_T1 primary", "C-B causal_T1 key secondary, gated on primary rejection", "C-A bundle comparison and other metrics are secondary/exploratory estimates with uncertainty"],
-    "report": ["all group sample sizes and flow", "raw score distributions", "adjusted percentage-point differences", "95% confidence intervals", "standardized effects as companion estimates", "all prespecified outcomes including null or adverse findings"],
-    "not_primary_covariates": ["post-randomization active time", "bridge clicks", "ending reached", "game income", "number of upgrades"],
+    "hierarchy": [
+      "O-A transfer_T1 primary",
+      "O-A causal_T1 key secondary, gated on primary rejection",
+      "delayed learning, experience and behavior are secondary or exploratory estimates with uncertainty"
+    ],
+    "report": [
+      "all group sample sizes and flow",
+      "raw score distributions",
+      "adjusted percentage-point differences",
+      "95% confidence intervals",
+      "standardized effects as companion estimates",
+      "all prespecified outcomes including null or adverse findings"
+    ],
+    "not_primary_covariates": [
+      "post-randomization active time",
+      "comparison clicks",
+      "ending reached",
+      "game income",
+      "number of upgrades"
+    ],
     "repeated_items": "Items and follow-up sessions are not independent participants; if item-level models are used, account for person and item dependence.",
     "exclusions": "Only prespecified ineligibility, duplicate participation, or absence of consent, with counts reported. Post-randomization interface/technical failures remain in the assigned-condition flow and intention-to-treat population; affected outcomes are marked missing and handled by the missingness/sensitivity plan. No exclusion merely for low uptake, rapid play, unfinished story, or unexpected scores."
   },
@@ -90,28 +410,83 @@
     "missing_outcome_session_or_withdrawal": "Mark missing, never score as zero or silently discard. Report counts/reasons by condition.",
     "primary_plan_required": "Prespecify model-based handling or multiple imputation under stated assumptions plus sensitivity analysis for differential attrition; distinguish it from a complete-case analysis.",
     "questionnaires": "Apply instrument rules; no ad hoc mean substitution. Declare minimum response completeness before recruitment.",
-    "telemetry": "Missing events are unknown, not evidence of zero exposure or zero bridge use.",
+    "telemetry": "Missing events are unknown, not evidence of no exposure or no comparison use. In-memory events can be lost on reload or tab closure; document this in the pilot and do not infer completeness.",
     "zero_denominator": null
   },
   "sample_size_planning": {
     "status": "illustration_not_fixed_target_or_guarantee",
-    "illustrative_assumptions": {"two_sided_alpha": 0.05, "power": 0.8, "standardized_difference_d": 0.5, "allocation": "equal", "comparison": "one independent two-group primary contrast"},
+    "illustrative_assumptions": {
+      "two_sided_alpha": 0.05,
+      "power": 0.8,
+      "standardized_difference_d": 0.5,
+      "allocation": "equal",
+      "comparison": "one independent two-group primary contrast"
+    },
     "normal_approximation": "n_per_group = 2 * (z_(1-alpha/2) + z_power)^2 / d^2; about 63, with a usual two-sample t calculation about 64 per group",
-    "illustrative_completed_counts": {"per_group": 64, "core_B_C_total": 128, "three_arm_total": 192},
+    "illustrative_completed_counts": {
+      "per_group": 64,
+      "core_O_A_total": 128
+    },
     "practical_effect_example": "Two of sixteen additional correct items = 12.5 percentage points; if the person-level SD were 25 points, d would equal .5. Neither SD nor a universal worthwhile threshold is established.",
     "required_next_step": "Choose the smallest worthwhile effect with the research goal and recruitment budget, then simulate the planned analysis across plausible variance, baseline correlation, item dependence, and missingness. Add recruitment allowance for expected missing outcomes.",
-    "pilot": "Approximately 12-18 people can check feasibility, item difficulty, floor/ceiling and telemetry. A small pilot does not establish the efficacy effect or adequate confirmatory N.",
-    "budget_fallback": "If a three-arm adequately powered study is infeasible, prioritize B/C; a small A arm is exploratory and not a proven strong-baseline comparison."
+    "pilot": "Approximately 8-12 target learners for usability/problem discovery, task wording, logging and interview refinement. This is not an efficacy test or a formal power calculation.",
+    "budget_fallback": "Retain the core two-condition design; report achievable precision honestly or remain formative if an adequately precise confirmatory study is infeasible."
   },
   "telemetry_schema_proposal": {
     "implemented": false,
-    "identity": ["random_study_id", "session_id", "assigned_condition", "consent_version"],
-    "provenance": ["app_build_commit", "engine_model_id", "engine_model_version", "parameter_snapshot_hash", "scenario_seed", "assessment_form_id", "task_id", "branch_id", "parent_branch_id", "parent_state_hash"],
-    "ordering_and_real_time": ["event_sequence_number", "real_wall_utc_timestamp", "real_monotonic_elapsed_ms", "focus_visibility_state", "session_resume_id"],
-    "simulation_time_separate": ["simulated_elapsed_seconds", "simulated_tick", "offline_settlement_seconds"],
-    "learning_events": ["study_phase", "concept_opportunity_id", "raw_evidence_exposed", "action_id", "changed_parameter_names", "state_before_hash", "state_after_hash", "prediction", "confidence_probability", "bridge_available", "bridge_open", "counterfactual_scenario_id", "displayed_outcome", "reset_or_replay", "optional_invitation_rendered", "optional_invitation_accepted_or_declined", "optional_activity_started_or_ended", "visibility_or_pause_change"],
+    "identity": [
+      "random_study_id",
+      "session_id",
+      "assigned_condition",
+      "consent_version"
+    ],
+    "provenance": [
+      "app_build_commit",
+      "engine_model_id",
+      "engine_model_version",
+      "parameter_snapshot_hash",
+      "scenario_seed",
+      "assessment_form_id",
+      "task_id",
+      "branch_id",
+      "parent_branch_id",
+      "parent_state_hash"
+    ],
+    "ordering_and_real_time": [
+      "event_sequence_number",
+      "real_wall_utc_timestamp",
+      "real_monotonic_elapsed_ms",
+      "focus_visibility_state",
+      "session_resume_id"
+    ],
+    "simulation_time_separate": [
+      "simulated_elapsed_seconds",
+      "simulated_tick",
+      "offline_settlement_seconds"
+    ],
+    "learning_events": [
+      "study_phase",
+      "concept_opportunity_id",
+      "actual_presentation",
+      "raw_evidence_exposed",
+      "action_id",
+      "changed_parameter_names",
+      "state_before_hash",
+      "state_after_hash",
+      "prediction",
+      "confidence_probability",
+      "common_comparison_available",
+      "common_comparison_open",
+      "displayed_outcome",
+      "reset_or_replay",
+      "optional_invitation_rendered",
+      "optional_invitation_accepted_or_declined",
+      "optional_activity_started_or_ended",
+      "visibility_or_pause_change"
+    ],
     "clock_rules": "Use real monotonic deltas within a session for response durations. Real wall UTC supports ordering across sessions. Simulation time, idle progress and offline settlement must never be substituted for human engagement duration. A resumed session starts a new monotonic origin.",
-    "data_minimization": "Collect only consented study fields. Separate contact information and identifiers from research events; free-text interview data require declared handling."
+    "data_minimization": "Collect only consented study fields. Separate contact information and identifiers from research events; free-text interview data require declared handling.",
+    "implementation_note": "The formal research schema below is still a proposal. The lab has a narrower local event-export prototype; inspect its exported fields and documented event API before relying on any proposed field."
   },
   "instrument_adaptation": {
     "chinese_status": "No Chinese adaptation is automatically validated by translating an English instrument.",
@@ -125,5 +500,74 @@
     "https://www.nasa.gov/wp-content/uploads/2026/01/hfes-2006-paper.pdf",
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC6390881/",
     "https://playerexperienceinventory.org/docs"
-  ]
+  ],
+  "implementation_status": {
+    "prototype": "Three-scenario local exploration lab in web/game/lab/, shared analytical model, two presentation modes, local event JSON export.",
+    "condition_urls": {
+      "O": "web/game/lab/?condition=objects",
+      "A": "web/game/lab/?condition=abstract",
+      "free_exploration": "web/game/lab/"
+    },
+    "assignment": "A recognized condition query fixes the presentation. No automatic randomization or stratified allocation is implemented. No-query free exploration permits switching and must not be analyzed as randomized condition assignment.",
+    "data_handling": "Session events stay in browser memory until the user downloads a JSON file. No names, research consent, server upload, contact handling, cross-device identity, or formal assessment delivery is implemented.",
+    "human_study_results": false,
+    "pilot_guide": "docs/research/gpu-exploration-pilot.md",
+    "trial_allocation": {
+      "rule": "Sum zero-based resource-option indices; each scene limit is its baseline index sum plus two. Lowering a resource releases points; over-limit changes are rejected.",
+      "limits": {
+        "compute": 6,
+        "bandwidth": 6,
+        "reuse": 7
+      },
+      "interpretation": "Synthetic teaching allocation units identical in O/A, not real chip area, power, prices or a validated hardware cost model."
+    }
+  },
+  "prototype_telemetry_available": {
+    "scope": "Local in-memory action/session export only, narrower than the formal schema proposal.",
+    "event_fields": [
+      "sequence",
+      "type",
+      "elapsedMs",
+      "scenarioId",
+      "presentation",
+      "configurationRevision",
+      "payload"
+    ],
+    "session_metadata": [
+      "sessionId",
+      "condition",
+      "presentation",
+      "mode",
+      "assignment",
+      "presentationSwitched",
+      "contaminated",
+      "provenance",
+      "baselineConfiguration",
+      "configuration",
+      "runs",
+      "events"
+    ],
+    "run_provenance": [
+      "id",
+      "scenarioId",
+      "scenarioVersion",
+      "workload",
+      "presentation",
+      "configuration",
+      "baselineConfiguration",
+      "changes",
+      "comparisonKind",
+      "configurationRevision",
+      "elapsedMs",
+      "modelId",
+      "modelVersion"
+    ],
+    "prediction_and_explanation": "Prediction snapshot belongs to a run, relative to the fixed scene baseline; changing resources clears the draft. Explanations and their revisions attach to specific runs. Result-already-visible flag distinguishes retrospective predictions.",
+    "time_limitations": "elapsedMs is monotonic relative real elapsed time, not active-attention time; absence of focus or optional-invitation events prevents estimating the formal voluntary-active-time measure.",
+    "reload_limitations": "No persistent storage or remote backup. Reload/tab closure loses unexported events. Different sessions have independent elapsed-time origins.",
+    "assignment_flags": {
+      "randomized": false,
+      "controlledAssignment": false
+    }
+  }
 }

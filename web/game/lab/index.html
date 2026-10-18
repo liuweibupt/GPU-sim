@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c100e" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="在三份客户来信中操作 GPU 资源、预测性能并检验自己的想法。" />
+    <title>研发沙盘 · 黄Sir的算力工坊</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c7f58a'/%3E%3Cpath d='M10 10h20v20H10zm5 5v10h10V15z' fill='%23151d13' fill-rule='evenodd'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./lab.css" />
+    <script type="module" src="./lab.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到研发沙盘</a>
+    <header class="topbar">
+      <a href="../" class="brand"><span class="brand-icon" aria-hidden="true">▦</span><span>黄Sir的算力工坊 <small>RESEARCH ROOM</small></span></a>
+      <nav aria-label="返回游戏"><a href="../">算力工坊 ↗</a><a href="../pve/">创业 PvE ↗</a></nav>
+    </header>
+    <main id="main" class="shell">
+      <div class="page-heading">
+        <div><p class="eyebrow">THREE LETTERS. MANY POSSIBILITIES.</p><h1>把想法，放进试产线<span>。</span></h1><p class="subtitle">客户带来问题。搭一台机器，看看你的判断会发生什么。</p></div>
+        <div class="session-label"><span class="status-dot"></span><span>研发沙盘 <b>01—03</b></span></div>
+      </div>
+
+      <nav id="scene-tabs" class="scene-tabs" aria-label="客户来信"></nav>
+
+      <div class="lab-grid">
+        <section class="room panel" aria-labelledby="room-title">
+          <div class="panel-heading"><div><p class="eyebrow">YOUR PROTOTYPE</p><h2 id="room-title">这一次，你想改变什么？</h2></div><span id="configuration-status" class="quiet-badge">初始配置</span></div>
+          <div class="presentation-row"><span id="presentation-note">自由探索 · 可切换呈现</span><div id="presentation-switch" class="segmented" role="group" aria-label="呈现方式"><button type="button" data-presentation="objects" aria-pressed="true">对象工坊</button><button type="button" data-presentation="abstract" aria-pressed="false">抽象框图</button></div></div>
+          <p id="control-help" class="control-help">用每个对象下方的按钮调整资源。它们连接同一个教学模型，每次试产使用相同的客户任务。</p>
+
+          <div id="hardware-board" class="hardware-board" data-presentation="objects">
+            <div class="board-grid" aria-hidden="true"></div>
+            <div class="board-legend"><span class="board-coordinate">GPU / TEACHING MODEL</span><span>资源可调整 · 连线表示数据通路</span></div>
+            <div class="hardware-path" aria-hidden="true"><span></span><span></span></div>
+            <div class="resource-grid">
+              <article class="resource resource-memory" aria-labelledby="dram-title"><div class="resource-topline"><span class="resource-index">01 / MEMORY</span><span class="resource-port" aria-hidden="true">↔</span></div><div class="object-figure memory-figure" aria-hidden="true"><i></i><i></i><i></i><i></i><span>DATA</span></div><div class="resource-heading"><h3 id="dram-title">显存通道</h3><span class="object-subtitle">数据仓库</span></div><p class="resource-description">将任务需要的数据送往芯片。</p><div class="resource-control"><button type="button" data-resource="dram" data-step="-1" aria-label="减少显存通道">−</button><output id="dram-value" aria-live="polite"></output><button type="button" data-resource="dram" data-step="1" aria-label="增加显存通道">+</button></div></article>
+              <article class="resource resource-cache" aria-labelledby="l1-title"><div class="resource-topline"><span class="resource-index">02 / CACHE</span><span class="resource-port" aria-hidden="true">⇄</span></div><div class="object-figure cache-figure" aria-hidden="true"><i></i><i></i><i></i><i></i><span>ON CHIP</span></div><div class="resource-heading"><h3 id="l1-title">L1 缓存</h3><span class="object-subtitle">周转货架</span></div><p class="resource-description">在片上保存一部分可复用的数据。</p><div class="resource-control"><button type="button" data-resource="l1" data-step="-1" aria-label="减少 L1 缓存">−</button><output id="l1-value" aria-live="polite"></output><button type="button" data-resource="l1" data-step="1" aria-label="增加 L1 缓存">+</button></div></article>
+              <article class="resource resource-compute" aria-labelledby="alu-title"><div class="resource-topline"><span class="resource-index">03 / COMPUTE</span><span class="resource-port" aria-hidden="true">✳</span></div><div class="object-figure compute-figure" aria-hidden="true"><div id="alu-cells" class="alu-cells"></div><span>ALU ARRAY</span></div><div class="resource-heading"><h3 id="alu-title">ALU 阵列</h3><span class="object-subtitle">计算工作台</span></div><p class="resource-description">并行处理分配到这里的运算。</p><div class="resource-control"><button type="button" data-resource="alu" data-step="-1" aria-label="减少 ALU">−</button><output id="alu-value" aria-live="polite"></output><button type="button" data-resource="alu" data-step="1" aria-label="增加 ALU">+</button></div></article>
+            </div>
+            <div class="budget-row"><span>试产额度 <strong id="budget-used">—</strong> / <span id="budget-limit">—</span></span><span>可用 <strong id="budget-remaining">—</strong></span></div><p class="budget-help">各资源共用一份试产额度；降低配置可释放额度。额度为教学分配单位。</p><div class="board-footer"><span><span class="status-dot"></span>仅影响本次沙盘</span><button type="button" id="reset-button">恢复该场景起点 ↺</button></div>
+          </div>
+
+          <section id="results" class="results" aria-labelledby="results-title" tabindex="-1">
+            <div class="section-heading"><h3 id="results-title">试产回执</h3><span id="result-label">等待第一次试产</span></div>
+            <div id="empty-result" class="empty-result"><span aria-hidden="true">⌁</span><div><strong>先提出一个想法，再运行看看。</strong><p>运行后，你会看到耗时分解、数据流量与初始配置的比较。</p></div></div>
+            <div id="result-content" hidden>
+              <p id="snapshot-warning" class="snapshot-warning" hidden></p>
+              <div class="result-overview"><div><span>总耗时 <small>逻辑周期</small></span><strong id="total-cycles">—</strong></div><div><span>场景初始耗时</span><strong id="baseline-cycles">—</strong></div><div><span>相对场景起点</span><strong id="speedup">—</strong></div></div>
+              <p id="result-summary" class="result-summary"></p>
+              <div class="decomposition" aria-labelledby="decomposition-title"><div class="section-heading"><h4 id="decomposition-title">耗时从哪里来</h4><span>解析分解，非逐周期执行轨迹</span></div><div id="cycle-bars" class="cycle-bars"></div><p id="cycle-equation" class="cycle-equation"></p></div>
+              <div class="flow-stats"><div><span>外存流量</span><strong id="external-bytes">—</strong></div><div><span>缓存命中</span><strong id="cache-hit">—</strong></div><div><span>外存带宽</span><strong id="memory-bandwidth">—</strong></div></div>
+              <div id="prediction-feedback" class="prediction-feedback" hidden></div>
+              <div class="reflection"><label for="reflection-input">留下一条工程笔记 <span>可选</span></label><p>哪项证据支持或改变了你的判断？请勿填写姓名等个人信息。</p><textarea id="reflection-input" rows="2" maxlength="2000" placeholder="我原先认为……这次回执显示……"></textarea><div><span id="reflection-status" role="status"></span><button id="save-reflection" class="text-button" type="button">保存到这次试产</button></div></div>
+            </div>
+          </section>
+        </section>
+
+        <aside class="side-column">
+          <article class="letter panel" aria-labelledby="letter-title"><div class="letter-meta"><span>INCOMING / 客户来信</span><span id="letter-number">01</span></div><div class="letter-avatar" aria-hidden="true">✉</div><p id="letter-sender" class="letter-sender"></p><h2 id="letter-title"></h2><p id="letter-brief" class="letter-brief"></p><div class="task-facts" id="task-facts"></div><p id="letter-question" class="letter-question"></p><span class="letter-signature">期待你的试产回执。</span></article>
+
+          <section class="experiment panel" aria-labelledby="prediction-title"><p class="eyebrow">MAKE A GUESS, THEN FIND OUT</p><h2 id="prediction-title">这次会发生什么？</h2><p class="prediction-help">预测相对于本场景的初始配置。也可以直接试产。</p><label for="prediction-direction">总耗时会怎样？</label><select id="prediction-direction"><option value="">暂不预测</option><option value="faster">更短</option><option value="same">相近（±5%）</option><option value="slower">更长</option></select><div class="prediction-grid"><div><label for="prediction-bottleneck">主要限制在哪里？</label><select id="prediction-bottleneck"><option value="">暂不判断</option><option value="compute">计算</option><option value="bandwidth">数据搬运</option><option value="latency">访问延迟</option></select></div><div><label for="prediction-confidence">判断正确的概率？</label><select id="prediction-confidence"><option value="">暂不填写</option><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option></select></div></div><button id="run-button" class="run-button" type="button"><span>运行一次试产</span><span aria-hidden="true">↗</span></button><p class="run-caption">相同任务 · 当前资源 · 可反复比较</p><div id="live-status" class="live-status" role="status" aria-live="polite"></div></section>
+          <div class="small-note"><span aria-hidden="true">↳</span><p>每次只改变一项，便于比较原因；也可以组合调整，依据回执检验自己的解释。</p></div>
+        </aside>
+      </div>
+
+      <section class="history panel" aria-labelledby="history-title"><div class="panel-heading"><div><p class="eyebrow">YOUR EVIDENCE</p><h2 id="history-title">同一场景，留下不同尝试。</h2></div><span id="history-count" class="quiet-badge">0 次试产</span></div><p class="history-help">选择一条记录查看完整回执。调整资源不会改写已有记录；恢复起点也会保留历史。</p><div id="history-empty" class="history-empty">你的第一份试产回执会出现在这里。</div><div class="table-scroll" id="history-table-wrap" hidden><table><caption class="sr-only">当前场景的试产历史，耗时单位为逻辑周期</caption><thead><tr><th scope="col">试产</th><th scope="col">ALU</th><th scope="col">显存通道</th><th scope="col">L1 缓存</th><th scope="col">总耗时</th><th scope="col">相对起点</th><th scope="col">回执</th></tr></thead><tbody id="history-body"></tbody></table></div></section>
+
+      <footer class="lab-footer"><div><strong>探索记录只在本页内存中暂存。</strong><p>不上传服务器；刷新会清空。导出包含配置、预测、试产结果、笔记和事件时间，不自动收集姓名。<span id="condition-description"></span></p></div><button type="button" id="export-button" class="export-button">导出本地记录 <span aria-hidden="true">↓</span></button></footer>
+      <details class="model-note"><summary>这些数字怎样得来？</summary><p>本沙盘使用有限并行计算、分层存储流量、延迟隐藏和计算／搬运重叠的解析教学模型。图形表达模型的资源和分解结果，不代表真实芯片布局或逐周期流水线。</p><p>参数为公开的游戏教学假设，未经真实 GPU 测量标定；不预测实际芯片性能、CUDA 内核、互联、能耗或真实机柜表现。三份任务之间不应用耗时数字直接比较实际吞吐。</p><p id="model-provenance"></p></details>
+      <noscript><p class="noscript">研发沙盘需要启用 JavaScript。你仍可返回<a href="../">算力工坊</a>。</p></noscript>
+    </main>
+  </body>
+</html>
