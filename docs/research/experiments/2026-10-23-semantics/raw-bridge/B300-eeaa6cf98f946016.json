@@ -1,0 +1,1412 @@
+{
+  "capture": {
+    "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+    "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+    "provenance": {
+      "kind": "derived",
+      "sourceKind": "hardware-trace",
+      "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred"
+    },
+    "identity": {
+      "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+    },
+    "resources": [],
+    "facts": [
+      {
+        "id": "analysis-contract",
+        "kind": "analysis-request",
+        "scope": "query actual evidence sufficiency, not classify an ISA violation",
+        "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+      },
+      {
+        "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "kind": "raw-instruction-record",
+        "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "sourceLine": 301,
+        "warpId": 0,
+        "ordinal": 274,
+        "pc": 13872,
+        "opcode": "UTCHMMA",
+        "activeMask": 4294967295,
+        "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+      },
+      {
+        "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+        "kind": "raw-instruction-record",
+        "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "sourceLine": 1167,
+        "warpId": 0,
+        "ordinal": 1140,
+        "pc": 15200,
+        "opcode": "UTCATOMSWS.AND",
+        "activeMask": 4294967295,
+        "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+      }
+    ],
+    "events": [
+      {
+        "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+        "role": "consumer",
+        "recordRef": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "token": {
+          "status": "unknown",
+          "reason": "logical resource/generation/domain not recovered from this raw callback"
+        }
+      },
+      {
+        "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+        "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+        "role": "reuse",
+        "recordRef": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+        "token": {
+          "status": "unknown",
+          "reason": "logical resource/generation/domain not recovered from this raw callback"
+        }
+      }
+    ],
+    "hb": [],
+    "obligations": [
+      {
+        "id": "observed-value-origin",
+        "kind": "value-generation",
+        "consumerId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "requirementRef": "analysis-contract",
+        "expected": {
+          "status": "unknown",
+          "reason": "logical tensor/version mapping unavailable"
+        },
+        "observed": {
+          "status": "unknown",
+          "reason": "no verified post-write/consumer value provenance"
+        }
+      },
+      {
+        "id": "tensor-input-readiness",
+        "kind": "completion-before-consume",
+        "beforeId": "unobserved-producer-completion",
+        "afterId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "requirementRef": "analysis-contract",
+        "requiredToken": {
+          "status": "unknown",
+          "reason": "matching full generation and completion domain unavailable"
+        }
+      },
+      {
+        "id": "tmem-reader-before-release",
+        "kind": "reader-before-reuse",
+        "beforeId": "unobserved-last-reader-completion",
+        "afterId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+        "requirementRef": "analysis-contract",
+        "requiredToken": {
+          "status": "unknown",
+          "reason": "TMEM reader set, completion domain and runtime generation unavailable"
+        }
+      }
+    ]
+  },
+  "run": {
+    "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+    "provenance": {
+      "kind": "derived",
+      "sourceKind": "hardware-trace",
+      "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+      "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+    },
+    "identity": {
+      "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+      "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+    },
+    "capabilities": {
+      "logicalMapping": "partial",
+      "accesses": "partial",
+      "sync": "partial"
+    },
+    "nodes": [
+      {
+        "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "role": "consumer",
+        "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+        "token": {
+          "status": "unknown",
+          "reason": "logical resource/generation/domain not recovered from this raw callback"
+        },
+        "evidenceRefs": [
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ]
+      },
+      {
+        "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+        "role": "reuse",
+        "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+        "token": {
+          "status": "unknown",
+          "reason": "logical resource/generation/domain not recovered from this raw callback"
+        },
+        "evidenceRefs": [
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+        ]
+      },
+      {
+        "id": "protocol:query:observed-value-origin",
+        "role": "obligation-query",
+        "evidenceRefs": [
+          "analysis-contract"
+        ]
+      },
+      {
+        "id": "protocol:query:tensor-input-readiness",
+        "role": "obligation-query",
+        "evidenceRefs": [
+          "analysis-contract"
+        ]
+      },
+      {
+        "id": "protocol:query:tmem-reader-before-release",
+        "role": "obligation-query",
+        "evidenceRefs": [
+          "analysis-contract"
+        ]
+      }
+    ],
+    "edges": [],
+    "evidence": [
+      {
+        "id": "analysis-contract",
+        "kind": "analysis-request",
+        "scope": "query actual evidence sufficiency, not classify an ISA violation",
+        "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+      },
+      {
+        "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+        "kind": "raw-instruction-record",
+        "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "sourceLine": 301,
+        "warpId": 0,
+        "ordinal": 274,
+        "pc": 13872,
+        "opcode": "UTCHMMA",
+        "activeMask": 4294967295,
+        "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+      },
+      {
+        "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+        "kind": "raw-instruction-record",
+        "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "sourceLine": 1167,
+        "warpId": 0,
+        "ordinal": 1140,
+        "pc": 15200,
+        "opcode": "UTCATOMSWS.AND",
+        "activeMask": 4294967295,
+        "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+      },
+      {
+        "id": "protocol:unknown:observed-value-origin",
+        "kind": "observation-boundary",
+        "reasons": [
+          "expected-or-observed-identity-unknown"
+        ],
+        "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+      },
+      {
+        "id": "protocol:unknown:tensor-input-readiness:token",
+        "kind": "observation-boundary",
+        "reasons": [
+          "completion-token-or-required-identity-unknown"
+        ],
+        "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+      },
+      {
+        "id": "protocol:unknown:tensor-input-readiness",
+        "kind": "observation-boundary",
+        "reasons": [
+          "ordering-endpoint-record-missing"
+        ],
+        "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+      },
+      {
+        "id": "protocol:unknown:tmem-reader-before-release:token",
+        "kind": "observation-boundary",
+        "reasons": [
+          "completion-token-or-required-identity-unknown"
+        ],
+        "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+      },
+      {
+        "id": "protocol:unknown:tmem-reader-before-release",
+        "kind": "observation-boundary",
+        "reasons": [
+          "ordering-endpoint-record-missing"
+        ],
+        "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+      }
+    ],
+    "obligations": [
+      {
+        "id": "observed-value-origin",
+        "kind": "value-generation",
+        "ruleId": "bounded-protocol-v1/value-generation",
+        "status": "unknown",
+        "subjectIds": [
+          "protocol:query:observed-value-origin",
+          "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "witnessNodeIds": [
+          "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "witnessEdgeIds": [],
+        "positiveWitnessRefs": [
+          "analysis-contract",
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "unknownRefs": [
+          "protocol:unknown:observed-value-origin"
+        ],
+        "derivation": {
+          "sourceRequestId": "observed-value-origin",
+          "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "reasons": [
+            "expected-or-observed-identity-unknown"
+          ],
+          "inferredFromMissingHB": false,
+          "usesFileOrder": false
+        }
+      },
+      {
+        "id": "tensor-input-readiness:token",
+        "kind": "completion-token-generation",
+        "ruleId": "bounded-protocol-v1/completion-token-generation",
+        "status": "unknown",
+        "subjectIds": [
+          "protocol:query:tensor-input-readiness"
+        ],
+        "witnessNodeIds": [],
+        "witnessEdgeIds": [],
+        "positiveWitnessRefs": [
+          "analysis-contract",
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "unknownRefs": [
+          "protocol:unknown:tensor-input-readiness:token"
+        ],
+        "derivation": {
+          "sourceRequestId": "tensor-input-readiness",
+          "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "reasons": [
+            "completion-token-or-required-identity-unknown"
+          ],
+          "inferredFromMissingHB": false,
+          "usesFileOrder": false
+        }
+      },
+      {
+        "id": "tensor-input-readiness",
+        "kind": "completion-before-consume",
+        "ruleId": "bounded-protocol-v1/completion-before-consume",
+        "status": "unknown",
+        "subjectIds": [
+          "protocol:query:tensor-input-readiness",
+          "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "witnessNodeIds": [
+          "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "witnessEdgeIds": [],
+        "positiveWitnessRefs": [
+          "analysis-contract",
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+        ],
+        "unknownRefs": [
+          "protocol:unknown:tensor-input-readiness"
+        ],
+        "derivation": {
+          "sourceRequestId": "tensor-input-readiness",
+          "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "reasons": [
+            "ordering-endpoint-record-missing"
+          ],
+          "inferredFromMissingHB": false,
+          "usesFileOrder": false
+        }
+      },
+      {
+        "id": "tmem-reader-before-release:token",
+        "kind": "completion-token-generation",
+        "ruleId": "bounded-protocol-v1/completion-token-generation",
+        "status": "unknown",
+        "subjectIds": [
+          "protocol:query:tmem-reader-before-release"
+        ],
+        "witnessNodeIds": [],
+        "witnessEdgeIds": [],
+        "positiveWitnessRefs": [
+          "analysis-contract",
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+        ],
+        "unknownRefs": [
+          "protocol:unknown:tmem-reader-before-release:token"
+        ],
+        "derivation": {
+          "sourceRequestId": "tmem-reader-before-release",
+          "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "reasons": [
+            "completion-token-or-required-identity-unknown"
+          ],
+          "inferredFromMissingHB": false,
+          "usesFileOrder": false
+        }
+      },
+      {
+        "id": "tmem-reader-before-release",
+        "kind": "reader-before-reuse",
+        "ruleId": "bounded-protocol-v1/reader-before-reuse",
+        "status": "unknown",
+        "subjectIds": [
+          "protocol:query:tmem-reader-before-release",
+          "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+        ],
+        "witnessNodeIds": [
+          "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+        ],
+        "witnessEdgeIds": [],
+        "positiveWitnessRefs": [
+          "analysis-contract",
+          "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+        ],
+        "unknownRefs": [
+          "protocol:unknown:tmem-reader-before-release"
+        ],
+        "derivation": {
+          "sourceRequestId": "tmem-reader-before-release",
+          "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "reasons": [
+            "ordering-endpoint-record-missing"
+          ],
+          "inferredFromMissingHB": false,
+          "usesFileOrder": false
+        }
+      }
+    ],
+    "protocolMetadata": {
+      "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+      "validatedInputDAG": true,
+      "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+      "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+      "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+      "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+      "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+      "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+    }
+  },
+  "slices": [
+    {
+      "obligationId": "observed-value-origin",
+      "run": {
+        "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "provenance": {
+          "kind": "derived",
+          "sourceKind": "hardware-trace",
+          "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+          "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+        },
+        "identity": {
+          "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+            "role": "consumer",
+            "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+            "token": {
+              "status": "unknown",
+              "reason": "logical resource/generation/domain not recovered from this raw callback"
+            },
+            "evidenceRefs": [
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ]
+          },
+          {
+            "id": "protocol:query:observed-value-origin",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          },
+          {
+            "id": "protocol:query:tensor-input-readiness",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          }
+        ],
+        "edges": [],
+        "evidence": [
+          {
+            "id": "analysis-contract",
+            "kind": "analysis-request",
+            "scope": "query actual evidence sufficiency, not classify an ISA violation",
+            "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+          },
+          {
+            "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+            "kind": "raw-instruction-record",
+            "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+            "sourceLine": 301,
+            "warpId": 0,
+            "ordinal": 274,
+            "pc": 13872,
+            "opcode": "UTCHMMA",
+            "activeMask": 4294967295,
+            "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+          },
+          {
+            "id": "protocol:unknown:observed-value-origin",
+            "kind": "observation-boundary",
+            "reasons": [
+              "expected-or-observed-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tensor-input-readiness:token",
+            "kind": "observation-boundary",
+            "reasons": [
+              "completion-token-or-required-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tensor-input-readiness",
+            "kind": "observation-boundary",
+            "reasons": [
+              "ordering-endpoint-record-missing"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          }
+        ],
+        "obligations": [
+          {
+            "id": "observed-value-origin",
+            "kind": "value-generation",
+            "ruleId": "bounded-protocol-v1/value-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:observed-value-origin",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:observed-value-origin"
+            ],
+            "derivation": {
+              "sourceRequestId": "observed-value-origin",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "expected-or-observed-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tensor-input-readiness:token",
+            "kind": "completion-token-generation",
+            "ruleId": "bounded-protocol-v1/completion-token-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tensor-input-readiness"
+            ],
+            "witnessNodeIds": [],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tensor-input-readiness:token"
+            ],
+            "derivation": {
+              "sourceRequestId": "tensor-input-readiness",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "completion-token-or-required-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tensor-input-readiness",
+            "kind": "completion-before-consume",
+            "ruleId": "bounded-protocol-v1/completion-before-consume",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tensor-input-readiness",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tensor-input-readiness"
+            ],
+            "derivation": {
+              "sourceRequestId": "tensor-input-readiness",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "ordering-endpoint-record-missing"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          }
+        ],
+        "protocolMetadata": {
+          "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "validatedInputDAG": true,
+          "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+          "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+          "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+          "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+          "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+          "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+        },
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "seedIds": [
+            "protocol:query:observed-value-origin",
+            "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 0,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "partial",
+            "accesses": "partial",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "protocol:unknown:observed-value-origin",
+            "protocol:unknown:tensor-input-readiness:token",
+            "protocol:unknown:tensor-input-readiness"
+          ]
+        }
+      }
+    },
+    {
+      "obligationId": "tensor-input-readiness:token",
+      "run": {
+        "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "provenance": {
+          "kind": "derived",
+          "sourceKind": "hardware-trace",
+          "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+          "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+        },
+        "identity": {
+          "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+            "role": "consumer",
+            "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+            "token": {
+              "status": "unknown",
+              "reason": "logical resource/generation/domain not recovered from this raw callback"
+            },
+            "evidenceRefs": [
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ]
+          },
+          {
+            "id": "protocol:query:observed-value-origin",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          },
+          {
+            "id": "protocol:query:tensor-input-readiness",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          }
+        ],
+        "edges": [],
+        "evidence": [
+          {
+            "id": "analysis-contract",
+            "kind": "analysis-request",
+            "scope": "query actual evidence sufficiency, not classify an ISA violation",
+            "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+          },
+          {
+            "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+            "kind": "raw-instruction-record",
+            "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+            "sourceLine": 301,
+            "warpId": 0,
+            "ordinal": 274,
+            "pc": 13872,
+            "opcode": "UTCHMMA",
+            "activeMask": 4294967295,
+            "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+          },
+          {
+            "id": "protocol:unknown:observed-value-origin",
+            "kind": "observation-boundary",
+            "reasons": [
+              "expected-or-observed-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tensor-input-readiness:token",
+            "kind": "observation-boundary",
+            "reasons": [
+              "completion-token-or-required-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tensor-input-readiness",
+            "kind": "observation-boundary",
+            "reasons": [
+              "ordering-endpoint-record-missing"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          }
+        ],
+        "obligations": [
+          {
+            "id": "observed-value-origin",
+            "kind": "value-generation",
+            "ruleId": "bounded-protocol-v1/value-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:observed-value-origin",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:observed-value-origin"
+            ],
+            "derivation": {
+              "sourceRequestId": "observed-value-origin",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "expected-or-observed-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tensor-input-readiness:token",
+            "kind": "completion-token-generation",
+            "ruleId": "bounded-protocol-v1/completion-token-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tensor-input-readiness"
+            ],
+            "witnessNodeIds": [],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tensor-input-readiness:token"
+            ],
+            "derivation": {
+              "sourceRequestId": "tensor-input-readiness",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "completion-token-or-required-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tensor-input-readiness",
+            "kind": "completion-before-consume",
+            "ruleId": "bounded-protocol-v1/completion-before-consume",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tensor-input-readiness",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tensor-input-readiness"
+            ],
+            "derivation": {
+              "sourceRequestId": "tensor-input-readiness",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "ordering-endpoint-record-missing"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          }
+        ],
+        "protocolMetadata": {
+          "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "validatedInputDAG": true,
+          "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+          "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+          "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+          "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+          "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+          "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+        },
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "seedIds": [
+            "protocol:query:tensor-input-readiness"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 0,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "partial",
+            "accesses": "partial",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "protocol:unknown:observed-value-origin",
+            "protocol:unknown:tensor-input-readiness:token",
+            "protocol:unknown:tensor-input-readiness"
+          ]
+        }
+      }
+    },
+    {
+      "obligationId": "tensor-input-readiness",
+      "run": {
+        "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "provenance": {
+          "kind": "derived",
+          "sourceKind": "hardware-trace",
+          "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+          "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+        },
+        "identity": {
+          "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+            "role": "consumer",
+            "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+            "token": {
+              "status": "unknown",
+              "reason": "logical resource/generation/domain not recovered from this raw callback"
+            },
+            "evidenceRefs": [
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ]
+          },
+          {
+            "id": "protocol:query:observed-value-origin",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          },
+          {
+            "id": "protocol:query:tensor-input-readiness",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          }
+        ],
+        "edges": [],
+        "evidence": [
+          {
+            "id": "analysis-contract",
+            "kind": "analysis-request",
+            "scope": "query actual evidence sufficiency, not classify an ISA violation",
+            "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+          },
+          {
+            "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274",
+            "kind": "raw-instruction-record",
+            "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+            "sourceLine": 301,
+            "warpId": 0,
+            "ordinal": 274,
+            "pc": 13872,
+            "opcode": "UTCHMMA",
+            "activeMask": 4294967295,
+            "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+          },
+          {
+            "id": "protocol:unknown:observed-value-origin",
+            "kind": "observation-boundary",
+            "reasons": [
+              "expected-or-observed-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tensor-input-readiness:token",
+            "kind": "observation-boundary",
+            "reasons": [
+              "completion-token-or-required-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tensor-input-readiness",
+            "kind": "observation-boundary",
+            "reasons": [
+              "ordering-endpoint-record-missing"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          }
+        ],
+        "obligations": [
+          {
+            "id": "observed-value-origin",
+            "kind": "value-generation",
+            "ruleId": "bounded-protocol-v1/value-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:observed-value-origin",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:observed-value-origin"
+            ],
+            "derivation": {
+              "sourceRequestId": "observed-value-origin",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "expected-or-observed-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tensor-input-readiness:token",
+            "kind": "completion-token-generation",
+            "ruleId": "bounded-protocol-v1/completion-token-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tensor-input-readiness"
+            ],
+            "witnessNodeIds": [],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tensor-input-readiness:token"
+            ],
+            "derivation": {
+              "sourceRequestId": "tensor-input-readiness",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "completion-token-or-required-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tensor-input-readiness",
+            "kind": "completion-before-consume",
+            "ruleId": "bounded-protocol-v1/completion-before-consume",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tensor-input-readiness",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tensor-input-readiness"
+            ],
+            "derivation": {
+              "sourceRequestId": "tensor-input-readiness",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "ordering-endpoint-record-missing"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          }
+        ],
+        "protocolMetadata": {
+          "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "validatedInputDAG": true,
+          "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+          "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+          "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+          "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+          "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+          "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+        },
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "seedIds": [
+            "protocol:query:tensor-input-readiness",
+            "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:274"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 0,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "partial",
+            "accesses": "partial",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "protocol:unknown:observed-value-origin",
+            "protocol:unknown:tensor-input-readiness:token",
+            "protocol:unknown:tensor-input-readiness"
+          ]
+        }
+      }
+    },
+    {
+      "obligationId": "tmem-reader-before-release:token",
+      "run": {
+        "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "provenance": {
+          "kind": "derived",
+          "sourceKind": "hardware-trace",
+          "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+          "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+        },
+        "identity": {
+          "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+            "role": "reuse",
+            "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+            "token": {
+              "status": "unknown",
+              "reason": "logical resource/generation/domain not recovered from this raw callback"
+            },
+            "evidenceRefs": [
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ]
+          },
+          {
+            "id": "protocol:query:tmem-reader-before-release",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          }
+        ],
+        "edges": [],
+        "evidence": [
+          {
+            "id": "analysis-contract",
+            "kind": "analysis-request",
+            "scope": "query actual evidence sufficiency, not classify an ISA violation",
+            "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+          },
+          {
+            "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+            "kind": "raw-instruction-record",
+            "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+            "sourceLine": 1167,
+            "warpId": 0,
+            "ordinal": 1140,
+            "pc": 15200,
+            "opcode": "UTCATOMSWS.AND",
+            "activeMask": 4294967295,
+            "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+          },
+          {
+            "id": "protocol:unknown:tmem-reader-before-release:token",
+            "kind": "observation-boundary",
+            "reasons": [
+              "completion-token-or-required-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tmem-reader-before-release",
+            "kind": "observation-boundary",
+            "reasons": [
+              "ordering-endpoint-record-missing"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          }
+        ],
+        "obligations": [
+          {
+            "id": "tmem-reader-before-release:token",
+            "kind": "completion-token-generation",
+            "ruleId": "bounded-protocol-v1/completion-token-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tmem-reader-before-release"
+            ],
+            "witnessNodeIds": [],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tmem-reader-before-release:token"
+            ],
+            "derivation": {
+              "sourceRequestId": "tmem-reader-before-release",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "completion-token-or-required-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tmem-reader-before-release",
+            "kind": "reader-before-reuse",
+            "ruleId": "bounded-protocol-v1/reader-before-reuse",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tmem-reader-before-release",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tmem-reader-before-release"
+            ],
+            "derivation": {
+              "sourceRequestId": "tmem-reader-before-release",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "ordering-endpoint-record-missing"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          }
+        ],
+        "protocolMetadata": {
+          "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "validatedInputDAG": true,
+          "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+          "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+          "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+          "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+          "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+          "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+        },
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "seedIds": [
+            "protocol:query:tmem-reader-before-release"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 0,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "partial",
+            "accesses": "partial",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "protocol:unknown:tmem-reader-before-release:token",
+            "protocol:unknown:tmem-reader-before-release"
+          ]
+        }
+      }
+    },
+    {
+      "obligationId": "tmem-reader-before-release",
+      "run": {
+        "id": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+        "provenance": {
+          "kind": "derived",
+          "sourceKind": "hardware-trace",
+          "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+          "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+        },
+        "identity": {
+          "specId": "unmapped:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "specHash": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "inputId": "unverified:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+            "role": "reuse",
+            "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+            "token": {
+              "status": "unknown",
+              "reason": "logical resource/generation/domain not recovered from this raw callback"
+            },
+            "evidenceRefs": [
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ]
+          },
+          {
+            "id": "protocol:query:tmem-reader-before-release",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          }
+        ],
+        "edges": [],
+        "evidence": [
+          {
+            "id": "analysis-contract",
+            "kind": "analysis-request",
+            "scope": "query actual evidence sufficiency, not classify an ISA violation",
+            "sourceTraceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f"
+          },
+          {
+            "id": "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140",
+            "kind": "raw-instruction-record",
+            "traceSha256": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+            "sourceLine": 1167,
+            "warpId": 0,
+            "ordinal": 1140,
+            "pc": 15200,
+            "opcode": "UTCATOMSWS.AND",
+            "activeMask": 4294967295,
+            "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+          },
+          {
+            "id": "protocol:unknown:tmem-reader-before-release:token",
+            "kind": "observation-boundary",
+            "reasons": [
+              "completion-token-or-required-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          },
+          {
+            "id": "protocol:unknown:tmem-reader-before-release",
+            "kind": "observation-boundary",
+            "reasons": [
+              "ordering-endpoint-record-missing"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          }
+        ],
+        "obligations": [
+          {
+            "id": "tmem-reader-before-release:token",
+            "kind": "completion-token-generation",
+            "ruleId": "bounded-protocol-v1/completion-token-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tmem-reader-before-release"
+            ],
+            "witnessNodeIds": [],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tmem-reader-before-release:token"
+            ],
+            "derivation": {
+              "sourceRequestId": "tmem-reader-before-release",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "completion-token-or-required-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          },
+          {
+            "id": "tmem-reader-before-release",
+            "kind": "reader-before-reuse",
+            "ruleId": "bounded-protocol-v1/reader-before-reuse",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:tmem-reader-before-release",
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "witnessNodeIds": [
+              "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:tmem-reader-before-release"
+            ],
+            "derivation": {
+              "sourceRequestId": "tmem-reader-before-release",
+              "scope": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+              "reasons": [
+                "ordering-endpoint-record-missing"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          }
+        ],
+        "protocolMetadata": {
+          "scopeId": "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0",
+          "validatedInputDAG": true,
+          "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+          "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+          "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+          "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+          "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+          "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+        },
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "raw-partial:eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f",
+          "seedIds": [
+            "protocol:query:tmem-reader-before-release",
+            "eeaa6cf98f946016eae140ddd31095e10624c3c3860284f0b6411d21a1d25b7f:cta:0,0,0:warp:0:record:1140"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 0,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "partial",
+            "accesses": "partial",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "protocol:unknown:tmem-reader-before-release:token",
+            "protocol:unknown:tmem-reader-before-release"
+          ]
+        }
+      }
+    }
+  ]
+}

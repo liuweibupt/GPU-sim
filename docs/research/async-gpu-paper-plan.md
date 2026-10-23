@@ -2,7 +2,7 @@
 
 制定及修订日期：2026-10-23。文档类型：研究规划与证据设计，不是已完成论文或实验报告。修订基线：`2d3c7b7`。本次将 AI 辅助编程中的人类理解纳入主问题，负载覆盖 AI、通用计算与图形，不再以图形应用数量限定范围。以下样本量、案例数、时间预算均为计划值。
 
-执行记录：[模型与 SM89 实机先导](experiments/2026-10-23-pilot/report.md)及[多卡 trace 复用实验](experiments/2026-10-23-multigpu/report.md)。已完成对应/切片开发验证、真实 CUDA 数值与性能测量，以及用户指定 `/home/liuwei/GPU-simulator` 中四卡 457 份 trace 的来源核验、规范化结构实验和交互查看器；另纳入五卡 launch 级记录。候选检索降低显示规模但尚未建立真实协议/版本保真；尚无真实开发者或 AI 解释评价，不能将本规划全部标记为完成。
+执行记录：[模型与 SM89 实机先导](experiments/2026-10-23-pilot/report.md)、[多卡 trace 复用实验](experiments/2026-10-23-multigpu/report.md)、[逻辑版本与协议证据实验](experiments/2026-10-23-semantics/report.md)。已完成对应/切片开发验证、真实 CUDA 数值与性能测量，以及用户指定 `/home/liuwei/GPU-simulator` 中四卡 457 份 trace 的来源核验；另纳入五卡 launch 级记录。本轮进一步恢复 13 个完整已记录 CTA，建立有限三值检查器，并将 SM89 受控错读版本的实际输出/tag 接到检查、切片与可视界面。现代卡历史 trace 的完成/版本义务仍保留 unknown；尚无真实现代异步 bug/fix、AI 解释或开发者评价，不能将本规划全部标记完成。下一步优先语义采集，资源与验收条件见[执行清单](semantic-next-stage.md)。
 
 ## 1. 研究定位与投稿选择
 

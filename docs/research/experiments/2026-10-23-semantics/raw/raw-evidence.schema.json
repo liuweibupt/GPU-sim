@@ -1,0 +1,610 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "coverage": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "type": "object"
+    },
+    "external_evidence": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "columns_by_site": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "columns": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "opcode": {
+                  "type": "string"
+                },
+                "pc": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "pc",
+                "opcode",
+                "columns"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "provenance": {
+            "type": "string"
+          },
+          "raw_fields_modified": {
+            "const": false,
+            "type": "boolean"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_pair_verified": {
+            "type": "boolean"
+          },
+          "static_sass_path": {
+            "type": "string"
+          },
+          "static_sass_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "trace_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "path",
+          "sha256",
+          "trace_sha256",
+          "static_sass_path",
+          "static_sass_sha256",
+          "source_pair_verified",
+          "raw_fields_modified",
+          "columns_by_site",
+          "provenance"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "format": {
+      "const": "gpu-raw-cta-evidence-v1",
+      "type": "string"
+    },
+    "header": {
+      "additionalProperties": false,
+      "properties": {
+        "binary_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "block": {
+          "items": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "cta_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "grid": {
+          "items": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "kernel_name": {
+          "type": "string"
+        },
+        "local_base_address": {
+          "pattern": "^0x[0-9a-f]+$",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "num_stages": {
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "num_warps": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "registers_per_thread": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "shared_base_address": {
+          "pattern": "^0x[0-9a-f]+$",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "shared_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "tile_k": {
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "tile_m": {
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "tile_n": {
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "tracer_version": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kernel_name",
+        "grid",
+        "block",
+        "shared_bytes",
+        "registers_per_thread",
+        "binary_version",
+        "tracer_version",
+        "shared_base_address",
+        "local_base_address",
+        "tile_m",
+        "tile_n",
+        "tile_k",
+        "num_stages",
+        "cta_count",
+        "num_warps"
+      ],
+      "type": "object"
+    },
+    "interpretation_limits": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "selection": {
+      "additionalProperties": false,
+      "properties": {
+        "active_mask_semantics": {
+          "const": "unverified",
+          "type": "string"
+        },
+        "all_declared_warps_included": {
+          "type": "boolean"
+        },
+        "capture_completeness": {
+          "const": "unknown",
+          "type": "string"
+        },
+        "cross_warp_happens_before_inferred": {
+          "const": false,
+          "type": "boolean"
+        },
+        "cta": {
+          "items": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "cta_begin_line": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cta_complete_as_recorded": {
+          "type": "boolean"
+        },
+        "cta_end_line": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "full_file_framing_verified": {
+          "type": "boolean"
+        },
+        "parser_decoded_prefix_records": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "parser_unparsed_suffix_records": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "raw_records_not_exported": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "raw_records_selected": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "raw_records_total_in_file": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cta",
+        "cta_complete_as_recorded",
+        "all_declared_warps_included",
+        "capture_completeness",
+        "active_mask_semantics",
+        "cross_warp_happens_before_inferred",
+        "raw_records_total_in_file",
+        "raw_records_selected",
+        "raw_records_not_exported",
+        "parser_decoded_prefix_records",
+        "parser_unparsed_suffix_records",
+        "cta_begin_line",
+        "cta_end_line",
+        "full_file_framing_verified"
+      ],
+      "type": "object"
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "archive_selection_sha256": {
+          "additionalProperties": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "case": {
+          "type": "string"
+        },
+        "gpu": {
+          "type": "string"
+        },
+        "inventory_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "source_root": {
+          "type": "string"
+        },
+        "trace": {
+          "type": "string"
+        },
+        "trace_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "view_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_root",
+        "trace",
+        "trace_sha256",
+        "gpu",
+        "case",
+        "view_ids",
+        "purpose",
+        "inventory_sha256",
+        "archive_selection_sha256"
+      ],
+      "type": "object"
+    },
+    "warps": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "declared_instruction_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "instructions": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "active_mask": {
+                  "maximum": 4294967295,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "cluster_cta": {
+                  "items": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "maxItems": 3,
+                  "minItems": 3,
+                  "type": [
+                    "array",
+                    "null"
+                  ]
+                },
+                "cluster_id": {
+                  "items": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "maxItems": 3,
+                  "minItems": 3,
+                  "type": [
+                    "array",
+                    "null"
+                  ]
+                },
+                "cluster_rank": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "cta": {
+                  "items": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "maxItems": 3,
+                  "minItems": 3,
+                  "type": "array"
+                },
+                "cta_record_ordinal": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "destination_values": {
+                  "items": {
+                    "items": {
+                      "pattern": "^0x[0-9a-f]+$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "type": "array"
+                },
+                "destinations": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "file_record_ordinal": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "gmma_commit_group": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "immediate": {
+                  "pattern": "^-?(0|[1-9][0-9]*)$",
+                  "type": "string"
+                },
+                "immediate2": {
+                  "pattern": "^-?(0|[1-9][0-9]*)$",
+                  "type": "string"
+                },
+                "memory_addresses": {
+                  "items": {
+                    "pattern": "^0x[0-9a-f]+$",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "memory_width_bytes": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "opcode": {
+                  "type": "string"
+                },
+                "pc": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "raw_payload_presence": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "gmma_commit_group": {
+                      "type": "boolean"
+                    },
+                    "immediate": {
+                      "type": "boolean"
+                    },
+                    "immediate2": {
+                      "type": "boolean"
+                    },
+                    "register_values": {
+                      "type": "boolean"
+                    },
+                    "tma_payload": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "gmma_commit_group",
+                    "tma_payload",
+                    "immediate",
+                    "immediate2",
+                    "register_values"
+                  ],
+                  "type": "object"
+                },
+                "register_values_marker": {
+                  "enum": [
+                    "Val",
+                    "NoVal",
+                    "not_available_in_format"
+                  ],
+                  "type": "string"
+                },
+                "source_line": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "source_values": {
+                  "items": {
+                    "items": {
+                      "pattern": "^0x[0-9a-f]+$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "type": "array"
+                },
+                "sources": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "tma_byte_count": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "tma_mbarrier_address": {
+                  "pattern": "^0x[0-9a-f]+$",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "tma_multicast_mask": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "tma_oob_byte_count": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "tmem_columns": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "warp_id": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "warp_ordinal": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "warp_ordinal",
+                "cta_record_ordinal",
+                "file_record_ordinal",
+                "source_line",
+                "cta",
+                "warp_id",
+                "pc",
+                "active_mask",
+                "destinations",
+                "sources",
+                "opcode",
+                "memory_width_bytes",
+                "memory_addresses",
+                "destination_values",
+                "source_values",
+                "gmma_commit_group",
+                "tma_mbarrier_address",
+                "tma_multicast_mask",
+                "tma_byte_count",
+                "tma_oob_byte_count",
+                "immediate",
+                "immediate2",
+                "cluster_id",
+                "cluster_cta",
+                "cluster_rank",
+                "tmem_columns",
+                "register_values_marker",
+                "raw_payload_presence"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "warp_id": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "warp_id",
+          "declared_instruction_count",
+          "instructions"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "format",
+    "source",
+    "header",
+    "selection",
+    "warps",
+    "coverage",
+    "external_evidence",
+    "interpretation_limits"
+  ],
+  "type": "object"
+}

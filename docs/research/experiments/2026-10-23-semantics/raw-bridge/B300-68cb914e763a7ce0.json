@@ -1,0 +1,320 @@
+{
+  "capture": {
+    "id": "raw-partial:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+    "scopeId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+    "provenance": {
+      "kind": "derived",
+      "sourceKind": "hardware-trace",
+      "sourceTraceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred"
+    },
+    "identity": {
+      "specId": "unmapped:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "specHash": "unverified:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "inputId": "unverified:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+    },
+    "resources": [],
+    "facts": [
+      {
+        "id": "analysis-contract",
+        "kind": "analysis-request",
+        "scope": "query actual evidence sufficiency, not classify an ISA violation",
+        "sourceTraceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a"
+      },
+      {
+        "id": "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+        "kind": "raw-instruction-record",
+        "traceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+        "sourceLine": 701,
+        "warpId": 3,
+        "ordinal": 160,
+        "pc": 2560,
+        "opcode": "STG.E.128",
+        "activeMask": 4294967295,
+        "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+      }
+    ],
+    "events": [
+      {
+        "id": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+        "scopeId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+        "role": "consumer",
+        "recordRef": "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+        "token": {
+          "status": "unknown",
+          "reason": "logical resource/generation/domain not recovered from this raw callback"
+        }
+      }
+    ],
+    "hb": [],
+    "obligations": [
+      {
+        "id": "observed-value-origin",
+        "kind": "value-generation",
+        "consumerId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+        "requirementRef": "analysis-contract",
+        "expected": {
+          "status": "unknown",
+          "reason": "logical tensor/version mapping unavailable"
+        },
+        "observed": {
+          "status": "unknown",
+          "reason": "no verified post-write/consumer value provenance"
+        }
+      }
+    ]
+  },
+  "run": {
+    "id": "raw-partial:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+    "provenance": {
+      "kind": "derived",
+      "sourceKind": "hardware-trace",
+      "sourceTraceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+      "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+    },
+    "identity": {
+      "specId": "unmapped:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "specHash": "unverified:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "inputId": "unverified:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+      "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+    },
+    "capabilities": {
+      "logicalMapping": "partial",
+      "accesses": "partial",
+      "sync": "partial"
+    },
+    "nodes": [
+      {
+        "id": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+        "role": "consumer",
+        "scopeId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+        "token": {
+          "status": "unknown",
+          "reason": "logical resource/generation/domain not recovered from this raw callback"
+        },
+        "evidenceRefs": [
+          "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+        ]
+      },
+      {
+        "id": "protocol:query:observed-value-origin",
+        "role": "obligation-query",
+        "evidenceRefs": [
+          "analysis-contract"
+        ]
+      }
+    ],
+    "edges": [],
+    "evidence": [
+      {
+        "id": "analysis-contract",
+        "kind": "analysis-request",
+        "scope": "query actual evidence sufficiency, not classify an ISA violation",
+        "sourceTraceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a"
+      },
+      {
+        "id": "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+        "kind": "raw-instruction-record",
+        "traceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+        "sourceLine": 701,
+        "warpId": 3,
+        "ordinal": 160,
+        "pc": 2560,
+        "opcode": "STG.E.128",
+        "activeMask": 4294967295,
+        "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+      },
+      {
+        "id": "protocol:unknown:observed-value-origin",
+        "kind": "observation-boundary",
+        "reasons": [
+          "expected-or-observed-identity-unknown"
+        ],
+        "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+      }
+    ],
+    "obligations": [
+      {
+        "id": "observed-value-origin",
+        "kind": "value-generation",
+        "ruleId": "bounded-protocol-v1/value-generation",
+        "status": "unknown",
+        "subjectIds": [
+          "protocol:query:observed-value-origin",
+          "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+        ],
+        "witnessNodeIds": [
+          "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+        ],
+        "witnessEdgeIds": [],
+        "positiveWitnessRefs": [
+          "analysis-contract",
+          "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+        ],
+        "unknownRefs": [
+          "protocol:unknown:observed-value-origin"
+        ],
+        "derivation": {
+          "sourceRequestId": "observed-value-origin",
+          "scope": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+          "reasons": [
+            "expected-or-observed-identity-unknown"
+          ],
+          "inferredFromMissingHB": false,
+          "usesFileOrder": false
+        }
+      }
+    ],
+    "protocolMetadata": {
+      "scopeId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+      "validatedInputDAG": true,
+      "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+      "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+      "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+      "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+      "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+      "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+    }
+  },
+  "slices": [
+    {
+      "obligationId": "observed-value-origin",
+      "run": {
+        "id": "raw-partial:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+        "provenance": {
+          "kind": "derived",
+          "sourceKind": "hardware-trace",
+          "sourceTraceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+          "selection": "at most one tensor issue/output anchor and one release anchor selected in exported warp/record order; no cross-warp temporal lastness inferred",
+          "derivation": "bounded-protocol-v1; conclusions derived from explicit observations, not supplied labels"
+        },
+        "identity": {
+          "specId": "unmapped:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+          "specHash": "unverified:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+          "inputId": "unverified:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+          "semanticsId": "raw-callbacks-with-explicit-unknown-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+            "role": "consumer",
+            "scopeId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+            "token": {
+              "status": "unknown",
+              "reason": "logical resource/generation/domain not recovered from this raw callback"
+            },
+            "evidenceRefs": [
+              "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+            ]
+          },
+          {
+            "id": "protocol:query:observed-value-origin",
+            "role": "obligation-query",
+            "evidenceRefs": [
+              "analysis-contract"
+            ]
+          }
+        ],
+        "edges": [],
+        "evidence": [
+          {
+            "id": "analysis-contract",
+            "kind": "analysis-request",
+            "scope": "query actual evidence sufficiency, not classify an ISA violation",
+            "sourceTraceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a"
+          },
+          {
+            "id": "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160",
+            "kind": "raw-instruction-record",
+            "traceSha256": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+            "sourceLine": 701,
+            "warpId": 3,
+            "ordinal": 160,
+            "pc": 2560,
+            "opcode": "STG.E.128",
+            "activeMask": 4294967295,
+            "interpretation": "raw pre-instruction callback; not an observed asynchronous completion"
+          },
+          {
+            "id": "protocol:unknown:observed-value-origin",
+            "kind": "observation-boundary",
+            "reasons": [
+              "expected-or-observed-identity-unknown"
+            ],
+            "implication": "Missing information is not evidence of a race, missing synchronization, or a wrong value."
+          }
+        ],
+        "obligations": [
+          {
+            "id": "observed-value-origin",
+            "kind": "value-generation",
+            "ruleId": "bounded-protocol-v1/value-generation",
+            "status": "unknown",
+            "subjectIds": [
+              "protocol:query:observed-value-origin",
+              "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+            ],
+            "witnessNodeIds": [
+              "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+            ],
+            "witnessEdgeIds": [],
+            "positiveWitnessRefs": [
+              "analysis-contract",
+              "record:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+            ],
+            "unknownRefs": [
+              "protocol:unknown:observed-value-origin"
+            ],
+            "derivation": {
+              "sourceRequestId": "observed-value-origin",
+              "scope": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+              "reasons": [
+                "expected-or-observed-identity-unknown"
+              ],
+              "inferredFromMissingHB": false,
+              "usesFileOrder": false
+            }
+          }
+        ],
+        "protocolMetadata": {
+          "scopeId": "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0",
+          "validatedInputDAG": true,
+          "semantics": "three-valued statements over a finite attested HB partial order and explicit generation identities",
+          "isaCoverage": "none claimed; no PTX memory-model, visibility, lane-mask, or cross-warp inference",
+          "completionDomains": "Explicit input identities; a partial read-completion facet does not establish producer-result readiness. No domain is inferred from an opcode.",
+          "attestationTrust": "Record identity/consistency is checked structurally; the authenticity and semantic correctness of caller attestations are not independently established.",
+          "valueSource": "consumer.token is the sole observed value identity; request.observed is a validated compatibility mirror",
+          "resourceGenerationEncoding": "unbounded nonnegative decimal strings; parity alone is insufficient"
+        },
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "raw-partial:68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a",
+          "seedIds": [
+            "protocol:query:observed-value-origin",
+            "68cb914e763a7ce08445598c05c84dab4f538709d75a661f0db691e07abade5a:cta:0,0,0:warp:3:record:160"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 2,
+          "sourceEdgeCount": 0,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "partial",
+            "accesses": "partial",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "protocol:unknown:observed-value-origin"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1199 @@
+[
+  {
+    "id": "reject-cycle",
+    "capture": {
+      "id": "reject-cycle",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-cycle",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "capture-0",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "producer_result_ready"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "readerDone-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [
+        {
+          "id": "e0",
+          "from": "complete",
+          "to": "read",
+          "verified": true,
+          "evidenceRef": "hb0"
+        },
+        {
+          "id": "e1",
+          "from": "read",
+          "to": "complete",
+          "verified": true,
+          "evidenceRef": "hb1"
+        }
+      ],
+      "obligations": []
+    }
+  },
+  {
+    "id": "reject-mixed-scope",
+    "capture": {
+      "id": "reject-mixed-scope",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-mixed-scope",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "another-capture",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "producer_result_ready"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "readerDone-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [],
+      "obligations": []
+    }
+  },
+  {
+    "id": "reject-shadowed-resource",
+    "capture": {
+      "id": "reject-shadowed-resource",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-shadowed-resource",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "tile",
+          "scopeId": "another-capture"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "capture-0",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "producer_result_ready"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "readerDone-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [],
+      "obligations": []
+    }
+  },
+  {
+    "id": "reject-parity-only",
+    "capture": {
+      "id": "reject-parity-only",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-parity-only",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "capture-0",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "parity": 0,
+            "evidenceRef": "observed-token"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "readerDone-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [],
+      "obligations": []
+    }
+  },
+  {
+    "id": "reject-unverified-HB",
+    "capture": {
+      "id": "reject-unverified-HB",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-unverified-HB",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "capture-0",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "producer_result_ready"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "readerDone-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [
+        {
+          "id": "e0",
+          "from": "complete",
+          "to": "read",
+          "verified": false,
+          "evidenceRef": "hb0"
+        }
+      ],
+      "obligations": []
+    }
+  },
+  {
+    "id": "reject-contradictory-token-fact",
+    "capture": {
+      "id": "reject-contradictory-token-fact",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-contradictory-token-fact",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "capture-0",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "producer_result_ready"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [],
+      "obligations": []
+    }
+  },
+  {
+    "id": "reject-unbound-known-value",
+    "capture": {
+      "id": "reject-unbound-known-value",
+      "scopeId": "capture-0",
+      "provenance": {
+        "kind": "synthetic-model",
+        "generator": "protocol-corpus-v1"
+      },
+      "identity": {
+        "specId": "bounded-generation-order",
+        "specHash": "finite-protocol-v1",
+        "inputId": "reject-unbound-known-value",
+        "semanticsId": "attested-HB-linear-extensions-v1"
+      },
+      "facts": [
+        {
+          "id": "requirement",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "expected-token",
+          "kind": "synthetic-specification",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "observed-token",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "read-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "readerDone-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "reuse-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "marker-record",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb0",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb1",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "hb2",
+          "kind": "synthetic-explicit-record",
+          "provenance": "experiment-authored finite model; no GPU measurement"
+        },
+        {
+          "id": "complete-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "producer_result_ready",
+          "provenance": "experiment-authored synthetic token fact"
+        },
+        {
+          "id": "readerDone-token",
+          "kind": "synthetic-token-observation",
+          "scopeId": "capture-0",
+          "resourceId": "tile",
+          "generation": "4",
+          "domain": "reader_done",
+          "provenance": "experiment-authored synthetic token fact"
+        }
+      ],
+      "resources": [
+        {
+          "id": "tile",
+          "scopeId": "capture-0"
+        },
+        {
+          "id": "other-tile",
+          "scopeId": "capture-0"
+        }
+      ],
+      "events": [
+        {
+          "id": "complete",
+          "scopeId": "capture-0",
+          "role": "producer-completion",
+          "recordRef": "complete-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "complete-token",
+            "domain": "producer_result_ready"
+          }
+        },
+        {
+          "id": "read",
+          "scopeId": "capture-0",
+          "role": "consumer",
+          "recordRef": "read-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "readerDone",
+          "scopeId": "capture-0",
+          "role": "reader-completion",
+          "recordRef": "readerDone-record",
+          "token": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "readerDone-token",
+            "domain": "reader_done"
+          }
+        },
+        {
+          "id": "reuse",
+          "scopeId": "capture-0",
+          "role": "reuse",
+          "recordRef": "reuse-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        },
+        {
+          "id": "marker",
+          "scopeId": "capture-0",
+          "role": "marker",
+          "recordRef": "marker-record",
+          "token": {
+            "status": "unknown",
+            "reason": "event-is-not-a-completion-record"
+          }
+        }
+      ],
+      "hb": [],
+      "obligations": [
+        {
+          "id": "value",
+          "kind": "value-generation",
+          "consumerId": "read",
+          "requirementRef": "requirement",
+          "expected": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "expected-token",
+            "domain": "value"
+          },
+          "observed": {
+            "status": "known",
+            "scopeId": "capture-0",
+            "resourceId": "tile",
+            "generation": "4",
+            "evidenceRef": "observed-token",
+            "domain": "value"
+          }
+        }
+      ]
+    }
+  }
+]

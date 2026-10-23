@@ -1,0 +1,127 @@
+{
+  "format": "gpu-sim-bounded-protocol-experiment-v1",
+  "completed_at_utc": "2026-10-23T09:06:51.942Z",
+  "provenance": {
+    "kind": "synthetic-model",
+    "source_hashes": {
+      "lib/research/protocol.js": "a3abc9961dce3d52c8a6c76583232edef21d8dba72d79151978e614e1007e81e",
+      "lib/research/evidence.js": "68a811f9ed0480758f77fdfbc26b34716cd017d5a3bdac5d4ca7d0f3edacd630",
+      "tools/research/protocol-corpus.mjs": "3b23d4f795b9eae5040a1e09588e693df6d3843c62e2c864ba6e95ec32393659",
+      "tools/research/run-protocol-experiments.mjs": "d47385dda245091b8680a6dbdb156f68376295c99b7c3a990d1b09d778b33e57",
+      "tests/research-protocol.test.mjs": "05798a11a656a452346beb38070b260ff8aec7768024c543c384cdf6f71acc98"
+    },
+    "node": "v18.19.1",
+    "platform": "linux",
+    "architecture": "x64",
+    "cpu": "AMD EPYC 9475F 48-Core Processor",
+    "source_snapshots": "source-snapshots"
+  },
+  "scope": "Finite observed-event DAGs, explicit value/completion identities and unbounded generation/domain; not PTX memory-model or real GPU fault validation.",
+  "cases": {
+    "valid": 74,
+    "invalid": 7,
+    "splits": {
+      "fixed-seed-structural-variants": 48,
+      "handwritten-development": 26
+    }
+  },
+  "oracle": {
+    "algorithm": "independent enumeration of all event permutations satisfying explicit HB; no checker imports",
+    "status_rule": "all order completions satisfy => satisfied; none => violated; some => unknown; missing observations/identities remain unknown",
+    "maximum_observed_events": 5,
+    "extensions_per_case_min": 20,
+    "extensions_per_case_max": 120,
+    "limitations": "Synthetic declared facts are trusted; oracle shares the stated contract but not the reachability algorithm; no independent ISA validation."
+  },
+  "verdicts": {
+    "count": 140,
+    "oracle_status_counts": {
+      "satisfied": 66,
+      "unknown": 49,
+      "violated": 25
+    },
+    "production_matches": 140,
+    "naive_matches": 91,
+    "naive_unsupported_violation_claims_on_unknown": 49,
+    "naive_errors_on_known_satisfied": 0,
+    "naive_violation_claims_with_satisfying_linear_extensions": 11,
+    "naive_satisfying_extensions_rejected": 470,
+    "caveat": "Unknown is not a known-correct task. Unsupported errors are reported separately from errors on known-satisfied obligations; extension counts are combinatorial, not probabilities."
+  },
+  "slicing": {
+    "full": {
+      "derived_obligations_checked": 140,
+      "preserved": 140,
+      "median_node_fraction": 1
+    },
+    "data-ancestors": {
+      "derived_obligations_checked": 140,
+      "preserved": 4,
+      "median_node_fraction": 0.16666666666666666
+    },
+    "evidence": {
+      "derived_obligations_checked": 140,
+      "preserved": 140,
+      "median_node_fraction": 0.5
+    }
+  },
+  "timing": {
+    "scope": "resident capture -> validated derived evidence run for production; resident capture -> verdict object for naive; excludes oracle/IO/slicing/rendering",
+    "warmups_per_case_per_method": 5,
+    "samples_per_case_per_method": 30,
+    "raw_samples": 4440,
+    "randomized_order_seed": 20261023,
+    "summary": {
+      "production": {
+        "median_of_case_median_ns": 34320.5,
+        "min_case_median_ns": 29455,
+        "max_case_median_ns": 64041
+      },
+      "naive": {
+        "median_of_case_median_ns": 1255,
+        "min_case_median_ns": 884.5,
+        "max_case_median_ns": 3100
+      }
+    },
+    "caveat": "One shared-host CPU session. Different output guarantees and validation scope make this a descriptive cost, not a speedup comparison."
+  },
+  "invalid_inputs_rejected": 7,
+  "failures": 0,
+  "claims_not_supported": [
+    "real-GPU bug-detection accuracy",
+    "complete PTX/ISA semantics",
+    "human comprehension",
+    "novelty over existing HB analyses",
+    "cross-GPU semantic equivalence"
+  ],
+  "artifacts": {
+    "cases-and-results.json": {
+      "sha256": "a7aeb4440da7cfad3ffe74c4f9071c741806f49df0069b836cf44da625bb48d5",
+      "bytes": 1166023
+    },
+    "failures.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "invalid-cases.json": {
+      "sha256": "4a15e32da90d7f642388deb125cdf80e074d30e067ab40f5ec7b6b534301a758",
+      "bytes": 35862
+    },
+    "invalid-results.csv": {
+      "sha256": "2f4f922c3dd76f6f1b32b1a757cde582e7920b5fd60d95e40fa4f28215aa51cf",
+      "bytes": 714
+    },
+    "slicing.csv": {
+      "sha256": "94562d0010b99340a83ad416791e821b833ddbc22b8e0346c8c648ef3f152242",
+      "bytes": 28841
+    },
+    "timing-raw.csv": {
+      "sha256": "bccf7637110b3f1df46c4808197846b1634849e751bc3de6db5c8259beb0ca6a",
+      "bytes": 194828
+    },
+    "verdicts.csv": {
+      "sha256": "f449492e325eb467b1306dcd1ac4ee89ebfef6dcd324a5f975a52a9f09052e28",
+      "bytes": 17026
+    }
+  }
+}

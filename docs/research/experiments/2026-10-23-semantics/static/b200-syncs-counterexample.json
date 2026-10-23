@@ -1,0 +1,30 @@
+{
+  "gpu": "B200",
+  "case": "cutlass_gemm_bf16_m128_n1024_k128",
+  "trace_sha256": "b2b3f8041399a787b4c00d996cc6cc596075c063f1b42074e3cbc1e3ced82d4d",
+  "raw_cta_artifact": "B200-b2b3f8041399a787.json.gz",
+  "raw_source_line": 75,
+  "raw_record_id": "b2b3f8041399a787b4c00d996cc6cc596075c063f1b42074e3cbc1e3ced82d4d:cta:0,0,0:warp:0:record:48",
+  "pc": 1136,
+  "pc_hex": "0x470",
+  "opcode": "SYNCS.EXCH.64",
+  "raw_destinations": [
+    "UR63"
+  ],
+  "raw_sources": [
+    "R0",
+    "UR6"
+  ],
+  "static_path": "data/microarchitecture/B200/representative_100_cutlass_static_20260913.sass",
+  "static_sha256": "628af1ae78debf8fabd506725f1bd4031c78a1405765bb68033dbc679d0ffb75",
+  "static": {
+    "guard": null,
+    "opcode": "SYNCS.EXCH.64",
+    "operands": "URZ, [UR5], UR6",
+    "line": 269,
+    "matching_variant_lines": [
+      269
+    ]
+  },
+  "interpretation": "Raw sources expose R0, UR6 while hash-bound static syntax names [UR5], UR6; raw register tokens cannot establish the uniform address-register provenance. This is an observed lexical gap, not a numerical execution fault."
+}

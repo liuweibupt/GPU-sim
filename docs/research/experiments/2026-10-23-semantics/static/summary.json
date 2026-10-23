@@ -1,0 +1,76 @@
+{
+  "format": "gpu-sim-static-operand-syntax-audit-v1",
+  "completed_at_utc": "2026-10-23T09:13:48.089833+00:00",
+  "source_root": "/home/liuwei/GPU-simulator",
+  "raw_evidence_root": "/home/liuwei/GPU-sim/out/research/raw-evidence/20261023-cta0-v2",
+  "input_summary_sha256": "c27e982a5c7a2d391dea21a9c7f6a3aa14c53f75d33fb5d099038038933e57ed",
+  "main_program_manifest_sha256": "ea13c154df497ea6535e92d53e1189120ecb3fae3c33728185b880c89a0cd331",
+  "static_artifact_manifest_sha256": "90bdb3b23e053a2ab23d9f7be31d0b9ff579e7195965c63ee34411a25f5def9e",
+  "source_hashes": {
+    "/home/liuwei/GPU-sim/tools/research/audit-static-operands.py": "7ee19c96705bc83deebf5c276c15674cccb54a3018e878788730915c8a3d6a70",
+    "/home/liuwei/GPU-simulator/gpu_tile_sim/comparison/sass_artifacts.py": "24d19e897a506cf06f0896f8a917c497ed3d63ff81775066d9b4d7b4acea1bc1",
+    "/home/liuwei/GPU-simulator/gpu_tile_sim/comparison/sass_control.py": "346a19b9d331336b2eefb66fe3cec517c803cdec6964d840efc3ffbe68544159"
+  },
+  "python": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]",
+  "trace_count": 13,
+  "static_available_traces": 7,
+  "totals": {
+    "records": 131107,
+    "unique_static_site_records": 59460,
+    "outside_five_scalar_families": 101533,
+    "five_family_records": 29574,
+    "five_family_no_static_unknown": 17709,
+    "five_family_ambiguous_static_unknown": 0,
+    "five_family_static_bound": 11865,
+    "five_family_gpr_tokens_match": 11865,
+    "five_family_gpr_tokens_mismatch": 0,
+    "five_family_nonconstant_predicate_operand": 2294,
+    "five_family_suffix": 4945,
+    "five_family_constant_memory": 632,
+    "strict_scalar_syntax_records": 5390,
+    "strict_scalar_syntax_nonzero_mask": 5259
+  },
+  "errors": 0,
+  "out_of_family_example_count": 20,
+  "selection": "The same 12 primary raw CTA0 captures plus one B300 TMEM-footprint CTA0; no physical CTA expansion or new GPU execution.",
+  "comparison": "Only MOV/FFMA/FADD/FMUL/IADD3 families: literal GPR/UR token sequence, first comma operand as destination, remaining operands as sources, RZ=>R255 and URZ=>UR63; no deduplication.",
+  "strict_subset": "Exact unsuffixed five opcodes, exactly one nonzero R destination, only R registers, no nonconstant predicate operand, no c/cx constant-memory operand; instruction guards retained, zero masks counted separately.",
+  "variant_binding": "Exact kernel name; all observed PC/opcode pairs must agree, allowing terminal NOP at maxPC+16; all remaining variants must agree on guard/opcode/operand text at each reported site.",
+  "limitations": [
+    "This is syntax agreement, not a complete SASS decoder, value-flow proof, architectural def-use validation, or a bug detector.",
+    "The five scalar families are selected explicitly; all other records are counted as excluded, with real asynchronous/memory counterexamples retained.",
+    "Predicate registers, implicit tuple widths, memory operands, register clobbers and unsupported instruction effects are not modeled.",
+    "A complete reaching-definition implementation must invalidate state across unsupported possible clobbers; this audit does not compute reaching definitions.",
+    "Nonzero masks do not establish a trustworthy per-lane execution mask without hash-bound tracer binary semantics.",
+    "Missing static files or ambiguous operands stay unknown. Declared static source/binary hash binding is checked, not the truth of original collection attestations.",
+    "The primary/supplemental captures are selected examples, not independent held-out fault cases."
+  ],
+  "audit_wall_seconds": 1.2221399419941008,
+  "timing_scope": "Single descriptive IO/hash/parse/audit/export duration; no algorithm or GPU performance claim.",
+  "artifacts": {
+    "b200-syncs-counterexample.json": {
+      "sha256": "cb5184032e631dec4b5feacdce1c8735a3bc638a31841fe898ae17c8ddaa659f",
+      "bytes": 1090
+    },
+    "errors.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "opcode-coverage.csv": {
+      "sha256": "3d30b813ec7afd1faa02cda32ab32dd82f076e771aedefcac0018ec2f50a9c44",
+      "bytes": 71274
+    },
+    "out-of-family-examples.json": {
+      "sha256": "93818c3c43c6805d45034e1fe60b00a765a54e7add6b86e65e861bbeaa4c526a",
+      "bytes": 20936
+    },
+    "static-sites.json": {
+      "sha256": "3d7bd566cb4583f28609e4a1e032fa9a6cc3848e851c3042be224afef55553a6",
+      "bytes": 4691418
+    },
+    "traces.csv": {
+      "sha256": "f95c0c7e37c188f0a10cf533518a8decc6650546396da38b6eded74b67a521b0",
+      "bytes": 5416
+    }
+  }
+}
