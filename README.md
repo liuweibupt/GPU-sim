@@ -139,7 +139,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 
 ## 调研与设计
 
-基础工具调研与来源核查日期：2026-10-14；HCI 投稿与指标方案更新至 2026-10-19。项目状态按官方仓库、原作者论文和文档区分，论文结果不等于公开版能力。
+基础工具调研与来源核查日期：2026-10-14；HCI 投稿与指标方案更新至 2026-10-19；TOG 投稿与发展评估更新至 2026-10-23。项目状态按官方仓库、原作者论文和文档区分，论文结果不等于公开版能力。
 
 | 文档 | 内容 |
 | --- | --- |
@@ -156,6 +156,7 @@ GTSim 样例是**仿真轨迹**，不是实机 profile。GTSim 在这里执行 t
 | [可视化与 profiler 调研](docs/research/visualization.md) | Daisen、AerialVision、GPUVision、Nsight、RGP、Perfetto 等 |
 | [游戏与交互调研](docs/research/games.md) | 城市建造、Minecraft、Factorio、Zachtronics、GPU 教学项目的可移植机制 |
 | [HCI 投稿与指标方案](docs/research/hci-publication-plan.md) | CHI/CSCW/VIS 定位、学术近邻、GPU 对象化与抽象交互对照、迁移指标及样本规划 |
+| [TOG 投稿与发展评估](docs/research/tog-publication-assessment.md) | 当前证据缺口、TOG 直接近邻、VIS 2026 新工作，以及真实图形性能干预与可视编程路线 |
 | [GPU 探索先导方案](docs/research/gpu-exploration-pilot.md) | 三场景任务、固定条件入口、本地日志、测验审核与试运行检查 |
 | [Gem5SimCity 参考核查](docs/research/gem5-simcity.md) | 用户指定示例的真实仿真接入、源码交互、表现性简化与正确性边界 |
 
