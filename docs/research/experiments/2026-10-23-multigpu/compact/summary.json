@@ -1,0 +1,220 @@
+{
+  "created_at": "2026-10-23T07:54:51.137176+00:00",
+  "format": "gpu-launch-audit-v1",
+  "script_sha256": "96b35d9be6d3001e9b9491c9a3628f96180d37ab618748188de3063b0395fe48",
+  "sources": [
+    {
+      "gpu": "A100",
+      "path": "/home/liuwei/GPU-simulator/data/compact_gtsim_traces/a100-full-source32a160-20260908/trace.json",
+      "sha256": "57dfdb39c72f44a1d271c2a379ae08ef1bc538d60eb5c124b18f76664b93fa60",
+      "bytes": 9113496,
+      "case_rows": 710,
+      "unique_launch_captures": 523,
+      "case_rows_reusing_capture": 187,
+      "unique_launch_records": 15147,
+      "operator_counts": {
+        "attention": 80,
+        "gelu": 80,
+        "gemm": 80,
+        "qkv_gemm": 70,
+        "rmsnorm": 80,
+        "rope": 80,
+        "scaled_mm": 80,
+        "silu_mul": 80,
+        "softmax": 80
+      },
+      "trace_contract": {
+        "dynamic_instruction_or_address_trace": false,
+        "schedule": "CUPTI concurrent-kernel activity fields; timing fields explicitly omitted",
+        "timing": "warm CUDA-event minimum under the source protocol"
+      },
+      "gpu_identity": "NVIDIA A100-SXM4-80GB, GPU-c0427c66-4e79-ab27-4671-d4ded1fec615, 8.0, 81920, 1410",
+      "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0",
+      "binary_sha256": {
+        "attention": "99fc3f37172bebb5b0ce8494079ee612fa6daf0bda12d8c87483b6372b7bb0cb",
+        "gelu": "5833b7d3034105ee4b6591d9d315ba7fd8c425edadd7fb47615e7c6cc6ec2bff",
+        "gemm": "6c480dd2a0f7b584fd0f81135de3b2ce3f1327cccf9d03f144a2471b16cd7671",
+        "qkv_gemm": "8325762c40356f774bb758915c60657b25aa608fd760ed56938df2f3a1d40598",
+        "rmsnorm": "0244c13b189c8ad2cbae089f198885c89f6a3b6ac1b838eae240a03af56e0451",
+        "rope": "edabdc0e00beb2e75299a06ed7450347c31d1fb8030fd2b2ed4588609a436983",
+        "softmax": "12ab38a90e8dcd57c7e2d6f30a608413d85c6de1cde5c6f726483e3f96e3a5a3",
+        "swiglu": "d783ce6a0de0298f9441fbcbc4193c28e724cec2e2b74f846fa3323c86ca48ff"
+      },
+      "cupti_injection_sha256": "17400f0183122a9a4a1f186b7d8db20c6e0f09a3928fe2c363a229ea96619e1f",
+      "validation_errors": []
+    },
+    {
+      "gpu": "B200",
+      "path": "/home/liuwei/GPU-simulator/data/compact_gtsim_traces/b200-full-source32a160-20260908/trace.json",
+      "sha256": "bdfe28e672bf238ff2b725814eb8c0cb6bd96d068f03679973813a551605bb22",
+      "bytes": 8664855,
+      "case_rows": 680,
+      "unique_launch_captures": 504,
+      "case_rows_reusing_capture": 176,
+      "unique_launch_records": 15091,
+      "operator_counts": {
+        "attention": 80,
+        "gelu": 80,
+        "gemm": 80,
+        "qkv_gemm": 40,
+        "rmsnorm": 80,
+        "rope": 80,
+        "scaled_mm": 80,
+        "silu_mul": 80,
+        "softmax": 80
+      },
+      "trace_contract": {
+        "dynamic_instruction_or_address_trace": false,
+        "schedule": "CUPTI concurrent-kernel activity fields; timing fields explicitly omitted",
+        "timing": "warm CUDA-event minimum under the source protocol"
+      },
+      "gpu_identity": "NVIDIA B200, GPU-ba45ddf7-3bf6-6010-04a6-18167c99d5c1, 10.0, 183359, 1965",
+      "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0",
+      "binary_sha256": {
+        "attention": "99fc3f37172bebb5b0ce8494079ee612fa6daf0bda12d8c87483b6372b7bb0cb",
+        "gelu": "5833b7d3034105ee4b6591d9d315ba7fd8c425edadd7fb47615e7c6cc6ec2bff",
+        "gemm": "6c480dd2a0f7b584fd0f81135de3b2ce3f1327cccf9d03f144a2471b16cd7671",
+        "qkv_gemm": "8325762c40356f774bb758915c60657b25aa608fd760ed56938df2f3a1d40598",
+        "rmsnorm": "0244c13b189c8ad2cbae089f198885c89f6a3b6ac1b838eae240a03af56e0451",
+        "rope": "edabdc0e00beb2e75299a06ed7450347c31d1fb8030fd2b2ed4588609a436983",
+        "softmax": "12ab38a90e8dcd57c7e2d6f30a608413d85c6de1cde5c6f726483e3f96e3a5a3",
+        "swiglu": "d783ce6a0de0298f9441fbcbc4193c28e724cec2e2b74f846fa3323c86ca48ff"
+      },
+      "cupti_injection_sha256": "17400f0183122a9a4a1f186b7d8db20c6e0f09a3928fe2c363a229ea96619e1f",
+      "validation_errors": []
+    },
+    {
+      "gpu": "H100",
+      "path": "/home/liuwei/GPU-simulator/data/compact_gtsim_traces/h100-full-source32a160-20260908/trace.json",
+      "sha256": "029f81813fcde04ea80cb5732bc178f2156f5b8868c08fdb1b17b4b6fc9ded47",
+      "bytes": 9056143,
+      "case_rows": 720,
+      "unique_launch_captures": 531,
+      "case_rows_reusing_capture": 189,
+      "unique_launch_records": 15735,
+      "operator_counts": {
+        "attention": 80,
+        "gelu": 80,
+        "gemm": 80,
+        "qkv_gemm": 80,
+        "rmsnorm": 80,
+        "rope": 80,
+        "scaled_mm": 80,
+        "silu_mul": 80,
+        "softmax": 80
+      },
+      "trace_contract": {
+        "dynamic_instruction_or_address_trace": false,
+        "schedule": "CUPTI concurrent-kernel activity fields; timing fields explicitly omitted",
+        "timing": "warm CUDA-event minimum under the source protocol"
+      },
+      "gpu_identity": "NVIDIA H100 80GB HBM3, GPU-01f52245-1e43-6446-0a01-dc3528791adf, 9.0, 81559, 1980",
+      "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0",
+      "binary_sha256": {
+        "attention": "99fc3f37172bebb5b0ce8494079ee612fa6daf0bda12d8c87483b6372b7bb0cb",
+        "gelu": "5833b7d3034105ee4b6591d9d315ba7fd8c425edadd7fb47615e7c6cc6ec2bff",
+        "gemm": "6c480dd2a0f7b584fd0f81135de3b2ce3f1327cccf9d03f144a2471b16cd7671",
+        "qkv_gemm": "8325762c40356f774bb758915c60657b25aa608fd760ed56938df2f3a1d40598",
+        "rmsnorm": "0244c13b189c8ad2cbae089f198885c89f6a3b6ac1b838eae240a03af56e0451",
+        "rope": "edabdc0e00beb2e75299a06ed7450347c31d1fb8030fd2b2ed4588609a436983",
+        "softmax": "12ab38a90e8dcd57c7e2d6f30a608413d85c6de1cde5c6f726483e3f96e3a5a3",
+        "swiglu": "d783ce6a0de0298f9441fbcbc4193c28e724cec2e2b74f846fa3323c86ca48ff"
+      },
+      "cupti_injection_sha256": "17400f0183122a9a4a1f186b7d8db20c6e0f09a3928fe2c363a229ea96619e1f",
+      "validation_errors": []
+    },
+    {
+      "gpu": "H200",
+      "path": "/home/liuwei/GPU-simulator/data/compact_gtsim_traces/h200-full-source32a160-20260908/trace.json",
+      "sha256": "a10d34673c436fb381b0d363e27147b836ae1c1842046af53d988643ea040437",
+      "bytes": 9042528,
+      "case_rows": 720,
+      "unique_launch_captures": 526,
+      "case_rows_reusing_capture": 194,
+      "unique_launch_records": 15707,
+      "operator_counts": {
+        "attention": 80,
+        "gelu": 80,
+        "gemm": 80,
+        "qkv_gemm": 80,
+        "rmsnorm": 80,
+        "rope": 80,
+        "scaled_mm": 80,
+        "silu_mul": 80,
+        "softmax": 80
+      },
+      "trace_contract": {
+        "dynamic_instruction_or_address_trace": false,
+        "schedule": "CUPTI concurrent-kernel activity fields; timing fields explicitly omitted",
+        "timing": "warm CUDA-event minimum under the source protocol"
+      },
+      "gpu_identity": "NVIDIA H200, GPU-1c0c136c-2c19-03c2-0717-2d9b3ec4b2ce, 9.0, 143771, 1980",
+      "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0",
+      "binary_sha256": {
+        "attention": "99fc3f37172bebb5b0ce8494079ee612fa6daf0bda12d8c87483b6372b7bb0cb",
+        "gelu": "5833b7d3034105ee4b6591d9d315ba7fd8c425edadd7fb47615e7c6cc6ec2bff",
+        "gemm": "6c480dd2a0f7b584fd0f81135de3b2ce3f1327cccf9d03f144a2471b16cd7671",
+        "qkv_gemm": "8325762c40356f774bb758915c60657b25aa608fd760ed56938df2f3a1d40598",
+        "rmsnorm": "0244c13b189c8ad2cbae089f198885c89f6a3b6ac1b838eae240a03af56e0451",
+        "rope": "edabdc0e00beb2e75299a06ed7450347c31d1fb8030fd2b2ed4588609a436983",
+        "softmax": "12ab38a90e8dcd57c7e2d6f30a608413d85c6de1cde5c6f726483e3f96e3a5a3",
+        "swiglu": "d783ce6a0de0298f9441fbcbc4193c28e724cec2e2b74f846fa3323c86ca48ff"
+      },
+      "cupti_injection_sha256": "17400f0183122a9a4a1f186b7d8db20c6e0f09a3928fe2c363a229ea96619e1f",
+      "validation_errors": []
+    },
+    {
+      "gpu": "RTX4090",
+      "path": "/home/liuwei/GPU-simulator/data/compact_gtsim_traces/rtx4090-full-source32a160-20260908/trace.json",
+      "sha256": "daa62ab4d503710f85da275c717e7ae1c309f1b69faeb954e6146bc25ea7a04a",
+      "bytes": 13338562,
+      "case_rows": 760,
+      "unique_launch_captures": 539,
+      "case_rows_reusing_capture": 221,
+      "unique_launch_records": 21337,
+      "operator_counts": {
+        "attention": 80,
+        "gelu": 80,
+        "gemm": 80,
+        "qkv_gemm": 120,
+        "rmsnorm": 80,
+        "rope": 80,
+        "scaled_mm": 80,
+        "silu_mul": 80,
+        "softmax": 80
+      },
+      "trace_contract": {
+        "dynamic_instruction_or_address_trace": false,
+        "schedule": "CUPTI concurrent-kernel activity fields; timing fields explicitly omitted",
+        "timing": "warm CUDA-event minimum under the source protocol"
+      },
+      "gpu_identity": "NVIDIA GeForce RTX 4090, GPU-e696a8ed-a887-59b2-5fab-7179ff99df74, 8.9, 49140, 3105",
+      "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Tue_Dec_16_07:23:41_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.115\nBuild cuda_13.1.r13.1/compiler.37061995_0",
+      "binary_sha256": {
+        "attention": "b8d102154103d492144c4ed55b76d33da6418bfdff6ccf770c8696b946fe4341",
+        "gelu": "798e74648829a2cc3aae66eb9ac4cc88c8dd1ebcc867cedb0ffaefcaddcdae47",
+        "gemm": "345ff9ab78618f0626baf569600f8cdb4b29e0cced44f07e66cd85e00d0dbd07",
+        "qkv_gemm": "bb3b322f01743aa20bd3102b08b1d3247e619a68794a332b4bbbfb817596706d",
+        "rmsnorm": "033e9f2ae947aa665cc448f0dc116f211fa62193be43a79c2b54bd8a49290af9",
+        "rope": "c39e38326fc422cdfff89c17995d7baff8efddb93145fb6611b372b0dacaf340",
+        "softmax": "9f18b7bb79132d0fd222971b3775d0572cc0ab1533ec8af2d910a67586b9f00c",
+        "swiglu": "d6139f3ea9e32c1d69328aede6820f6e3f8cf18f3c7d3ceedeb11066ae1f232b"
+      },
+      "cupti_injection_sha256": "85d1209cb141b42e6d143962a333f5e9472c0e3ffc0ec6ea147004ef3879791a",
+      "validation_errors": []
+    }
+  ],
+  "total_case_rows": 3590,
+  "total_unique_launch_captures_within_gpu": 2623,
+  "total_unique_launch_records": 83017,
+  "declared_workloads_common_to_all_gpus": 482,
+  "workload_key_policy": "operator + params excluding source hash/cache/timing flags; exact declared metadata only",
+  "limitations": [
+    "Case rows are not independent instruction traces; multiple rows reuse one launch capture.",
+    "Cross-GPU workload metadata equality does not verify numerical or logical-version equivalence.",
+    "Stored timing endpoints are warm CUDA-event minima, not the Representative-100 medians.",
+    "No internal barrier/TMEM evidence or per-instruction timestamps; no new GPU measurement."
+  ],
+  "validation_errors": [],
+  "status": "completed"
+}

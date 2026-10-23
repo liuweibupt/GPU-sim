@@ -1,0 +1,1161 @@
+{
+  "format": "gpu-sim-trace-reuse-v1",
+  "started_at_utc": "2026-10-23T08:01:10.654877+00:00",
+  "completed_at_utc": "2026-10-23T08:01:21.269783+00:00",
+  "provenance": {
+    "source_root": "/home/liuwei/GPU-simulator",
+    "manifest": "/home/liuwei/GPU-simulator/data/ysim_dse_programs_20261009/manifest.json",
+    "manifest_sha256": "ea13c154df497ea6535e92d53e1189120ecb3fae3c33728185b880c89a0cd331",
+    "cache_extraction_source_commit": "c36dc3616c0e7bf57b2df53ac4389eafcf55cdcc",
+    "cache_extraction_source_worktree_dirty": true,
+    "source_repository_now": {
+      "commit": "f2fbee816cbb20bc919f88f482beb9aef23a9944",
+      "status_porcelain": "?? docs/results/gtsim_comprehensive_evaluation_and_design_20260911/README.pdf"
+    },
+    "script": "/home/liuwei/GPU-sim/tools/research/run-trace-experiments.py",
+    "script_sha256": "c124b4d4e2df3160cc6ee8c6738de178ac9aa6f79008bd1ad5ddfff84823663d",
+    "python": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "source_inputs": [
+      {
+        "gpu": "A100",
+        "path": "/home/liuwei/GPU-simulator/data/representative_100_native/A100/rep100-native-a100-full-20260910/hardware_timings.json",
+        "sha256": "70d5ad7feea2c8db8954bbffd49b28b9f92c620fba781117f4881c9a0f806026",
+        "hardware_truth": "queue-ahead CUDA-event median for the exact launch stream",
+        "component_measurements": {
+          "timing_method": "queue_ahead_per_launch_cuda_events",
+          "queue_lead_cycles": 250000,
+          "empty_launch_us": 4.096,
+          "samples_us": [
+            4.096,
+            4.096,
+            4.096
+          ]
+        },
+        "gpu_identity": {
+          "name": "NVIDIA A100 80GB PCIe",
+          "uuid": "GPU-b08aac8d-455a-086a-deea-29d7eb10a5de",
+          "compute_capability": 80,
+          "max_sm_clock_mhz": 1410.0
+        },
+        "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0"
+      },
+      {
+        "gpu": "H100",
+        "path": "/home/liuwei/GPU-simulator/data/representative_100_native/H100/rep100-native-h100-full-20260910/hardware_timings.json",
+        "sha256": "1d33cb72bdf2e14e2d12497b77bd764812e5aa3e4a3c5be8a89198759de2aa0a",
+        "hardware_truth": "queue-ahead CUDA-event median for the exact launch stream",
+        "component_measurements": {
+          "timing_method": "queue_ahead_per_launch_cuda_events",
+          "queue_lead_cycles": 250000,
+          "empty_launch_us": 4.8,
+          "samples_us": [
+            4.8,
+            4.8,
+            4.8
+          ],
+          "effective_sm_clock_mhz": 1978.9377771562395,
+          "effective_sm_clock_samples_mhz": [
+            1978.868872969129,
+            1978.9878243978962,
+            1978.9189167256352,
+            1978.9377771562395,
+            1978.9816617277495,
+            1978.9314280602518,
+            1978.9441262929674
+          ],
+          "clock_probe_cycles": 20000000
+        },
+        "gpu_identity": {
+          "name": "NVIDIA H100 80GB HBM3",
+          "uuid": "GPU-e08b6211-d70a-f7f3-dfb1-3b53e9580b5d",
+          "compute_capability": 90,
+          "max_sm_clock_mhz": 1980.0
+        },
+        "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0"
+      },
+      {
+        "gpu": "B200",
+        "path": "/home/liuwei/GPU-simulator/data/representative_100_native/B200/rep100-native-b200-full-20260910/hardware_timings.json",
+        "sha256": "e8f3e8ea6d13cca4630b1b702729a606ee41b148cea3a022a262113155b01b94",
+        "hardware_truth": "queue-ahead CUDA-event median for the exact launch stream",
+        "component_measurements": {
+          "timing_method": "queue_ahead_per_launch_cuda_events",
+          "queue_lead_cycles": 250000,
+          "empty_launch_us": 4.4159999999999995,
+          "samples_us": [
+            4.3839999999999995,
+            4.4159999999999995,
+            4.4479999999999995
+          ]
+        },
+        "gpu_identity": {
+          "name": "NVIDIA B200",
+          "uuid": "GPU-467e3791-ccd6-1066-b5ba-300f9760d949",
+          "compute_capability": 100,
+          "max_sm_clock_mhz": 1965.0
+        },
+        "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Nov__7_07:23:37_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.80\nBuild cuda_13.1.r13.1/compiler.36836380_0"
+      },
+      {
+        "gpu": "B300",
+        "path": "/home/liuwei/GPU-simulator/data/representative_100_native/B300/rep100-native-b300-full-20260910/hardware_timings.json",
+        "sha256": "336589fa3afa8407321c7a2a71c0614954ab8a551c4ecdcd78a04c44051dd7e7",
+        "hardware_truth": "queue-ahead CUDA-event median for the exact launch stream",
+        "component_measurements": {
+          "timing_method": "queue_ahead_per_launch_cuda_events",
+          "queue_lead_cycles": 250000,
+          "empty_launch_us": 6.016,
+          "samples_us": [
+            5.28,
+            6.016,
+            7.04
+          ],
+          "effective_sm_clock_mhz": 2030.0644597970856,
+          "effective_sm_clock_samples_mhz": [
+            2029.2537773848367,
+            2030.2887051036907,
+            2030.0644597970856,
+            2029.8601075738202,
+            2029.8402640207805,
+            2030.0776262068382,
+            2030.0974744010389
+          ],
+          "clock_probe_cycles": 20000000
+        },
+        "gpu_identity": {
+          "name": "NVIDIA B300 SXM6 AC",
+          "uuid": "GPU-eb4ad165-c763-1cd9-ae28-b81ff82f2db1",
+          "compute_capability": 103,
+          "max_sm_clock_mhz": 2032.0
+        },
+        "nvcc_version": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Nov__7_07:23:37_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.80\nBuild cuda_13.1.r13.1/compiler.36836380_0"
+      }
+    ]
+  },
+  "validation": {
+    "expected_launches": 457,
+    "verified_launches": 457,
+    "errors": 0,
+    "checks": [
+      "manifest output SHA256",
+      "checkpoint identity and counts",
+      "payload SHA256",
+      "launch SHA256",
+      "metadata SHA256 and trace identity",
+      "grid/CTA and template weights",
+      "all template and instruction references",
+      "physical instruction counts"
+    ],
+    "not_checked_here": [
+      "raw trace SHA256 (separate audit)",
+      "source model calibration",
+      "raw-to-cache information preservation",
+      "original numerical correctness rerun"
+    ]
+  },
+  "census": {
+    "case_count": 400,
+    "common_workload_cases": 100,
+    "equal_workload_signatures": 100,
+    "groups": {
+      "A100": {
+        "launches": 116,
+        "physical_ctas": 6962,
+        "unique_templates": 1397,
+        "template_instructions": 2868566,
+        "physical_normalized_instructions": 35936044,
+        "compressed_bytes": 1720693,
+        "json_bytes": 61680374,
+        "cp_async_sass_launches": 59,
+        "cp_async_sass_occurrences": 1105752
+      },
+      "A100/cutlass/gemm": {
+        "launches": 30,
+        "physical_ctas": 610,
+        "unique_templates": 48,
+        "template_instructions": 1338512,
+        "physical_normalized_instructions": 20744864,
+        "compressed_bytes": 789068,
+        "json_bytes": 27744207,
+        "cp_async_sass_launches": 30,
+        "cp_async_sass_occurrences": 856112
+      },
+      "A100/flaggems/gelu": {
+        "launches": 12,
+        "physical_ctas": 1580,
+        "unique_templates": 1247,
+        "template_instructions": 760318,
+        "physical_normalized_instructions": 963954,
+        "compressed_bytes": 68573,
+        "json_bytes": 3708863
+      },
+      "A100/flaggems/rmsnorm": {
+        "launches": 13,
+        "physical_ctas": 522,
+        "unique_templates": 13,
+        "template_instructions": 11919,
+        "physical_normalized_instructions": 467898,
+        "compressed_bytes": 64566,
+        "json_bytes": 1726638
+      },
+      "A100/flaggems/silu_mul": {
+        "launches": 12,
+        "physical_ctas": 1852,
+        "unique_templates": 12,
+        "template_instructions": 3520,
+        "physical_normalized_instructions": 546960,
+        "compressed_bytes": 32115,
+        "json_bytes": 613143
+      },
+      "A100/flaggems/softmax": {
+        "launches": 13,
+        "physical_ctas": 802,
+        "unique_templates": 13,
+        "template_instructions": 17588,
+        "physical_normalized_instructions": 937804,
+        "compressed_bytes": 52470,
+        "json_bytes": 1333709
+      },
+      "A100/flashinfer/decode": {
+        "launches": 19,
+        "physical_ctas": 652,
+        "unique_templates": 29,
+        "template_instructions": 256272,
+        "physical_normalized_instructions": 7333776,
+        "compressed_bytes": 311459,
+        "json_bytes": 11210389,
+        "cp_async_sass_launches": 19,
+        "cp_async_sass_occurrences": 173832
+      },
+      "A100/flashinfer/prefill": {
+        "launches": 17,
+        "physical_ctas": 944,
+        "unique_templates": 35,
+        "template_instructions": 480437,
+        "physical_normalized_instructions": 4940788,
+        "compressed_bytes": 402442,
+        "json_bytes": 15343425,
+        "cp_async_sass_launches": 10,
+        "cp_async_sass_occurrences": 75808
+      },
+      "B200": {
+        "launches": 116,
+        "physical_ctas": 7566,
+        "unique_templates": 1133,
+        "template_instructions": 6787700,
+        "physical_normalized_instructions": 22798173,
+        "compressed_bytes": 2217390,
+        "json_bytes": 88134025,
+        "symbolic_mbarrier_launches": 30,
+        "symbolic_mbarrier_occurrences": 87288,
+        "tmem_sass_launches": 30,
+        "tmem_sass_occurrences": 41276,
+        "tcgen05_mma_sass_launches": 30,
+        "tcgen05_mma_sass_occurrences": 65608,
+        "tma_sass_launches": 30,
+        "tma_sass_occurrences": 71652,
+        "tma_byte_metadata_launches": 30,
+        "tma_byte_metadata_occurrences": 68100,
+        "cp_async_sass_launches": 29,
+        "cp_async_sass_occurrences": 249640
+      },
+      "B200/cutlass/gemm": {
+        "launches": 30,
+        "physical_ctas": 1214,
+        "unique_templates": 1017,
+        "template_instructions": 6018704,
+        "physical_normalized_instructions": 7035221,
+        "compressed_bytes": 1288058,
+        "json_bytes": 57317139,
+        "symbolic_mbarrier_launches": 30,
+        "symbolic_mbarrier_occurrences": 87288,
+        "tmem_sass_launches": 30,
+        "tmem_sass_occurrences": 41276,
+        "tcgen05_mma_sass_launches": 30,
+        "tcgen05_mma_sass_occurrences": 65608,
+        "tma_sass_launches": 30,
+        "tma_sass_occurrences": 71652,
+        "tma_byte_metadata_launches": 30,
+        "tma_byte_metadata_occurrences": 68100
+      },
+      "B200/flaggems/gelu": {
+        "launches": 12,
+        "physical_ctas": 1580,
+        "unique_templates": 14,
+        "template_instructions": 8970,
+        "physical_normalized_instructions": 957538,
+        "compressed_bytes": 48210,
+        "json_bytes": 1218378
+      },
+      "B200/flaggems/rmsnorm": {
+        "launches": 13,
+        "physical_ctas": 522,
+        "unique_templates": 13,
+        "template_instructions": 13490,
+        "physical_normalized_instructions": 527342,
+        "compressed_bytes": 67794,
+        "json_bytes": 1764797
+      },
+      "B200/flaggems/silu_mul": {
+        "launches": 12,
+        "physical_ctas": 1852,
+        "unique_templates": 12,
+        "template_instructions": 3584,
+        "physical_normalized_instructions": 556096,
+        "compressed_bytes": 32985,
+        "json_bytes": 624243
+      },
+      "B200/flaggems/softmax": {
+        "launches": 13,
+        "physical_ctas": 802,
+        "unique_templates": 13,
+        "template_instructions": 16956,
+        "physical_normalized_instructions": 902772,
+        "compressed_bytes": 52888,
+        "json_bytes": 1291232
+      },
+      "B200/flashinfer/decode": {
+        "launches": 19,
+        "physical_ctas": 652,
+        "unique_templates": 29,
+        "template_instructions": 278560,
+        "physical_normalized_instructions": 8145236,
+        "compressed_bytes": 343939,
+        "json_bytes": 11788155,
+        "cp_async_sass_launches": 19,
+        "cp_async_sass_occurrences": 173832
+      },
+      "B200/flashinfer/prefill": {
+        "launches": 17,
+        "physical_ctas": 944,
+        "unique_templates": 35,
+        "template_instructions": 447436,
+        "physical_normalized_instructions": 4673968,
+        "compressed_bytes": 383516,
+        "json_bytes": 14130081,
+        "cp_async_sass_launches": 10,
+        "cp_async_sass_occurrences": 75808
+      },
+      "B300": {
+        "launches": 116,
+        "physical_ctas": 7566,
+        "unique_templates": 1131,
+        "template_instructions": 6863346,
+        "physical_normalized_instructions": 22871934,
+        "compressed_bytes": 2309971,
+        "json_bytes": 88501540,
+        "symbolic_mbarrier_launches": 30,
+        "symbolic_mbarrier_occurrences": 87318,
+        "tmem_sass_launches": 30,
+        "tmem_sass_occurrences": 41276,
+        "tcgen05_mma_sass_launches": 30,
+        "tcgen05_mma_sass_occurrences": 65608,
+        "tma_sass_launches": 30,
+        "tma_sass_occurrences": 71652,
+        "tma_byte_metadata_launches": 30,
+        "tma_byte_metadata_occurrences": 68100,
+        "cp_async_sass_launches": 29,
+        "cp_async_sass_occurrences": 249640
+      },
+      "B300/cutlass/gemm": {
+        "launches": 30,
+        "physical_ctas": 1214,
+        "unique_templates": 1006,
+        "template_instructions": 5965457,
+        "physical_normalized_instructions": 7035126,
+        "compressed_bytes": 1293472,
+        "json_bytes": 57058666,
+        "symbolic_mbarrier_launches": 30,
+        "symbolic_mbarrier_occurrences": 87318,
+        "tmem_sass_launches": 30,
+        "tmem_sass_occurrences": 41276,
+        "tcgen05_mma_sass_launches": 30,
+        "tcgen05_mma_sass_occurrences": 65608,
+        "tma_sass_launches": 30,
+        "tma_sass_occurrences": 71652,
+        "tma_byte_metadata_launches": 30,
+        "tma_byte_metadata_occurrences": 68100
+      },
+      "B300/flaggems/gelu": {
+        "launches": 12,
+        "physical_ctas": 1580,
+        "unique_templates": 14,
+        "template_instructions": 8970,
+        "physical_normalized_instructions": 957538,
+        "compressed_bytes": 54738,
+        "json_bytes": 1219746
+      },
+      "B300/flaggems/rmsnorm": {
+        "launches": 13,
+        "physical_ctas": 522,
+        "unique_templates": 13,
+        "template_instructions": 14038,
+        "physical_normalized_instructions": 544878,
+        "compressed_bytes": 76758,
+        "json_bytes": 1805072
+      },
+      "B300/flaggems/silu_mul": {
+        "launches": 12,
+        "physical_ctas": 1852,
+        "unique_templates": 12,
+        "template_instructions": 3584,
+        "physical_normalized_instructions": 556096,
+        "compressed_bytes": 38919,
+        "json_bytes": 628392
+      },
+      "B300/flaggems/softmax": {
+        "launches": 13,
+        "physical_ctas": 802,
+        "unique_templates": 13,
+        "template_instructions": 17788,
+        "physical_normalized_instructions": 948404,
+        "compressed_bytes": 61854,
+        "json_bytes": 1358310
+      },
+      "B300/flashinfer/decode": {
+        "launches": 19,
+        "physical_ctas": 652,
+        "unique_templates": 32,
+        "template_instructions": 295110,
+        "physical_normalized_instructions": 8154308,
+        "compressed_bytes": 368115,
+        "json_bytes": 11843000,
+        "cp_async_sass_launches": 19,
+        "cp_async_sass_occurrences": 173832
+      },
+      "B300/flashinfer/prefill": {
+        "launches": 17,
+        "physical_ctas": 944,
+        "unique_templates": 41,
+        "template_instructions": 558399,
+        "physical_normalized_instructions": 4675584,
+        "compressed_bytes": 416115,
+        "json_bytes": 14588354,
+        "cp_async_sass_launches": 10,
+        "cp_async_sass_occurrences": 75808
+      },
+      "H100": {
+        "launches": 109,
+        "physical_ctas": 6766,
+        "unique_templates": 2669,
+        "template_instructions": 20102034,
+        "physical_normalized_instructions": 30159274,
+        "compressed_bytes": 3081285,
+        "json_bytes": 132192588,
+        "symbolic_mbarrier_launches": 40,
+        "symbolic_mbarrier_occurrences": 187790,
+        "tma_sass_launches": 40,
+        "tma_sass_occurrences": 34620,
+        "tma_byte_metadata_launches": 40,
+        "tma_byte_metadata_occurrences": 34620,
+        "wgmma_sass_launches": 40,
+        "wgmma_sass_occurrences": 1673152,
+        "cp_async_sass_launches": 19,
+        "cp_async_sass_occurrences": 173832
+      },
+      "H100/cutlass/gemm": {
+        "launches": 30,
+        "physical_ctas": 1214,
+        "unique_templates": 1214,
+        "template_instructions": 15309248,
+        "physical_normalized_instructions": 15309248,
+        "compressed_bytes": 1897502,
+        "json_bytes": 81700063,
+        "symbolic_mbarrier_launches": 30,
+        "symbolic_mbarrier_occurrences": 174560,
+        "tma_sass_launches": 30,
+        "tma_sass_occurrences": 32804,
+        "tma_byte_metadata_launches": 30,
+        "tma_byte_metadata_occurrences": 32804,
+        "wgmma_sass_launches": 30,
+        "wgmma_sass_occurrences": 1574592
+      },
+      "H100/flaggems/gelu": {
+        "launches": 12,
+        "physical_ctas": 1580,
+        "unique_templates": 1245,
+        "template_instructions": 771078,
+        "physical_normalized_instructions": 979298,
+        "compressed_bytes": 69695,
+        "json_bytes": 3769731
+      },
+      "H100/flaggems/rmsnorm": {
+        "launches": 13,
+        "physical_ctas": 522,
+        "unique_templates": 13,
+        "template_instructions": 11952,
+        "physical_normalized_instructions": 476098,
+        "compressed_bytes": 70892,
+        "json_bytes": 1927686
+      },
+      "H100/flaggems/silu_mul": {
+        "launches": 12,
+        "physical_ctas": 1852,
+        "unique_templates": 12,
+        "template_instructions": 3664,
+        "physical_normalized_instructions": 569184,
+        "compressed_bytes": 32928,
+        "json_bytes": 636298
+      },
+      "H100/flaggems/softmax": {
+        "launches": 13,
+        "physical_ctas": 802,
+        "unique_templates": 13,
+        "template_instructions": 18196,
+        "physical_normalized_instructions": 969596,
+        "compressed_bytes": 54517,
+        "json_bytes": 1382459
+      },
+      "H100/flashinfer/decode": {
+        "launches": 19,
+        "physical_ctas": 652,
+        "unique_templates": 29,
+        "template_instructions": 278634,
+        "physical_normalized_instructions": 8129820,
+        "compressed_bytes": 341238,
+        "json_bytes": 11877664,
+        "cp_async_sass_launches": 19,
+        "cp_async_sass_occurrences": 173832
+      },
+      "H100/flashinfer/prefill": {
+        "launches": 10,
+        "physical_ctas": 144,
+        "unique_templates": 143,
+        "template_instructions": 3709262,
+        "physical_normalized_instructions": 3726030,
+        "compressed_bytes": 614513,
+        "json_bytes": 30898687,
+        "symbolic_mbarrier_launches": 10,
+        "symbolic_mbarrier_occurrences": 13230,
+        "tma_sass_launches": 10,
+        "tma_sass_occurrences": 1816,
+        "tma_byte_metadata_launches": 10,
+        "tma_byte_metadata_occurrences": 1816,
+        "wgmma_sass_launches": 10,
+        "wgmma_sass_occurrences": 98560
+      },
+      "all": {
+        "launches": 457,
+        "physical_ctas": 28860,
+        "unique_templates": 6330,
+        "template_instructions": 36621646,
+        "physical_normalized_instructions": 111765425,
+        "compressed_bytes": 9329339,
+        "json_bytes": 370508527,
+        "cp_async_sass_launches": 136,
+        "cp_async_sass_occurrences": 1778864,
+        "symbolic_mbarrier_launches": 100,
+        "symbolic_mbarrier_occurrences": 362396,
+        "tmem_sass_launches": 60,
+        "tmem_sass_occurrences": 82552,
+        "tcgen05_mma_sass_launches": 60,
+        "tcgen05_mma_sass_occurrences": 131216,
+        "tma_sass_launches": 100,
+        "tma_sass_occurrences": 177924,
+        "tma_byte_metadata_launches": 100,
+        "tma_byte_metadata_occurrences": 170820,
+        "wgmma_sass_launches": 40,
+        "wgmma_sass_occurrences": 1673152
+      }
+    },
+    "field_occurrences": {
+      "barrier_action": 340804,
+      "barrier_wait": 21592,
+      "tma_bytes_nonzero": 170820
+    },
+    "cluster_shapes": {
+      "[1, 1, 1]": 457
+    },
+    "instruction_unit": "normalized dynamic warp instruction occurrences weighted by physical CTA templates; not raw callbacks or thread instructions",
+    "paired_address_caches": "excluded; four side files are not additional launches"
+  },
+  "capabilities": {
+    "warp_instruction_order": "retained after source normalization",
+    "pc_opcode_register_names": "retained; syntactic last-writer candidates only",
+    "physical_cta_template_weights": "retained and checked against launch counts",
+    "symbolic_barrier_fields": "retained from source normalization; no phase-aware global HB claim",
+    "active_masks": "absent from this cache",
+    "lane_addresses_and_register_values": "absent from this cache",
+    "memory_sector_addresses": "audited separately; empty is unknown, not no memory accesses",
+    "tmem_columns": "audited separately; null is unknown",
+    "logical_tensor_regions_and_versions": "unknown",
+    "same_input_or_numerical_equivalence_across_gpus": "unknown",
+    "instruction_issue_completion_time": "unknown; model latency/cycles excluded",
+    "cross_warp_happens_before": "unknown; no cross-warp edges inferred",
+    "bug_ground_truth": "absent",
+    "human_understanding": "not evaluated"
+  },
+  "selection_policy": {
+    "cases": "4 GPUs x common BF16 GEMM m128/n1024/k128, lexicographically first RMSNorm, first prefill attention",
+    "launch": "first manifest launch for selected case; additional launches omitted from view, included in census",
+    "cta": "physical CTA 0",
+    "warp": "most instructions with mechanism fields; lowest warp ID tie-break",
+    "seeds": "last global store, last MMA, last symbolic barrier wait when present; otherwise last instruction with sources",
+    "scope": "complete selected normalized warp; other CTAs/warps excluded from graph",
+    "representativeness": "12 deterministic convenience examples, not random held-out tasks"
+  },
+  "supplemental_views": {
+    "count": 2,
+    "artifact": "supplemental-views.json",
+    "excluded_from_primary_statistics": true
+  },
+  "retrieval": {
+    "views": 12,
+    "methods": [
+      "full",
+      "order_ancestors",
+      "register_ancestors",
+      "protocol_assisted"
+    ],
+    "timing_scope": "resident prebuilt graph/index -> Python set of node IDs; excludes IO, parsing, graph construction, sorting and rendering",
+    "warmups_per_method_per_view": 5,
+    "samples_per_method_per_view": 30,
+    "random_order_seed": 20261023,
+    "raw_timing_rows": 1440,
+    "summary": [
+      {
+        "view_id": "A100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 10850.0,
+        "p95_ns": 22450,
+        "node_count": 1429,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 121365.5,
+        "p95_ns": 129740,
+        "node_count": 1428,
+        "node_fraction": 0.9993002099370188,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 14675.0,
+        "p95_ns": 17910,
+        "node_count": 111,
+        "node_fraction": 0.07767669699090272,
+        "reference_candidate_relation_fraction": 0.3741339491916859
+      },
+      {
+        "view_id": "A100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 31045.5,
+        "p95_ns": 35140,
+        "node_count": 281,
+        "node_fraction": 0.1966410076976907,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 920.0,
+        "p95_ns": 1000,
+        "node_count": 145,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 11945.0,
+        "p95_ns": 12250,
+        "node_count": 144,
+        "node_fraction": 0.993103448275862,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 1385.5,
+        "p95_ns": 1540,
+        "node_count": 13,
+        "node_fraction": 0.0896551724137931,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 1405.0,
+        "p95_ns": 1530,
+        "node_count": 13,
+        "node_fraction": 0.0896551724137931,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 50345.0,
+        "p95_ns": 82500,
+        "node_count": 5239,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 482768.0,
+        "p95_ns": 502004,
+        "node_count": 5238,
+        "node_fraction": 0.9998091238786028,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 209601.0,
+        "p95_ns": 230631,
+        "node_count": 1535,
+        "node_fraction": 0.2929948463447223,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "A100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 212821.5,
+        "p95_ns": 228841,
+        "node_count": 1535,
+        "node_fraction": 0.2929948463447223,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 6415.0,
+        "p95_ns": 10080,
+        "node_count": 1082,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 84865.0,
+        "p95_ns": 90850,
+        "node_count": 1051,
+        "node_fraction": 0.9713493530499075,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 2445.0,
+        "p95_ns": 5010,
+        "node_count": 16,
+        "node_fraction": 0.014787430683918669,
+        "reference_candidate_relation_fraction": 0.2982456140350877
+      },
+      {
+        "view_id": "B200:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 5710.0,
+        "p95_ns": 8090,
+        "node_count": 56,
+        "node_fraction": 0.051756007393715345,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 1000.0,
+        "p95_ns": 1050,
+        "node_count": 164,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 13975.0,
+        "p95_ns": 14450,
+        "node_count": 163,
+        "node_fraction": 0.9939024390243902,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 2075.0,
+        "p95_ns": 2271,
+        "node_count": 19,
+        "node_fraction": 0.11585365853658537,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 2080.0,
+        "p95_ns": 2380,
+        "node_count": 19,
+        "node_fraction": 0.11585365853658537,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 39745.5,
+        "p95_ns": 78250,
+        "node_count": 4913,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 441042.5,
+        "p95_ns": 464083,
+        "node_count": 4912,
+        "node_fraction": 0.9997964583757378,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 174261.0,
+        "p95_ns": 194541,
+        "node_count": 1348,
+        "node_fraction": 0.27437410950539387,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B200:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 177827.0,
+        "p95_ns": 195521,
+        "node_count": 1348,
+        "node_fraction": 0.27437410950539387,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 6365.0,
+        "p95_ns": 9220,
+        "node_count": 1083,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 85670.0,
+        "p95_ns": 92181,
+        "node_count": 1052,
+        "node_fraction": 0.971375807940905,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 2465.0,
+        "p95_ns": 4650,
+        "node_count": 16,
+        "node_fraction": 0.014773776546629732,
+        "reference_candidate_relation_fraction": 0.2982456140350877
+      },
+      {
+        "view_id": "B300:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 5890.0,
+        "p95_ns": 8581,
+        "node_count": 56,
+        "node_fraction": 0.05170821791320406,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 990.0,
+        "p95_ns": 1150,
+        "node_count": 164,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 13610.0,
+        "p95_ns": 14230,
+        "node_count": 163,
+        "node_fraction": 0.9939024390243902,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 2160.0,
+        "p95_ns": 2450,
+        "node_count": 19,
+        "node_fraction": 0.11585365853658537,
+        "reference_candidate_relation_fraction": 0.13496932515337423
+      },
+      {
+        "view_id": "B300:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 10545.5,
+        "p95_ns": 11010,
+        "node_count": 101,
+        "node_fraction": 0.6158536585365854,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 45855.5,
+        "p95_ns": 67610,
+        "node_count": 4931,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 455163.0,
+        "p95_ns": 491743,
+        "node_count": 4930,
+        "node_fraction": 0.9997972013790306,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "B300:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 133636.0,
+        "p95_ns": 147241,
+        "node_count": 1006,
+        "node_fraction": 0.20401541269519366,
+        "reference_candidate_relation_fraction": 0.5437241379310345
+      },
+      {
+        "view_id": "B300:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 244157.0,
+        "p95_ns": 260132,
+        "node_count": 1737,
+        "node_fraction": 0.35226120462380855,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 4754.5,
+        "p95_ns": 6300,
+        "node_count": 749,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 60656.0,
+        "p95_ns": 64230,
+        "node_count": 736,
+        "node_fraction": 0.9826435246995995,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 13210.0,
+        "p95_ns": 14360,
+        "node_count": 120,
+        "node_fraction": 0.1602136181575434,
+        "reference_candidate_relation_fraction": 0.9052132701421801
+      },
+      {
+        "view_id": "H100:gemm:cutlass_gemm_bf16_m128_n1024_k128",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 14495.0,
+        "p95_ns": 16040,
+        "node_count": 136,
+        "node_fraction": 0.18157543391188252,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 935.5,
+        "p95_ns": 1021,
+        "node_count": 158,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 13370.0,
+        "p95_ns": 13790,
+        "node_count": 157,
+        "node_fraction": 0.9936708860759493,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 1725.5,
+        "p95_ns": 1900,
+        "node_count": 15,
+        "node_fraction": 0.0949367088607595,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:norm:flaggems_rmsnorm_bf16_r128_d1536",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 1720.0,
+        "p95_ns": 2020,
+        "node_count": 15,
+        "node_fraction": 0.0949367088607595,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "full",
+        "samples": 30,
+        "median_ns": 25280.0,
+        "p95_ns": 36480,
+        "node_count": 3247,
+        "node_fraction": 1.0,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "order_ancestors",
+        "samples": 30,
+        "median_ns": 284227.0,
+        "p95_ns": 301982,
+        "node_count": 3242,
+        "node_fraction": 0.9984601170311056,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "register_ancestors",
+        "samples": 30,
+        "median_ns": 72115.0,
+        "p95_ns": 84861,
+        "node_count": 634,
+        "node_fraction": 0.19525716045580535,
+        "reference_candidate_relation_fraction": 1.0
+      },
+      {
+        "view_id": "H100:attention:flashinfer_prefill_bf16_q112_kv640_hq8_hkv4_d128_c1",
+        "method": "protocol_assisted",
+        "samples": 30,
+        "median_ns": 73050.5,
+        "p95_ns": 82911,
+        "node_count": 634,
+        "node_fraction": 0.19525716045580535,
+        "reference_candidate_relation_fraction": 1.0
+      }
+    ],
+    "relation_caveat": "Reference is the transitive closure of supplied syntactic register, same-warp nearest symbolic-token, and static scoreboard candidate edges. Relation retention is a mechanical property of this graph, NOT correctness recall, bug detection, true dependency recall, causal completeness, or human understanding. Protocol-assisted retention is 1 by construction. Masks/values/phases are unavailable.",
+    "timing_limit": "one shared-host CPU session; query-size dependent; no repeated-session confidence interval or GPU speed claim"
+  },
+  "audit_wall_seconds": 10.01205907901749,
+  "audit_wall_scope": "sequential cache IO/decompression/hash/JSON validation/census and selected graph construction; descriptive cost only, not a performance comparison",
+  "hardware_timings": "preserved from each original case and original protocol; no cross-GPU speedup pooled or fresh measurement claimed",
+  "paired_address_audit": {
+    "artifact": "paired-address-audit.json",
+    "source_files": 4,
+    "unique_existing_traces": 2,
+    "not_additional_samples": true
+  },
+  "limitations": [
+    "Source extraction was dirty; exact final extraction code cannot be reconstructed from commit alone.",
+    "No same-input identifier, output tensor values, or logical version mapping; cross-GPU alignment is workload level only.",
+    "Caches already normalized loops/callbacks and lost masks/addresses/values; cache completeness does not imply raw semantic completeness.",
+    "All observed cluster shapes are recorded; no support for claims about unobserved multi-CTA cluster behavior.",
+    "These traces have no labeled faults, fixes, or human study; structural retrieval is not error localization or explainability validation."
+  ],
+  "artifacts": {
+    "cases.csv": {
+      "sha256": "88ced513c9fd7910b150f85ae95b52608aa070de052d18b65f61cc84238cebc9",
+      "bytes": 437782
+    },
+    "errors.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "launches.csv": {
+      "sha256": "4904a6330683797a773120c011bd6a6252d6bd524862d4dcd7245dbc75d6b388",
+      "bytes": 377337
+    },
+    "opcodes.csv": {
+      "sha256": "e6dda6deaf82ba1d90bf30d4a67e9e2cebe7cf65c641c794ed1648e7384b100b",
+      "bytes": 87177
+    },
+    "paired-address-audit.json": {
+      "sha256": "21520361771595fbbdadf49969a179e5d85a711edf7c7019bcb692292a0beae1",
+      "bytes": 15016
+    },
+    "retrieval-raw.csv": {
+      "sha256": "148e23e49c89bd093cfc56c07793b67b1c98682b24761c83d48fe861f4c6c527",
+      "bytes": 117409
+    },
+    "retrieval-summary.csv": {
+      "sha256": "27ddb65e1fac4bc30babb0790449b3bc98bc67f15d7be4dd4e907d147be7c991",
+      "bytes": 5344
+    },
+    "selected-views.json": {
+      "sha256": "c0434c5c701e9cb09e14f3c650cfd43da5c66eb19883dfdeba18d1a8b94a36fd",
+      "bytes": 17967059
+    },
+    "supplemental-views.json": {
+      "sha256": "0a2126eb7b0703b2b65265f9d7841e9a2ac8c5b2cd0a1c335f9fe29773bf1300",
+      "bytes": 513688
+    },
+    "workload-alignment.json": {
+      "sha256": "8fc29cb9d8a49d0ec55b45263414e1d4317ee688f1aff77d26d759f0ffeaf6d4",
+      "bytes": 42604
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "audit_script_sha256": "1aead4373e80a39149e32faf53f0a5cf88caef207dc2278de0837e19b5f1da4d",
+  "case_count": 400,
+  "cases_with_explicit_validation_fields": 280,
+  "cpu_seconds": 19.875968341,
+  "decoded_instruction_records": 121804,
+  "failures": [],
+  "format": "gpu-source-audit-summary-v1",
+  "full_file_framing_checks": {
+    "pass": 16
+  },
+  "hash_verdicts": {
+    "case": {
+      "match": 457
+    },
+    "checkpoint": {
+      "match": 457
+    },
+    "manifest": {
+      "match": 457
+    }
+  },
+  "launch_count": 457,
+  "limits": [
+    "SHA equality checks provenance consistency, not scientific correctness or completeness of tracing.",
+    "Raw instruction decoding is bounded; full-file framing checks do not validate every payload.",
+    "Cached model latency/issue cycles are not measured instruction timestamps.",
+    "Hardware median copied from case metadata is case-level, repeated for its launches; do not sum repeated rows.",
+    "Missing numerical-validation metadata means unknown, not pass."
+  ],
+  "machine": {
+    "hostname": "dsp-ubuntu",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]"
+  },
+  "manifest": "/home/liuwei/GPU-simulator/data/ysim_dse_programs_20261009/manifest.json",
+  "manifest_sha256": "ea13c154df497ea6535e92d53e1189120ecb3fae3c33728185b880c89a0cd331",
+  "per_gpu": {
+    "A100": {
+      "bytes": 4825281533,
+      "cases": 100,
+      "launches": 116
+    },
+    "B200": {
+      "bytes": 8720199045,
+      "cases": 100,
+      "launches": 116
+    },
+    "B300": {
+      "bytes": 8717619473,
+      "cases": 100,
+      "launches": 116
+    },
+    "H100": {
+      "bytes": 7934310936,
+      "cases": 100,
+      "launches": 109
+    }
+  },
+  "raw_cache_pair_comparison_counts": {
+    "raw_pair_absent_from_cache_nonzero_active_mask": 3932,
+    "raw_pair_absent_from_cache_zero_active_mask": 4116,
+    "raw_pair_has_same_pc_sim_wait_replacement": 598,
+    "raw_pair_present_in_cache": 113756
+  },
+  "sampled_launch_count": 16,
+  "selected_case_count": 12,
+  "source_git_after": {
+    "commit": "f2fbee816cbb20bc919f88f482beb9aef23a9944",
+    "status_porcelain": "?? docs/results/gtsim_comprehensive_evaluation_and_design_20260911/README.pdf"
+  },
+  "source_git_before": {
+    "commit": "f2fbee816cbb20bc919f88f482beb9aef23a9944",
+    "status_porcelain": "?? docs/results/gtsim_comprehensive_evaluation_and_design_20260911/README.pdf"
+  },
+  "source_parser_sha256": {
+    "gpu_tile_sim/comparison/sass_artifacts.py": "24d19e897a506cf06f0896f8a917c497ed3d63ff81775066d9b4d7b4acea1bc1",
+    "gpu_tile_sim/comparison/sass_async_services.py": "217f54e6ac9f46d9466536b4746603717c852493d8cb71da5223d7e136fff703",
+    "gpu_tile_sim/comparison/sass_binding.py": "9abe3b377b9277de6a0b29236a8b3010b06b20d35de33116fb3146542d48f4e0",
+    "gpu_tile_sim/comparison/sass_bundle_eval.py": "4942dd314a86c2d14b38208a18c711d5c0ebd6ed882c176de4e04ccfc3835a0e",
+    "gpu_tile_sim/comparison/sass_cluster.py": "ee369038b9718ad04e18ac31967f1f92d967ab393fc7acc2bebcc4cd94ca4982",
+    "gpu_tile_sim/comparison/sass_control.py": "346a19b9d331336b2eefb66fe3cec517c803cdec6964d840efc3ffbe68544159",
+    "gpu_tile_sim/comparison/sass_cta_profile.py": "11aa915971efc534e4962fd0a5e29429c27cd90d2bcf5f5ea4d311adda449fea",
+    "gpu_tile_sim/comparison/sass_dram_replay.py": "3e6cdfcd83bad5f273d37ca5af378db9447cacbe54ef60d66314f7118df08e7f",
+    "gpu_tile_sim/comparison/sass_dse_contract.py": "1d6f959206c360d6f8410fdd690ba550f8b870c7a59f81fa664fdc0ec87b3f98",
+    "gpu_tile_sim/comparison/sass_execution.py": "63cfff14f018892b4be66e2e7d1c96e16505327f91d2fc128199870c583f8768",
+    "gpu_tile_sim/comparison/sass_execution_instruction.py": "8050aa0f960077cbbd5437a94b2aae56a031d441462cab2955dd717171ac6092",
+    "gpu_tile_sim/comparison/sass_execution_issue.py": "29910b11ab526aaa8c77bd8850fc551c9d7daf5483d4aea2f3829021fe8d1cb7",
+    "gpu_tile_sim/comparison/sass_execution_profile.py": "abc66c1b7b721d3c358592984387503f1c0fbdebd1718b2a40c7202dd7017944",
+    "gpu_tile_sim/comparison/sass_execution_state.py": "e8d81df12bad16ac3496bf716cce084b9e482e7ee08af0770f8d5a4a10d5d8b3",
+    "gpu_tile_sim/comparison/sass_instruction_model.py": "24f1cfc32f11c304a595014fbcb9dbdbfe933bb483b986c9c52802ac1a0cf304",
+    "gpu_tile_sim/comparison/sass_mbarrier.py": "072b58d4ae0afe8a9f5599f947e01e54b646cc2ca56c0c861a0b2f682b25e9c0",
+    "gpu_tile_sim/comparison/sass_memory.py": "5553a493cadd3883116bb4d98ecf13e8a6fe18d4935d9b14c984f1b129e320bb",
+    "gpu_tile_sim/comparison/sass_noc_evidence.py": "d9c7bc4ce75e59d04e68beb4c59bd21e1a1334f9a4c93334ac4740bae6d77951",
+    "gpu_tile_sim/comparison/sass_program_codec.py": "90f5bf479132d3f2adfb2c5df943a47d7963775a41321b199f98986971fed9d3",
+    "gpu_tile_sim/comparison/sass_shared_execution.py": "c1b8054ac6167dad217c28012f82bd9135c4613843905a58f36b84d0152cc5f1",
+    "gpu_tile_sim/comparison/sass_stream_timing.py": "c53c6046f90993f900e11c390b7b7b399d181b6c10b8d9b0642af3738961b589",
+    "gpu_tile_sim/comparison/sass_template_rebind.py": "37995b7ca2e91e7517167d86742ca85f8408fb9f11f4b9b5f55ae7713729298b",
+    "gpu_tile_sim/comparison/sass_tile_metadata.py": "023ee36e03fe19f1152ec65a1012150bbe0b21b88a78e589beaa714e2bf6e9df",
+    "gpu_tile_sim/comparison/sass_tma_prefetch.py": "ece8eb7d841c3faa0293ec0ff60e1148771fd4e2eb76e4e9dd2ddea6c4946f00",
+    "gpu_tile_sim/comparison/sass_tmem_footprint.py": "5db6c70bfabc9f2da9718b06c04575636d9a8305d9000895ace837bfa2c91a38",
+    "gpu_tile_sim/comparison/sass_trace.py": "241e6521f3f431b5cdd90eb45636b7c5f2953a1b7cfee29c4e794407cceb8673",
+    "gpu_tile_sim/comparison/sass_trace_normalization.py": "a4d2e5a94d47019cb5f9f3a2a65d21458e20817c423b565526ac11ae39c06bea",
+    "gpu_tile_sim/comparison/sass_trace_payload.py": "f8c1a31834ae0a296fe9f37186b5ffbfb92baef2390f2c6f58b040d33e572ab2"
+  },
+  "source_root": "/home/liuwei/GPU-simulator",
+  "started_utc": "2026-10-23T08:00:32.496904+00:00",
+  "total_raw_bytes": 30197410987,
+  "wall_seconds": 19.92867395898793
+}

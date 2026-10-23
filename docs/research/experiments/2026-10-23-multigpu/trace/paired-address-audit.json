@@ -1,0 +1,378 @@
+{
+  "format": "gpu-sim-paired-address-audit-v1",
+  "source_files": 4,
+  "unique_existing_traces": 2,
+  "not_additional_cases_or_measurements": true,
+  "capabilities": "Physical CTA/warp/instruction ordinal -> 32-byte sector base addresses for these sidecars only; no tensor identity, output values, versions, lane mask, or hardware instruction time.",
+  "deduplicated": [
+    {
+      "trace_sha256": "912c4bdcf13bf541b3785e5f60854bc29e47015be93cb0e5ee6bfd2854609f89",
+      "gpu": "B300",
+      "case": "cutlass_gemm_fp16_m8_n768_k384",
+      "source_variant_count": 2,
+      "address_records_identical_across_variants": true,
+      "sector_visits": 20352,
+      "unique_sector_base_addresses": 19392
+    },
+    {
+      "trace_sha256": "ce4813056a878a450fa18d56da55fee052970c5ee103fe29767d198e6c7f2052",
+      "gpu": "B300",
+      "case": "flaggems_gelu_bf16_n262144",
+      "source_variant_count": 2,
+      "address_records_identical_across_variants": true,
+      "sector_visits": 32768,
+      "unique_sector_base_addresses": 32768
+    }
+  ],
+  "files": [
+    {
+      "source": "data/ysim_dse_programs_20261009/paired_address/cutlass_gemm_fp16_m8_n768_k384.full_predictor.json.gz",
+      "source_sha256": "82f2f9dda8e9c876de39099de90803cbed0fd7073756bd8f384024b0499f4f8a",
+      "payload_sha256_verified": "5ff2aa2ac8c45e5f8de1abae671a34873da80b4d65aa40251f70239707033f54",
+      "trace_sha256": "912c4bdcf13bf541b3785e5f60854bc29e47015be93cb0e5ee6bfd2854609f89",
+      "gpu": "B300",
+      "case": "cutlass_gemm_fp16_m8_n768_k384",
+      "physical_ctas": 6,
+      "sector_bytes": 32,
+      "address_instruction_records": 120,
+      "sector_visits": 20352,
+      "unique_sector_base_addresses": 19392,
+      "sector_visits_by_opcode": {
+        "UTMALDG.3D": 19584,
+        "UTMASTG.3D": 768
+      },
+      "examples": [
+        {
+          "cta": 0,
+          "warp": 2,
+          "ordinal": 203,
+          "opcode": "UTMALDG.3D",
+          "sector_base_address_sample": [
+            46746675707904,
+            46746675707936,
+            46746675707968,
+            46746675708000
+          ],
+          "total_sectors_in_record": 32
+        },
+        {
+          "cta": 0,
+          "warp": 2,
+          "ordinal": 204,
+          "opcode": "UTMALDG.3D",
+          "sector_base_address_sample": [
+            46746675714048,
+            46746675714080,
+            46746675714112,
+            46746675714144
+          ],
+          "total_sectors_in_record": 512
+        },
+        {
+          "cta": 0,
+          "warp": 2,
+          "ordinal": 242,
+          "opcode": "UTMALDG.3D",
+          "sector_base_address_sample": [
+            46746675708032,
+            46746675708064,
+            46746675708096,
+            46746675708128
+          ],
+          "total_sectors_in_record": 32
+        }
+      ],
+      "address_records_sha256": "717a28535e056def2abd18c38dc7ec082417fcac67ed55c9548b36fdfef43912",
+      "source_replay_options": {
+        "max_mshrs": 128,
+        "max_dram_requests": 256,
+        "l2_associativity": 16,
+        "l1_capacity_bytes_per_sm": 0,
+        "provenance": "Explicit evaluation reference: queue capacities and associativity are sensitivity parameters, not independently measured NVIDIA controller parameters; no target timing fit",
+        "controller_parameters": {},
+        "execution_mode": "shared_sm",
+        "execution_context": "full_predictor",
+        "predictor_envelope": {
+          "format": "ysim-full-predictor-envelope-v1",
+          "context": "full_predictor",
+          "active_mode": "address_coupled",
+          "trace_sha256": "912c4bdcf13bf541b3785e5f60854bc29e47015be93cb0e5ee6bfd2854609f89",
+          "source_config_sha256": "c5e547180119af8c98fa8af8d8991632c53cda42fdddb04a4add41b7cf3b28bc",
+          "characterized_config_sha256": "bc9bafa9cee7869f72a17b5400ff9df30c9cf1162749289b05e2962d7aeb9c51",
+          "projected_fields": {
+            "core_frequency_mhz": 2030.0644597970856,
+            "dram_max_inflight_bytes": null,
+            "l2_read_bytes_per_cycle": 13147.9675479809,
+            "l2_read_write_serial_fraction": 0.40155066510151766,
+            "l2_write_bytes_per_cycle": 13147.9675479809,
+            "launch_engine": {
+              "empty_kernel_launch_us": 3.63123202,
+              "source": "independent empty-kernel microbenchmark: data/microarchitecture/B300/component_probe_20260910.json"
+            },
+            "scalar_copy_hbm_bytes_per_cycle": 1079.74995407075,
+            "scalar_l2_bytes_per_cycle": 5935.505258077713,
+            "scalar_triad_hbm_bytes_per_cycle": 1379.7352952123404
+          },
+          "payload_sha256": "5e9ea5876224fd098f35e8c0d29450f0cfe5ae91c9012e372dde884f18970acb"
+        }
+      },
+      "source_replay_assumptions": [
+        "modeled issue order, not grouped file order, drives shared memory state",
+        "write_allocate_no_fetch sector stores; not established NVIDIA partial-store policy",
+        "one identical preceding invocation defines warm_persistent",
+        "co-resident CTA compute issue, pipeline and async credits are shared per SM",
+        "simple modulo cache/address mapping; explicit parameters enable detailed DRAM timing"
+      ]
+    },
+    {
+      "source": "data/ysim_dse_programs_20261009/paired_address/cutlass_gemm_fp16_m8_n768_k384.json.gz",
+      "source_sha256": "b95c038a251f3a34fbffe19e428e4826bfdbd902015ab4b83cc4ed2da855374d",
+      "payload_sha256_verified": "8c64e16d2cba54a387b41a3b1eda56d463b7a71cd02d11e6b21e873e0c2c6cee",
+      "trace_sha256": "912c4bdcf13bf541b3785e5f60854bc29e47015be93cb0e5ee6bfd2854609f89",
+      "gpu": "B300",
+      "case": "cutlass_gemm_fp16_m8_n768_k384",
+      "physical_ctas": 6,
+      "sector_bytes": 32,
+      "address_instruction_records": 120,
+      "sector_visits": 20352,
+      "unique_sector_base_addresses": 19392,
+      "sector_visits_by_opcode": {
+        "UTMALDG.3D": 19584,
+        "UTMASTG.3D": 768
+      },
+      "examples": [
+        {
+          "cta": 0,
+          "warp": 2,
+          "ordinal": 203,
+          "opcode": "UTMALDG.3D",
+          "sector_base_address_sample": [
+            46746675707904,
+            46746675707936,
+            46746675707968,
+            46746675708000
+          ],
+          "total_sectors_in_record": 32
+        },
+        {
+          "cta": 0,
+          "warp": 2,
+          "ordinal": 204,
+          "opcode": "UTMALDG.3D",
+          "sector_base_address_sample": [
+            46746675714048,
+            46746675714080,
+            46746675714112,
+            46746675714144
+          ],
+          "total_sectors_in_record": 512
+        },
+        {
+          "cta": 0,
+          "warp": 2,
+          "ordinal": 242,
+          "opcode": "UTMALDG.3D",
+          "sector_base_address_sample": [
+            46746675708032,
+            46746675708064,
+            46746675708096,
+            46746675708128
+          ],
+          "total_sectors_in_record": 32
+        }
+      ],
+      "address_records_sha256": "717a28535e056def2abd18c38dc7ec082417fcac67ed55c9548b36fdfef43912",
+      "source_replay_options": {
+        "max_mshrs": 128,
+        "max_dram_requests": 256,
+        "l2_associativity": 16,
+        "l1_capacity_bytes_per_sm": 0,
+        "provenance": "Explicit evaluation reference: queue capacities and associativity are sensitivity parameters, not independently measured NVIDIA controller parameters; no target timing fit",
+        "controller_parameters": {},
+        "execution_mode": "shared_sm"
+      },
+      "source_replay_assumptions": [
+        "modeled issue order, not grouped file order, drives shared memory state",
+        "write_allocate_no_fetch sector stores; not established NVIDIA partial-store policy",
+        "one identical preceding invocation defines warm_persistent",
+        "co-resident CTA compute issue, pipeline and async credits are shared per SM",
+        "simple modulo cache/address mapping; explicit parameters enable detailed DRAM timing"
+      ]
+    },
+    {
+      "source": "data/ysim_dse_programs_20261009/paired_address/flaggems_gelu_bf16_n262144.full_predictor.json.gz",
+      "source_sha256": "b3ec9c2db8209ec4a1ce940c977c88856c7f23ad6dd87bba9311a880a203fa60",
+      "payload_sha256_verified": "7f6df7876a2bcfcebb555a9afe0bd756e68fe4709e6de69834fd05f512c8bb2c",
+      "trace_sha256": "ce4813056a878a450fa18d56da55fee052970c5ee103fe29767d198e6c7f2052",
+      "gpu": "B300",
+      "case": "flaggems_gelu_bf16_n262144",
+      "physical_ctas": 512,
+      "sector_bytes": 32,
+      "address_instruction_records": 4096,
+      "sector_visits": 32768,
+      "unique_sector_base_addresses": 32768,
+      "sector_visits_by_opcode": {
+        "LDG.E.64": 16384,
+        "STG.E.64": 16384
+      },
+      "examples": [
+        {
+          "cta": 0,
+          "warp": 0,
+          "ordinal": 19,
+          "opcode": "LDG.E.64",
+          "sector_base_address_sample": [
+            47654610403328,
+            47654610403360,
+            47654610403392,
+            47654610403424
+          ],
+          "total_sectors_in_record": 8
+        },
+        {
+          "cta": 0,
+          "warp": 0,
+          "ordinal": 152,
+          "opcode": "STG.E.64",
+          "sector_base_address_sample": [
+            47654610927616,
+            47654610927648,
+            47654610927680,
+            47654610927712
+          ],
+          "total_sectors_in_record": 8
+        },
+        {
+          "cta": 0,
+          "warp": 1,
+          "ordinal": 19,
+          "opcode": "LDG.E.64",
+          "sector_base_address_sample": [
+            47654610403584,
+            47654610403616,
+            47654610403648,
+            47654610403680
+          ],
+          "total_sectors_in_record": 8
+        }
+      ],
+      "address_records_sha256": "219ecaaa5b9e2c63b60d7702dd90c7a773a387946a05be8786e5999aa2a2c10b",
+      "source_replay_options": {
+        "max_mshrs": 128,
+        "max_dram_requests": 256,
+        "l2_associativity": 16,
+        "l1_capacity_bytes_per_sm": 0,
+        "provenance": "Explicit evaluation reference: queue capacities and associativity are sensitivity parameters, not independently measured NVIDIA controller parameters; no target timing fit",
+        "controller_parameters": {},
+        "execution_mode": "shared_sm",
+        "execution_context": "full_predictor",
+        "predictor_envelope": {
+          "format": "ysim-full-predictor-envelope-v1",
+          "context": "full_predictor",
+          "active_mode": "address_coupled",
+          "trace_sha256": "ce4813056a878a450fa18d56da55fee052970c5ee103fe29767d198e6c7f2052",
+          "source_config_sha256": "c5e547180119af8c98fa8af8d8991632c53cda42fdddb04a4add41b7cf3b28bc",
+          "characterized_config_sha256": "bc9bafa9cee7869f72a17b5400ff9df30c9cf1162749289b05e2962d7aeb9c51",
+          "projected_fields": {
+            "core_frequency_mhz": 2030.0644597970856,
+            "dram_max_inflight_bytes": null,
+            "l2_read_bytes_per_cycle": 13147.9675479809,
+            "l2_read_write_serial_fraction": 0.40155066510151766,
+            "l2_write_bytes_per_cycle": 13147.9675479809,
+            "launch_engine": {
+              "empty_kernel_launch_us": 3.63123202,
+              "source": "independent empty-kernel microbenchmark: data/microarchitecture/B300/component_probe_20260910.json"
+            },
+            "scalar_copy_hbm_bytes_per_cycle": 1079.74995407075,
+            "scalar_l2_bytes_per_cycle": 5935.505258077713,
+            "scalar_triad_hbm_bytes_per_cycle": 1379.7352952123404
+          },
+          "payload_sha256": "a7a5d48f15582a290f0a4ece3c44e538e6013e0d4ccdf5997d8d17b6c7adc8ae"
+        }
+      },
+      "source_replay_assumptions": [
+        "modeled issue order, not grouped file order, drives shared memory state",
+        "write_allocate_no_fetch sector stores; not established NVIDIA partial-store policy",
+        "one identical preceding invocation defines warm_persistent",
+        "co-resident CTA compute issue, pipeline and async credits are shared per SM",
+        "simple modulo cache/address mapping; explicit parameters enable detailed DRAM timing"
+      ]
+    },
+    {
+      "source": "data/ysim_dse_programs_20261009/paired_address/flaggems_gelu_bf16_n262144.json.gz",
+      "source_sha256": "606014d3e06bd6ea053c7d2fe46097f99332bea024da19f9b9042d83e9626435",
+      "payload_sha256_verified": "3faef65591af76a66d019b0fdbaf4018a88100c0b7e32b9e40d1389c3f141803",
+      "trace_sha256": "ce4813056a878a450fa18d56da55fee052970c5ee103fe29767d198e6c7f2052",
+      "gpu": "B300",
+      "case": "flaggems_gelu_bf16_n262144",
+      "physical_ctas": 512,
+      "sector_bytes": 32,
+      "address_instruction_records": 4096,
+      "sector_visits": 32768,
+      "unique_sector_base_addresses": 32768,
+      "sector_visits_by_opcode": {
+        "LDG.E.64": 16384,
+        "STG.E.64": 16384
+      },
+      "examples": [
+        {
+          "cta": 0,
+          "warp": 0,
+          "ordinal": 19,
+          "opcode": "LDG.E.64",
+          "sector_base_address_sample": [
+            47654610403328,
+            47654610403360,
+            47654610403392,
+            47654610403424
+          ],
+          "total_sectors_in_record": 8
+        },
+        {
+          "cta": 0,
+          "warp": 0,
+          "ordinal": 152,
+          "opcode": "STG.E.64",
+          "sector_base_address_sample": [
+            47654610927616,
+            47654610927648,
+            47654610927680,
+            47654610927712
+          ],
+          "total_sectors_in_record": 8
+        },
+        {
+          "cta": 0,
+          "warp": 1,
+          "ordinal": 19,
+          "opcode": "LDG.E.64",
+          "sector_base_address_sample": [
+            47654610403584,
+            47654610403616,
+            47654610403648,
+            47654610403680
+          ],
+          "total_sectors_in_record": 8
+        }
+      ],
+      "address_records_sha256": "219ecaaa5b9e2c63b60d7702dd90c7a773a387946a05be8786e5999aa2a2c10b",
+      "source_replay_options": {
+        "max_mshrs": 128,
+        "max_dram_requests": 256,
+        "l2_associativity": 16,
+        "l1_capacity_bytes_per_sm": 0,
+        "provenance": "Explicit evaluation reference: queue capacities and associativity are sensitivity parameters, not independently measured NVIDIA controller parameters; no target timing fit",
+        "controller_parameters": {},
+        "execution_mode": "shared_sm"
+      },
+      "source_replay_assumptions": [
+        "modeled issue order, not grouped file order, drives shared memory state",
+        "write_allocate_no_fetch sector stores; not established NVIDIA partial-store policy",
+        "one identical preceding invocation defines warm_persistent",
+        "co-resident CTA compute issue, pipeline and async credits are shared per SM",
+        "simple modulo cache/address mapping; explicit parameters enable detailed DRAM timing"
+      ]
+    }
+  ],
+  "scope": "All available paired_address sidecars audited separately; no model execution, timing comparison, or address recovery into other caches."
+}
