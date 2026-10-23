@@ -1,0 +1,30 @@
+{
+  "sources": [
+    "tools/research/natural-bugs/cutlass_run_repro.py",
+    "out/research/natural-bugs/cutlass/backport-v1/cutlass_backport",
+    "out/research/natural-bugs/cutlass/build-v1/after/cutlass_after"
+  ],
+  "commands": [
+    {
+      "name": "cutlass_backport_matrix",
+      "argv": [
+        "python",
+        "cutlass_run_repro.py",
+        "--before",
+        "cutlass_backport",
+        "--before-label",
+        "backport",
+        "--after",
+        "cutlass_after",
+        "--output",
+        "matrix",
+        "--betas",
+        "0"
+      ],
+      "timeout": 260
+    }
+  ],
+  "artifact_patterns": [
+    "matrix/**/*"
+  ]
+}

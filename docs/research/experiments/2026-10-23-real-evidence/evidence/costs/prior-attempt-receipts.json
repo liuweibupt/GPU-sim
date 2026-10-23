@@ -1,0 +1,165 @@
+[
+  {
+    "path": "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v1",
+    "status": "compiled-only",
+    "formalSamplingComplete": false,
+    "build": {
+      "source_hashes": {
+        "prepare-version-kernel.py": "665354a37dd43803630af837d0d84b5bfe81d151cb27a998bf9a1a7dccb64891",
+        "version-cost.cu": "3c14dc2396e4300234333d36bbfb17a0be2bdc7b7df6ce39bd64bfec2f5315d9",
+        "run-version-cost.py": "b2f00311ef4cbd4a600a7d082b60edc52984fe6f5dd6c4b7b9eb61aed56ae69e",
+        "version_probe.cu": "99f8a78d3f9fdc932fdbc83acc85b6d5ea847c3d59cf7f0be00bc8f114395f29"
+      },
+      "generated_sha256": "87c3bc927f22ff1dace013b1ef36c956a975d1868d88eef9366506d1d747131a",
+      "binary_sha256": "8fdb6a6a78c09c9f48589e0dcf3bccf92380c4629ac0b07d6a035a5d20135594"
+    },
+    "commands": [
+      {
+        "name": "compile",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/nvcc",
+          "-std=c++17",
+          "-O3",
+          "-lineinfo",
+          "-arch=sm_89",
+          "-Xptxas=-v",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v1/version-cost.cu",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v1/version-cost"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 2.414125593029894
+      },
+      {
+        "name": "sass",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/cuobjdump",
+          "--dump-sass",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v1/version-cost"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.418074963032268
+      }
+    ],
+    "reason": "Successful matching build only; no failed GPU computation or measured sampling claimed."
+  },
+  {
+    "path": "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2",
+    "status": "incomplete-profile-attempt",
+    "formalSamplingComplete": false,
+    "build": {
+      "source_hashes": {
+        "prepare-version-kernel.py": "665354a37dd43803630af837d0d84b5bfe81d151cb27a998bf9a1a7dccb64891",
+        "version-cost.cu": "3c14dc2396e4300234333d36bbfb17a0be2bdc7b7df6ce39bd64bfec2f5315d9",
+        "run-version-cost.py": "d5ef5f11329254a6bc5dadf45d76195e810f1f9b84396cb43a6d09f94a4152b4",
+        "version_probe.cu": "99f8a78d3f9fdc932fdbc83acc85b6d5ea847c3d59cf7f0be00bc8f114395f29"
+      },
+      "generated_sha256": "87c3bc927f22ff1dace013b1ef36c956a975d1868d88eef9366506d1d747131a",
+      "binary_sha256": "cc2edbde5f9d175c4337102b5c6377dc0d1c33adc380d9e1e81620b4d03c139f"
+    },
+    "commands": [
+      {
+        "name": "compile",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/nvcc",
+          "-std=c++17",
+          "-O3",
+          "-lineinfo",
+          "-arch=sm_89",
+          "-Xptxas=-v",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/version-cost.cu",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/version-cost"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 2.4539752069395036
+      },
+      {
+        "name": "sass",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/cuobjdump",
+          "--dump-sass",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/version-cost"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.34375424904283136
+      },
+      {
+        "name": "gpu-before",
+        "argv": [
+          "nvidia-smi",
+          "-q"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.11594953504391015
+      },
+      {
+        "name": "cpu",
+        "argv": [
+          "lscpu",
+          "-J"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.036787812947295606
+      },
+      {
+        "name": "nsys",
+        "argv": [
+          "nsys",
+          "profile",
+          "--force-overwrite=false",
+          "--trace=cuda,nvtx,osrt",
+          "--sample=none",
+          "--stats=true",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/collection",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/version-cost",
+          "1000",
+          "2",
+          "5",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/nsys-validation",
+          "0"
+        ],
+        "exit_code": 1,
+        "wall_seconds": 0.11529877700377256
+      },
+      {
+        "name": "nsys-retry",
+        "argv": [
+          "taskset",
+          "-c",
+          "85",
+          "nsys",
+          "profile",
+          "--force-overwrite=false",
+          "--trace=cuda,nvtx,osrt",
+          "--sample=none",
+          "--stats=true",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/collection",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/version-cost",
+          "1000",
+          "2",
+          "5",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/nsys-validation",
+          "0"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 7.165522792027332
+      },
+      {
+        "name": "nsys-stats",
+        "argv": [
+          "nsys",
+          "stats",
+          "--report",
+          "cuda_api_sum,cuda_gpu_kern_sum,cuda_gpu_mem_time_sum,cuda_gpu_mem_size_sum",
+          "/home/liuwei/GPU-sim/out/research/costs/version-20261023-v2/collection.nsys-rep"
+        ],
+        "exit_code": 1,
+        "wall_seconds": 7.382431642035954
+      }
+    ],
+    "reason": "No formal GPU sample session. Profile preparation encountered the retained tool diagnostics."
+  }
+]

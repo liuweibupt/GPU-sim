@@ -1,0 +1,133 @@
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir:475:12: error: CHECK: expected string not found in input
+ // CHECK: ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32}
+           ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:290:103: note: scanning from here
+ %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>
+                                                                                                      ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:292:14: note: possible intended match here
+ %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>
+             ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir:501:12: error: CHECK: expected string not found in input
+ // CHECK: ttng.tmem_alloc {tensor_memory_col_offset = 128 : i32, tensor_memory_row_offset = 0 : i32}
+           ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:306:103: note: scanning from here
+ %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable>
+                                                                                                      ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:310:12: note: possible intended match here
+ %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>
+           ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir:526:12: error: CHECK: expected string not found in input
+ // CHECK: ttng.tmem_alloc {tensor_memory_col_offset = 128 : i32, tensor_memory_row_offset = 0 : i32}
+           ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:324:103: note: scanning from here
+ %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable>
+                                                                                                      ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:327:12: note: possible intended match here
+ %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>
+           ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir:552:12: error: CHECK: expected string not found in input
+ // CHECK: ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32}
+           ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:341:103: note: scanning from here
+ %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>
+                                                                                                      ^
+/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir:345:14: note: possible intended match here
+ %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>
+             ^
+
+Input file: /home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir
+Check file: /home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir
+
+-dump-input=help explains the following input dump.
+
+Input was:
+<<<<<<
+             .
+             .
+             .
+           285: // ----- 
+           286: #tmem = #ttng.tensor_memory_encoding<blockM = 128, blockN = 32, colStride = 1> 
+           287: module attributes {"ttg.num-ctas" = 1 : i32, "ttg.num-warps" = 4 : i32, ttg.shared = 4 : i32, ttg.target = "cuda:100", ttg.tensor_memory_size = 64 : i32} { 
+           288:  tt.func @tmem_select_extends_liveness(%arg0: i1) { 
+           289:  %result = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           290:  %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:475'0                                                                                                          {                                                                         search range start (exclusive)
+check:475'1                                                                                                                                                                                    error: no match found in search range
+           291:  %0 = arith.select %arg0, %result, %result_0 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           292:  %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:475'2                  ?                                                                                                                                                                possible intended match
+           293:  "use"(%result_1) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           294:  "use"(%0) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           295:  %result_2 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           296:  "use"(%result_2) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           297:  tt.return 
+           298:  } 
+           299: } 
+           300:  
+           301: // ----- 
+           302: #tmem = #ttng.tensor_memory_encoding<blockM = 128, blockN = 32, colStride = 1> 
+           303: module attributes {"ttg.num-ctas" = 1 : i32, "ttg.num-warps" = 4 : i32, ttg.shared = 4 : i32, ttg.target = "cuda:100", ttg.tensor_memory_size = 128 : i32} { 
+           304:  tt.func @tmem_view_select_extends_liveness(%arg0: i1) { 
+check:475'3                                                }               search range end (exclusive)
+           305:  %result = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           306:  %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:501'0                                                                                                          {                                                                         search range start (exclusive)
+check:501'1                                                                                                                                                                                    error: no match found in search range
+           307:  %0 = ttng.tmem_subslice %result {dim = 0 : i32, offset = 128 : i32} : !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable, 256x32> 
+           308:  %1 = ttng.tmem_subslice %result_0 {dim = 0 : i32, offset = 128 : i32} : !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable, 256x32> 
+           309:  %2 = arith.select %arg0, %0, %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable, 256x32> 
+           310:  %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:501'2                ?                                                                                                                                                                  possible intended match
+           311:  "use"(%result_1) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           312:  "use"(%2) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable, 256x32>) -> () 
+           313:  %result_2 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           314:  "use"(%result_2) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           315:  tt.return 
+           316:  } 
+           317: } 
+           318:  
+           319: // ----- 
+           320: #tmem = #ttng.tensor_memory_encoding<blockM = 128, blockN = 32, colStride = 1> 
+           321: module attributes {"ttg.num-ctas" = 1 : i32, "ttg.num-warps" = 4 : i32, ttg.shared = 4 : i32, ttg.target = "cuda:100", ttg.tensor_memory_size = 128 : i32} { 
+           322:  tt.func @tmem_select_view_extends_liveness(%arg0: i1) { 
+check:501'3                                                }               search range end (exclusive)
+           323:  %result = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           324:  %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:526'0                                                                                                          {                                                                         search range start (exclusive)
+check:526'1                                                                                                                                                                                    error: no match found in search range
+           325:  %0 = arith.select %arg0, %result, %result_0 : !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           326:  %1 = ttng.tmem_subslice %0 {dim = 0 : i32, offset = 128 : i32} : !ttg.memdesc<256x32xf32, #tmem, #ttng.tensor_memory, mutable> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable, 256x32> 
+           327:  %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:526'2                ?                                                                                                                                                                  possible intended match
+           328:  "use"(%result_1) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           329:  "use"(%1) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable, 256x32>) -> () 
+           330:  %result_2 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           331:  "use"(%result_2) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           332:  tt.return 
+           333:  } 
+           334: } 
+           335:  
+           336: // ----- 
+           337: #tmem = #ttng.tensor_memory_encoding<blockM = 128, blockN = 32, colStride = 1> 
+           338: module attributes {"ttg.num-ctas" = 1 : i32, "ttg.num-warps" = 4 : i32, ttg.shared = 4 : i32, ttg.target = "cuda:100", ttg.tensor_memory_size = 64 : i32} { 
+           339:  tt.func @tmem_chain_extends_liveness(%arg0: i1, %arg1: i1) { 
+check:526'3                                          }                          search range end (exclusive)
+           340:  %result = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           341:  %result_0 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:552'0                                                                                                          {                                                                         search range start (exclusive)
+check:552'1                                                                                                                                                                                    error: no match found in search range
+           342:  %0 = arith.select %arg0, %result, %result_0 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           343:  %1 = arith.select %arg0, %result_0, %result : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           344:  %2 = arith.select %arg1, %0, %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           345:  %result_1 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+check:552'2                  ?                                                                                                                                                                possible intended match
+           346:  "use"(%result_1) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           347:  "use"(%2) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           348:  %result_2 = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> 
+           349:  "use"(%result_2) : (!ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable>) -> () 
+           350:  tt.return 
+           351:  } 
+           352: } 
+           353:  
+check:552'3      } search range end (exclusive)
+>>>>>>

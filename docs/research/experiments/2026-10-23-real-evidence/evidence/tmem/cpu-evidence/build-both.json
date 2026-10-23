@@ -1,0 +1,170 @@
+{
+  "schema": "triton-exact-parent-fix-build-v1",
+  "commits": {
+    "before": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+    "after": "0002b46dadfc6f8fbe7464c285651311c709fdc6"
+  },
+  "started_utc": "2026-10-23T12:49:45.024557+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "jobs": 16,
+  "cpu_affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "builds": [
+    {
+      "variant": "before",
+      "commit": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "source_url": "https://github.com/triton-lang/triton/archive/08a3cd4364d87bf2c281067f7a40e17808f22e7b.tar.gz",
+      "source_archive_sha256": "9f1ecc747273db6db642da54b597c9de51d3694c03dec9367206abf7423603b6",
+      "source_directory": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "llvm_info": {
+        "llvm_hash": "b010a18d2b648cab83c83967ff26b8fde11acdc6",
+        "build_number": 1,
+        "sha256sum": {
+          "almalinux-arm64": "726267d5bfd397602fa54abc0e62f7991545fed87475f2be3a392e7d318c5eb5",
+          "almalinux-x64": "be672d053f209d94cf514fb48a0b964da1d99d96d2a2e76b829c40108f4d5ca7",
+          "macos-arm64": "5ac8b4b41c5581ed8b25156ec1da37cbf19f50a78b3e4ebf664087b4718a42b1",
+          "macos-x64": "0e88f3f36c9c008f914a8cc8b4ef13ea914141e5232ca4a82375d04207a65a2a",
+          "ubuntu-arm64": "1c4585fd35622ee64a65d624734059f2d53ecafcf4bc64ac526b39d789c1469d",
+          "ubuntu-x64": "a8f2966fc8caff3c8c7b8637da341231c432ba0005ce9d960b097c5e00e78428",
+          "windows-x64": "c967f00f37da49fe60a7f6ddbad8835ba77d66b23e85fd847800944749bb5482"
+        }
+      },
+      "amd_llvm_info": {
+        "llvm_hash": "ce3529423abda3fc4ad0b542daa50af21e539a29",
+        "build_number": 1,
+        "sha256sum": {},
+        "bootstrap_llvm": {
+          "build_number": 1,
+          "sha256sum": {
+            "almalinux-arm64": "b66134e232015cbdf443d5a2520714bc07c1546f30aa1a1f05b5571706debfc1",
+            "almalinux-x64": "8d2502f7647e393b580a10cbc3650467f84993d8be53db750706a437c349477e",
+            "macos-arm64": "4aaca94f931a4300c0041884a26149ef4bd9b5728b5d970d22f3440e75f8b034",
+            "macos-x64": "35a798de4116833ae7ecadf1fa6617e4546517d728ef69fc72603c76b2d70c70",
+            "ubuntu-arm64": "c0036e8bd18be160029dd9c24d2c87166fdd182ba6af8bf7ca4476cda4dbaa16",
+            "ubuntu-x64": "f20d30fdb2ea3c14ef032245214663ddb99c0ed0a9fdb46e1ebd47d3513d4ada",
+            "windows-arm64": "7260cc3e10bdddf690104d4e1ce14d6d7f942d4715e62471b3e0f9b1d8d9ca9f",
+            "windows-x64": "ac84a8d0e63db6b6d155c2ae9714d29aa3d9458d674a840f4684c5c02ce6401a"
+          }
+        }
+      },
+      "allocator_source_sha256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+      "command": [
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/python",
+        "-m",
+        "build",
+        "--wheel",
+        "--no-isolation",
+        "--outdir",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/before"
+      ],
+      "explicit_build_environment": {
+        "MAX_JOBS": "16",
+        "CMAKE_BUILD_PARALLEL_LEVEL": "16",
+        "TRITON_HOME": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/dependencies",
+        "TRITON_BUILD_PROTON": "OFF",
+        "TRITON_WHEEL_VERSION_SUFFIX": "+git08a3cd43",
+        "TRITON_APPEND_CMAKE_ARGS": "-DTRITON_BUILD_UT=OFF -DCMAKE_C_COMPILER=/usr/bin/clang-18 -DCMAKE_CXX_COMPILER=/usr/bin/clang++-18 -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17 -DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17 -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17",
+        "PATH": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin:/home/liuwei/.codex/packages/standalone/releases/0.161.0-x86_64-unknown-linux-musl/codex-path:/home/liuwei/.local/bin:/home/liuwei/.codex/tmp/arg0/codex-arg0jlEejx:/home/liuwei/.codex/packages/standalone/releases/0.161.0-x86_64-unknown-linux-musl/codex-path:/home/liuwei/.local/bin:/home/liuwei/.local/bin:/home/liuwei/.npm-global/bin:/home/liuwei/.opencode/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:/opt/systemc/v2.3.4_dbg_cpp20:/opt/verilator/v5.034/bin:/opt/miniconda3/bin:/opt/miniconda3/condabin:/home/liuwei/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+      },
+      "status": "completed",
+      "exit_code": 0,
+      "wall_seconds": 580.0126742179273,
+      "log_sha256": "ad9b03844030e9342f921a78ce7892e551c08f312673bca6651e2695cba38b93",
+      "wheels": [
+        {
+          "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+          "bytes": 274620979,
+          "sha256": "2c6656f868344cddb8f792bb34270a2cb7c8cb6d4da137973fce5ff9f4c9b80c"
+        }
+      ]
+    },
+    {
+      "variant": "after",
+      "commit": "0002b46dadfc6f8fbe7464c285651311c709fdc6",
+      "source_url": "https://github.com/triton-lang/triton/archive/0002b46dadfc6f8fbe7464c285651311c709fdc6.tar.gz",
+      "source_archive_sha256": "c0ff24c634b52dd372157de9239474e447478c136d808edd005907fdb0089b46",
+      "source_directory": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6",
+      "llvm_info": {
+        "llvm_hash": "b010a18d2b648cab83c83967ff26b8fde11acdc6",
+        "build_number": 1,
+        "sha256sum": {
+          "almalinux-arm64": "726267d5bfd397602fa54abc0e62f7991545fed87475f2be3a392e7d318c5eb5",
+          "almalinux-x64": "be672d053f209d94cf514fb48a0b964da1d99d96d2a2e76b829c40108f4d5ca7",
+          "macos-arm64": "5ac8b4b41c5581ed8b25156ec1da37cbf19f50a78b3e4ebf664087b4718a42b1",
+          "macos-x64": "0e88f3f36c9c008f914a8cc8b4ef13ea914141e5232ca4a82375d04207a65a2a",
+          "ubuntu-arm64": "1c4585fd35622ee64a65d624734059f2d53ecafcf4bc64ac526b39d789c1469d",
+          "ubuntu-x64": "a8f2966fc8caff3c8c7b8637da341231c432ba0005ce9d960b097c5e00e78428",
+          "windows-x64": "c967f00f37da49fe60a7f6ddbad8835ba77d66b23e85fd847800944749bb5482"
+        }
+      },
+      "amd_llvm_info": {
+        "llvm_hash": "ce3529423abda3fc4ad0b542daa50af21e539a29",
+        "build_number": 1,
+        "sha256sum": {},
+        "bootstrap_llvm": {
+          "build_number": 1,
+          "sha256sum": {
+            "almalinux-arm64": "b66134e232015cbdf443d5a2520714bc07c1546f30aa1a1f05b5571706debfc1",
+            "almalinux-x64": "8d2502f7647e393b580a10cbc3650467f84993d8be53db750706a437c349477e",
+            "macos-arm64": "4aaca94f931a4300c0041884a26149ef4bd9b5728b5d970d22f3440e75f8b034",
+            "macos-x64": "35a798de4116833ae7ecadf1fa6617e4546517d728ef69fc72603c76b2d70c70",
+            "ubuntu-arm64": "c0036e8bd18be160029dd9c24d2c87166fdd182ba6af8bf7ca4476cda4dbaa16",
+            "ubuntu-x64": "f20d30fdb2ea3c14ef032245214663ddb99c0ed0a9fdb46e1ebd47d3513d4ada",
+            "windows-arm64": "7260cc3e10bdddf690104d4e1ce14d6d7f942d4715e62471b3e0f9b1d8d9ca9f",
+            "windows-x64": "ac84a8d0e63db6b6d155c2ae9714d29aa3d9458d674a840f4684c5c02ce6401a"
+          }
+        }
+      },
+      "allocator_source_sha256": "c934ce2648707f20d1eab053f1e641d7a55db8fe76f0b3996bd466f5cfa411aa",
+      "command": [
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/python",
+        "-m",
+        "build",
+        "--wheel",
+        "--no-isolation",
+        "--outdir",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/after"
+      ],
+      "explicit_build_environment": {
+        "MAX_JOBS": "16",
+        "CMAKE_BUILD_PARALLEL_LEVEL": "16",
+        "TRITON_HOME": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/dependencies",
+        "TRITON_BUILD_PROTON": "OFF",
+        "TRITON_WHEEL_VERSION_SUFFIX": "+git0002b46d",
+        "TRITON_APPEND_CMAKE_ARGS": "-DTRITON_BUILD_UT=OFF -DCMAKE_C_COMPILER=/usr/bin/clang-18 -DCMAKE_CXX_COMPILER=/usr/bin/clang++-18 -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17 -DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17 -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17",
+        "PATH": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin:/home/liuwei/.codex/packages/standalone/releases/0.161.0-x86_64-unknown-linux-musl/codex-path:/home/liuwei/.local/bin:/home/liuwei/.codex/tmp/arg0/codex-arg0jlEejx:/home/liuwei/.codex/packages/standalone/releases/0.161.0-x86_64-unknown-linux-musl/codex-path:/home/liuwei/.local/bin:/home/liuwei/.local/bin:/home/liuwei/.npm-global/bin:/home/liuwei/.opencode/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:/opt/systemc/v2.3.4_dbg_cpp20:/opt/verilator/v5.034/bin:/opt/miniconda3/bin:/opt/miniconda3/condabin:/home/liuwei/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+      },
+      "status": "completed",
+      "exit_code": 0,
+      "wall_seconds": 343.3925705240108,
+      "log_sha256": "e1e3d626be073193a6a9488290dc443c13b05fb2f48a92eb2f18be2b081dc38c",
+      "wheels": [
+        {
+          "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl",
+          "bytes": 274627593,
+          "sha256": "a6f9aaefe4b03782f76bc50a892d3742d40dc27a734881824c83693664e129ce"
+        }
+      ]
+    }
+  ],
+  "script_sha256": "2d157fbe01b3cabea85d9c9c813aa4c6e0de26837fd640dae69981b9b13bfd35",
+  "source_policy": "Unmodified GitHub commit archives; no source patch applied.",
+  "scope": "Default NVIDIA and AMD compiler backends; Proton and C++ unit-test binaries disabled identically in both builds."
+}

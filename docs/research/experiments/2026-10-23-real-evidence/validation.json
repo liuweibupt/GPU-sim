@@ -1,0 +1,413 @@
+{
+  "format": "gpu-real-evidence-validation-v1",
+  "verified_utc": "2026-10-23T13:26:41.453934+00:00",
+  "status": "passed",
+  "archive": {
+    "status": "verified",
+    "files": 2669,
+    "original_bytes": 55260421,
+    "stored_bytes": 39556147,
+    "modal_integrity_checks": 1838,
+    "manifest_sha256": "47dda97be6830811d304ca2b4e536379ddad46b2ccbdf532fcbb1b900bc47f62",
+    "round_trip_extracted": true
+  },
+  "tests": [
+    {
+      "suite": "Node repository",
+      "command": "npm test",
+      "passed": 345,
+      "failed": 0,
+      "log": "validation-20261023-supplement-node.log"
+    },
+    {
+      "suite": "Python repository",
+      "command": "python3 -m unittest discover -s tests -p 'test_*.py' -v",
+      "passed": 56,
+      "failed": 0,
+      "log": "validation-20261023-supplement-python.log"
+    },
+    {
+      "suite": "AI CPU harness",
+      "command": "python3 tools/research/agent-kernel-eval/test_harness.py",
+      "passed": 3,
+      "failed": 0,
+      "log": "validation-20261023-supplement-agent.log"
+    },
+    {
+      "suite": "Cost Python checks including publication safety",
+      "command": "python3 -m unittest discover -s tools/research/costs -p 'test_*.py' -v",
+      "passed": 8,
+      "failed": 0,
+      "log": "validation-20261023-supplement-costs-final.log"
+    },
+    {
+      "suite": "TMEM retained-output verifier",
+      "command": "python3 tools/research/natural-bugs/tmem_selftest.py",
+      "passed": 7,
+      "failed": 0,
+      "log": "validation-20261023-supplement-tmem.log"
+    }
+  ],
+  "test_scope": "Tests of tools, parsers and CPU oracles; these are distinct from the actual GPU cases reported in report.md. Three cost Node tests are included in the 345, not extra. CUTLASS and archive Python tests are included in the 56.",
+  "restored_cutlass_release": {
+    "format": "cutlass-retained-byte-verification-v1",
+    "status": "verified",
+    "matrix_sha256": "dfe4e0f80f4731dec0cb51e86ecf0b9fcc3e789a05c7392d1e7c31cc6a46c674",
+    "cases": 52,
+    "artifact_hash_checks": 774,
+    "counts": {
+      "outputs": 3375104,
+      "mismatches": 0,
+      "zero_k_mismatches": 0,
+      "zero_k_outputs": 1376256,
+      "zero_k_nonzero_outputs": 540614
+    },
+    "case_results": {
+      "before/normal/passed": 2,
+      "after/normal/passed": 24,
+      "before/normal/execution_error": 12,
+      "before/normal/timeout": 10,
+      "after/memcheck/passed": 4
+    },
+    "oracle": "FP8 E4M3 finite decoder, signed zero numerically equal; all raw bytes, independent K=0 beta*C"
+  },
+  "restored_cutlass_backport": {
+    "format": "cutlass-retained-byte-verification-v1",
+    "status": "verified",
+    "matrix_sha256": "0a554c809fb389e7193f9cb0ba80de0c1252ca8ba37e1ffb514fc2ae1aa373a3",
+    "cases": 24,
+    "artifact_hash_checks": 636,
+    "counts": {
+      "outputs": 3080192,
+      "mismatches": 0,
+      "zero_k_mismatches": 0,
+      "zero_k_outputs": 1310720,
+      "zero_k_nonzero_outputs": 0
+    },
+    "case_results": {
+      "backport/normal/passed": 12,
+      "after/normal/passed": 12
+    },
+    "oracle": "FP8 E4M3 finite decoder, signed zero numerically equal; all raw bytes, independent K=0 beta*C"
+  },
+  "restored_tmem": {
+    "schema": "natural-tmem-independent-pair-audit-v1",
+    "before": {
+      "path": "/home/liuwei/GPU-sim/out/research/restored-real-evidence/modal-tmem/artifacts/before",
+      "summary_sha256": "791988ab501ff19c751bbf55cefde3d0696935dae1d75cb2c56bd294d7cc57fe",
+      "source_commit": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "wheel_sha256": "2c6656f868344cddb8f792bb34270a2cb7c8cb6d4da137973fce5ff9f4c9b80c",
+      "libtriton_sha256": "0760030da6ab8a20c51537533a21ebb84743ecd6426d8496480ab4dd44f13280",
+      "upstream_module_sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+      "gpu": "NVIDIA B200",
+      "torch_version": "2.12.0+cu130",
+      "triton_version": "3.9.0",
+      "cases": 16,
+      "output_elements": 172032,
+      "wrong_cases": 7,
+      "wrong_elements": 28672
+    },
+    "after": {
+      "path": "/home/liuwei/GPU-sim/out/research/restored-real-evidence/modal-tmem/artifacts/after",
+      "summary_sha256": "f599ababf7a71928036a393b1b7b856f3ef3b790e03f83ad20867de35f05dda9",
+      "source_commit": "0002b46dadfc6f8fbe7464c285651311c709fdc6",
+      "wheel_sha256": "a6f9aaefe4b03782f76bc50a892d3742d40dc27a734881824c83693664e129ce",
+      "libtriton_sha256": "109370d1664f5f84358ba71e09697623f1a5325f8d38e48420b1432adc8da097",
+      "upstream_module_sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+      "gpu": "NVIDIA B200",
+      "torch_version": "2.12.0+cu130",
+      "triton_version": "3.9.0",
+      "cases": 16,
+      "output_elements": 172032,
+      "wrong_cases": 0,
+      "wrong_elements": 0
+    },
+    "pair": [
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 64,
+          "early": false,
+          "mode": "chain",
+          "outer_choice": 0
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 64,
+          "early": false,
+          "mode": "chain",
+          "outer_choice": 1
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 64,
+          "early": false,
+          "mode": "first",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 64,
+          "early": false,
+          "mode": "second",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 0,
+          "early": false,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 32,
+          "early": false,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 64,
+          "early": false,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 0,
+          "columns": 64,
+          "early": true,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 64,
+          "early": false,
+          "mode": "chain",
+          "outer_choice": 0
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 64,
+          "early": false,
+          "mode": "chain",
+          "outer_choice": 1
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 64,
+          "early": false,
+          "mode": "first",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 64,
+          "early": false,
+          "mode": "second",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 0,
+          "early": false,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 32,
+          "early": false,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 64,
+          "early": false,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": false,
+        "after_correct": true,
+        "before_mismatch_elements": 4096,
+        "after_mismatch_elements": 0
+      },
+      {
+        "parameters": {
+          "choice": 1,
+          "columns": 64,
+          "early": true,
+          "mode": "select",
+          "outer_choice": 1
+        },
+        "before_correct": true,
+        "after_correct": true,
+        "before_mismatch_elements": 0,
+        "after_mismatch_elements": 0
+      }
+    ],
+    "repaired_cases": 7,
+    "regressed_cases": 0,
+    "validator_sha256": "85c8808a045796a2f306ac3df724e09a088387c196a6f0e872db6a469458aeec",
+    "scope": "Exact upstream numeric/compiler regression; no sampled internal TMEM provenance, race, performance or general bug-coverage claim.",
+    "plain_before": {
+      "path": "/home/liuwei/GPU-sim/out/research/restored-real-evidence/modal-tmem/artifacts/plain-before.xml",
+      "sha256": "c294908f232d02e56c4dec254800bd3125543b147983ed54f05c5d8538eb678c",
+      "cases": 16,
+      "numeric_assertion_failures": [
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 2.0 at index (0, 0)\nGreatest relative difference: 0.4000000059604645 at index (0, 0)"
+        },
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 4.0 at index (0, 0)\nGreatest relative difference: 1.3333333730697632 at index (0, 0)"
+        },
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 4.0 at index (0, 0)\nGreatest relative difference: 1.3333333730697632 at index (0, 0)"
+        },
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 4.0 at index (0, 0)\nGreatest relative difference: 1.3333333730697632 at index (0, 0)"
+        },
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 2.0 at index (0, 0)\nGreatest relative difference: 0.4000000059604645 at index (0, 0)"
+        },
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 2.0 at index (0, 0)\nGreatest relative difference: 0.4000000059604645 at index (0, 0)"
+        },
+        {
+          "name": "test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+          "message": "AssertionError: Tensor-likes are not equal!\n\nMismatched elements: 4096 / 4096 (100.0%)\nGreatest absolute difference: 4.0 at index (0, 0)\nGreatest relative difference: 1.3333333730697632 at index (0, 0)"
+        }
+      ],
+      "outcomes_match_observed_suite": true,
+      "scope": "Native upstream pytest with no custom observation hooks; assertions retained, full output tensors not captured in this control run."
+    },
+    "plain_after": {
+      "path": "/home/liuwei/GPU-sim/out/research/restored-real-evidence/modal-tmem/artifacts/plain-after.xml",
+      "sha256": "cf15f1fd1d4a72da7a0fccae85274611932f0255acc0596c373bc2658e128bbc",
+      "cases": 16,
+      "numeric_assertion_failures": [],
+      "outcomes_match_observed_suite": true,
+      "scope": "Native upstream pytest with no custom observation hooks; assertions retained, full output tensors not captured in this control run."
+    }
+  },
+  "restored_inner_artifacts": {
+    "status": "verified",
+    "scope": "Post-extraction inner hashes and AI complete-output rescoring; no GPU rerun.",
+    "ai_manifest_files": 236,
+    "tmem_manifest_files": 92,
+    "source_manifest_files": 47,
+    "cost_packaged_files": 405,
+    "cost_generated_files": 4,
+    "ai_tar_members": 403,
+    "ai_regraded_phases": 36,
+    "ai_functional_elements": 51588,
+    "ai_sanitizer_elements": 103176
+  },
+  "publication_scan": {
+    "format": "cost-sensitive-value-scan-v1",
+    "sensitiveKeyNames": [
+      "FEISHU_APP_SECRET",
+      "MODAL_TOKEN_ID",
+      "MODAL_TOKEN_SECRET",
+      "OPENAI_API_KEY"
+    ],
+    "filesChecked": 2724,
+    "storedBytesChecked": 41236666,
+    "matchedFiles": 0,
+    "hits": [],
+    "scope": "Exact current nonempty sensitive environment values, checked in each original file and every nested gzip layer. Values and matching snippets are never stored or printed. This is not a claim to identify every possible historical or encoded secret."
+  },
+  "review_scope": "Independent agents rechecked CUTLASS source/outputs, TMEM complete outputs and exact IR bindings, and the final report denominators. No human developer study or general diagnostic accuracy claimed."
+}

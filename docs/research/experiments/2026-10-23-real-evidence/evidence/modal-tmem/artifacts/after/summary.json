@@ -1,0 +1,1189 @@
+{
+  "schema": "natural-tmem-upstream-regression-v1",
+  "variant": "after",
+  "source_commit": "0002b46dadfc6f8fbe7464c285651311c709fdc6",
+  "source_archive_sha256": "c0ff24c634b52dd372157de9239474e447478c136d808edd005907fdb0089b46",
+  "allocator_source_sha256": "c934ce2648707f20d1eab053f1e641d7a55db8fe76f0b3996bd466f5cfa411aa",
+  "build_manifest_sha256": "d43103faac0d53a2cb6f2ed7b7d28e6df3f072ce208fd9b79d06e720c8809356",
+  "wheel_sha256": "a6f9aaefe4b03782f76bc50a892d3742d40dc27a734881824c83693664e129ce",
+  "libtriton_sha256": "109370d1664f5f84358ba71e09697623f1a5325f8d38e48420b1432adc8da097",
+  "runner_sha256": "13d2006b43da0bd85d9d149f19c50af83a29f8aec9f980630f167b7db4baa70a",
+  "upstream": {
+    "schema": "upstream-test-extraction-v1",
+    "url": "https://raw.githubusercontent.com/1sgtpepper/triton/1f33b120daccd127b9f464623fb960f3d5ece536/python/test/gluon/test_core.py",
+    "upstream_commit": "1f33b120daccd127b9f464623fb960f3d5ece536",
+    "source_sha256": "b5eee96aa509b5d86db7fafa39104daf130a613644d3fdeafaa42a61fb62fae4",
+    "first_line": 6114,
+    "last_line": 6184,
+    "function_and_decorators_sha256": "df8cdfe3917207f6fa6e7ce30478152c12f7c7b83bf2055d5886e707ecaf6462",
+    "module_sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+    "extraction": "Exact full test function and all decorators, with minimal import dependencies; no kernel, parameters or assertions changed.",
+    "license": "MIT; upstream Triton LICENSE accompanies downloaded source archive.",
+    "license_path": "tmem_upstream_LICENSE.txt",
+    "license_sha256": "92640fb97222fd0a698ff28ce0c3782c172623f8d6c609b557636a80f28fb946"
+  },
+  "started_utc": "2026-10-23T13:10:10.586315+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.39",
+  "torch_version": "2.12.0+cu130",
+  "torch_cuda": "13.0",
+  "triton_version": "3.9.0",
+  "triton_distribution_version": "3.9.0+git0002b46d",
+  "gpu": "NVIDIA B200",
+  "compute_capability": [
+    10,
+    0
+  ],
+  "mlir_pass_dump_enabled": true,
+  "mlir_pass_dump_scope": "Official enable_debug IR printer before passes; compiler context multithreading disabled when requested. No pass additions, IR edits, or in-kernel instrumentation.",
+  "host_observation": "Observe the first two torch.empty tensors; unchanged upstream test/kernel/assertions. Copy valid outputs only after the test call completes or raises.",
+  "claims": "Numerical/compiler regression only; no performance, hardware timeline, or sampled TMEM tag claim.",
+  "runs": [
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-00.json.gz",
+        "sha256": "d501f87c2e1b309e9db1ea35a68b778fecebbb8b111c24abea6f64cfc45f1018",
+        "bytes": 1956,
+        "uncompressed_sha256": "142c1167a9cee2410c35173377f95700dba8cef5a4172a5e6abbb8e4bc2afbf1"
+      },
+      "compiled_kernel_hashes": [
+        "fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-01.json.gz",
+        "sha256": "e02c5de3cbd0d2a8ae24765926e3e39538dab3d8334a7995ec5cfe210387b707",
+        "bytes": 1959,
+        "uncompressed_sha256": "94278fe41a01ca232075674691f25f3e11f8490d76193b10acfb74c2a63a9313"
+      },
+      "compiled_kernel_hashes": [
+        "fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-02.json.gz",
+        "sha256": "da46d7e2dd3abe4076dc10044813e6389161c9a85c5ee52cac7cc85c4cfc6d6d",
+        "bytes": 1882,
+        "uncompressed_sha256": "9fe8adc3fe010360381c1e87d0901d89a15a1c68d84c424a9af51e88806dd162"
+      },
+      "compiled_kernel_hashes": [
+        "e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 8192
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-03.json.gz",
+        "sha256": "0eca90e8def897bbfde5de571e38b28f6d57a031eb297616bd879664db0dc4d3",
+        "bytes": 1884,
+        "uncompressed_sha256": "8d931a0873d72a9862762693a31fd64d096db020a72406dcaa312bd9bbf44bf5"
+      },
+      "compiled_kernel_hashes": [
+        "e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 8192
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-04.json.gz",
+        "sha256": "2d45cd0bc89be5f68ab7bd51bd86c5ab05173c1e50a4bbce1854320b6e9485d9",
+        "bytes": 1693,
+        "uncompressed_sha256": "0becdbde414a44f79a7e7c752665805fd7e72c46ae5ced861b2cc094b1f393a3"
+      },
+      "compiled_kernel_hashes": [
+        "9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 4096
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-05.json.gz",
+        "sha256": "9c5e455d48ddc5d81ff7a56570b1e6dd377d42554ff76480d7b7c1c5941c24e9",
+        "bytes": 1695,
+        "uncompressed_sha256": "e7cac18b116236a846e3096c4795d8825ae6e05754db9e8dd9f0bbe175ceb371"
+      },
+      "compiled_kernel_hashes": [
+        "9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 4096
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-06.json.gz",
+        "sha256": "78f7cc8e4d349f5f0c568ac7acc6cbb520590d55f4df519740e201cd61d1c6e0",
+        "bytes": 1959,
+        "uncompressed_sha256": "7df33039f57fe8490712a80a1a44bf1900a21b21bdfbfab13425dc2db0d85a17"
+      },
+      "compiled_kernel_hashes": [
+        "cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-07.json.gz",
+        "sha256": "e247e3b6a7d0cca4a07f93534b069aac08a1f0d7f9b9ab0c7c69b4dea2fbb54b",
+        "bytes": 1960,
+        "uncompressed_sha256": "f5b55ca62889519e812a0f733f1e88cd49dc29d3fa32aa8ce9476855df750884"
+      },
+      "compiled_kernel_hashes": [
+        "cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "parameters": {
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-08.json.gz",
+        "sha256": "eb4b4fecd3459b5b9bddcd423c130439c31edb7d47d4a890eb575b700f800eb5",
+        "bytes": 1958,
+        "uncompressed_sha256": "8c152a76b764dbc2aafbbc6ff73b1c62b6fff834bb9373b9a6c302c2a9be2c77"
+      },
+      "compiled_kernel_hashes": [
+        "dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "parameters": {
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-09.json.gz",
+        "sha256": "46caabfadc1e37aa543ae00ad8ae54f56eddd5cf53c383eb8ccee0c66257e1a9",
+        "bytes": 1958,
+        "uncompressed_sha256": "ea96a38177dc5587fc0ad0cb86e92000775ef5900bbab6732be9aa493414d4b3"
+      },
+      "compiled_kernel_hashes": [
+        "dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "parameters": {
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-10.json.gz",
+        "sha256": "e7f2922d9c19f8f7b3be998c5c929688d4070bfc6fc6c27f258378b2bba2a659",
+        "bytes": 1957,
+        "uncompressed_sha256": "f416ab9ba783eb0daf499b1d255e507996115cd76e0adb6e0149fbc3d18ad0a6"
+      },
+      "compiled_kernel_hashes": [
+        "120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "parameters": {
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-11.json.gz",
+        "sha256": "9023cf15c0705d27ca6d59570a6311557ef8db5b20dce485dcde8c5bb0918d71",
+        "bytes": 1958,
+        "uncompressed_sha256": "554b6cfd0f04ef85b4d0729dce01c7f2e2e09adef1b2c4ff748445f11aaa3a72"
+      },
+      "compiled_kernel_hashes": [
+        "120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-12.json.gz",
+        "sha256": "a885b2e82fdf9dce2ce264e05d3f402caeb260b52e093ef72986258095f861ab",
+        "bytes": 1960,
+        "uncompressed_sha256": "f115785b22e354fe4fba1947610510c1075c14b90934cd878036f4f74c61cfde"
+      },
+      "compiled_kernel_hashes": [
+        "cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-13.json.gz",
+        "sha256": "836abfb3bee2f2e2241866757358950e7d20ecb6c9c15e03273efacb81d481b9",
+        "bytes": 1962,
+        "uncompressed_sha256": "0092dce9262bb196fac05ef5f5889ed1fa859a1f1e81322ac1827f0923adf003"
+      },
+      "compiled_kernel_hashes": [
+        "cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-14.json.gz",
+        "sha256": "8e18021f109f8e2f7027213dad52710c00d906774fd476d18865cfe46fc101e1",
+        "bytes": 1961,
+        "uncompressed_sha256": "abb209b255c86a663237ad992028d19bab142df4e1300e6a526a2c4d0043e728"
+      },
+      "compiled_kernel_hashes": [
+        "cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-15.json.gz",
+        "sha256": "31b691e43eb6a1c1b2370bd2cd1bf6fe9aea6bb296fa7258c591b5bb0286c4cd",
+        "bytes": 1963,
+        "uncompressed_sha256": "0e8603923d3d9cefa647ff1d006f4d41baf6b6bc6d5309e6503638068a8f3599"
+      },
+      "compiled_kernel_hashes": [
+        "cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    }
+  ],
+  "reports": [
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    }
+  ],
+  "pytest_exit_code": 0,
+  "counts": {
+    "passed": 16
+  },
+  "numeric_correct_cases": 16,
+  "numeric_wrong_cases": 0,
+  "output_elements": 172032,
+  "mismatch_elements": 0,
+  "cuobjdump": {
+    "path": "/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/bin/cuobjdump",
+    "sha256": "8f240516056740fee62c40eec6e1ba5d3d5ab5a309fbba4b0fe26fd54c79767d",
+    "version_stdout": "cuobjdump: NVIDIA (R) fat binary listing tool\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Nov__7_07:23:37_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.80\nBuild cuda_13.1.r13.1/compiler.36836380_0\n",
+    "version_stderr": "",
+    "version_exit_code": 0
+  },
+  "compiler_artifacts": [
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.cubin",
+      "sha256": "b382c3764beefccee4d1bd87c7d122d6e216d82d0a840dc7a435127e99bdbd8e",
+      "bytes": 20952,
+      "gzip_path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.cubin.gz",
+      "gzip_sha256": "d669579de92a08a421848ff9c2b7602406933558f3947e9dadced6d555a58cb8",
+      "sass_path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.sass",
+      "sass_sha256": "df9fbf9cddcb191212c060fb1937ec795bdd8c7f959f7554f5d742a7144d8b19",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.glir",
+      "sha256": "866e1641f7f9d67c1adda16abf1aecc09af077b9ca97ffea45bc537460a8fbea",
+      "bytes": 9229
+    },
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.json",
+      "sha256": "78ce9a56270b36b3b6c1f8491f3c0293f912cadcfa4ab27df0c4765252ca1f21",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.llir",
+      "sha256": "0407a02774c0c69665d53e2d50324aa4444ca273985e4106119d16b412a73804",
+      "bytes": 45881
+    },
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.ptx",
+      "sha256": "199e2d5c7e7f2e0f1f4c3e22bd3efe7e45218ab05c6eb6555a874839f60f0141",
+      "bytes": 11891
+    },
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.source",
+      "sha256": "866e1641f7f9d67c1adda16abf1aecc09af077b9ca97ffea45bc537460a8fbea",
+      "bytes": 9229
+    },
+    {
+      "path": "compiler/120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f/kernel.ttgir",
+      "sha256": "6ebb6eef9c5091bdccccc4e0bad0edeb318a3720ebd6e3b7e3cec0e0471f706d",
+      "bytes": 6712
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.cubin",
+      "sha256": "b382c3764beefccee4d1bd87c7d122d6e216d82d0a840dc7a435127e99bdbd8e",
+      "bytes": 20952,
+      "gzip_path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.cubin.gz",
+      "gzip_sha256": "d669579de92a08a421848ff9c2b7602406933558f3947e9dadced6d555a58cb8",
+      "sass_path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.sass",
+      "sass_sha256": "df9fbf9cddcb191212c060fb1937ec795bdd8c7f959f7554f5d742a7144d8b19",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.glir",
+      "sha256": "866e1641f7f9d67c1adda16abf1aecc09af077b9ca97ffea45bc537460a8fbea",
+      "bytes": 9229
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.llir",
+      "sha256": "0407a02774c0c69665d53e2d50324aa4444ca273985e4106119d16b412a73804",
+      "bytes": 45881
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.ptx",
+      "sha256": "199e2d5c7e7f2e0f1f4c3e22bd3efe7e45218ab05c6eb6555a874839f60f0141",
+      "bytes": 11891
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.sass",
+      "sha256": "df9fbf9cddcb191212c060fb1937ec795bdd8c7f959f7554f5d742a7144d8b19",
+      "bytes": 60078
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.ttgir",
+      "sha256": "6ebb6eef9c5091bdccccc4e0bad0edeb318a3720ebd6e3b7e3cec0e0471f706d",
+      "bytes": 6712
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.cubin",
+      "sha256": "b1ec24f095a03e0136d29a1eb9b7b3d6a72d48aa8269e0a1c66fa5abeb727602",
+      "bytes": 21416,
+      "gzip_path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.cubin.gz",
+      "gzip_sha256": "7dfbac14f991b4b3e2cd068a1deedba03ebe464b7050ad53cd3df16bde84fdeb",
+      "sass_path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.sass",
+      "sass_sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.glir",
+      "sha256": "bddfc8409fe937cd80c07aff306b0d23481a7977f22347daf3f59f412ffc3739",
+      "bytes": 9896
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.llir",
+      "sha256": "672b0f99c972106b7bb9725bc5acd08bcc1e99b8b5bb2df9d8f19957185136b4",
+      "bytes": 46356
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.ptx",
+      "sha256": "8fad8c80179abc25a7e91ffa9c24e3b3ae138749ca9c0d1f6a7f570dbf7a77d8",
+      "bytes": 12624
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.sass",
+      "sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.ttgir",
+      "sha256": "64f6d50c43a7390653fc0413b5ced559da13efdb58f97445ca8ee9c7310cf20f",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.cubin",
+      "sha256": "242febc390f6d21cd9bfbf5e99efb234a7f71f5145826079bc00483879cb8d1b",
+      "bytes": 16384,
+      "gzip_path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.cubin.gz",
+      "gzip_sha256": "d38845389c9af82d98abdcb478aec0ee1da2e358a7065cee882b11babf0cf43f",
+      "sass_path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.sass",
+      "sass_sha256": "cbb000085faad22dd2da87f6bcc7d69397612ac534626a8e4347237faf3d75a7",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.glir",
+      "sha256": "e88ba2ffd8f6cabfc7e50b7aaee11ba3e4d4a7c37b95b5be36a4726679a955eb",
+      "bytes": 6022
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.json",
+      "sha256": "80ae53d9f3ed544144e69f157c14b3df2dac15f6e057b3e16446dd190b026087",
+      "bytes": 1278
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.llir",
+      "sha256": "b21c760673b33a34c1b82d992b7c41a06c8136f955dfc027b88dd47d0666e799",
+      "bytes": 16182
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.ptx",
+      "sha256": "3815fb34c1302b889d4557476334f12cd616d22e9fbcc2ee255e29260e81f2ba",
+      "bytes": 7740
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.source",
+      "sha256": "e88ba2ffd8f6cabfc7e50b7aaee11ba3e4d4a7c37b95b5be36a4726679a955eb",
+      "bytes": 6022
+    },
+    {
+      "path": "compiler/9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2/kernel.ttgir",
+      "sha256": "786f8bb4b4aafd660720c670195819b22c98147c2b74cf9ff5b836119e77b7b6",
+      "bytes": 4610
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.cubin",
+      "sha256": "ca57b41210db54b8992909c07df255a99d7ef9635f152613fd622f882b43b3d6",
+      "bytes": 19000,
+      "gzip_path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.cubin.gz",
+      "gzip_sha256": "ccd352c6d29ed574cc10f8bcc43fc5c5ba9313c9934cc80274113ccb6a9f6f55",
+      "sass_path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.sass",
+      "sass_sha256": "654ce6dd3c24ca3749b071882017dbef0e3c2a8d1d604cb7278457034e88b811",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.glir",
+      "sha256": "e0c94502c2e92b749d45a6da4f2aaf03268449db38dc765660dba39d8061cca0",
+      "bytes": 9690
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.llir",
+      "sha256": "1f98a2fb7d229d012714bcc33defb3b9adffe0c75acc32da730e52c1cfea11f7",
+      "bytes": 26224
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.ptx",
+      "sha256": "9a460c006000b6061b4532eaaeede3cf9477b26204d7a3bde74a62f115ad9edd",
+      "bytes": 10425
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.sass",
+      "sha256": "654ce6dd3c24ca3749b071882017dbef0e3c2a8d1d604cb7278457034e88b811",
+      "bytes": 53230
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.ttgir",
+      "sha256": "a4eb3625befdde5db817e1d3c7baa9375d7141f8f3f957ad7a73b3ea16719033",
+      "bytes": 6051
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.cubin",
+      "sha256": "b1ec24f095a03e0136d29a1eb9b7b3d6a72d48aa8269e0a1c66fa5abeb727602",
+      "bytes": 21416,
+      "gzip_path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.cubin.gz",
+      "gzip_sha256": "7dfbac14f991b4b3e2cd068a1deedba03ebe464b7050ad53cd3df16bde84fdeb",
+      "sass_path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.sass",
+      "sass_sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.glir",
+      "sha256": "69c9977a8aa1c2e704c0ae1aa8f82ed980e190509c4ffceb50560fb2f465f768",
+      "bytes": 9895
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.llir",
+      "sha256": "672b0f99c972106b7bb9725bc5acd08bcc1e99b8b5bb2df9d8f19957185136b4",
+      "bytes": 46356
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.ptx",
+      "sha256": "8fad8c80179abc25a7e91ffa9c24e3b3ae138749ca9c0d1f6a7f570dbf7a77d8",
+      "bytes": 12624
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.sass",
+      "sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.ttgir",
+      "sha256": "5df4f7a4026397ee93d384c4bfb0e476bb4884eaa8323746bc5add1f1d3a4fca",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.cubin",
+      "sha256": "4a97a69c4f8f8c9dbe75270cb2603dc116feb0479a0d359d40db3c17dd0bec27",
+      "bytes": 21760,
+      "gzip_path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.cubin.gz",
+      "gzip_sha256": "45c6e23a76da86c8c4f6094f1f133306c86821b3dc6323ba184938e651273763",
+      "sass_path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.sass",
+      "sass_sha256": "acfa01b7b84221cf2d224bc55f8017f6157b3cc8b169d2a164f919b8a305d848",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.glir",
+      "sha256": "88cba2a6b408194c164b7240fe0ad3cb997beae14bff1ffa0aac38c34df5a902",
+      "bytes": 11487
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.llir",
+      "sha256": "8f818f22530e4204086f16229e0983d7adefbcdecbee79859c4ad5f8551e78aa",
+      "bytes": 46738
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.ptx",
+      "sha256": "405bdcf1a24d9ebf01dcab45200e7462fe2a948284c1567f2fe665720670a096",
+      "bytes": 13106
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.sass",
+      "sha256": "acfa01b7b84221cf2d224bc55f8017f6157b3cc8b169d2a164f919b8a305d848",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.ttgir",
+      "sha256": "ef930187febb15ba7c8ec2296f08c3a9a5550b772436355ec57dee7a000c015c",
+      "bytes": 8283
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.cubin",
+      "sha256": "5a490ecfed9fb3058987bed5a9fb124b7505ef9ba1bbad5c611a79877ebd19c8",
+      "bytes": 21128,
+      "gzip_path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.cubin.gz",
+      "gzip_sha256": "fd5ab13e139fbbb487fe474e8e9d0c4a1503ff3e29a069ab33063da6e3709880",
+      "sass_path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.sass",
+      "sass_sha256": "5f94cf25473b379cc5d3a3e55c84831d77a91410ec0280d4a306b33d9219db58",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.glir",
+      "sha256": "8169c25feb02dbe5f7adf1981c6f82ef22fccd1b21dffce123e4ac2ab5f469ef",
+      "bytes": 9228
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.llir",
+      "sha256": "e550f188d668e287f8671a0a0d00c85392ee03ba5a1d9562edebb23e9ceb7207",
+      "bytes": 46031
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.ptx",
+      "sha256": "753153d5e5c9f78b328aeb26114e0aa49d57e20db840292aa5275224ba4fc2b6",
+      "bytes": 11941
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.sass",
+      "sha256": "5f94cf25473b379cc5d3a3e55c84831d77a91410ec0280d4a306b33d9219db58",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.ttgir",
+      "sha256": "87f86ee86af59d544aee3a02adfff772e1b538c5cc5e7f65749703b1a7ff6dc1",
+      "bytes": 6711
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.cubin",
+      "sha256": "242febc390f6d21cd9bfbf5e99efb234a7f71f5145826079bc00483879cb8d1b",
+      "bytes": 16384,
+      "gzip_path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.cubin.gz",
+      "gzip_sha256": "d38845389c9af82d98abdcb478aec0ee1da2e358a7065cee882b11babf0cf43f",
+      "sass_path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.sass",
+      "sass_sha256": "cbb000085faad22dd2da87f6bcc7d69397612ac534626a8e4347237faf3d75a7",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.glir",
+      "sha256": "e88ba2ffd8f6cabfc7e50b7aaee11ba3e4d4a7c37b95b5be36a4726679a955eb",
+      "bytes": 6022
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.llir",
+      "sha256": "b21c760673b33a34c1b82d992b7c41a06c8136f955dfc027b88dd47d0666e799",
+      "bytes": 16182
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.ptx",
+      "sha256": "3815fb34c1302b889d4557476334f12cd616d22e9fbcc2ee255e29260e81f2ba",
+      "bytes": 7740
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.sass",
+      "sha256": "cbb000085faad22dd2da87f6bcc7d69397612ac534626a8e4347237faf3d75a7",
+      "bytes": 42958
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.ttgir",
+      "sha256": "786f8bb4b4aafd660720c670195819b22c98147c2b74cf9ff5b836119e77b7b6",
+      "bytes": 4610
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.cubin",
+      "sha256": "4a97a69c4f8f8c9dbe75270cb2603dc116feb0479a0d359d40db3c17dd0bec27",
+      "bytes": 21760,
+      "gzip_path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.cubin.gz",
+      "gzip_sha256": "45c6e23a76da86c8c4f6094f1f133306c86821b3dc6323ba184938e651273763",
+      "sass_path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.sass",
+      "sass_sha256": "acfa01b7b84221cf2d224bc55f8017f6157b3cc8b169d2a164f919b8a305d848",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.glir",
+      "sha256": "88cba2a6b408194c164b7240fe0ad3cb997beae14bff1ffa0aac38c34df5a902",
+      "bytes": 11487
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.json",
+      "sha256": "c3bcccbad235009188c172b16386ac880565cb57599fb45afcb72b8045f1cab9",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.llir",
+      "sha256": "8f818f22530e4204086f16229e0983d7adefbcdecbee79859c4ad5f8551e78aa",
+      "bytes": 46738
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.ptx",
+      "sha256": "405bdcf1a24d9ebf01dcab45200e7462fe2a948284c1567f2fe665720670a096",
+      "bytes": 13106
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.source",
+      "sha256": "88cba2a6b408194c164b7240fe0ad3cb997beae14bff1ffa0aac38c34df5a902",
+      "bytes": 11487
+    },
+    {
+      "path": "compiler/cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3/kernel.ttgir",
+      "sha256": "ef930187febb15ba7c8ec2296f08c3a9a5550b772436355ec57dee7a000c015c",
+      "bytes": 8283
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.cubin",
+      "sha256": "b1ec24f095a03e0136d29a1eb9b7b3d6a72d48aa8269e0a1c66fa5abeb727602",
+      "bytes": 21416,
+      "gzip_path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.cubin.gz",
+      "gzip_sha256": "7dfbac14f991b4b3e2cd068a1deedba03ebe464b7050ad53cd3df16bde84fdeb",
+      "sass_path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.sass",
+      "sass_sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.glir",
+      "sha256": "bddfc8409fe937cd80c07aff306b0d23481a7977f22347daf3f59f412ffc3739",
+      "bytes": 9896
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.json",
+      "sha256": "f198d956d0ef5656d2a0fd79520496bd9c0019664ff1b63e5e6e7e3517819325",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.llir",
+      "sha256": "672b0f99c972106b7bb9725bc5acd08bcc1e99b8b5bb2df9d8f19957185136b4",
+      "bytes": 46356
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.ptx",
+      "sha256": "8fad8c80179abc25a7e91ffa9c24e3b3ae138749ca9c0d1f6a7f570dbf7a77d8",
+      "bytes": 12624
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.source",
+      "sha256": "bddfc8409fe937cd80c07aff306b0d23481a7977f22347daf3f59f412ffc3739",
+      "bytes": 9896
+    },
+    {
+      "path": "compiler/cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d/kernel.ttgir",
+      "sha256": "64f6d50c43a7390653fc0413b5ced559da13efdb58f97445ca8ee9c7310cf20f",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.cubin",
+      "sha256": "5a490ecfed9fb3058987bed5a9fb124b7505ef9ba1bbad5c611a79877ebd19c8",
+      "bytes": 21128,
+      "gzip_path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.cubin.gz",
+      "gzip_sha256": "fd5ab13e139fbbb487fe474e8e9d0c4a1503ff3e29a069ab33063da6e3709880",
+      "sass_path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.sass",
+      "sass_sha256": "5f94cf25473b379cc5d3a3e55c84831d77a91410ec0280d4a306b33d9219db58",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.glir",
+      "sha256": "8169c25feb02dbe5f7adf1981c6f82ef22fccd1b21dffce123e4ac2ab5f469ef",
+      "bytes": 9228
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.json",
+      "sha256": "83971918c5080ba4eafb66aa4b23a18d0d6cd0a063f9bad23368cd4517bf03e7",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.llir",
+      "sha256": "e550f188d668e287f8671a0a0d00c85392ee03ba5a1d9562edebb23e9ceb7207",
+      "bytes": 46031
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.ptx",
+      "sha256": "753153d5e5c9f78b328aeb26114e0aa49d57e20db840292aa5275224ba4fc2b6",
+      "bytes": 11941
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.source",
+      "sha256": "8169c25feb02dbe5f7adf1981c6f82ef22fccd1b21dffce123e4ac2ab5f469ef",
+      "bytes": 9228
+    },
+    {
+      "path": "compiler/dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52/kernel.ttgir",
+      "sha256": "87f86ee86af59d544aee3a02adfff772e1b538c5cc5e7f65749703b1a7ff6dc1",
+      "bytes": 6711
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.cubin",
+      "sha256": "ca57b41210db54b8992909c07df255a99d7ef9635f152613fd622f882b43b3d6",
+      "bytes": 19000,
+      "gzip_path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.cubin.gz",
+      "gzip_sha256": "ccd352c6d29ed574cc10f8bcc43fc5c5ba9313c9934cc80274113ccb6a9f6f55",
+      "sass_path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.sass",
+      "sass_sha256": "654ce6dd3c24ca3749b071882017dbef0e3c2a8d1d604cb7278457034e88b811",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.glir",
+      "sha256": "e0c94502c2e92b749d45a6da4f2aaf03268449db38dc765660dba39d8061cca0",
+      "bytes": 9690
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.json",
+      "sha256": "ba94199160670df65bd43d84b9512bc821deec7d4254bebd15bf419955b15fbb",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.llir",
+      "sha256": "1f98a2fb7d229d012714bcc33defb3b9adffe0c75acc32da730e52c1cfea11f7",
+      "bytes": 26224
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.ptx",
+      "sha256": "9a460c006000b6061b4532eaaeede3cf9477b26204d7a3bde74a62f115ad9edd",
+      "bytes": 10425
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.source",
+      "sha256": "e0c94502c2e92b749d45a6da4f2aaf03268449db38dc765660dba39d8061cca0",
+      "bytes": 9690
+    },
+    {
+      "path": "compiler/e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c/kernel.ttgir",
+      "sha256": "a4eb3625befdde5db817e1d3c7baa9375d7141f8f3f957ad7a73b3ea16719033",
+      "bytes": 6051
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.cubin",
+      "sha256": "b1ec24f095a03e0136d29a1eb9b7b3d6a72d48aa8269e0a1c66fa5abeb727602",
+      "bytes": 21416,
+      "gzip_path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.cubin.gz",
+      "gzip_sha256": "7dfbac14f991b4b3e2cd068a1deedba03ebe464b7050ad53cd3df16bde84fdeb",
+      "sass_path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.sass",
+      "sass_sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.glir",
+      "sha256": "69c9977a8aa1c2e704c0ae1aa8f82ed980e190509c4ffceb50560fb2f465f768",
+      "bytes": 9895
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.json",
+      "sha256": "42f0c4d8f548a087810c6c17c5faa802c9fb31fbe845a4b98eb73e6e09ad4a0d",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.llir",
+      "sha256": "672b0f99c972106b7bb9725bc5acd08bcc1e99b8b5bb2df9d8f19957185136b4",
+      "bytes": 46356
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.ptx",
+      "sha256": "8fad8c80179abc25a7e91ffa9c24e3b3ae138749ca9c0d1f6a7f570dbf7a77d8",
+      "bytes": 12624
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.source",
+      "sha256": "69c9977a8aa1c2e704c0ae1aa8f82ed980e190509c4ffceb50560fb2f465f768",
+      "bytes": 9895
+    },
+    {
+      "path": "compiler/fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40/kernel.ttgir",
+      "sha256": "5df4f7a4026397ee93d384c4bfb0e476bb4884eaa8323746bc5add1f1d3a4fca",
+      "bytes": 7343
+    }
+  ],
+  "matches_reported_reproduction_pattern": true,
+  "finished_utc": "2026-10-23T13:10:22.416318+00:00",
+  "pass_ir": {
+    "path": "pass-ir.mlir.gz",
+    "sha256": "f5ffe0bdc8f5d76e8efe5a0c127e537ecc626c2b22a29674e202b970d2cd348d",
+    "bytes": 641780,
+    "uncompressed_sha256": "7226bfc810e562f2a32ac72d0b81fdc40c2f3a93ebdcd8f4746f67baaf07be33",
+    "uncompressed_bytes": 12182206,
+    "capture_boundary": "Compiler child process exited; C++ dump stream flushed before compression."
+  }
+}

@@ -8,6 +8,8 @@
 
 2026-10-23 新增[Modal 现代 GPU 与 agent 实验](experiments/2026-10-23-modern-gpu/report.md)。B200/H100 访问已解决；已执行真正的 tensor TMA 和 B200 tcgen05/TMEM 数值探针，不再把它们列为只能等待外部硬件的计划。受控错版本与修复不等于自然 AI 故障。
 
+同日继续补充[公开故障修复、实际 AI 候选隐藏测试与采集／分析成本](experiments/2026-10-23-real-evidence/report.md)。该补充将自然故障、AI 生成代码、有限技术 oracle 和人的收益分别评价；不将其合并为已完成的人类调试实验。
+
 根据用户提出的 agent 替代评价路线，当前近期主张收束为 **“逻辑版本、完成义务与可回查执行证据，支持 GPU 候选实现的核验”**。技术路线工作标题可用 *Evidence-Grounded Validation of GPU Kernels through Versions and Completion Obligations*。原先关于人类理解、信任校准与迁移的假设仍保留，但只有获得真实的人类结果后才作为已验证贡献。投稿与实验的相应调整见[agent 评价边界](agent-evaluation-scope.md)。下文人类实验数量均为条件性规划；agent 调用数量不能替换其中的参与者人数。
 
 ## 1. 研究定位与投稿选择

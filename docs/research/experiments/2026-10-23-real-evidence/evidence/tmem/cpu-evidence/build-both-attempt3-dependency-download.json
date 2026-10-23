@@ -1,0 +1,57 @@
+{
+  "schema": "triton-exact-parent-fix-build-v1",
+  "commits": {
+    "before": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+    "after": "0002b46dadfc6f8fbe7464c285651311c709fdc6"
+  },
+  "started_utc": "2026-10-23T12:47:58.241403+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "jobs": 16,
+  "builds": [
+    {
+      "variant": "before",
+      "commit": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "source_url": "https://github.com/triton-lang/triton/archive/08a3cd4364d87bf2c281067f7a40e17808f22e7b.tar.gz",
+      "source_archive_sha256": "9f1ecc747273db6db642da54b597c9de51d3694c03dec9367206abf7423603b6",
+      "source_directory": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "llvm_info": {
+        "llvm_hash": "b010a18d2b648cab83c83967ff26b8fde11acdc6",
+        "build_number": 1,
+        "sha256sum": {
+          "almalinux-arm64": "726267d5bfd397602fa54abc0e62f7991545fed87475f2be3a392e7d318c5eb5",
+          "almalinux-x64": "be672d053f209d94cf514fb48a0b964da1d99d96d2a2e76b829c40108f4d5ca7",
+          "macos-arm64": "5ac8b4b41c5581ed8b25156ec1da37cbf19f50a78b3e4ebf664087b4718a42b1",
+          "macos-x64": "0e88f3f36c9c008f914a8cc8b4ef13ea914141e5232ca4a82375d04207a65a2a",
+          "ubuntu-arm64": "1c4585fd35622ee64a65d624734059f2d53ecafcf4bc64ac526b39d789c1469d",
+          "ubuntu-x64": "a8f2966fc8caff3c8c7b8637da341231c432ba0005ce9d960b097c5e00e78428",
+          "windows-x64": "c967f00f37da49fe60a7f6ddbad8835ba77d66b23e85fd847800944749bb5482"
+        }
+      },
+      "allocator_source_sha256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+      "command": [
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/python",
+        "-m",
+        "build",
+        "--wheel",
+        "--no-isolation",
+        "--outdir",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/before"
+      ],
+      "explicit_build_environment": {
+        "MAX_JOBS": "16",
+        "CMAKE_BUILD_PARALLEL_LEVEL": "16",
+        "TRITON_HOME": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/dependencies",
+        "TRITON_BUILD_PROTON": "OFF",
+        "TRITON_WHEEL_VERSION_SUFFIX": "+git08a3cd43",
+        "TRITON_APPEND_CMAKE_ARGS": "-DTRITON_CODEGEN_BACKENDS=nvidia -DTRITON_BUILD_UT=OFF -DCMAKE_C_COMPILER=/usr/bin/clang-18 -DCMAKE_CXX_COMPILER=/usr/bin/clang++-18 -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17 -DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17 -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17",
+        "PATH": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin:/home/liuwei/.codex/packages/standalone/releases/0.161.0-x86_64-unknown-linux-musl/codex-path:/home/liuwei/.local/bin:/home/liuwei/.codex/tmp/arg0/codex-arg0jlEejx:/home/liuwei/.codex/packages/standalone/releases/0.161.0-x86_64-unknown-linux-musl/codex-path:/home/liuwei/.local/bin:/home/liuwei/.local/bin:/home/liuwei/.npm-global/bin:/home/liuwei/.opencode/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:/opt/systemc/v2.3.4_dbg_cpp20:/opt/verilator/v5.034/bin:/opt/miniconda3/bin:/opt/miniconda3/condabin:/home/liuwei/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+      },
+      "status": "interrupted_during_dependency_download",
+      "reason": "Restore default both NVIDIA and AMD backends: installed Python entry points import both. No compiler build completed; downloads resume."
+    }
+  ],
+  "script_sha256": "b80c951fda6b4d8fbd689ac2d50d759c594e51f6dc7d75fab8eddcf6b2d70673",
+  "source_policy": "Unmodified GitHub commit archives; no source patch applied.",
+  "scope": "NVIDIA compiler backend; Proton and C++ unit-test binaries disabled identically in both builds."
+}

@@ -1,14 +1,18 @@
-# 真实 GPU 故障候选：下一阶段复现清单
+# 真实 GPU 故障：复现状态与候选清单
 
-核查日期：**2026-10-23**。本页仅进行了上游公开 issue、PR、commit 和官方文档的只读核查，**没有安装候选版本、执行复现或确认本项目能诊断这些故障**。以下数字均是上游报告，不能计入本项目实测样本、召回率或已修复案例。它们来自既有编译器／库故障，区别于本项目自行构造的 wrong-slot / wrong-version 对照；也没有证据把它们归因于 AI 编写代码。
+核查与补充实验日期：**2026-10-23**。本页起初是上游只读核查清单，现将已执行状态单列。实际结果见[公开故障、AI 隐藏测试与成本报告](experiments/2026-10-23-real-evidence/report.md)；正文标为“上游报告”的数字仍不能计入本项目实测。它们来自既有编译器／库故障，区别于自行构造的 wrong-slot / wrong-version 对照；没有证据把它们归因于 AI 编写代码，也不能由复现成功推导本项目能自动诊断这些故障。
 
-优先在已有 Modal B200 上做候选 1、2，在 H100 上做候选 3；候选 4 的原报告硬件是 B300，B200 迁移需单独确认。所有 PR 的合并状态、提交 SHA 和父提交均已通过 GitHub REST API 核验，issue 的关闭状态也已实时核验。
+**已执行 CUTLASS #2547 的迁移缩小复现：** H100/CUDA 13.1/M=N=128 下，4.1 的 β=0 非零 K 两个对照通过，10 个含零 K 配置超时；只回移三处上游 empty-K guards 后 12/12 通过。4.2 的 β=0/1 共 24/24 通过，另四次 memcheck 无错误。旧版 β=1 连非零 K 对照也失败，单列混杂因素；本次没有观测到原报告 descriptor error 文本。原 issue 写 example 67，实际 grouped 实现是 example **68**。
+
+**已执行 Triton #11634/#11636 精确父／修复提交对照：** 从源码构建两份 compiler wheel，在同一 B200 运行原样 16-case harness。父提交 7/16 数值失败、修复 16/16 通过；observer 前后逐例一致，完整输出各 172,032 个，父提交 28,672 个 selected 输出错误、修复为零。CPU allocation lit 也呈现 before FileCheck 失败、after 通过。首次 Python 开发头文件缺失的 collection 失败已单列。这里没有执行最初 issue 所列更早的 `1665fa9a`，不能把父提交实验称为那一版本的实测。
+
+候选 1、3 已完成上述有界实验；候选 2、4 尚未在本项目运行。候选 4 原报告硬件是 B300，B200 迁移需单独确认。PR 合并状态、提交 SHA 和父提交均已通过 GitHub REST API 核验，issue 的关闭状态也已核验。
 
 | 优先级 | 候选及当前状态 | 可固定的前后版本 | 原报告／建议设备 | 复现入口 |
 |---|---|---|---|---|
-| P0 | Triton TMEM descriptor 选择导致提前复用；[#11634](https://github.com/triton-lang/triton/issues/11634) closed；[#11636](https://github.com/triton-lang/triton/pull/11636) merged，2026-09-21 | 报告失败版本 `1665fa9a96713f0157e5436f247369d83d0a6632`；修复 `0002b46dadfc6f8fbe7464c285651311c709fdc6`，父提交 `08a3cd4364d87bf2c281067f7a40e17808f22e7b` | 原报告 B200 / SM100；直接适合下一轮 B200 | 固定的 Gluon runtime test，16 个参数组合 |
+| P0 / 已复现 | Triton TMEM descriptor 选择导致提前复用；[#11634](https://github.com/triton-lang/triton/issues/11634) closed；[#11636](https://github.com/triton-lang/triton/pull/11636) merged，2026-09-21 | 上游报告失败版 `1665fa9a96713f0157e5436f247369d83d0a6632` 未跑；本项目实测父提交 `08a3cd4364d87bf2c281067f7a40e17808f22e7b` → 修复 `0002b46dadfc6f8fbe7464c285651311c709fdc6` | B200 / SM100，exact wheel/native compiler hash 已绑定 | 固定 Gluon 16-case，7 fail → 0；原样/observer 逐例一致 |
 | P0 | 混合 TMA／普通 load 的自动 warp specialization 等待遗漏；[#9111](https://github.com/triton-lang/triton/pull/9111) merged，2026-01-07 | 父提交 `eb647a8205ff230d0b2ca76ac7104d36ae9da441` → 修复 `7a0f43c3a45ca4a60bbb06bbc94807ee862748b0` | Blackwell；混合 load 测试在 Hopper 上明确 skip | 上游 warp specialization 数值测试和 ConSan 测试 |
-| P1 | Hopper grouped GEMM 的 K=0 问题触发 TMA descriptor 错误／挂起；[#2547](https://github.com/NVIDIA/cutlass/issues/2547) closed，2025-09-16 | `v4.1.0`=`e51efbfe18fe4f4cbb66ab814c55bf4aa0185491` → `v4.2.0`=`59b61c606fe7aa4d33e60d3e6352cbfde98361c3`；**这是版本边界，不是已定位的单一修复提交** | 原报告 H800、CUDA 12.4、driver 535.183.06；H100 需确认迁移 | CUTLASS example 67，加报告所列含零 K 的 grouped problems |
+| P1 / 已复现 | Hopper grouped GEMM K=0 超时；[#2547](https://github.com/NVIDIA/cutlass/issues/2547) closed，2025-09-16 | `v4.1.0`=`e51efbfe18fe4f4cbb66ab814c55bf4aa0185491` → `v4.2.0`=`59b61c606fe7aa4d33e60d3e6352cbfde98361c3`；另有只改一个 header 的三处 guards 回移实验 | 原 H800/CUDA 12.4；本项目 H100/CUDA 13.1/M=N128，迁移边界已记录 | 实际 example 68；保留原32项 K-splits，加首／中／尾零、全零和非零对照 |
 | P2 | 循环内两次 MMA 共用 accumulator 被错误流水化；[#10821](https://github.com/triton-lang/triton/issues/10821) closed；[#10858](https://github.com/triton-lang/triton/pull/10858) merged，2026-07-17 | 父提交 `87a4ab9259e1fa05b99ccf81025c82bca4bed432` → 修复 `9e089e37bc38e2c2a71354e3b218987fbf7cccbd` | 原报告 B300 / SM103，明确未测 B200；H100 对照未出现问题 | issue 完整 Python reproducer；另有固定提交的 compiler regression |
 
 ## 1. TMEM 生命周期穿过运行时 descriptor 选择
@@ -17,7 +21,7 @@
 
 可复用的完整 runtime harness 已核实存在于作者固定提交 [test_core.py@1f33b120](https://github.com/1sgtpepper/triton/blob/1f33b120daccd127b9f464623fb960f3d5ece536/python/test/gluon/test_core.py)，入口 `test_tmem_selected_descriptor_lifetime`。它覆盖 choice=0/1、直接／链式选择、32／64／0 临时列数、提前分配等 16 个组合；issue 报告失败版本中 7/16 失败。merged PR 本身加入的是四个 allocation-pass **lit 编译器测试**，不能将这些测试说成已经合入的 GPU runtime 回归。[合入的 lit 文件](https://github.com/triton-lang/triton/blob/0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir)。
 
-下一轮先原样跑上述 harness：固定失败版本、修复父提交、修复提交各自隔离安装；使用同一份 harness，保存其 SHA。原报告环境为 Python 3.12.1、PyTorch 2.12.0+cu130、B200 driver 580.95.05。实际 Modal driver 不同必须记录。观察 allocation column ranges、selected-source identity、最后一次 load 和 temporary overwrite；以完整输出的精确 3／5／7 oracle 判定。父提交是否也出现同样失败仍须实测。
+本轮已按上述 harness 原样执行精确父／修复版本；独立 3／5／7 oracle 和完整输出确认父提交也出现七个失败，修复后全部恢复。原报告 Python 3.12.1、driver 580.95.05；本项目 Python 3.12.3、driver 610.57.04，PyTorch 同为 2.12.0+cu130。源文件、wheel/native compiler、生成 IR/PTX/SASS/cubin 与 runtime 结果都保留绑定；静态 allocation 证据与动态完整输出分别陈述。
 
 研究价值：它与“物理地址仍合法，却已对应另一个逻辑值”的主题最直接吻合。这里是编译器 liveness／alias 错误，不能预先当作缺 barrier，也不能事先保证本项目的 source-bound checker 可以重建真实编译器资源映射。
 
@@ -33,9 +37,9 @@
 
 原报告 CUTLASS 4.1 在 example `67_hopper_fp8_warp_specialized_gemm_with_blockwise_scaling` 加入 K=0 的 group 后输出 TMA descriptor 初始化错误并挂起；报告含 M=N=4096、总 K=7168 和完整 32 项 K-splits。维护者随后确认在 4.2 tag 修复并关闭 issue。[原始复现说明](https://github.com/NVIDIA/cutlass/issues/2547)、[维护者确认](https://github.com/NVIDIA/cutlass/issues/2547#issuecomment-3300352323)。
 
-版本定位已核验为 [v4.1.0 commit](https://github.com/NVIDIA/cutlass/commit/e51efbfe18fe4f4cbb66ab814c55bf4aa0185491) 和 [v4.2.0 commit](https://github.com/NVIDIA/cutlass/commit/59b61c606fe7aa4d33e60d3e6352cbfde98361c3)。未找到并验证唯一负责修复的 commit，因此先作为 **release-pair candidate**；要进入因果消融数据集，后续还需 bisect 或最小 patch 归因。
+版本定位为 [v4.1.0 commit](https://github.com/NVIDIA/cutlass/commit/e51efbfe18fe4f4cbb66ab814c55bf4aa0185491) 和 [v4.2.0 commit](https://github.com/NVIDIA/cutlass/commit/59b61c606fe7aa4d33e60d3e6352cbfde98361c3)。没有将整次 release 归于一个单独修复 commit；本轮额外通过只回移三个 guards 的局部干预支持零 K 超时的修复归因。
 
-先按原报告 K-splits 在 H100 上复现，再最小化为少数含零 K 的 group；每个进程设置超时，挂起和 descriptor API failure 分开计数。K=0 的 GEMM 数值 oracle 应遵循 API 的 `D=beta*C` 及 epilogue 语义；不要直接照搬 issue 中泛化的“no-op”建议。既有 CUDA 13.1 环境不同于原始 12.4，因此记录 toolkit 迁移是否改变行为。
+本项目现已保留原报告 K-splits 并缩小 M/N 在 H100 运行；各进程设置超时。4.2 β=1 的 655,360 个零 K 常规输出包含 491,312 个非零值，独立 `D=beta*C` oracle 全通过，说明成功并非仅仅 no-op。三处 guards 组合回移消除了旧版 β=0 超时，但没有逐 guard 消融或动态 PC 采样；不能声称唯一必要修复或已捕获相同 descriptor 故障。全部数据、额外复测及原始环境差异见补充报告。
 
 ## 4. 循环内共享 accumulator 的 tcgen05 流水化错误
 

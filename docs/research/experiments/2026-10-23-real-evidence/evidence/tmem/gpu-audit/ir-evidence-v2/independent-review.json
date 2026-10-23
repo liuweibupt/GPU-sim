@@ -1,0 +1,43 @@
+{
+  "schema": "natural-tmem-independent-static-ir-review-v1",
+  "reviewer": "/root/raw_trace_audit/tmem_ir_review",
+  "mode": "read-only independent review; no file edits, commits, or GPU execution by reviewer",
+  "verdict": "No blocking or material issues found for the stated bounded claim.",
+  "inputs": [
+    {
+      "path": "/home/liuwei/GPU-sim/tools/research/natural-bugs/tmem_analyze_ir.py",
+      "bytes": 12751,
+      "sha256": "ea9b45611126f73baebe93d16417850fb9d1d1cc13244ff8d3144c723103f137"
+    },
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/ir-evidence-v2/summary.json",
+      "bytes": 94467,
+      "sha256": "b32818dbfc6d2a3cc345b5fab68683b1259287cfa9ad46d19005aa407bd8b464"
+    },
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/modal/20261023-tmem-pair-v2/artifacts/before/pass-ir.mlir.gz",
+      "bytes": 640394,
+      "sha256": "2b31345a63639d7a7d88128f28c39723b8b0545d2350771446d4d414855b1cbf"
+    },
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/modal/20261023-tmem-pair-v2/artifacts/after/pass-ir.mlir.gz",
+      "bytes": 641780,
+      "sha256": "f5ffe0bdc8f5d76e8efe5a0c127e537ecc626c2b22a29674e202b970d2cd348d"
+    }
+  ],
+  "independent_checks": [
+    "Reconstructed all 490 pass chunks from the two gzip dumps. All 14 kernel GLIR anchors matched uniquely and exactly; TTGIR also matched in the corresponding invocation rather than assigning kernels by test order.",
+    "All 28 extracted MLIR snippets matched their declared raw byte ranges after exterior-whitespace stripping and final-newline addition; every declared snippet SHA256 matched.",
+    "All allocations, stores, and loads in the 14 post-allocation snippets were represented completely and consistently in the persisted summary.",
+    "All 14 tmem_size metadata values matched generated kernel metadata. Only select64-late, select32-late and chain64-late changed total TMEM capacity from 64 to 128 columns.",
+    "Fixed temporary intervals were [64,128), [64,96), and [64,128), respectively. The 128-column total capacity does not imply that the 32-column temporary itself uses 64 columns.",
+    "Code and summary correctly limit the evidence to static compiler IR and do not claim sampled hardware reads or writes."
+  ],
+  "limits": [
+    "selected_source_value is matched using the distinctive 3/5 constants and independently verified reference values of this regression; selector expressions are not symbolically executed and no selected descriptor was dynamically sampled.",
+    "static_runtime_consistency_cases=16 includes passing controls. This is one upstream defect, not 16 distinct defects or a general detection-accuracy benchmark.",
+    "Pass attribution uses the contiguous serial dump region between two exactly matched GLIR anchors. It does not assume test-case compilation order, but it does not support interleaved concurrent compilation logs.",
+    "The hazard analyzer checks loads through arith.select. Direct-load controls are consistent with manual snippet inspection and numeric results, but the analyzer does not generally prove their safety.",
+    "This review independently checks compiler evidence; complete GPU output validity is separately recorded by gpu-independent-audit-v2.json and pair-validation-v2.json."
+  ]
+}

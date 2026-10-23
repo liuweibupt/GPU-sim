@@ -1,0 +1,166 @@
+{
+  "image": {
+    "apt_packages": [
+      "python3.12",
+      "python3.12-venv",
+      "python3.12-dev"
+    ],
+    "commands": [
+      "python3.12 -m venv /opt/repro",
+      "/opt/repro/bin/python -m pip install torch==2.12.0+cu130 --index-url https://download.pytorch.org/whl/cu130",
+      "/opt/repro/bin/python -m pip install pytest==9.1.1 numpy==2.5.4"
+    ],
+    "files": [
+      {
+        "local": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+        "remote": "/opt/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+      },
+      {
+        "local": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl",
+        "remote": "/opt/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl"
+      }
+    ]
+  },
+  "cpu": 8,
+  "memory_mb": 16384,
+  "sources": [
+    "tools/research/natural-bugs/tmem_run_repro.py",
+    "tools/research/natural-bugs/tmem_upstream_manifest.json",
+    "tools/research/natural-bugs/tmem_upstream_regression.py",
+    "out/research/natural-bugs/tmem/tmem_build_manifest.json"
+  ],
+  "commands": [
+    {
+      "name": "install_before",
+      "argv": [
+        "/opt/repro/bin/python",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-deps",
+        "--force-reinstall",
+        "--no-compile",
+        "/opt/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+      ],
+      "timeout": 90
+    },
+    {
+      "name": "plain_before",
+      "argv": [
+        "env",
+        "TRITON_CACHE_DIR=/tmp/gpu-semantic-evidence/plain-before-cache",
+        "/opt/repro/bin/python",
+        "-m",
+        "pytest",
+        "tmem_upstream_regression.py",
+        "-vv",
+        "--tb=long",
+        "--junitxml=plain-before.xml",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "timeout": 130,
+      "allowed_exit_codes": [
+        0,
+        1
+      ],
+      "continue_on_failure": true
+    },
+    {
+      "name": "observed_before",
+      "argv": [
+        "/opt/repro/bin/python",
+        "tmem_run_repro.py",
+        "--variant",
+        "before",
+        "--output",
+        "before",
+        "--build-manifest",
+        "tmem_build_manifest.json",
+        "--wheel",
+        "/opt/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+        "--dump-pass-ir"
+      ],
+      "timeout": 130,
+      "allowed_exit_codes": [
+        0,
+        3
+      ],
+      "continue_on_failure": true
+    },
+    {
+      "name": "install_after",
+      "argv": [
+        "/opt/repro/bin/python",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-deps",
+        "--force-reinstall",
+        "--no-compile",
+        "/opt/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl"
+      ],
+      "timeout": 90
+    },
+    {
+      "name": "plain_after",
+      "argv": [
+        "env",
+        "TRITON_CACHE_DIR=/tmp/gpu-semantic-evidence/plain-after-cache",
+        "/opt/repro/bin/python",
+        "-m",
+        "pytest",
+        "tmem_upstream_regression.py",
+        "-vv",
+        "--tb=long",
+        "--junitxml=plain-after.xml",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "timeout": 130,
+      "allowed_exit_codes": [
+        0,
+        1
+      ],
+      "continue_on_failure": true
+    },
+    {
+      "name": "observed_after",
+      "argv": [
+        "/opt/repro/bin/python",
+        "tmem_run_repro.py",
+        "--variant",
+        "after",
+        "--output",
+        "after",
+        "--build-manifest",
+        "tmem_build_manifest.json",
+        "--wheel",
+        "/opt/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl",
+        "--dump-pass-ir"
+      ],
+      "timeout": 130,
+      "allowed_exit_codes": [
+        0,
+        3
+      ],
+      "continue_on_failure": true
+    }
+  ],
+  "artifact_patterns": [
+    "plain-before.xml",
+    "before/summary.json",
+    "before/case-*.json.gz",
+    "before/pytest.xml",
+    "before/compiler/**/*",
+    "before/pass-ir.mlir.gz",
+    "plain-after.xml",
+    "after/summary.json",
+    "after/case-*.json.gz",
+    "after/pytest.xml",
+    "after/compiler/**/*",
+    "after/pass-ir.mlir.gz"
+  ]
+}

@@ -41,3 +41,9 @@ python3 -B tools/research/check-tmem-guardrails.py \
 ```
 
 The first supplementary build used `-arch=sm_100a` and emitted an unsupported-option diagnostic for its additional generic SM100 target. That attempt is preserved separately; the strictly architecture-specific rerun is the reported guardrail result. No invalid TMEM accesses were injected, so this supplement does not estimate guardrail sensitivity.
+
+## Exact compiler/library reproductions
+
+The runner also supports an explicit job `image` object: `apt_packages`, CPU image-build `commands`, and individually named `files` with `local`/`remote` paths. This permits CPU-built Triton wheels and Python dependencies without compiling a compiler on a billed GPU. `--prepare-image-only` builds/registers the image but never invokes the GPU function. The image ID and dependency file hashes remain in the manifest. Optional `cpu` (1–16) and `memory_mb` (2048–32768) resource limits are recorded; the default remains 2 CPUs/2048 MB.
+
+Explicit ELF inputs are locally hashed, verified after upload and recorded as `.sha256.json` sidecars instead of copying executable bytes into the result archive. Keep the corresponding source and build manifests. Mounted wheel bytes are checked by the exact-compiler reproduction harness against the build manifest and installed native compiler. A source commit alone is insufficient to identify the compiler actually used. Natural reproductions, release-pair comparisons, controlled probes and sanitizer runs have separate manifests and denominators.

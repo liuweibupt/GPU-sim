@@ -1,0 +1,64 @@
+{
+  "issue": "https://github.com/NVIDIA/cutlass/issues/2547",
+  "scope": "release pair; example 68, reduced M/N, host-only observation",
+  "records": [
+    {
+      "variant": "before",
+      "commit": "e51efbfe18fe4f4cbb66ab814c55bf4aa0185491",
+      "argv": [
+        "/usr/local/cuda-13.1/bin/nvcc",
+        "-std=c++17",
+        "-O2",
+        "-lineinfo",
+        "-gencode",
+        "arch=compute_90a,code=sm_90a",
+        "--expt-relaxed-constexpr",
+        "--expt-extended-lambda",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/cutlass_repro.cu",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/tree/include",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/tree/tools/util/include",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/tree/examples/common",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/tree/examples/68_hopper_fp8_warp_specialized_grouped_gemm_with_blockwise_scaling",
+        "-lcuda",
+        "-o",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/cutlass_before"
+      ],
+      "exit_code": 0,
+      "compile_wall_seconds": 34.49924357398413,
+      "upstream_sha256": "6f7f2f7f2b47696c964c8aef2bc4ff98131f21cb64cc3a21e066cdb5d90333f0",
+      "observed_source_sha256": "a8f54287b2a498646a2798bca073e13534ee5b57147acdc7f60928bbb20e0100",
+      "tree_archive_sha256": "8c661e5b6a4e728a59bae6861db8f63ceeace719ef898985d606ab6b34182cff",
+      "binary_sha256": "53706081687daf5dbaad76e9ee03cb6cfebd20ee0add0dc637a7e260da625c2a",
+      "binary_bytes": 2953544
+    },
+    {
+      "variant": "after",
+      "commit": "59b61c606fe7aa4d33e60d3e6352cbfde98361c3",
+      "argv": [
+        "/usr/local/cuda-13.1/bin/nvcc",
+        "-std=c++17",
+        "-O2",
+        "-lineinfo",
+        "-gencode",
+        "arch=compute_90a,code=sm_90a",
+        "--expt-relaxed-constexpr",
+        "--expt-extended-lambda",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/after/cutlass_repro.cu",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/after/tree/include",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/after/tree/tools/util/include",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/after/tree/examples/common",
+        "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/after/tree/examples/68_hopper_fp8_warp_specialized_grouped_gemm_with_blockwise_scaling",
+        "-lcuda",
+        "-o",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/after/cutlass_after"
+      ],
+      "exit_code": 0,
+      "compile_wall_seconds": 34.47763127298094,
+      "upstream_sha256": "3a2341bd092c7b385519368ebbc9e87297267dd033fa6a316a9ac3c4da6a8cff",
+      "observed_source_sha256": "38cac2b7886e5845f5af27904132c4b9e037f28677fd88ab5aa4c0a196c94f9f",
+      "tree_archive_sha256": "e7f710c8843e0a3b28d7be5dd36891e6e48938fe288511e82e97055e6748f134",
+      "binary_sha256": "4b802cb46e3e171ae99b4d2f58cdd1965921743de05ac8f0a156e334ac420839",
+      "binary_bytes": 2941120
+    }
+  ]
+}

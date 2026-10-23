@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.181" timestamp="2026-10-23T13:06:30.502433+00:00" hostname="modal"><testcase classname="" name="tmem_upstream_regression" time="0.000"><error message="collection failure"># Extracted verbatim test function and decorators from the upstream MIT-licensed
+    # Triton reproduction. See tmem_upstream_manifest.json for source/hash/line range.
+    import torch
+    import pytest
+&gt;   from triton._internal_testing import is_blackwell
+
+tmem_upstream_regression.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    import importlib
+    import multiprocessing
+    import os
+    import re
+    import tempfile
+    import numpy as np
+    import sys
+    import torch
+    import triton
+    import triton.language as tl
+    from triton import knobs
+    from typing import Optional, Set, Union
+    from dataclasses import dataclass
+    from contextlib import contextmanager
+    import pytest
+    
+    from triton._compile_warmup_state import is_compile_warmup
+    
+    from numpy.random import RandomState
+    from triton.backends import backends
+    from triton.runtime.jit import TensorWrapper, reinterpret, type_canonicalisation_dict
+    
+    int_dtypes = ['int8', 'int16', 'int32', 'int64']
+    uint_dtypes = ['uint8', 'uint16', 'uint32', 'uint64']
+    integral_dtypes = int_dtypes + uint_dtypes
+    float_dtypes = ['float16', 'float32', 'float64']
+    float_dtypes_with_bfloat16 = float_dtypes + ['bfloat16']
+    dtypes = integral_dtypes + float_dtypes
+    dtypes_with_bfloat16 = dtypes + ['bfloat16']
+    torch_float8_dtypes = ['float8_e4m3fn', 'float8_e5m2']
+    torch_dtypes = ['bool'] + int_dtypes + ['uint8'] + float_dtypes + ['bfloat16']
+    tma_dtypes = sorted(set(dtypes_with_bfloat16) - {"int64", "uint64", "float64"})
+    _PROCESS_POOL = None
+    
+    
+    def is_interpreter():
+        return os.environ.get('TRITON_INTERPRET', '0') == '1'
+    
+    
+    def random_int(low, high, *, warmup_value=None, **kwargs):
+        if is_compile_warmup():
+            return low if warmup_value is None else warmup_value
+        return int(torch.randint(low, high, size=(), **kwargs).item())
+    
+    
+    def random_float(*, warmup_value=0.5, **kwargs):
+        if is_compile_warmup():
+            return warmup_value
+        return float(torch.rand((), **kwargs).item())
+    
+    
+    def get_current_target():
+        if is_interpreter():
+            return None
+        if not any(backend.driver.is_active() for backend in backends.values()):
+            return None
+        return triton.runtime.driver.active.get_current_target()
+    
+    
+    def is_cuda():
+        target = get_current_target()
+        return False if target is None else target.backend == "cuda"
+    
+    
+    def is_ampere_or_newer():
+        return is_cuda() and torch.cuda.get_device_capability()[0] &gt;= 8
+    
+    
+    def is_blackwell():
+        return is_cuda() and torch.cuda.get_device_capability()[0] in [10, 11]
+    
+    
+    def is_blackwell_ultra():
+        return is_cuda() and torch.cuda.get_device_capability()[0:2] == (10, 3)
+    
+    
+    def is_rubin():
+        return is_cuda() and torch.cuda.get_device_capability()[0:2] == (10, 7)
+    
+    
+    def is_hopper_or_newer():
+        return is_cuda() and torch.cuda.get_device_capability()[0] &gt;= 9
+    
+    
+    def is_hopper():
+        return is_cuda() and torch.cuda.get_device_capability()[0] == 9
+    
+    
+    def is_sm12x():
+        return is_cuda() and torch.cuda.get_device_capability()[0] == 12
+    
+    
+    def is_hip():
+        target = get_current_target()
+        return False if target is None else target.backend == "hip"
+    
+    
+    def is_hip_cdna2():
+        target = get_current_target()
+        return target is not None and target.backend == 'hip' and target.arch == 'gfx90a'
+    
+    
+    def is_hip_cdna3():
+        target = get_current_target()
+        return target is not None and target.backend == 'hip' and target.arch == 'gfx942'
+    
+    
+    def is_hip_cdna4():
+        target = get_current_target()
+        return target is not None and target.backend == 'hip' and target.arch == 'gfx950'
+    
+    
+    def is_hip_rdna3():
+        target = get_current_target()
+        return target is not None and target.backend == 'hip' and ('gfx110' in target.arch or 'gfx115' in target.arch)
+    
+    
+    def is_hip_rdna4m():
+        target = get_current_target()
+        return target is not None and target.backend == 'hip' and 'gfx117' in target.arch
+    
+    
+    def is_hip_rdna4():
+        target = get_current_target()
+        # check for gfx120 instead of gfx12, to avoid matching gfx1250
+        return target is not None and target.backend == 'hip' and 'gfx120' in target.arch
+    
+    
+    def is_hip_gfx1250():
+        target = get_current_target()
+        return target is not None and target.backend == 'hip' and 'gfx1250' in target.arch
+    
+    
+    def is_hip_cdna3_or_newer():
+        return is_hip_cdna3() or is_hip_cdna4()
+    
+    
+    def is_hip_cdna():
+        return is_hip_cdna2() or is_hip_cdna3() or is_hip_cdna4()
+    
+    
+    def is_hip_rdna():
+        return is_hip_rdna3() or is_hip_rdna4m() or is_hip_rdna4()
+    
+    
+    def get_hip_lds_size():
+        return 163840 if is_hip_cdna4() else 65536
+    
+    
+    def is_xpu():
+        target = get_current_target()
+        return False if target is None else target.backend == "xpu"
+    
+    
+    def numpy_random(shape, dtype_str, rs: Optional[RandomState] = None, low=None, high=None):
+        """
+        Override `rs` if you're calling this function twice and don't want the same
+        result for both calls.
+        """
+        if isinstance(shape, int):
+            shape = (shape, )
+        if rs is None:
+            rs = RandomState(seed=17)
+        if dtype_str in int_dtypes + uint_dtypes:
+            iinfo = np.iinfo(getattr(np, dtype_str))
+            low = iinfo.min if low is None else max(low, iinfo.min)
+            high = iinfo.max if high is None else min(high, iinfo.max)
+            dtype = getattr(np, dtype_str)
+            x = rs.randint(low, high, shape, dtype=dtype)
+            x[x == 0] = 1  # Workaround. Never return zero so tests of division don't error out.
+            return x
+        elif dtype_str and 'float8' in dtype_str:
+            x = rs.randint(20, 40, shape, dtype=np.int8)
+            return x
+        elif dtype_str in float_dtypes:
+            return rs.normal(0, 1, shape).astype(dtype_str)
+        elif dtype_str == 'bfloat16':
+            return (rs.normal(0, 1, shape).astype('float32').view('uint32') &amp; np.uint32(0xffff0000)).view('float32')
+        elif dtype_str in ['bool', 'int1', 'bool_']:
+            return rs.normal(0, 1, shape) &gt; 0.0
+        else:
+            raise RuntimeError(f'Unknown dtype {dtype_str}')
+    
+    
+    def to_triton(x: np.ndarray, device, dst_type=None) -&gt; Union[TensorWrapper, torch.Tensor]:
+        '''
+        Note: We need dst_type because the type of x can be different from dst_type.
+              For example: x is of type `float32`, dst_type is `bfloat16`.
+              If dst_type is None, we infer dst_type from x.
+        '''
+        t = x.dtype.name
+        if t in uint_dtypes:
+            signed_type_name = t.lstrip('u')  # e.g. "uint16" -&gt; "int16"
+            x_signed = x.astype(getattr(np, signed_type_name))
+            return reinterpret(torch.tensor(x_signed, device=device), getattr(tl, t))
+        else:
+            if dst_type and 'float8' in dst_type:
+                return reinterpret(torch.tensor(x, device=device), getattr(tl, dst_type))
+            if t == 'float32' and dst_type == 'bfloat16':
+                return torch.tensor(x, device=device).bfloat16()
+            return torch.tensor(x, device=device)
+    
+    
+    def str_to_triton_dtype(x: str) -&gt; tl.dtype:
+        return tl.str_to_ty(type_canonicalisation_dict[x], None)
+    
+    
+    def torch_dtype_name(dtype) -&gt; str:
+        if isinstance(dtype, triton.language.dtype):
+            return dtype.name
+        elif isinstance(dtype, torch.dtype):
+            # 'torch.int64' -&gt; 'int64'
+            m = re.match(r'^torch\.(\w+)$', str(dtype))
+            return m.group(1)
+        else:
+            raise TypeError(f'not a triton or torch dtype: {type(dtype)}')
+    
+    
+    def to_numpy(x):
+        if isinstance(x, TensorWrapper):
+            return x.base.cpu().numpy().astype(getattr(np, torch_dtype_name(x.dtype)))
+        elif isinstance(x, torch.Tensor):
+            if x.dtype is torch.bfloat16:
+                return x.cpu().float().numpy()
+            return x.cpu().numpy()
+        else:
+            raise ValueError(f"Not a triton-compatible tensor: {x}")
+    
+    
+    def supports_tma(byval_only=False):
+        if is_interpreter():
+            return True
+        if not is_cuda():
+            return False
+        cuda_version = knobs.nvidia.ptxas.version
+        min_cuda_version = (12, 0) if byval_only else (12, 3)
+        cuda_version_tuple = tuple(map(int, cuda_version.split(".")))
+        assert len(cuda_version_tuple) == 2, cuda_version_tuple
+        return torch.cuda.get_device_capability()[0] &gt;= 9 and cuda_version_tuple &gt;= min_cuda_version
+    
+    
+    def supports_ws():
+        if is_interpreter():
+            return True
+        if not is_cuda():
+            return False
+        return torch.cuda.get_device_capability()[0] &gt;= 9
+    
+    
+    def supports_clc():
+        return is_cuda() and torch.cuda.get_device_capability()[0] &gt;= 10
+    
+    
+    def tma_skip_msg(byval_only=False):
+        if byval_only:
+            return "Requires __grid_constant__ TMA support (NVIDIA Hopper or higher, CUDA 12.0 or higher)"
+        else:
+            return "Requires advanced TMA support (NVIDIA Hopper or higher, CUDA 12.3 or higher)"
+    
+    
+&gt;   requires_tma = pytest.mark.skipif(not supports_tma(), reason=tma_skip_msg())
+                                          ^^^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/_internal_testing.py:261: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+byval_only = False
+
+    def supports_tma(byval_only=False):
+        if is_interpreter():
+            return True
+&gt;       if not is_cuda():
+               ^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/_internal_testing.py:233: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def is_cuda():
+&gt;       target = get_current_target()
+                 ^^^^^^^^^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/_internal_testing.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def get_current_target():
+        if is_interpreter():
+            return None
+        if not any(backend.driver.is_active() for backend in backends.values()):
+            return None
+&gt;       return triton.runtime.driver.active.get_current_target()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/_internal_testing.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;triton.runtime.driver.DriverConfig object at 0x2b42e5fdb230&gt;
+
+    @property
+    def active(self) -&gt; DriverBase:
+        if self._active is None:
+&gt;           self._active = self.default
+                           ^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/driver.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;triton.runtime.driver.DriverConfig object at 0x2b42e5fdb230&gt;
+
+    @property
+    def default(self) -&gt; DriverBase:
+        if self._default is None:
+&gt;           self._default = _create_driver()
+                            ^^^^^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/driver.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _create_driver() -&gt; DriverBase:
+        selected = os.environ.get("TRITON_DEFAULT_BACKEND", None)
+        if selected:
+            if selected not in backends:
+                raise RuntimeError(f"Unknown backend device '{selected}'. Available backends: {list(backends.keys())}")
+            driver = backends[selected].driver
+            if not driver.is_active():
+                raise RuntimeError(f"Backend device '{selected}' is not active.")
+            return driver()
+        else:
+            active_drivers = [x.driver for x in backends.values() if x.driver.is_active()]
+            if len(active_drivers) != 1:
+                raise RuntimeError(f"{len(active_drivers)} active drivers ({active_drivers}). There should only be one.")
+&gt;           return active_drivers[0]()
+                   ^^^^^^^^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/driver.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;triton.backends.nvidia.driver.CudaDriver object at 0x2b42e7e2c620&gt;
+
+    def __init__(self):
+&gt;       self.utils = CudaUtils()  # TODO: make static
+                     ^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.py:348: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;triton.backends.nvidia.driver.CudaUtils object at 0x2b42e7e2faa0&gt;
+
+    def __init__(self):
+&gt;       mod = compile_module_from_file(
+            src_path=os.path.join(dirname, "driver.c"),
+            name="cuda_utils",
+            library_dirs=library_dirs(),
+            include_dirs=include_dirs,
+            libraries=libraries,
+        )
+
+/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src_path = '/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.c'
+name = 'cuda_utils'
+library_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/lib', '/usr/lib/x86_64-linux-gnu']
+include_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/include']
+libraries = ['libcuda.so.1'], ccflags = None
+
+    def compile_module_from_file(src_path: str, name: str, library_dirs: list[str] | None = None,
+                                 include_dirs: list[str] | None = None, libraries: list[str] | None = None,
+                                 ccflags: list[str] | None = None) -&gt; ModuleType:
+&gt;       return _compile_so_from_file(src_path, name, library_dirs, include_dirs, libraries, ccflags, load_module=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/build.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src_path = '/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.c'
+name = 'cuda_utils'
+library_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/lib', '/usr/lib/x86_64-linux-gnu']
+include_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/include']
+libraries = ['libcuda.so.1'], ccflags = None, load_module = True
+
+    def _compile_so_from_file(src_path: str, name: str, library_dirs: list[str] | None, include_dirs: list[str] | None,
+                              libraries: list[str] | None, ccflags: list[str] | None, load_module: bool):
+        src_path = os.path.abspath(src_path)
+        src_name = os.path.basename(src_path)
+        with open(src_path, "rb") as f:
+            src = f.read()
+    
+        language = _language_from_filename(src_name)
+&gt;       return _compile_so(src=src, src_path=src_path, name=name, library_dirs=library_dirs, include_dirs=include_dirs,
+                           libraries=libraries, ccflags=ccflags, language=language, load_module=load_module)
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/build.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = b'#include "cuda.h"\n#include &lt;dlfcn.h&gt;\n#include &lt;stdalign.h&gt;\n#include &lt;stdbool.h&gt;\n#include &lt;stddef.h&gt;\n#include &lt;s...ddIntConstant(m, "ARG_KERNEL", ARG_KERNEL);\n  PyModule_AddIntConstant(m, "ARG_TUPLE", ARG_TUPLE);\n\n  return m;\n}\n'
+src_path = '/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.c'
+name = 'cuda_utils'
+library_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/lib', '/usr/lib/x86_64-linux-gnu']
+include_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/include']
+libraries = ['libcuda.so.1'], ccflags = None, load_module = True, language = 'c'
+
+    def _compile_so(src: bytes, src_path: str, name: str, library_dirs: list[str] | None, include_dirs: list[str] | None,
+                    libraries: list[str] | None, ccflags: list[str] | None, load_module: bool, language: str):
+        config = dict(language=[language], library_dirs=library_dirs, include_dirs=include_dirs, libraries=libraries,
+                      ccflags=ccflags)
+        cache = _get_cache_manager(src, config=config)
+        suffix = sysconfig.get_config_var("EXT_SUFFIX")
+        cache_path = cache.get_file(f"{name}{suffix}")
+        if cache_path is not None:
+            if not load_module:
+                return cache_path
+            try:
+                return _load_module_from_path(name, cache_path)
+            except (RuntimeError, ImportError):
+                log = logging.getLogger(__name__)
+                log.warning(f"Triton cache error: compiled module {name}.so could not be loaded")
+    
+        with tempfile.TemporaryDirectory() as tmpdir:
+&gt;           so = _build(name, src_path, tmpdir, library_dirs or [], include_dirs or [], libraries or [], ccflags or [],
+                        language=language)
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/build.py:149: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'cuda_utils'
+src = '/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.c'
+srcdir = '/tmp/tmpcz9jlsl7'
+library_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/lib', '/usr/lib/x86_64-linux-gnu']
+include_dirs = ['/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/include', '/tmp/tmpcz9jlsl7', '/usr/include/python3.12']
+libraries = ['libcuda.so.1'], ccflags = [], language = 'c'
+
+    def _build(name: str, src: str, srcdir: str, library_dirs: list[str], include_dirs: list[str], libraries: list[str],
+               ccflags: list[str], language: str = "c") -&gt; str:
+        if impl := knobs.build.impl:
+            return impl(name, src, srcdir, library_dirs, include_dirs, libraries)
+        suffix = sysconfig.get_config_var('EXT_SUFFIX')
+        so = os.path.join(srcdir, f'{name}{suffix}')
+        cc = _find_compiler(language)
+        scheme = sysconfig.get_default_scheme()
+        # 'posix_local' is a custom scheme on Debian. However, starting Python 3.10, the default install
+        # path changes to include 'local'. This change is required to use triton with system-wide python.
+        if scheme == 'posix_local':
+            scheme = 'posix_prefix'
+        py_include_dir = sysconfig.get_paths(scheme=scheme)["include"]
+        custom_backend_dirs = knobs.build.backend_dirs
+        include_dirs = include_dirs + [srcdir, py_include_dir, *custom_backend_dirs]
+        # for -Wno-psabi, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111047
+        cc_cmd = [cc, src, "-O3", "-shared", "-fPIC", "-Wno-psabi", "-o", so]
+        if language == "c++":
+            cc_cmd.insert(3, "-std=c++17")
+        cc_cmd += [_library_flag(lib) for lib in libraries]
+        cc_cmd += [f"-L{dir}" for dir in library_dirs]
+        cc_cmd += [f"-I{dir}" for dir in include_dirs if dir is not None]
+        cc_cmd.extend(ccflags)
+&gt;       subprocess.check_call(cc_cmd, stdout=subprocess.DEVNULL)
+
+/opt/repro/lib/python3.12/site-packages/triton/runtime/build.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+popenargs = (['/usr/bin/gcc', '/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.c', '-O3', '-shared', '-fPIC', '-Wno-psabi', ...],)
+kwargs = {'stdout': -3}
+
+    def check_call(*popenargs, **kwargs):
+        """Run command with arguments.  Wait for command to complete.  If
+        the exit code was zero then return, otherwise raise
+        CalledProcessError.  The CalledProcessError object will have the
+        return code in the returncode attribute.
+    
+        The arguments are the same as for the call function.  Example:
+    
+        check_call(["ls", "-l"])
+        """
+        retcode = call(*popenargs, **kwargs)
+        if retcode:
+            cmd = kwargs.get("args")
+            if cmd is None:
+                cmd = popenargs[0]
+&gt;           raise CalledProcessError(retcode, cmd)
+E           subprocess.CalledProcessError: Command '['/usr/bin/gcc', '/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/driver.c', '-O3', '-shared', '-fPIC', '-Wno-psabi', '-o', '/tmp/tmpcz9jlsl7/cuda_utils.cpython-312-x86_64-linux-gnu.so', '-l:libcuda.so.1', '-L/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/lib', '-L/usr/lib/x86_64-linux-gnu', '-I/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/include', '-I/tmp/tmpcz9jlsl7', '-I/usr/include/python3.12']' returned non-zero exit status 1.
+
+/usr/lib/python3.12/subprocess.py:413: CalledProcessError</error></testcase></testsuite></testsuites>

@@ -1,0 +1,909 @@
+{
+  "format": "version-probe-acquisition-cost-v1",
+  "timestamp": "2026-10-23T12:49:15.714432+00:00",
+  "sessions": 3,
+  "pairs_per_shape_per_session": 30,
+  "warmups_per_mode_shape_session": 20,
+  "environments": [
+    {
+      "kind": "environment",
+      "device": "NVIDIA GeForce RTX 4090",
+      "compute": [
+        8,
+        9
+      ],
+      "driver": 13030,
+      "runtime": 13010,
+      "sms": 128,
+      "l2_bytes": 75497472,
+      "baseline_registers": 26,
+      "instrumented_registers": 30,
+      "baseline_shared": 256,
+      "instrumented_shared": 264
+    },
+    {
+      "kind": "environment",
+      "device": "NVIDIA GeForce RTX 4090",
+      "compute": [
+        8,
+        9
+      ],
+      "driver": 13030,
+      "runtime": 13010,
+      "sms": 128,
+      "l2_bytes": 75497472,
+      "baseline_registers": 26,
+      "instrumented_registers": 30,
+      "baseline_shared": 256,
+      "instrumented_shared": 264
+    },
+    {
+      "kind": "environment",
+      "device": "NVIDIA GeForce RTX 4090",
+      "compute": [
+        8,
+        9
+      ],
+      "driver": 13030,
+      "runtime": 13010,
+      "sms": 128,
+      "l2_bytes": 75497472,
+      "baseline_registers": 26,
+      "instrumented_registers": 30,
+      "baseline_shared": 256,
+      "instrumented_shared": 264
+    }
+  ],
+  "build": {
+    "source_hashes": {
+      "prepare-version-kernel.py": "665354a37dd43803630af837d0d84b5bfe81d151cb27a998bf9a1a7dccb64891",
+      "version-cost.cu": "3c14dc2396e4300234333d36bbfb17a0be2bdc7b7df6ce39bd64bfec2f5315d9",
+      "run-version-cost.py": "caa4d243c91d42af985d8b084cbd4c44dea8c6d79e61949efcbefa2047c3231f",
+      "version_probe.cu": "99f8a78d3f9fdc932fdbc83acc85b6d5ea847c3d59cf7f0be00bc8f114395f29"
+    },
+    "generated_sha256": "87c3bc927f22ff1dace013b1ef36c956a975d1868d88eef9366506d1d747131a",
+    "binary_sha256": "d35135d90834e06ab4c1aea7cec8f258d1e5fa920a8f5693b9c6c3b234db8294"
+  },
+  "results": [
+    {
+      "count": 32,
+      "generations": 1,
+      "pairs": 90,
+      "per_mode": {
+        "False": {
+          "kernel_us": {
+            "n": 90,
+            "min": 2.719999989,
+            "p05": 3.040000098,
+            "median": 3.936000168,
+            "p95": 4.955199919649999,
+            "max": 63.39199841
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 1.983999973,
+            "p05": 2.144000027,
+            "median": 2.8000000165,
+            "p95": 3.6656000770499997,
+            "max": 4.224000033
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 7.39,
+            "p05": 7.5125,
+            "median": 7.92,
+            "p95": 9.137049999999999,
+            "max": 9.82
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 0.84,
+            "p05": 0.85,
+            "median": 1.24,
+            "p95": 1.7265,
+            "max": 1.99
+          }
+        },
+        "True": {
+          "kernel_us": {
+            "n": 90,
+            "min": 2.976000076,
+            "p05": 3.34239996695,
+            "median": 3.8879999195,
+            "p95": 4.881599918199999,
+            "max": 12.06399966
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 1.951999962,
+            "p05": 2.0623999999500002,
+            "median": 2.687999979,
+            "p95": 3.7472001040999996,
+            "max": 5.024000071
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 7.46,
+            "p05": 7.484500000000001,
+            "median": 7.92,
+            "p95": 9.183499999999999,
+            "max": 10.63
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 4.09599999,
+            "p05": 4.2351999087,
+            "median": 4.991999827,
+            "p95": 5.955199920550001,
+            "max": 12.48000003
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 9.01,
+            "p05": 9.0645,
+            "median": 10.06,
+            "p95": 11.3255,
+            "max": 18.001
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 2.28,
+            "p05": 2.30405,
+            "median": 3.535,
+            "p95": 4.38,
+            "max": 5.41
+          }
+        }
+      },
+      "paired_kernel_ratio": {
+        "n": 90,
+        "min": 0.06259464988524567,
+        "p05": 0.7981356003413389,
+        "median": 1.0073672293767784,
+        "p95": 1.3811688059968392,
+        "max": 3.8865979700984443
+      },
+      "paired_kernel_delta_us": {
+        "n": 90,
+        "min": -59.423998464,
+        "p05": -0.8176001716499998,
+        "median": 0.03199977799999987,
+        "p95": 1.2016001740499997,
+        "max": 8.959999773
+      },
+      "session_median_kernel_ratios": {
+        "0": 0.9880382735446681,
+        "1": 1.0120968078763175,
+        "2": 1.0580374036259603
+      },
+      "bytes_per_mode": {
+        "False": {
+          "output_bytes": 128,
+          "evidence_bytes": 0,
+          "events": 0
+        },
+        "True": {
+          "output_bytes": 128,
+          "evidence_bytes": 308,
+          "events": 5
+        }
+      },
+      "serialized_bytes_per_mode": {
+        "False": {
+          "n": 90,
+          "min": 325,
+          "p05": 326.45000000000005,
+          "median": 330.0,
+          "p95": 331.0,
+          "max": 333
+        },
+        "True": {
+          "n": 90,
+          "min": 1156,
+          "p05": 1164.0,
+          "median": 1171.0,
+          "p95": 1172.0,
+          "max": 1174
+        }
+      }
+    },
+    {
+      "count": 257,
+      "generations": 5,
+      "pairs": 90,
+      "per_mode": {
+        "False": {
+          "kernel_us": {
+            "n": 90,
+            "min": 2.848000033,
+            "p05": 3.05440010295,
+            "median": 3.648000071,
+            "p95": 4.94720002175,
+            "max": 41.24800116
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 2.527999924,
+            "p05": 2.6383999619500003,
+            "median": 3.23199993,
+            "p95": 3.967999946,
+            "max": 5.535999779
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 8.051,
+            "p05": 8.0945,
+            "median": 8.364999999999998,
+            "p95": 9.383949999999999,
+            "max": 17.03
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 23.84,
+            "p05": 24.24955,
+            "median": 34.631,
+            "p95": 37.18595,
+            "max": 44.361
+          }
+        },
+        "True": {
+          "kernel_us": {
+            "n": 90,
+            "min": 3.648000071,
+            "p05": 3.9648001779,
+            "median": 4.544000141,
+            "p95": 5.32960006965,
+            "max": 6.016000174
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 2.527999924,
+            "p05": 2.6703999729500003,
+            "median": 3.167999908,
+            "p95": 3.488000017,
+            "max": 3.967999946
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 8.021,
+            "p05": 8.1145,
+            "median": 8.3555,
+            "p95": 8.872,
+            "max": 9.11
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 4.832000006,
+            "p05": 4.832000006,
+            "median": 4.991999827,
+            "p95": 5.3616000569,
+            "max": 12.16000039
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 9.6,
+            "p05": 9.67945,
+            "median": 9.9905,
+            "p95": 11.018999999999998,
+            "max": 21.61
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 81.301,
+            "p05": 82.11,
+            "median": 123.95150000000001,
+            "p95": 131.59545,
+            "max": 206.613
+          }
+        }
+      },
+      "paired_kernel_ratio": {
+        "n": 90,
+        "min": 0.11404188883609893,
+        "p05": 0.9365793867677555,
+        "median": 1.212955447483078,
+        "p95": 1.5250578259584353,
+        "max": 1.6276595367000066
+      },
+      "paired_kernel_delta_us": {
+        "n": 90,
+        "min": -36.544001197,
+        "p05": -0.28800012075000025,
+        "median": 0.7999999214999998,
+        "p95": 1.7488001265999995,
+        "max": 1.8879999409999995
+      },
+      "session_median_kernel_ratios": {
+        "0": 1.25664832670311,
+        "1": 1.103855291296241,
+        "2": 1.253853229809976
+      },
+      "bytes_per_mode": {
+        "False": {
+          "output_bytes": 5140,
+          "evidence_bytes": 0,
+          "events": 0
+        },
+        "True": {
+          "output_bytes": 5140,
+          "evidence_bytes": 13240,
+          "events": 225
+        }
+      },
+      "serialized_bytes_per_mode": {
+        "False": {
+          "n": 90,
+          "min": 10159,
+          "p05": 10164.0,
+          "median": 10188.0,
+          "p95": 10207.0,
+          "max": 10213
+        },
+        "True": {
+          "n": 90,
+          "min": 46072,
+          "p05": 46096.25,
+          "median": 46129.0,
+          "p95": 46148.0,
+          "max": 46152
+        }
+      }
+    },
+    {
+      "count": 4096,
+      "generations": 8,
+      "pairs": 90,
+      "per_mode": {
+        "False": {
+          "kernel_us": {
+            "n": 90,
+            "min": 5.439999979,
+            "p05": 9.207999987600001,
+            "median": 27.26399992,
+            "p95": 42.204798943,
+            "max": 86.14400029
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 23.42399955,
+            "p05": 25.524799992,
+            "median": 33.199999485,
+            "p95": 40.692800651499994,
+            "max": 63.84000182
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 28.64,
+            "p05": 30.43305,
+            "median": 38.706,
+            "p95": 46.245050000000006,
+            "max": 69.77
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 600.907,
+            "p05": 627.485,
+            "median": 809.774,
+            "p95": 1032.05505,
+            "max": 1104.963
+          }
+        },
+        "True": {
+          "kernel_us": {
+            "n": 90,
+            "min": 5.632000044,
+            "p05": 7.519999985,
+            "median": 22.19199948,
+            "p95": 39.548801073,
+            "max": 44.89599913
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 21.85600065,
+            "p05": 22.969599811000002,
+            "median": 31.28000069,
+            "p95": 40.1328001135,
+            "max": 65.66400081
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 27.161,
+            "p05": 28.07955,
+            "median": 37.0305,
+            "p95": 45.681,
+            "max": 71.01
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 50.78399926,
+            "p05": 50.8623998625,
+            "median": 51.69599876,
+            "p95": 53.0303994175,
+            "max": 62.3040013
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 55.79,
+            "p05": 55.869550000000004,
+            "median": 57.011,
+            "p95": 58.495,
+            "max": 82.132
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 2351.567,
+            "p05": 2385.7309999999998,
+            "median": 2881.943,
+            "p95": 3952.16255,
+            "max": 4101.537
+          }
+        }
+      },
+      "paired_kernel_ratio": {
+        "n": 90,
+        "min": 0.27497866801792203,
+        "p05": 0.3521115330142113,
+        "median": 0.8360626940620397,
+        "p95": 1.2906748368157166,
+        "max": 2.977987344161007
+      },
+      "paired_kernel_delta_us": {
+        "n": 90,
+        "min": -61.280000949999994,
+        "p05": -24.2416019575,
+        "median": -4.751998,
+        "p95": 7.345599869999999,
+        "max": 20.12799959
+      },
+      "session_median_kernel_ratios": {
+        "0": 0.8042043760937811,
+        "1": 0.9013736855256749,
+        "2": 0.6181742140535181
+      },
+      "bytes_per_mode": {
+        "False": {
+          "output_bytes": 131072,
+          "evidence_bytes": 0,
+          "events": 0
+        },
+        "True": {
+          "output_bytes": 131072,
+          "evidence_bytes": 315392,
+          "events": 5120
+        }
+      },
+      "serialized_bytes_per_mode": {
+        "False": {
+          "n": 90,
+          "min": 257737,
+          "p05": 257774.45,
+          "median": 257900.0,
+          "p95": 258017.0,
+          "max": 258054
+        },
+        "True": {
+          "n": 90,
+          "min": 1088266,
+          "p05": 1088296.3,
+          "median": 1088437.0,
+          "p95": 1088582.2,
+          "max": 1088603
+        }
+      }
+    },
+    {
+      "count": 4096,
+      "generations": 64,
+      "pairs": 90,
+      "per_mode": {
+        "False": {
+          "kernel_us": {
+            "n": 90,
+            "min": 25.69600008,
+            "p05": 28.364800099999997,
+            "median": 43.12000051,
+            "p95": 53.17279938649999,
+            "max": 80.35200089
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 170.5279946,
+            "p05": 172.09280652500001,
+            "median": 180.01600355,
+            "p95": 183.363202975,
+            "max": 183.7760061
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 175.872,
+            "p05": 177.3465,
+            "median": 186.007,
+            "p95": 189.90949999999998,
+            "max": 191.912
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 0,
+            "p05": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 4865.076,
+            "p05": 5089.454,
+            "median": 6433.1585,
+            "p95": 8880.31605,
+            "max": 10529.31
+          }
+        },
+        "True": {
+          "kernel_us": {
+            "n": 90,
+            "min": 31.4560011,
+            "p05": 33.724799750500004,
+            "median": 48.399999735,
+            "p95": 56.915199199999996,
+            "max": 86.75199747
+          },
+          "output_d2h_device_us": {
+            "n": 90,
+            "min": 170.3999937,
+            "p05": 171.449594205,
+            "median": 178.94399915,
+            "p95": 182.7200055,
+            "max": 223.9039987
+          },
+          "output_d2h_host_us": {
+            "n": 90,
+            "min": 175.652,
+            "p05": 176.6575,
+            "median": 184.73250000000002,
+            "p95": 190.90249999999997,
+            "max": 229.922
+          },
+          "evidence_d2h_device_us": {
+            "n": 90,
+            "min": 385.0879967,
+            "p05": 385.45121104,
+            "median": 386.97600365000005,
+            "p95": 391.66080204,
+            "max": 399.9679983
+          },
+          "evidence_d2h_host_us": {
+            "n": 90,
+            "min": 390.434,
+            "p05": 390.871,
+            "median": 392.7645,
+            "p95": 409.39149999999995,
+            "max": 561.286
+          },
+          "serialize_us": {
+            "n": 90,
+            "min": 17149.496,
+            "p05": 17333.681,
+            "median": 23121.4845,
+            "p95": 33188.21655,
+            "max": 34787.147
+          }
+        }
+      },
+      "paired_kernel_ratio": {
+        "n": 90,
+        "min": 0.48466743937482554,
+        "p05": 0.8534513505736999,
+        "median": 1.1658525687725052,
+        "p95": 1.402606173334326,
+        "max": 1.8037257858390585
+      },
+      "paired_kernel_delta_us": {
+        "n": 90,
+        "min": -41.40800237,
+        "p05": -7.247999311999996,
+        "median": 6.783999505000002,
+        "p95": 15.148799862499997,
+        "max": 38.65599632000001
+      },
+      "session_median_kernel_ratios": {
+        "0": 1.163493412255089,
+        "1": 1.1607830342544259,
+        "2": 1.1826985190097328
+      },
+      "bytes_per_mode": {
+        "False": {
+          "output_bytes": 1048576,
+          "evidence_bytes": 0,
+          "events": 0
+        },
+        "True": {
+          "output_bytes": 1048576,
+          "evidence_bytes": 2523136,
+          "events": 40960
+        }
+      },
+      "serialized_bytes_per_mode": {
+        "False": {
+          "n": 90,
+          "min": 2062106,
+          "p05": 2062141.7000000002,
+          "median": 2062462.5,
+          "p95": 2062786.2,
+          "max": 2062871
+        },
+        "True": {
+          "n": 90,
+          "min": 8996387,
+          "p05": 8996481.8,
+          "median": 8996834.5,
+          "p95": 8997203.6,
+          "max": 8997322
+        }
+      }
+    }
+  ],
+  "validations": [
+    {
+      "session": 0,
+      "path": "validation-0/n257-g5-baseline.json",
+      "sha256": "d25c13423dcdd3aa71942d9d3be08ac8c1ecaada0c12f82aece93159abbeb21e",
+      "elements": 1285,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n257-g5-instrumented.json",
+      "sha256": "74c33a07e76447647b11562887eb2082cc619a35a2f4baaca65b8ed3900928ac",
+      "elements": 1285,
+      "events": 225,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n32-g1-baseline.json",
+      "sha256": "66c2ab98e02342f1deb9837636cfbea3394dc6131e90baf8580f2fb21db56a26",
+      "elements": 32,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n32-g1-instrumented.json",
+      "sha256": "7f3dc4f295e645f8ba9a88cb6892d310ac1eea4d2f6f613cb63f8a3dd8356512",
+      "elements": 32,
+      "events": 5,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n4096-g64-baseline.json",
+      "sha256": "98ee0ad6d795b04fd35aca100a6dfe2d0a3f2160709ae995ea24d5ca3603cd32",
+      "elements": 262144,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n4096-g64-instrumented.json",
+      "sha256": "9b1239b418a1d05afab10b1a29aaa8e6f9b9461f5bafbaae37c77ba20de1e9a5",
+      "elements": 262144,
+      "events": 40960,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n4096-g8-baseline.json",
+      "sha256": "eb62fcb185a9bce583824cbabb3b0b6f48e61d670e43e20e6909acc06ec89044",
+      "elements": 32768,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 0,
+      "path": "validation-0/n4096-g8-instrumented.json",
+      "sha256": "b8dd3398b21964e2e53d2eea42ed0feee7e2f6c5fdfba1f001496fded995a6f3",
+      "elements": 32768,
+      "events": 5120,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n257-g5-baseline.json",
+      "sha256": "d25c13423dcdd3aa71942d9d3be08ac8c1ecaada0c12f82aece93159abbeb21e",
+      "elements": 1285,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n257-g5-instrumented.json",
+      "sha256": "74c33a07e76447647b11562887eb2082cc619a35a2f4baaca65b8ed3900928ac",
+      "elements": 1285,
+      "events": 225,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n32-g1-baseline.json",
+      "sha256": "66c2ab98e02342f1deb9837636cfbea3394dc6131e90baf8580f2fb21db56a26",
+      "elements": 32,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n32-g1-instrumented.json",
+      "sha256": "7f3dc4f295e645f8ba9a88cb6892d310ac1eea4d2f6f613cb63f8a3dd8356512",
+      "elements": 32,
+      "events": 5,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n4096-g64-baseline.json",
+      "sha256": "98ee0ad6d795b04fd35aca100a6dfe2d0a3f2160709ae995ea24d5ca3603cd32",
+      "elements": 262144,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n4096-g64-instrumented.json",
+      "sha256": "9b1239b418a1d05afab10b1a29aaa8e6f9b9461f5bafbaae37c77ba20de1e9a5",
+      "elements": 262144,
+      "events": 40960,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n4096-g8-baseline.json",
+      "sha256": "eb62fcb185a9bce583824cbabb3b0b6f48e61d670e43e20e6909acc06ec89044",
+      "elements": 32768,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 1,
+      "path": "validation-1/n4096-g8-instrumented.json",
+      "sha256": "b8dd3398b21964e2e53d2eea42ed0feee7e2f6c5fdfba1f001496fded995a6f3",
+      "elements": 32768,
+      "events": 5120,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n257-g5-baseline.json",
+      "sha256": "d25c13423dcdd3aa71942d9d3be08ac8c1ecaada0c12f82aece93159abbeb21e",
+      "elements": 1285,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n257-g5-instrumented.json",
+      "sha256": "74c33a07e76447647b11562887eb2082cc619a35a2f4baaca65b8ed3900928ac",
+      "elements": 1285,
+      "events": 225,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n32-g1-baseline.json",
+      "sha256": "66c2ab98e02342f1deb9837636cfbea3394dc6131e90baf8580f2fb21db56a26",
+      "elements": 32,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n32-g1-instrumented.json",
+      "sha256": "7f3dc4f295e645f8ba9a88cb6892d310ac1eea4d2f6f613cb63f8a3dd8356512",
+      "elements": 32,
+      "events": 5,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n4096-g64-baseline.json",
+      "sha256": "98ee0ad6d795b04fd35aca100a6dfe2d0a3f2160709ae995ea24d5ca3603cd32",
+      "elements": 262144,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n4096-g64-instrumented.json",
+      "sha256": "9b1239b418a1d05afab10b1a29aaa8e6f9b9461f5bafbaae37c77ba20de1e9a5",
+      "elements": 262144,
+      "events": 40960,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n4096-g8-baseline.json",
+      "sha256": "eb62fcb185a9bce583824cbabb3b0b6f48e61d670e43e20e6909acc06ec89044",
+      "elements": 32768,
+      "events": 0,
+      "passed": true
+    },
+    {
+      "session": 2,
+      "path": "validation-2/n4096-g8-instrumented.json",
+      "sha256": "b8dd3398b21964e2e53d2eea42ed0feee7e2f6c5fdfba1f001496fded995a6f3",
+      "elements": 32768,
+      "events": 5120,
+      "passed": true
+    }
+  ],
+  "method": {
+    "pairing": "Same seed/shape/64-thread launch/value output; seeded random within-pair and shape order; independent process sessions.",
+    "baseline": "Compile-time removal of event writes and auxiliary tag initialization/read/write only. Algorithm payload, CTA barriers and output stores retained.",
+    "kernel": "One kernel bracketed by CUDA events; allocation, D2H, validation, host serialization excluded. Short-kernel timer quantization and launch scheduling remain.",
+    "d2h": "Pinned host buffers; output transfer separately from extra tags/events. CUDA event span and host elapsed including synchronization both retained.",
+    "serialize": "Host steady-clock compact JSON string construction only; includes allocation; excludes file I/O. Captured values/tags/events only, no duplicated oracle arrays.",
+    "correctness": "Every sampled output/event verified by C++ oracle outside timing; one full payload per shape/mode/session independently checked in Python."
+  },
+  "limitations": [
+    "SM89 controlled scalar/shared-memory toy only; not TMA/tcgen05 overhead or optimized production AI operators.",
+    "Same-machine sessions, no frequency locking; hardware/software state and raw samples retained.",
+    "Original frozen probe has extra reporting/oracle fields; these serializer timings are for the explicitly documented acquisition schema.",
+    "Nsight Systems run is separate and excluded from measured samples. No roofline or MFU inference."
+  ]
+}

@@ -1,0 +1,375 @@
+{
+  "format": "modal-gpu-evidence-job-v1",
+  "status": "completed",
+  "started_utc": "2026-10-23T13:05:57.623661+00:00",
+  "requested_gpu": "B200",
+  "gpu_count": 1,
+  "timeout_seconds": 600,
+  "max_containers": 1,
+  "image_tag": "docker.io/nvidia/cuda:13.1.0-devel-ubuntu24.04",
+  "modal_sdk_version": "1.6.2",
+  "source_sha256": {
+    "tmem_run_repro.py": "13d2006b43da0bd85d9d149f19c50af83a29f8aec9f980630f167b7db4baa70a",
+    "tmem_upstream_manifest.json": "44ecd4746768d741599a0c798c46ba81e68b8394d8c88eb1d49243028e8969bd",
+    "tmem_upstream_regression.py": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+    "tmem_build_manifest.json": "d43103faac0d53a2cb6f2ed7b7d28e6df3f072ce208fd9b79d06e720c8809356"
+  },
+  "source_records": [
+    {
+      "name": "tmem_run_repro.py",
+      "sha256": "13d2006b43da0bd85d9d149f19c50af83a29f8aec9f980630f167b7db4baa70a",
+      "bytes": 14440
+    },
+    {
+      "name": "tmem_upstream_manifest.json",
+      "sha256": "44ecd4746768d741599a0c798c46ba81e68b8394d8c88eb1d49243028e8969bd",
+      "bytes": 930
+    },
+    {
+      "name": "tmem_upstream_regression.py",
+      "sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+      "bytes": 3697
+    },
+    {
+      "name": "tmem_build_manifest.json",
+      "sha256": "d43103faac0d53a2cb6f2ed7b7d28e6df3f072ce208fd9b79d06e720c8809356",
+      "bytes": 15190
+    }
+  ],
+  "runner_sha256": "e766e606b51d7e2ee8fd2ddf8609fa483c4a500199758a1a508ec24c0884f747",
+  "job_sha256": "fc66e5253710935972bebdcaabd64172053e9db6d7e746ff61f917de9dfb55f6",
+  "billing": "No exact bill inferred from command wall times; configured limits bound each job.",
+  "deployment": "Ephemeral App.run with no persistent deployment, volumes, endpoints or minimum containers.",
+  "python_runtime": "3.13",
+  "image_files": [
+    {
+      "local": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "remote": "/opt/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "sha256": "2c6656f868344cddb8f792bb34270a2cb7c8cb6d4da137973fce5ff9f4c9b80c",
+      "bytes": 274620979,
+      "omitted": "explicit dependency file mounted remotely; bytes not copied to result archive"
+    },
+    {
+      "local": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl",
+      "remote": "/opt/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl",
+      "sha256": "a6f9aaefe4b03782f76bc50a892d3742d40dc27a734881824c83693664e129ce",
+      "bytes": 274627593,
+      "omitted": "explicit dependency file mounted remotely; bytes not copied to result archive"
+    }
+  ],
+  "cpu": 8,
+  "memory_mb": 16384,
+  "prepare_image_only": false,
+  "app_id": "ap-HyNMUDUA002zgKNQ7eSYr6",
+  "image_id": "im-mJoCQpQeNtMi44CR7UXJqc",
+  "execution": {
+    "format": "modal-gpu-evidence-execution-v1",
+    "commands": [
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.023577136,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "gpu_identity.stdout.txt",
+          "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+          "bytes": 41
+        },
+        "stderr": {
+          "path": "gpu_identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "nvcc",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.008571219000000019,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "nvcc_version.stdout.txt",
+          "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+          "bytes": 211
+        },
+        "stderr": {
+          "path": "nvcc_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "compute-sanitizer",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.008192170999999915,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "sanitizer_version.stdout.txt",
+          "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+          "bytes": 125
+        },
+        "stderr": {
+          "path": "sanitizer_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "install_before",
+        "argv": [
+          "/opt/repro/bin/python",
+          "-m",
+          "pip",
+          "--disable-pip-version-check",
+          "install",
+          "--no-deps",
+          "--force-reinstall",
+          "--no-compile",
+          "/opt/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+        ],
+        "timeout": 90,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 3.593673848,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "install_before.stdout.txt",
+          "sha256": "c0b5a0dabd994a9aa7bc67991aa64c292ff22dbe667addc6c11619afbe832897",
+          "bytes": 322
+        },
+        "stderr": {
+          "path": "install_before.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "plain_before",
+        "argv": [
+          "env",
+          "TRITON_CACHE_DIR=/tmp/gpu-semantic-evidence/plain-before-cache",
+          "/opt/repro/bin/python",
+          "-m",
+          "pytest",
+          "tmem_upstream_regression.py",
+          "-vv",
+          "--tb=long",
+          "--junitxml=plain-before.xml",
+          "-p",
+          "no:cacheprovider"
+        ],
+        "timeout": 130,
+        "allowed_exit_codes": [
+          0,
+          1
+        ],
+        "continue_on_failure": true,
+        "exit_code": 2,
+        "timed_out": false,
+        "wall_seconds": 2.2780855730000003,
+        "accepted_exit": false,
+        "stdout": {
+          "path": "plain_before.stdout.txt",
+          "sha256": "6baa14ae034cd08c866b6d91fdb250e261a4ec90a48817b8aa25e90ee24b0707",
+          "bytes": 22793
+        },
+        "stderr": {
+          "path": "plain_before.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "observed_before",
+        "argv": [
+          "/opt/repro/bin/python",
+          "tmem_run_repro.py",
+          "--variant",
+          "before",
+          "--output",
+          "before",
+          "--build-manifest",
+          "tmem_build_manifest.json",
+          "--wheel",
+          "/opt/wheels/before/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+          "--dump-pass-ir"
+        ],
+        "timeout": 130,
+        "allowed_exit_codes": [
+          0,
+          3
+        ],
+        "continue_on_failure": true,
+        "exit_code": 3,
+        "timed_out": false,
+        "wall_seconds": 1.95612006,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "observed_before.stdout.txt",
+          "sha256": "88104cbdcfc80b2087678f08ba1adaa3a037ff1e68e2f89bbdb7a200e3a3ca7e",
+          "bytes": 22661
+        },
+        "stderr": {
+          "path": "observed_before.stderr.txt",
+          "sha256": "bab4debc039eb09937a4473f4e5da0c311f022081ac1fc9b9d5dd066a28c9106",
+          "bytes": 207
+        }
+      },
+      {
+        "name": "install_after",
+        "argv": [
+          "/opt/repro/bin/python",
+          "-m",
+          "pip",
+          "--disable-pip-version-check",
+          "install",
+          "--no-deps",
+          "--force-reinstall",
+          "--no-compile",
+          "/opt/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl"
+        ],
+        "timeout": 90,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 2.593346694000001,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "install_after.stdout.txt",
+          "sha256": "7ffa00131415ff886f2ffe31e1753e9f5469a2c6389362c1bad234a2fa3d5554",
+          "bytes": 357
+        },
+        "stderr": {
+          "path": "install_after.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "plain_after",
+        "argv": [
+          "env",
+          "TRITON_CACHE_DIR=/tmp/gpu-semantic-evidence/plain-after-cache",
+          "/opt/repro/bin/python",
+          "-m",
+          "pytest",
+          "tmem_upstream_regression.py",
+          "-vv",
+          "--tb=long",
+          "--junitxml=plain-after.xml",
+          "-p",
+          "no:cacheprovider"
+        ],
+        "timeout": 130,
+        "allowed_exit_codes": [
+          0,
+          1
+        ],
+        "continue_on_failure": true,
+        "exit_code": 2,
+        "timed_out": false,
+        "wall_seconds": 1.7138167069999994,
+        "accepted_exit": false,
+        "stdout": {
+          "path": "plain_after.stdout.txt",
+          "sha256": "cf5651e3e3ec5598dfdbbcd7791dcf4d307e115414f641abdfd29dc581658403",
+          "bytes": 22793
+        },
+        "stderr": {
+          "path": "plain_after.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "observed_after",
+        "argv": [
+          "/opt/repro/bin/python",
+          "tmem_run_repro.py",
+          "--variant",
+          "after",
+          "--output",
+          "after",
+          "--build-manifest",
+          "tmem_build_manifest.json",
+          "--wheel",
+          "/opt/wheels/after/triton-3.9.0+git0002b46d-cp312-cp312-linux_x86_64.whl",
+          "--dump-pass-ir"
+        ],
+        "timeout": 130,
+        "allowed_exit_codes": [
+          0,
+          3
+        ],
+        "continue_on_failure": true,
+        "exit_code": 3,
+        "timed_out": false,
+        "wall_seconds": 1.9874671100000008,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "observed_after.stdout.txt",
+          "sha256": "acff0e4ca3ed2f7ccfdb2316b6b6bdf711abdbe275c74c8851c20d60ab4cfe85",
+          "bytes": 22660
+        },
+        "stderr": {
+          "path": "observed_after.stderr.txt",
+          "sha256": "bab4debc039eb09937a4473f4e5da0c311f022081ac1fc9b9d5dd066a28c9106",
+          "bytes": 207
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "after/pytest.xml",
+        "sha256": "b845ef54dad7fea69630f0036eada4f221f1e182ae2979a02ffbc4b54000aba2",
+        "bytes": 21721
+      },
+      {
+        "path": "after/summary.json",
+        "sha256": "b4d36d0abcee38224ef4d4a1164eb8d17f3118a83ee97d7b9e59a1910cd994cd",
+        "bytes": 3375
+      },
+      {
+        "path": "before/pytest.xml",
+        "sha256": "a110526fd2d7f2be3f1110dbaf4b3b81ba325f9057c5fad5b1a732b431cb036e",
+        "bytes": 21721
+      },
+      {
+        "path": "before/summary.json",
+        "sha256": "52221cd9db849f5cdf780898f0ddcee1e1c59985107b6a64f95c391a221c67f9",
+        "bytes": 3376
+      },
+      {
+        "path": "plain-after.xml",
+        "sha256": "c376055511a972da74e122da8ccc79a85be06ba200d386ae2145e19c98db9642",
+        "bytes": 21721
+      },
+      {
+        "path": "plain-before.xml",
+        "sha256": "230aee08d98f67efda17aae97e0eedf572048cee0f1219be2b467b06df428b93",
+        "bytes": 21721
+      }
+    ],
+    "status": "completed",
+    "measurement_claim": "Command stdout/artifacts; no inferred GPU timestamps or benchmark claim.",
+    "remote_wall_seconds": 14.164624123
+  },
+  "finished_utc": "2026-10-23T13:06:32.894378+00:00"
+}

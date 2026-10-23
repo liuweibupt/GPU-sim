@@ -1,0 +1,249 @@
+{
+  "format": "cutlass-independent-agent-review-v1",
+  "completed_utc": "2026-10-23T13:05:06.604521+00:00",
+  "reviewer": {
+    "kind": "automated_coding_agent",
+    "task": "/root/agent_evaluation_pilot",
+    "scope": "Separate delegated review of root-authored reproduction, build, backport, and retained evidence; followed by requested verifier hardening.",
+    "independence_boundary": "Separate task within the same project, not an independent laboratory. Review used the project verifier plus separate source-tree/hash/raw-byte assertions. No new GPU execution was performed."
+  },
+  "finding": "No blocking issue found in the retained evidence under the stated beta=0 reduced-shape scope.",
+  "review_tool_sources": [
+    {
+      "tool": "functions.exec / tools.exec_command",
+      "uses": [
+        "Read pinned source files and unified diffs",
+        "Python standard-library hashlib, json, tarfile, subprocess checks",
+        "git show/archive/tag/diff of local NVIDIA/cutlass clone",
+        "Replay retained-output verifier and CPU fixture tests"
+      ],
+      "python_version": "3.13.2",
+      "git_version": "git version 2.43.0"
+    },
+    {
+      "tool": "mcp__codex_apps__github_fetch_issue",
+      "repository": "NVIDIA/cutlass",
+      "issue": 2547,
+      "url": "https://github.com/NVIDIA/cutlass/issues/2547",
+      "checked": "Original 32 K splits, M=N=4096, H800/CUDA12.4/driver535.183.06 context, and grouped-example naming mismatch."
+    },
+    {
+      "tool": "mcp__codex_apps__github_fetch_issue_comments",
+      "repository": "NVIDIA/cutlass",
+      "issue": 2547,
+      "url": "https://github.com/NVIDIA/cutlass/issues/2547#issuecomment-3300352323",
+      "checked": "Maintainer statement that 4.2 tag fixes the issue; not treated as evidence of a uniquely identified fix commit."
+    },
+    {
+      "tool": "collaboration.spawn_agent",
+      "task": "/root/agent_evaluation_pilot/cutlass_verify_check",
+      "kind": "additional automated read-only code review",
+      "scope": "Only added verifier checks and CPU fixtures; replayed the 52-case and 24-case retained matrices. Identified malformed additional summary bypass, which was fixed and regression tested before this report was finalized."
+    }
+  ],
+  "audited_current_source_sha256": {
+    "tools/research/natural-bugs/cutlass_build_pair.py": "ed6223ee7d70ab755b8c25744bbf9ecc309e80598b299b6da996cdc16acff171",
+    "tools/research/natural-bugs/cutlass_backport.py": "4bacd9bfe62bfe905f46de03de438b0a4df535fe8a30e84f232f0ba3bff2604f",
+    "tools/research/natural-bugs/cutlass_run_repro.py": "139c086ec76faa2141b1d823d8ef9afd7a44b9be39eb049730414313a2325025",
+    "tools/research/natural-bugs/cutlass_verify.py": "05a4759931be75689d56a93b532d487ac6563c96fe294d0342f6a04e9fa2196b",
+    "tests/test_cutlass_retained_outputs.py": "30a759961fa61ea7d130ec56b83864a070d66a4724434170208441c4841afc32"
+  },
+  "source_binding": {
+    "pinned_releases": [
+      {
+        "variant": "before",
+        "commit": "e51efbfe18fe4f4cbb66ab814c55bf4aa0185491",
+        "local_tag": "v4.1.0",
+        "archive_files_compared": 854,
+        "archive_sha256": "8c661e5b6a4e728a59bae6861db8f63ceeace719ef898985d606ab6b34182cff",
+        "upstream_source_sha256": "6f7f2f7f2b47696c964c8aef2bc4ff98131f21cb64cc3a21e066cdb5d90333f0",
+        "observed_source_sha256": "a8f54287b2a498646a2798bca073e13534ee5b57147acdc7f60928bbb20e0100",
+        "binary_sha256": "53706081687daf5dbaad76e9ee03cb6cfebd20ee0add0dc637a7e260da625c2a"
+      },
+      {
+        "variant": "after",
+        "commit": "59b61c606fe7aa4d33e60d3e6352cbfde98361c3",
+        "local_tag": "v4.2.0",
+        "archive_files_compared": 878,
+        "archive_sha256": "e7f710c8843e0a3b28d7be5dd36891e6e48938fe288511e82e97055e6748f134",
+        "upstream_source_sha256": "3a2341bd092c7b385519368ebbc9e87297267dd033fa6a316a9ac3c4da6a8cff",
+        "observed_source_sha256": "38cac2b7886e5845f5af27904132c4b9e037f28677fd88ab5aa4c0a196c94f9f",
+        "binary_sha256": "4b802cb46e3e171ae99b4d2f58cdd1965921743de05ac8f0a156e334ac420839"
+      }
+    ],
+    "assertions": [
+      "Each actual extracted library tree matched every file in the corresponding pinned git archive.",
+      "Upstream .cu content and observed .cu SHA matched build records.",
+      "Local binary SHA matched upload metadata and frozen remote matrix.",
+      "Host observation dump occurs after upstream CPU reference and does not change kernel code."
+    ],
+    "backport": {
+      "base_commit": "e51efbfe18fe4f4cbb66ab814c55bf4aa0185491",
+      "guard_source_commit": "59b61c606fe7aa4d33e60d3e6352cbfde98361c3",
+      "base_and_backport_tree_files": 854,
+      "changed_library_files": [
+        "include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp"
+      ],
+      "observed_cu_unchanged": true,
+      "original_header_sha256": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+      "patched_header_sha256": "54bc81ca16d385a8faa8ec9f2b7d218c9f18380e151d5472ebc0e19060d5ff5e",
+      "patch_sha256": "ace71c024fd152382cd3744513bd21dc7e49e81b39b0ac39357140a4a2c4f0b1",
+      "binary_sha256": "a03ff92da5b94a1e8521ffc49a74fcd981c94bcdebb974761b2f1e4923f48ca1",
+      "patch_matches_three_upstream_guard_changes": true
+    }
+  },
+  "retained_result_checks": [
+    {
+      "job": "20261023-cutlass-v1",
+      "retained_matrix": "out/research/modal/20261023-cutlass-v1/artifacts/matrix",
+      "matrix_sha256": "dfe4e0f80f4731dec0cb51e86ecf0b9fcc3e789a05c7392d1e7c31cc6a46c674",
+      "results_sha256": "abe0d65406371d406341ec48dbe8e18a8db73ae4c9d5ff1dc06a56d28427dc6b",
+      "modal_summary_sha256": "a150032db263bc50572ce53bbd7c714d61b0a6620d46aeda8d3f7272704ae48d",
+      "retained_byte_verification": {
+        "format": "cutlass-retained-byte-verification-v1",
+        "status": "verified",
+        "matrix_sha256": "dfe4e0f80f4731dec0cb51e86ecf0b9fcc3e789a05c7392d1e7c31cc6a46c674",
+        "cases": 52,
+        "artifact_hash_checks": 774,
+        "counts": {
+          "outputs": 3375104,
+          "mismatches": 0,
+          "zero_k_mismatches": 0,
+          "zero_k_outputs": 1376256,
+          "zero_k_nonzero_outputs": 540614
+        },
+        "case_results": {
+          "before/normal/passed": 2,
+          "after/normal/passed": 24,
+          "before/normal/execution_error": 12,
+          "before/normal/timeout": 10,
+          "after/memcheck/passed": 4
+        },
+        "oracle": "FP8 E4M3 finite decoder, signed zero numerically equal; all raw bytes, independent K=0 beta*C"
+      },
+      "separate_outer_artifact_and_command_stream_hash_checks": 836,
+      "stdout_groups_reparsed_and_equal": true,
+      "group_ids_unique_and_complete_for_passed": true,
+      "direct_k0_byte_oracle_verified": true,
+      "uploaded_binary_hash_matches_local_build_and_frozen_matrix": true,
+      "remote_gpu_identity": "NVIDIA H100 80GB HBM3, 9.0, 610.57.04, 81559 MiB",
+      "source_sha256": {
+        "cutlass_run_repro.py": "f7a44eceee9eb06b8e7d6f7f140589afbda262eb1e3c0ddd7fe1043ba8933ccd",
+        "cutlass_before": "53706081687daf5dbaad76e9ee03cb6cfebd20ee0add0dc637a7e260da625c2a",
+        "cutlass_after": "4b802cb46e3e171ae99b4d2f58cdd1965921743de05ac8f0a156e334ac420839"
+      }
+    },
+    {
+      "job": "20261023-cutlass-backport-v1",
+      "retained_matrix": "out/research/modal/20261023-cutlass-backport-v1/artifacts/matrix",
+      "matrix_sha256": "0a554c809fb389e7193f9cb0ba80de0c1252ca8ba37e1ffb514fc2ae1aa373a3",
+      "results_sha256": "21e0481b17fc817db491a05f2cf850ae3a812eaf16cdd98bdacbd052018b5f81",
+      "modal_summary_sha256": "82940580af049d5064f524bbd3ace93252e6cb30ca11de5e73a27426f6d5931f",
+      "retained_byte_verification": {
+        "format": "cutlass-retained-byte-verification-v1",
+        "status": "verified",
+        "matrix_sha256": "0a554c809fb389e7193f9cb0ba80de0c1252ca8ba37e1ffb514fc2ae1aa373a3",
+        "cases": 24,
+        "artifact_hash_checks": 636,
+        "counts": {
+          "outputs": 3080192,
+          "mismatches": 0,
+          "zero_k_mismatches": 0,
+          "zero_k_outputs": 1310720,
+          "zero_k_nonzero_outputs": 0
+        },
+        "case_results": {
+          "backport/normal/passed": 12,
+          "after/normal/passed": 12
+        },
+        "oracle": "FP8 E4M3 finite decoder, signed zero numerically equal; all raw bytes, independent K=0 beta*C"
+      },
+      "separate_outer_artifact_and_command_stream_hash_checks": 670,
+      "stdout_groups_reparsed_and_equal": true,
+      "group_ids_unique_and_complete_for_passed": true,
+      "direct_k0_byte_oracle_verified": true,
+      "uploaded_binary_hash_matches_local_build_and_frozen_matrix": true,
+      "remote_gpu_identity": "NVIDIA H100 80GB HBM3, 9.0, 610.57.04, 81559 MiB",
+      "source_sha256": {
+        "cutlass_run_repro.py": "139c086ec76faa2141b1d823d8ef9afd7a44b9be39eb049730414313a2325025",
+        "cutlass_backport": "a03ff92da5b94a1e8521ffc49a74fcd981c94bcdebb974761b2f1e4923f48ca1",
+        "cutlass_after": "4b802cb46e3e171ae99b4d2f58cdd1965921743de05ac8f0a156e334ac420839"
+      }
+    }
+  ],
+  "causal_observation": {
+    "beta0_before_positive_pass": 2,
+    "beta0_before_zero_k_timeout": 10,
+    "timeout_seconds": 10,
+    "beta0_backport_pass": 12,
+    "beta0_backport_former_timeout_configs_pass": 10,
+    "beta1_before_execution_error": 12,
+    "beta1_before_positive_execution_error": 2,
+    "beta1_before_error": "SIGABRT (-6), cutlass::cuda_exception; no per-group outputs.",
+    "after_normal_pass": 24,
+    "after_memcheck_pass_and_clean": 4,
+    "backport_outputs": 1540096,
+    "backport_zero_k_outputs": 655360,
+    "backport_zero_k_nonzero_outputs": 0,
+    "after_beta1_normal_zero_k_outputs": 655360,
+    "after_beta1_normal_zero_k_nonzero_outputs": 491312,
+    "after_beta1_memcheck_zero_k_outputs": 65536,
+    "after_beta1_memcheck_zero_k_nonzero_outputs": 49302,
+    "interpretation": "For the tested beta=0 configurations, the three-guard backport on the unchanged 4.1 base removed all 10 observed empty-K timeouts while preserving both positive controls."
+  },
+  "limitations": [
+    "This migrates the upstream report to H100/CUDA13.1/driver610.57.04 and M=N=128; it is not the original H800/CUDA12.4/M=N=4096 environment. The original 32 K splits were retained for issue32-reduced.",
+    "No TMA descriptor error text appeared in the retained failed logs. Timeouts support bounded noncompletion; no PC trace or dynamic instruction-level evidence identifies an individual wait instruction.",
+    "The three-guard combination is isolated to one library header, but guards were not individually ablated. It does not establish a mathematically minimal necessary patch.",
+    "Old beta=1 fails both nonzero-K positive controls. All 12 beta=1 failures remain a separate confounder; they are not evidence of empty-K causality and beta=1 backport behavior was not tested.",
+    "Only K=0 uses the independent beta*C oracle. K>0 compares all outputs to the retained upstream CPU-reference result; A/B/scaling inputs were not archived for an independent GEMM oracle recomputation.",
+    "The four memcheck runs cover only release 4.2. Neither old-release nor backport sanitizer cleanliness is claimed.",
+    "Each matrix cell has one process invocation; shapes and host modes are not independent natural bugs or estimates of failure frequency. A source-level repair is not an automatic checker root-cause diagnosis."
+  ],
+  "verifier_hardening": {
+    "group_ids": "Integer in range and unique for every record; complete set required only for passed records; arrival order not constrained.",
+    "stdout_binding": "Raw stdout EVIDENCE JSON is reparsed and compared to record groups. Raw stdout/stderr must appear in the checked file manifest.",
+    "sanitizer_binding": "sanitizer_clean must equal memcheck + passed + exit0 + no timeout + raw Compute Sanitizer banner + exactly one complete zero-error summary.",
+    "semantics_preserved": "Failed/timeout records may retain partial or empty groups. Numerical passed and sanitizer_clean remain separate fields. Existing verification JSON files are byte-identical after hardening.",
+    "outer_upload_hash_validation": "Performed separately in the independent review and archive workflow, not coupled into cutlass_verify.py.",
+    "tests": {
+      "command": "python3 -m unittest discover -s tests -p test_cutlass_retained_outputs.py -v",
+      "test_count": 21,
+      "passed": 21,
+      "exit_code": 0,
+      "fixture_hashes_recomputed_after_mutations": true,
+      "coverage": [
+        "duplicate, missing, out-of-range and noninteger IDs",
+        "out-of-order complete evidence",
+        "partial/empty timeout evidence",
+        "stdout-record mismatch and truncated JSON",
+        "truncated full output",
+        "corrupted actual and reference rejected by independent K0 oracle",
+        "unhashed raw stream",
+        "missing/conflicting/nonzero/truncated sanitizer summaries or missing banner",
+        "normal run cannot claim sanitizer clean",
+        "numerical pass with incomplete sanitizer evidence remains separate",
+        "malformed additional summary cannot hide behind a valid zero-error summary",
+        "zero-error text cannot override nonzero exit, timeout or execution_error",
+        "nonzero sanitizer execution preserves valid partial groups"
+      ]
+    },
+    "replays": [
+      "52-case release matrix verified",
+      "24-case backport matrix verified"
+    ],
+    "syntax_check": "python3 -m py_compile passed",
+    "git_diff_check": "passed"
+  },
+  "changed_paths_in_this_followup": [
+    "tools/research/natural-bugs/cutlass_verify.py",
+    "tests/test_cutlass_retained_outputs.py",
+    "out/research/natural-bugs/cutlass/publish/independent-review.json"
+  ],
+  "verification_copies_refreshed": [
+    "out/research/natural-bugs/cutlass/verification-v1.json",
+    "out/research/natural-bugs/cutlass/verification-backport-v1.json",
+    "out/research/natural-bugs/cutlass/publish/verification-v1.json",
+    "out/research/natural-bugs/cutlass/publish/verification-backport-v1.json"
+  ]
+}

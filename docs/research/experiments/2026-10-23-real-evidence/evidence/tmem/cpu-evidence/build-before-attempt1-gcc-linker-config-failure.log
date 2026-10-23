@@ -1,0 +1,133 @@
+* Getting build dependencies for wheel...
+running egg_info
+creating python/triton.egg-info
+writing python/triton.egg-info/PKG-INFO
+writing dependency_links to python/triton.egg-info/dependency_links.txt
+writing entry points to python/triton.egg-info/entry_points.txt
+writing requirements to python/triton.egg-info/requires.txt
+writing top-level names to python/triton.egg-info/top_level.txt
+writing manifest file 'python/triton.egg-info/SOURCES.txt'
+reading manifest file 'python/triton.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '__pycache__' found anywhere in distribution
+warning: no previously-included files matching '__pycache__/*' found anywhere in distribution
+warning: no previously-included files matching '*.py[cod]' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'python/triton.egg-info/SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+running build_ext
+CMake Deprecation Warning at CMakeLists.txt:6 (cmake_policy):
+  The OLD behavior for policy CMP0116 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+
+
+-- The CXX compiler identification is GNU 13.3.0
+-- The C compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - failed
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ - broken
+CMake Error at /home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/cmake/data/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:73 (message):
+  The C++ compiler
+
+    "/usr/bin/c++"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: '/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/build/cmake.linux-x86_64-cpython-3.12/CMakeFiles/CMakeScratch/TryCompile-Gv3AM1'
+    
+    Run Build Command(s): /home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/ninja -v cmTC_594f1
+    [1/2] /usr/bin/c++    -o CMakeFiles/cmTC_594f1.dir/testCXXCompiler.cxx.o -c /home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/build/cmake.linux-x86_64-cpython-3.12/CMakeFiles/CMakeScratch/TryCompile-Gv3AM1/testCXXCompiler.cxx
+    [2/2] : && /usr/bin/c++  -fuse-ld=/usr/bin/ld.lld-17 CMakeFiles/cmTC_594f1.dir/testCXXCompiler.cxx.o -o cmTC_594f1   && :
+    FAILED: [code=1] cmTC_594f1 
+    : && /usr/bin/c++  -fuse-ld=/usr/bin/ld.lld-17 CMakeFiles/cmTC_594f1.dir/testCXXCompiler.cxx.o -o cmTC_594f1   && :
+    c++: error: unrecognized command-line option ‘-fuse-ld=/usr/bin/ld.lld-17’
+    ninja: build stopped: subcommand failed.
+    
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:9 (project)
+
+
+-- Configuring incomplete, errors occurred!
+Traceback (most recent call last):
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/pyproject_hooks/_in_process/_in_process.py", line 406, in <module>
+    main()
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/pyproject_hooks/_in_process/_in_process.py", line 381, in main
+    json_out["return_val"] = hook(**hook_input["kwargs"])
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/pyproject_hooks/_in_process/_in_process.py", line 286, in build_wheel
+    return _build_backend().build_wheel(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/build_meta.py", line 438, in build_wheel
+    return _build(['bdist_wheel'])
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/build_meta.py", line 429, in _build
+    return self._build_with_temp_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/build_meta.py", line 410, in _build_with_temp_dir
+    self.run_setup()
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/build_meta.py", line 317, in run_setup
+    exec(code, locals())  # noqa: S102 # exec is intentional here
+    ^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 604, in <module>
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/__init__.py", line 117, in setup
+    return distutils.core.setup(**attrs)  # type: ignore[return-value]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/core.py", line 168, in setup
+    return run_commands(dist)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/core.py", line 184, in run_commands
+    dist.run_commands()
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1028, in run_commands
+    self.run_command(cmd)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+    super().run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+    cmd_obj.run()
+  File "<string>", line 500, in run
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/command/bdist_wheel.py", line 454, in run
+    self.run_command("build")
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+    self.distribution.run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+    super().run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+    cmd_obj.run()
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/command/build.py", line 137, in run
+    self.run_command(cmd_name)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+    self.distribution.run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+    super().run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+    cmd_obj.run()
+  File "<string>", line 205, in run
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+    self.distribution.run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+    super().run_command(command)
+  File "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+    cmd_obj.run()
+  File "<string>", line 242, in run
+  File "<string>", line 387, in build_extension
+  File "/usr/lib/python3.12/subprocess.py", line 413, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['cmake', '/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b', '-G', 'Ninja', '-DCMAKE_MAKE_PROGRAM=/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '-DLLVM_ENABLE_WERROR=ON', '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/build/lib.linux-x86_64-cpython-312/triton/_C', '-DTRITON_BUILD_PYTHON_MODULE=ON', '-DPython3_EXECUTABLE:FILEPATH=/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/python', '-DPython3_INCLUDE_DIR=/usr/include/python3.12', '-DTRITON_CODEGEN_BACKENDS=nvidia;amd', '-DTRITON_PLUGIN_DIRS=', '-DTRITON_WHEEL_DIR=/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/build/lib.linux-x86_64-cpython-312/triton', '-DTRITON_CACHE_PATH=/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/dependencies/.triton', '-DTRITON_VERSION=3.9.0+git08a3cd43', '-DLLVM_EXTERNAL_LIT=/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/bin/lit', "-Dnanobind_ROOT='/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/build-env/lib/python3.12/site-packages/nanobind/cmake'", '-DCMAKE_BUILD_TYPE=TritonRelBuildWithAsserts', '-DTRITON_EXT_ENABLED=0', '-DTRITON_BUILD_PROTON=OFF', '-DTRITON_CODEGEN_BACKENDS=nvidia', '-DTRITON_BUILD_UT=OFF', '-DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17', '-DCMAKE_MODULE_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17', '-DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=/usr/bin/ld.lld-17']' returned non-zero exit status 1.
+
+TIP pass --env-dir and --sdist-extract-dir to keep the build environment and sources, then see https://build.pypa.io/en/stable/how-to/troubleshooting.html#debug-a-failed-build for help debugging a failed build
+ERROR Backend subprocess exited when trying to invoke build_wheel

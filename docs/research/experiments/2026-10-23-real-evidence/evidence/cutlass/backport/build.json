@@ -1,0 +1,33 @@
+{
+  "schema": "cutlass-empty-k-guard-backport-v1",
+  "base_commit": "e51efbfe18fe4f4cbb66ab814c55bf4aa0185491",
+  "upstream_guard_source": "59b61c606fe7aa4d33e60d3e6352cbfde98361c3",
+  "changed_headers": [
+    "include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp"
+  ],
+  "original_header_sha256": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+  "patched_header_sha256": "54bc81ca16d385a8faa8ec9f2b7d218c9f18380e151d5472ebc0e19060d5ff5e",
+  "patch_sha256": "ace71c024fd152382cd3744513bd21dc7e49e81b39b0ac39357140a4a2c4f0b1",
+  "observed_source_sha256": "a8f54287b2a498646a2798bca073e13534ee5b57147acdc7f60928bbb20e0100",
+  "argv": [
+    "/usr/local/cuda-13.1/bin/nvcc",
+    "-std=c++17",
+    "-O2",
+    "-lineinfo",
+    "-gencode",
+    "arch=compute_90a,code=sm_90a",
+    "--expt-relaxed-constexpr",
+    "--expt-extended-lambda",
+    "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/backport-v1/cutlass_repro.cu",
+    "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/backport-v1/tree/include",
+    "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/backport-v1/tree/tools/util/include",
+    "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/backport-v1/tree/examples/common",
+    "-I/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/backport-v1/tree/examples/68_hopper_fp8_warp_specialized_grouped_gemm_with_blockwise_scaling",
+    "-lcuda",
+    "-o",
+    "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/backport-v1/cutlass_backport"
+  ],
+  "exit_code": 0,
+  "compile_wall_seconds": 38.42018601798918,
+  "binary_sha256": "a03ff92da5b94a1e8521ffc49a74fcd981c94bcdebb974761b2f1e4923f48ca1"
+}

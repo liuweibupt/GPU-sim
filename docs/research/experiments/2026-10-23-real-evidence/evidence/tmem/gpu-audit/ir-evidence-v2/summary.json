@@ -1,0 +1,2351 @@
+{
+  "schema": "natural-tmem-compiler-lifetime-evidence-v1",
+  "modal_summary_sha256": "bb09369e97a0af8eeb7aee040d236146ac3d917d6c9164f430261437526e961b",
+  "gpu_identity_observed_stdout": "NVIDIA B200, 10.0, 610.57.04, 183359 MiB",
+  "build_manifest_sha256": "d43103faac0d53a2cb6f2ed7b7d28e6df3f072ce208fd9b79d06e720c8809356",
+  "analysis_source_sha256": "ea9b45611126f73baebe93d16417850fb9d1d1cc13244ff8d3144c723103f137",
+  "variants": [
+    {
+      "variant": "before",
+      "summary_sha256": "791988ab501ff19c751bbf55cefde3d0696935dae1d75cb2c56bd294d7cc57fe",
+      "source_commit": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "pass_ir_uncompressed_sha256": "bc6b88385e93902ec270b73cff3925fc9bfaa2b6ab3e1e74a59b59f06494839f",
+      "pass_ir_bytes": 12176280,
+      "kernels": [
+        {
+          "kernel_hash": "75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311",
+          "constexpr_values": [
+            "select",
+            64,
+            false
+          ],
+          "tmem_columns": 64,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 0,
+            "ttgir_header_indices": [
+              11,
+              12
+            ],
+            "glir_trimmed_sha256": "2b0382b661d79fccae0877a8e8152b6542afa930bf4e1c514538a9951d7fafd7"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-00-before-allocation.mlir",
+              "sha256": "151ae4d8353c394678ea391bba068d205760b68e6011ebe8c87ec68f5e47d138",
+              "dump_header_index": 16,
+              "original_byte_start": 123467,
+              "original_byte_end": 130868
+            },
+            "before-next-pass": {
+              "path": "before-00-before-next-pass.mlir",
+              "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b",
+              "dump_header_index": 17,
+              "original_byte_start": 131027,
+              "original_byte_end": 138683
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc36)"
+            },
+            {
+              "ssa": "%selected_4",
+              "line": 18,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc37)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 24,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                64
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc29)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 19,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 20,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_4",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 25,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_4"
+            ]
+          },
+          "loads": [
+            {
+              "line": 26,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+            },
+            {
+              "line": 38,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc33)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [
+            {
+              "selected_source": "%selected_4",
+              "selected_source_value": 5.0,
+              "overwriting_allocation": "%temp",
+              "overwriting_value": 7.0,
+              "overlap_columns_half_open": [
+                32,
+                64
+              ],
+              "store_line": 25,
+              "selected_load_line": 26,
+              "scope": "Static possible selected-source lifetime overlap in straight-line compiler IR; not a sampled GPU write/read event."
+            },
+            {
+              "selected_source": "%selected",
+              "selected_source_value": 3.0,
+              "overwriting_allocation": "%temp",
+              "overwriting_value": 7.0,
+              "overlap_columns_half_open": [
+                0,
+                32
+              ],
+              "store_line": 25,
+              "selected_load_line": 26,
+              "scope": "Static possible selected-source lifetime overlap in straight-line compiler IR; not a sampled GPU write/read event."
+            }
+          ],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee",
+          "constexpr_values": [
+            "select",
+            32,
+            false
+          ],
+          "tmem_columns": 64,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 35,
+            "ttgir_header_indices": [
+              46,
+              47
+            ],
+            "glir_trimmed_sha256": "ccec295c16ca9b94be212a0d6e298e9d79040c042b40b6183f2e7dbc5ff4d350"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-01-before-allocation.mlir",
+              "sha256": "b1d2ca1412625ecf058ce8b0cb93fcae1a4c0c1a10383593b0b37fbd9b61e832",
+              "dump_header_index": 51,
+              "original_byte_start": 2187326,
+              "original_byte_end": 2193435
+            },
+            "before-next-pass": {
+              "path": "before-01-before-next-pass.mlir",
+              "sha256": "bc3ca105ea8605c7b4faaab649b4a4974e9c85503decd2c2315bd3dc826861ef",
+              "dump_header_index": 52,
+              "original_byte_start": 2193594,
+              "original_byte_end": 2199958
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 15,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc31)"
+            },
+            {
+              "ssa": "%selected_3",
+              "line": 16,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_3 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc32)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 22,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc26)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 17,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 18,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_3",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_3, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 23,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_3"
+            ]
+          },
+          "loads": [
+            {
+              "line": 24,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc27)"
+            },
+            {
+              "line": 36,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [
+            {
+              "selected_source": "%selected",
+              "selected_source_value": 3.0,
+              "overwriting_allocation": "%temp",
+              "overwriting_value": 7.0,
+              "overlap_columns_half_open": [
+                0,
+                32
+              ],
+              "store_line": 23,
+              "selected_load_line": 24,
+              "scope": "Static possible selected-source lifetime overlap in straight-line compiler IR; not a sampled GPU write/read event."
+            }
+          ],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 32,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 32,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c",
+          "constexpr_values": [
+            "select",
+            0,
+            false
+          ],
+          "tmem_columns": 64,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 70,
+            "ttgir_header_indices": [
+              81,
+              82
+            ],
+            "glir_trimmed_sha256": "aba0fbc7e82c0c38d19436ca0174d42ca69c8d9f074188a3a3f49702a7f92aeb"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-02-before-allocation.mlir",
+              "sha256": "14766fcaa5b4eb3b1ba090bd97ae7c545dffc11afa4793f158b8f925439f153e",
+              "dump_header_index": 86,
+              "original_byte_start": 3278925,
+              "original_byte_end": 3283593
+            },
+            "before-next-pass": {
+              "path": "before-02-before-next-pass.mlir",
+              "sha256": "6917c75a4acd2c6f7f1ff9ad98dacf2ad67b6128811c7fbcf4d9f848fa0ab5c1",
+              "dump_header_index": 87,
+              "original_byte_start": 3283752,
+              "original_byte_end": 3288602
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 14,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc24)"
+            },
+            {
+              "ssa": "%selected_2",
+              "line": 15,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_2 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc25)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 16,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 17,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_2",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_2, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_2"
+            ]
+          },
+          "loads": [
+            {
+              "line": 21,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc21)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 0,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 0,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11",
+          "constexpr_values": [
+            "select",
+            64,
+            true
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 105,
+            "ttgir_header_indices": [
+              116,
+              117
+            ],
+            "glir_trimmed_sha256": "5644e2562f97c5813253141cdb6fadb093cedc29acd5923cf93e9b4fa9e8e32f"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-03-before-allocation.mlir",
+              "sha256": "ae11e2979ac8bc1fc4bff4396f4b4f9055c8a60b96382b67a0d17b7480cb5ec1",
+              "dump_header_index": 121,
+              "original_byte_start": 4005019,
+              "original_byte_end": 4012420
+            },
+            "before-next-pass": {
+              "path": "before-03-before-next-pass.mlir",
+              "sha256": "e18641ba745775c9324c67d7b0045b9c03985c462daa5feff770d14a2690464a",
+              "dump_header_index": 122,
+              "original_byte_start": 4012579,
+              "original_byte_end": 4020237
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc36)"
+            },
+            {
+              "ssa": "%selected_4",
+              "line": 18,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc37)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 21,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                128
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc28)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 19,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 20,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_4",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 25,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_4"
+            ]
+          },
+          "loads": [
+            {
+              "line": 26,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+            },
+            {
+              "line": 38,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc33)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": true,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": true,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb",
+          "constexpr_values": [
+            "first",
+            64,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 140,
+            "ttgir_header_indices": [
+              151,
+              152
+            ],
+            "glir_trimmed_sha256": "51a23abe07bb9d4e0ba1679a01862480af75beb3b04c20522ca1f7e03fe30fe8"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-04-before-allocation.mlir",
+              "sha256": "c75302971320b9eb304a33aef95504d737103fd9fb1526f6837f23f00e579df7",
+              "dump_header_index": 156,
+              "original_byte_start": 6073747,
+              "original_byte_end": 6080516
+            },
+            "before-next-pass": {
+              "path": "before-04-before-next-pass.mlir",
+              "sha256": "f63965a49a1aa51071567fdc29f6ae902553fe4f991053a8d586a38f457ad795",
+              "dump_header_index": 157,
+              "original_byte_start": 6080675,
+              "original_byte_end": 6087701
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%first",
+              "line": 16,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%first = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc23)"
+            },
+            {
+              "ssa": "%second",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%second = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc24)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 20,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                96
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc25)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 18,
+              "value_ssa": "%cst",
+              "destination": "%first",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %first, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 19,
+              "value_ssa": "%cst_0",
+              "destination": "%second",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %second, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 21,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc7)"
+            }
+          ],
+          "descriptor_selects": {},
+          "loads": [
+            {
+              "line": 22,
+              "source": "%first",
+              "raw_line": "%values = ttng.tmem_load %first : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc26)"
+            },
+            {
+              "line": 34,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc29)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "first",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "first",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af",
+          "constexpr_values": [
+            "second",
+            64,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 175,
+            "ttgir_header_indices": [
+              186,
+              187
+            ],
+            "glir_trimmed_sha256": "8cd5711ecb46970fb333662a5fa2e6d3101581d1eea89f0027cb3eba2c2acab0"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-05-before-allocation.mlir",
+              "sha256": "14cdc398ab962cee0e554b109944113448831ca47a23332acca575fc45fe59cb",
+              "dump_header_index": 191,
+              "original_byte_start": 8124060,
+              "original_byte_end": 8130830
+            },
+            "before-next-pass": {
+              "path": "before-05-before-next-pass.mlir",
+              "sha256": "e178c3eaa3e94aa7ff071708f210f5b65cac2b196036171efa84eb38b94e1b3c",
+              "dump_header_index": 192,
+              "original_byte_start": 8130989,
+              "original_byte_end": 8138016
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%first",
+              "line": 16,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%first = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc23)"
+            },
+            {
+              "ssa": "%second",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%second = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc24)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 20,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                128
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc25)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 18,
+              "value_ssa": "%cst",
+              "destination": "%first",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %first, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 19,
+              "value_ssa": "%cst_0",
+              "destination": "%second",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %second, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 21,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc7)"
+            }
+          ],
+          "descriptor_selects": {},
+          "loads": [
+            {
+              "line": 22,
+              "source": "%second",
+              "raw_line": "%values = ttng.tmem_load %second : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc26)"
+            },
+            {
+              "line": 34,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc29)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "second",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "second",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853",
+          "constexpr_values": [
+            "chain",
+            64,
+            false
+          ],
+          "tmem_columns": 64,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 210,
+            "ttgir_header_indices": [
+              221,
+              222
+            ],
+            "glir_trimmed_sha256": "3edb7ae4a367fd0e02cb3f0109f3edf9eee9e76cb3a1a00ee070109fee410cd7"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "before-06-before-allocation.mlir",
+              "sha256": "f61518be199fd654c0992bcc9e6ddd99371919a6ca8c0902a70fd9bd24027956",
+              "dump_header_index": 226,
+              "original_byte_start": 10202552,
+              "original_byte_end": 10210893
+            },
+            "before-next-pass": {
+              "path": "before-06-before-next-pass.mlir",
+              "sha256": "31f90e5626f261d755437d03785374ba3d65f865ce0490fc12505451f4a53b09",
+              "dump_header_index": 227,
+              "original_byte_start": 10211052,
+              "original_byte_end": 10219648
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%alternate",
+              "line": 18,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%alternate = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc44)"
+            },
+            {
+              "ssa": "%alternate_4",
+              "line": 19,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%alternate_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc45)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 30,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                64
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc35)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 20,
+              "value_ssa": "%cst",
+              "destination": "%alternate",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %alternate, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 21,
+              "value_ssa": "%cst_0",
+              "destination": "%alternate_4",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %alternate_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 31,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc14)"
+            }
+          ],
+          "descriptor_selects": {
+            "%selected": [
+              "%alternate",
+              "%alternate_4"
+            ],
+            "%selected_5": [
+              "%alternate_4",
+              "%alternate"
+            ],
+            "%4": [
+              "%selected_5",
+              "%selected"
+            ]
+          },
+          "loads": [
+            {
+              "line": 32,
+              "source": "%4",
+              "raw_line": "%values = ttng.tmem_load %4 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc36)"
+            },
+            {
+              "line": 44,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc39)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [
+            {
+              "selected_source": "%alternate",
+              "selected_source_value": 3.0,
+              "overwriting_allocation": "%temp",
+              "overwriting_value": 7.0,
+              "overlap_columns_half_open": [
+                0,
+                32
+              ],
+              "store_line": 31,
+              "selected_load_line": 32,
+              "scope": "Static possible selected-source lifetime overlap in straight-line compiler IR; not a sampled GPU write/read event."
+            },
+            {
+              "selected_source": "%alternate_4",
+              "selected_source_value": 5.0,
+              "overwriting_allocation": "%temp",
+              "overwriting_value": 7.0,
+              "overlap_columns_half_open": [
+                32,
+                64
+              ],
+              "store_line": 31,
+              "selected_load_line": 32,
+              "scope": "Static possible selected-source lifetime overlap in straight-line compiler IR; not a sampled GPU write/read event."
+            }
+          ],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 0
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 0
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                7.0
+              ],
+              "numeric_correct": false,
+              "selected_source_static_overlap": true,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        }
+      ],
+      "unique_compiled_kernels": 7,
+      "full_output_cases": 16,
+      "static_runtime_consistency_cases": 16
+    },
+    {
+      "variant": "after",
+      "summary_sha256": "f599ababf7a71928036a393b1b7b856f3ef3b790e03f83ad20867de35f05dda9",
+      "source_commit": "0002b46dadfc6f8fbe7464c285651311c709fdc6",
+      "pass_ir_uncompressed_sha256": "7226bfc810e562f2a32ac72d0b81fdc40c2f3a93ebdcd8f4746f67baaf07be33",
+      "pass_ir_bytes": 12182206,
+      "kernels": [
+        {
+          "kernel_hash": "fff701bc0a4b65b1d742e665b755fae6dcb513fb2eea3f03f1f73c1263af1b40",
+          "constexpr_values": [
+            "select",
+            64,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 0,
+            "ttgir_header_indices": [
+              11,
+              12
+            ],
+            "glir_trimmed_sha256": "2b0382b661d79fccae0877a8e8152b6542afa930bf4e1c514538a9951d7fafd7"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-00-before-allocation.mlir",
+              "sha256": "151ae4d8353c394678ea391bba068d205760b68e6011ebe8c87ec68f5e47d138",
+              "dump_header_index": 16,
+              "original_byte_start": 123467,
+              "original_byte_end": 130868
+            },
+            "before-next-pass": {
+              "path": "after-00-before-next-pass.mlir",
+              "sha256": "b05fea0da0e9333f2857763962252bed397f75b9f10f6dcdd017e6b94e496b7b",
+              "dump_header_index": 17,
+              "original_byte_start": 131027,
+              "original_byte_end": 138685
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc36)"
+            },
+            {
+              "ssa": "%selected_4",
+              "line": 18,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc37)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 24,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                128
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc29)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 19,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 20,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_4",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 25,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_4"
+            ]
+          },
+          "loads": [
+            {
+              "line": 26,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+            },
+            {
+              "line": 38,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc33)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "e8f5b32c5c6dad150ceed889d9ce17efbc90ac7d31f21a423e92d55579362f3c",
+          "constexpr_values": [
+            "select",
+            32,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 35,
+            "ttgir_header_indices": [
+              46,
+              47
+            ],
+            "glir_trimmed_sha256": "ccec295c16ca9b94be212a0d6e298e9d79040c042b40b6183f2e7dbc5ff4d350"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-01-before-allocation.mlir",
+              "sha256": "b1d2ca1412625ecf058ce8b0cb93fcae1a4c0c1a10383593b0b37fbd9b61e832",
+              "dump_header_index": 51,
+              "original_byte_start": 2189089,
+              "original_byte_end": 2195198
+            },
+            "before-next-pass": {
+              "path": "after-01-before-next-pass.mlir",
+              "sha256": "0cbcab14dd62d4d48beca8e0b645b49172fbc85fba05b17ee30b73bbbaf6e795",
+              "dump_header_index": 52,
+              "original_byte_start": 2195357,
+              "original_byte_end": 2201723
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 15,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc31)"
+            },
+            {
+              "ssa": "%selected_3",
+              "line": 16,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_3 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc32)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 22,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                96
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc26)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 17,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 18,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_3",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_3, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 23,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_3"
+            ]
+          },
+          "loads": [
+            {
+              "line": 24,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc27)"
+            },
+            {
+              "line": 36,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 32,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 32,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "9e1e9e33a96ce31daecbf7b020ad186dd0714bf7097d6670aed5d6b7abf267f2",
+          "constexpr_values": [
+            "select",
+            0,
+            false
+          ],
+          "tmem_columns": 64,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 70,
+            "ttgir_header_indices": [
+              81,
+              82
+            ],
+            "glir_trimmed_sha256": "aba0fbc7e82c0c38d19436ca0174d42ca69c8d9f074188a3a3f49702a7f92aeb"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-02-before-allocation.mlir",
+              "sha256": "14766fcaa5b4eb3b1ba090bd97ae7c545dffc11afa4793f158b8f925439f153e",
+              "dump_header_index": 86,
+              "original_byte_start": 3283079,
+              "original_byte_end": 3287747
+            },
+            "before-next-pass": {
+              "path": "after-02-before-next-pass.mlir",
+              "sha256": "6917c75a4acd2c6f7f1ff9ad98dacf2ad67b6128811c7fbcf4d9f848fa0ab5c1",
+              "dump_header_index": 87,
+              "original_byte_start": 3287906,
+              "original_byte_end": 3292756
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 14,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc24)"
+            },
+            {
+              "ssa": "%selected_2",
+              "line": 15,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_2 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc25)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 16,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 17,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_2",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_2, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_2"
+            ]
+          },
+          "loads": [
+            {
+              "line": 21,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc21)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 0,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 0,
+                "early": false,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "cd91fbd90e7cfb3a4103244c7a204fc064c6a452987de0e5ec23575fa829957d",
+          "constexpr_values": [
+            "select",
+            64,
+            true
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 105,
+            "ttgir_header_indices": [
+              116,
+              117
+            ],
+            "glir_trimmed_sha256": "5644e2562f97c5813253141cdb6fadb093cedc29acd5923cf93e9b4fa9e8e32f"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-03-before-allocation.mlir",
+              "sha256": "ae11e2979ac8bc1fc4bff4396f4b4f9055c8a60b96382b67a0d17b7480cb5ec1",
+              "dump_header_index": 121,
+              "original_byte_start": 4009173,
+              "original_byte_end": 4016574
+            },
+            "before-next-pass": {
+              "path": "after-03-before-next-pass.mlir",
+              "sha256": "e18641ba745775c9324c67d7b0045b9c03985c462daa5feff770d14a2690464a",
+              "dump_header_index": 122,
+              "original_byte_start": 4016733,
+              "original_byte_end": 4024391
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%selected",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc36)"
+            },
+            {
+              "ssa": "%selected_4",
+              "line": 18,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%selected_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc37)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 21,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                128
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc28)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 19,
+              "value_ssa": "%cst",
+              "destination": "%selected",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 20,
+              "value_ssa": "%cst_0",
+              "destination": "%selected_4",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %selected_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 25,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+            }
+          ],
+          "descriptor_selects": {
+            "%1": [
+              "%selected",
+              "%selected_4"
+            ]
+          },
+          "loads": [
+            {
+              "line": 26,
+              "source": "%1",
+              "raw_line": "%values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+            },
+            {
+              "line": 38,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc33)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": true,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": true,
+                "mode": "select",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "dc9a22f3ef319e1e75bbb867b0abe20eba94c8f55c082cb216bfe6c8a87f6f52",
+          "constexpr_values": [
+            "first",
+            64,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 140,
+            "ttgir_header_indices": [
+              151,
+              152
+            ],
+            "glir_trimmed_sha256": "51a23abe07bb9d4e0ba1679a01862480af75beb3b04c20522ca1f7e03fe30fe8"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-04-before-allocation.mlir",
+              "sha256": "c75302971320b9eb304a33aef95504d737103fd9fb1526f6837f23f00e579df7",
+              "dump_header_index": 156,
+              "original_byte_start": 6077901,
+              "original_byte_end": 6084670
+            },
+            "before-next-pass": {
+              "path": "after-04-before-next-pass.mlir",
+              "sha256": "f63965a49a1aa51071567fdc29f6ae902553fe4f991053a8d586a38f457ad795",
+              "dump_header_index": 157,
+              "original_byte_start": 6084829,
+              "original_byte_end": 6091855
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%first",
+              "line": 16,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%first = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc23)"
+            },
+            {
+              "ssa": "%second",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%second = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc24)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 20,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                96
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc25)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 18,
+              "value_ssa": "%cst",
+              "destination": "%first",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %first, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 19,
+              "value_ssa": "%cst_0",
+              "destination": "%second",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %second, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 21,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc7)"
+            }
+          ],
+          "descriptor_selects": {},
+          "loads": [
+            {
+              "line": 22,
+              "source": "%first",
+              "raw_line": "%values = ttng.tmem_load %first : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc26)"
+            },
+            {
+              "line": 34,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc29)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "first",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "first",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "120b1dda4e5255e081020b4c13df71d7cb611e06b3fa80d9c47c4694598dba7f",
+          "constexpr_values": [
+            "second",
+            64,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 175,
+            "ttgir_header_indices": [
+              186,
+              187
+            ],
+            "glir_trimmed_sha256": "8cd5711ecb46970fb333662a5fa2e6d3101581d1eea89f0027cb3eba2c2acab0"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-05-before-allocation.mlir",
+              "sha256": "14cdc398ab962cee0e554b109944113448831ca47a23332acca575fc45fe59cb",
+              "dump_header_index": 191,
+              "original_byte_start": 8128214,
+              "original_byte_end": 8134984
+            },
+            "before-next-pass": {
+              "path": "after-05-before-next-pass.mlir",
+              "sha256": "e178c3eaa3e94aa7ff071708f210f5b65cac2b196036171efa84eb38b94e1b3c",
+              "dump_header_index": 192,
+              "original_byte_start": 8135143,
+              "original_byte_end": 8142170
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%first",
+              "line": 16,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%first = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc23)"
+            },
+            {
+              "ssa": "%second",
+              "line": 17,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%second = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc24)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 20,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                128
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc25)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 18,
+              "value_ssa": "%cst",
+              "destination": "%first",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %first, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 19,
+              "value_ssa": "%cst_0",
+              "destination": "%second",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %second, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 21,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc7)"
+            }
+          ],
+          "descriptor_selects": {},
+          "loads": [
+            {
+              "line": 22,
+              "source": "%second",
+              "raw_line": "%values = ttng.tmem_load %second : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc26)"
+            },
+            {
+              "line": 34,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc29)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "second",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "second",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        },
+        {
+          "kernel_hash": "cc04ca93f84aa3e4adf7794d98423386a1918427e153246725524bd8594c55c3",
+          "constexpr_values": [
+            "chain",
+            64,
+            false
+          ],
+          "tmem_columns": 128,
+          "binding": {
+            "method": "Exact GLIR and TTGIR text equality after trimming only outer whitespace; no compiler-order assumption.",
+            "glir_header_index": 210,
+            "ttgir_header_indices": [
+              221,
+              222
+            ],
+            "glir_trimmed_sha256": "3edb7ae4a367fd0e02cb3f0109f3edf9eee9e76cb3a1a00ee070109fee410cd7"
+          },
+          "pass_boundary": "Pre-allocation dump followed immediately by pre-proxy-fence dump; latter is allocator output, not a hardware observation.",
+          "source_snapshots": {
+            "before-allocation": {
+              "path": "after-06-before-allocation.mlir",
+              "sha256": "f61518be199fd654c0992bcc9e6ddd99371919a6ca8c0902a70fd9bd24027956",
+              "dump_header_index": 226,
+              "original_byte_start": 10206706,
+              "original_byte_end": 10215047
+            },
+            "before-next-pass": {
+              "path": "after-06-before-next-pass.mlir",
+              "sha256": "16130041fd30e618e072a31fccf51c20f26ca2720c92ea25bf3bb99f88e451d8",
+              "dump_header_index": 227,
+              "original_byte_start": 10215206,
+              "original_byte_end": 10223804
+            }
+          },
+          "allocations": [
+            {
+              "ssa": "%alternate",
+              "line": 18,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 0,
+              "column_interval_half_open": [
+                0,
+                32
+              ],
+              "raw_line": "%alternate = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc44)"
+            },
+            {
+              "ssa": "%alternate_4",
+              "line": 19,
+              "rows": 128,
+              "columns": 32,
+              "row_offset": 0,
+              "column_offset": 32,
+              "column_interval_half_open": [
+                32,
+                64
+              ],
+              "raw_line": "%alternate_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc45)"
+            },
+            {
+              "ssa": "%temp",
+              "line": 30,
+              "rows": 128,
+              "columns": 64,
+              "row_offset": 0,
+              "column_offset": 64,
+              "column_interval_half_open": [
+                64,
+                128
+              ],
+              "raw_line": "%temp = ttng.tmem_alloc {tensor_memory_col_offset = 64 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc35)"
+            }
+          ],
+          "stores": [
+            {
+              "line": 20,
+              "value_ssa": "%cst",
+              "destination": "%alternate",
+              "value": 3.0,
+              "raw_line": "ttng.tmem_store %cst, %alternate, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+            },
+            {
+              "line": 21,
+              "value_ssa": "%cst_0",
+              "destination": "%alternate_4",
+              "value": 5.0,
+              "raw_line": "ttng.tmem_store %cst_0, %alternate_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+            },
+            {
+              "line": 31,
+              "value_ssa": "%cst_1",
+              "destination": "%temp",
+              "value": 7.0,
+              "raw_line": "ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc14)"
+            }
+          ],
+          "descriptor_selects": {
+            "%selected": [
+              "%alternate",
+              "%alternate_4"
+            ],
+            "%selected_5": [
+              "%alternate_4",
+              "%alternate"
+            ],
+            "%4": [
+              "%selected_5",
+              "%selected"
+            ]
+          },
+          "loads": [
+            {
+              "line": 32,
+              "source": "%4",
+              "raw_line": "%values = ttng.tmem_load %4 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc36)"
+            },
+            {
+              "line": 44,
+              "source": "%temp",
+              "raw_line": "%temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc39)"
+            }
+          ],
+          "possible_selected_lifetime_overlaps": [],
+          "cases": [
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 0
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 0
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+              "parameters": {
+                "choice": 0,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 5,
+              "actual_selected_values": [
+                5.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            },
+            {
+              "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+              "parameters": {
+                "choice": 1,
+                "columns": 64,
+                "early": false,
+                "mode": "chain",
+                "outer_choice": 1
+              },
+              "expected_selected_value": 3,
+              "actual_selected_values": [
+                3.0
+              ],
+              "numeric_correct": true,
+              "selected_source_static_overlap": false,
+              "static_overlap_agrees_with_observed_wrong_value": true
+            }
+          ],
+          "ptx_version": "9.4",
+          "ptx_target": "sm_100a"
+        }
+      ],
+      "unique_compiled_kernels": 7,
+      "full_output_cases": 16,
+      "static_runtime_consistency_cases": 16
+    }
+  ],
+  "toolchains": [
+    {
+      "variant": "before",
+      "module_version": "3.9.0",
+      "distribution_version": "3.9.0+git08a3cd43",
+      "libtriton_sha256": "0760030da6ab8a20c51537533a21ebb84743ecd6426d8496480ab4dd44f13280",
+      "ptxas_blackwell_pinned_version": "13.4.59",
+      "ptxas_blackwell_wheel_member": {
+        "path": "triton/backends/nvidia/bin/ptxas-blackwell",
+        "bytes": 51967496,
+        "sha256": "9c2c084df7eb9be48f0502b6938ce2571679b2a78cad1c564b583bd7d9ea3c50"
+      },
+      "ptxas_identity_scope": "Pinned wheel member hash and target-selected backend; remote assembler process executable was not separately traced.",
+      "observed_cuobjdump": {
+        "path": "/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/bin/cuobjdump",
+        "sha256": "8f240516056740fee62c40eec6e1ba5d3d5ab5a309fbba4b0fe26fd54c79767d",
+        "version_stdout": "cuobjdump: NVIDIA (R) fat binary listing tool\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Nov__7_07:23:37_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.80\nBuild cuda_13.1.r13.1/compiler.36836380_0\n",
+        "version_stderr": "",
+        "version_exit_code": 0
+      },
+      "torch_version": "2.12.0+cu130",
+      "torch_cuda_runtime": "13.0"
+    },
+    {
+      "variant": "after",
+      "module_version": "3.9.0",
+      "distribution_version": "3.9.0+git0002b46d",
+      "libtriton_sha256": "109370d1664f5f84358ba71e09697623f1a5325f8d38e48420b1432adc8da097",
+      "ptxas_blackwell_pinned_version": "13.4.59",
+      "ptxas_blackwell_wheel_member": {
+        "path": "triton/backends/nvidia/bin/ptxas-blackwell",
+        "bytes": 51967496,
+        "sha256": "9c2c084df7eb9be48f0502b6938ce2571679b2a78cad1c564b583bd7d9ea3c50"
+      },
+      "ptxas_identity_scope": "Pinned wheel member hash and target-selected backend; remote assembler process executable was not separately traced.",
+      "observed_cuobjdump": {
+        "path": "/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/bin/cuobjdump",
+        "sha256": "8f240516056740fee62c40eec6e1ba5d3d5ab5a309fbba4b0fe26fd54c79767d",
+        "version_stdout": "cuobjdump: NVIDIA (R) fat binary listing tool\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Nov__7_07:23:37_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.80\nBuild cuda_13.1.r13.1/compiler.36836380_0\n",
+        "version_stderr": "",
+        "version_exit_code": 0
+      },
+      "torch_version": "2.12.0+cu130",
+      "torch_cuda_runtime": "13.0"
+    }
+  ],
+  "limits": [
+    "Static IR column intervals are compiler evidence, not hardware address samples or timing.",
+    "Only this upstream straight-line 128-row float32 colStride=1 case is parsed; this is not an evaluated generic bug detector.",
+    "The distinct 3/5/7 values bind source writers to observed outputs in this regression; no internal hardware version tag is sampled.",
+    "One real upstream compiler defect, tested with 16 parameter cases per compiler; not 16 independent real bugs."
+  ]
+}

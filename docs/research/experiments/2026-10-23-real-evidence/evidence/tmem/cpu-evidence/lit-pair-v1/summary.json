@@ -1,0 +1,65 @@
+{
+  "schema": "exact-triton-allocation-lit-pair-v1",
+  "test": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir",
+  "test_sha256": "02041b69057ce5140fc4dea83dff3dc99805ae5f246132cdffb1465c40dc09a6",
+  "filecheck_sha256": "ccba380f7cb51f31ac2df65388c3e0fa9cd337e93bd399813829dd24304932d2",
+  "script_sha256": "9f1978ef6548558b620f97b0635498ab5525231acfdd70157fb4f3e57fae9415",
+  "runs": [
+    {
+      "variant": "before",
+      "source_commit": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+      "triton_opt_sha256": "ea091d9738af257ec0964e2aa174512b6ce04b4bd4b41966f5c0b1a7cf1a6b15",
+      "argv": [
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/build/cmake.linux-x86_64-cpython-3.12/bin/triton-opt",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir",
+        "-split-input-file",
+        "-allow-unregistered-dialect",
+        "-triton-tensor-memory-allocation"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.40295886888634413,
+      "ir_sha256": "c5c299c2bb1c5553c5617aac64d0db0231a8725c1bcb245ab18b35cdce856ad3",
+      "ir_bytes": 34381,
+      "filecheck": {
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/dependencies/.triton/llvm/llvm-b010a18d-ubuntu-x64-1/bin/FileCheck",
+          "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir",
+          "--input-file",
+          "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/before.mlir"
+        ],
+        "exit_code": 1,
+        "stderr_sha256": "1ee94f46acb33670df1e43b7ba0804daf52efab7e1f50ae9ebabb090f391dc9a",
+        "stderr_bytes": 15040
+      }
+    },
+    {
+      "variant": "after",
+      "source_commit": "0002b46dadfc6f8fbe7464c285651311c709fdc6",
+      "triton_opt_sha256": "0f4965f38376a53848b74dda451b32140048784496c383ad1fa45c6c10672fbd",
+      "argv": [
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/build/cmake.linux-x86_64-cpython-3.12/bin/triton-opt",
+        "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir",
+        "-split-input-file",
+        "-allow-unregistered-dialect",
+        "-triton-tensor-memory-allocation"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.40964372199960053,
+      "ir_sha256": "8781993be14b95131d04eaf2ad033d847b45823df9e1afde227524139100c3d7",
+      "ir_bytes": 34389,
+      "filecheck": {
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/dependencies/.triton/llvm/llvm-b010a18d-ubuntu-x64-1/bin/FileCheck",
+          "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir",
+          "--input-file",
+          "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/lit-pair-v1/after.mlir"
+        ],
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0
+      }
+    }
+  ],
+  "scope": "CPU compilation of unchanged upstream fixed-commit lit file; not hardware execution.",
+  "expected_regression_transition_observed": true
+}

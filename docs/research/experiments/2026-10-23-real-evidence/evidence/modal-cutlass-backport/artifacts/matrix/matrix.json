@@ -1,0 +1,468 @@
+{
+  "schema": "cutlass-zero-k-matrix-v1",
+  "frozen_utc": "2026-10-23T12:51:35.307757+00:00",
+  "adaptations": [
+    "M=N=128 instead of original 4096",
+    "grouped example 68 (issue text names 67)",
+    "separate process per host-shape mode",
+    "host-only full output observation"
+  ],
+  "binary_sha256": {
+    "backport": "a03ff92da5b94a1e8521ffc49a74fcd981c94bcdebb974761b2f1e4923f48ca1",
+    "after": "4b802cb46e3e171ae99b4d2f58cdd1965921743de05ac8f0a156e334ac420839"
+  },
+  "matrix": [
+    {
+      "variant": "backport",
+      "case": "positive",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "positive",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "positive",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "positive",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "zero-first",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "zero-first",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "zero-first",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "zero-first",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "zero-middle",
+      "k": [
+        128,
+        0,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "zero-middle",
+      "k": [
+        128,
+        0,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "zero-middle",
+      "k": [
+        128,
+        0,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "zero-middle",
+      "k": [
+        128,
+        0,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "zero-last",
+      "k": [
+        128,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "zero-last",
+      "k": [
+        128,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "zero-last",
+      "k": [
+        128,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "zero-last",
+      "k": [
+        128,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "all-zero",
+      "k": [
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "all-zero",
+      "k": [
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "all-zero",
+      "k": [
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "all-zero",
+      "k": [
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "issue32-reduced",
+      "k": [
+        0,
+        768,
+        384,
+        0,
+        0,
+        0,
+        0,
+        256,
+        0,
+        0,
+        1408,
+        0,
+        256,
+        768,
+        256,
+        128,
+        384,
+        384,
+        0,
+        640,
+        0,
+        128,
+        384,
+        512,
+        0,
+        0,
+        128,
+        128,
+        0,
+        128,
+        0,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "issue32-reduced",
+      "k": [
+        0,
+        768,
+        384,
+        0,
+        0,
+        0,
+        0,
+        256,
+        0,
+        0,
+        1408,
+        0,
+        256,
+        768,
+        256,
+        128,
+        384,
+        384,
+        0,
+        640,
+        0,
+        128,
+        384,
+        512,
+        0,
+        0,
+        128,
+        128,
+        0,
+        128,
+        0,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "backport",
+      "case": "issue32-reduced",
+      "k": [
+        0,
+        768,
+        384,
+        0,
+        0,
+        0,
+        0,
+        256,
+        0,
+        0,
+        1408,
+        0,
+        256,
+        768,
+        256,
+        128,
+        384,
+        384,
+        0,
+        640,
+        0,
+        128,
+        384,
+        512,
+        0,
+        0,
+        128,
+        128,
+        0,
+        128,
+        0,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    },
+    {
+      "variant": "after",
+      "case": "issue32-reduced",
+      "k": [
+        0,
+        768,
+        384,
+        0,
+        0,
+        0,
+        0,
+        256,
+        0,
+        0,
+        1408,
+        0,
+        256,
+        768,
+        256,
+        128,
+        384,
+        384,
+        0,
+        640,
+        0,
+        128,
+        384,
+        512,
+        0,
+        0,
+        128,
+        128,
+        0,
+        128,
+        0,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "beta": 0,
+      "tool": "normal"
+    }
+  ]
+}

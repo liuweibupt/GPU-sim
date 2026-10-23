@@ -1,0 +1,16 @@
+{
+  "issue": "https://github.com/NVIDIA/cutlass/issues/2547",
+  "release_pair": "4.1 vs 4.2",
+  "independent_backport": "only 3 upstream empty-K guards on 4.1, no other library headers changed",
+  "fixed_scope": "beta=0 zero-K hangs",
+  "confounder": "beta=1 before release also fails nonzero K, not attributed to zero K",
+  "host_observation": "original kernel source with host-only dump after full upstream reference",
+  "original_shape": "M=N=4096; original32groupK retained in issue32-reduced",
+  "tested_shape": "M=N=128",
+  "not_claimed": [
+    "exact original shape/environment reproduction",
+    "general bug detection accuracy",
+    "automatic causal checker diagnosis",
+    "production performance benefit"
+  ]
+}

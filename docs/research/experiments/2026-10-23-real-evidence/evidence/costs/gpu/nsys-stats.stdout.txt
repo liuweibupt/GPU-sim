@@ -1,0 +1,53 @@
+Generating SQLite file /home/liuwei/GPU-sim/out/research/costs/version-20261023-v4/collection.sqlite from /home/liuwei/GPU-sim/out/research/costs/version-20261023-v4/collection.nsys-rep
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v4/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)                   Name                  
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  ---------------------------------------
+     35.6          8138212         12  678184.3    7065.0      2360   4016276    1432930.4  cudaFreeHost                           
+     28.7          6556904         96   68301.1   12270.0      2009    384084     110904.5  cudaEventSynchronize                   
+     10.5          2390285         12  199190.4    4760.0      1690    534846     244416.4  cudaHostAlloc                          
+      7.2          1641768         64   25652.6   15240.5      7890     80021      21329.9  cudaGraphLaunch_v10000                 
+      3.2           721124        128    5633.8    2380.0      1831     30941       6632.1  cudaMemcpyAsync                        
+      3.0           686607         12   57217.3   21181.0      3520    182762      64827.2  cudaFree                               
+      2.5           576870        192    3004.5    2710.0      2380      6640        821.1  cudaEventRecord                        
+      2.2           511806         12   42650.5    3925.0      1880    158072      56221.0  cudaMalloc                             
+      2.1           471454          8   58931.8   17540.0      8360    319264     106359.8  cudaGraphInstantiate_v12000            
+      1.6           363900         64    5685.9    3880.0      2200     14720       3731.2  cudaStreamSynchronize                  
+      1.5           332944         64    5202.3    2235.0       330     21940       6441.7  cudaGraphExecKernelNodeSetParams_v10010
+      1.1           245072         16   15317.0    1060.0       460    214293      53121.2  cudaGraphAddEventRecordNode_v11010     
+      0.5           119042          8   14880.3   12630.5      4551     35060      10171.9  cudaGraphExecDestroy_v10000            
+      0.2            42390          8    5298.8    3920.0      1750     12540       3919.8  cudaGraphAddKernelNode_v10000          
+      0.1            19210          8    2401.3    1175.0       500      9020       2865.8  cudaGraphCreate_v10000                 
+      0.1            18010          8    2251.3    2075.0       620      4530       1635.9  cudaEventCreate                        
+      0.1            15590          8    1948.8    1845.0      1200      2750        609.2  cudaGraphDestroy_v10000                
+      0.0             9000          8    1125.0     830.0       430      2730        809.3  cudaEventDestroy                       
+      0.0             1830          1    1830.0    1830.0      1830      1830          0.0  cuModuleGetLoadingMode                 
+      0.0              830          1     830.0     830.0       830       830          0.0  cudaGetDeviceProperties_v2_v12000      
+
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v4/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)                                          Name                                         
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  -------------------------------------------------------------------------------------
+     73.7           147937         32    4623.0    2224.0      1088     13216       5000.0  void cost_version_probe<(bool)1>(int, int, unsigned int, bool, int *, int *, Event *)
+     26.3            52800         32    1650.0    1200.0       928      3584        972.1  void cost_version_probe<(bool)0>(int, int, unsigned int, bool, int *, int *, Event *)
+
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v4/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Time) (cuda_gpu_mem_time_sum):
+
+ Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)           Operation          
+ --------  ---------------  -----  --------  --------  --------  --------  -----------  ----------------------------
+    100.0          6384882    128   49881.9   10864.0       864    223715      74545.7  [CUDA memcpy Device-to-Host]
+
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v4/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Size) (cuda_gpu_mem_size_sum):
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)           Operation          
+ ----------  -----  --------  --------  --------  --------  -----------  ----------------------------
+     41.775    128     0.326     0.070     0.000     1.475        0.493  [CUDA memcpy Device-to-Host]
+

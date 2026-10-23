@@ -2,6 +2,8 @@
 
 日期：2026-10-23。研究阶段：受控实机机制验证与 agent development pilot；不是已完成的 TOG/VIS 投稿实验。接续[语义实验](../2026-10-23-semantics/report.md)，评价与投稿调整见[agent 评价边界](../../agent-evaluation-scope.md)。
 
+后续同日新增[公开故障修复、真实 AI CUDA 候选隐藏测试与成本](../2026-10-23-real-evidence/report.md)。以下保留本阶段的原始分母和当时边界；后续结果不回填为本阶段实验。
+
 交互证据：[双架构 TMA 全部运行](modern-evidence.html) · [B200 tcgen05 三版本代表运行](tcgen05-evidence.html)。两页离线可打开，显示实际输出、完整 generation、成功 wait、源合同和记录 SHA，不把代际排列伪装成硬件时间线。
 
 ## 1. 当前实际证据

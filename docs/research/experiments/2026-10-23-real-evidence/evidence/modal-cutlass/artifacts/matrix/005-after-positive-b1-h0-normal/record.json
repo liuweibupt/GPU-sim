@@ -1,0 +1,127 @@
+{
+  "id": "005-after-positive-b1-h0-normal",
+  "variant": "after",
+  "case": "positive",
+  "k": [
+    128,
+    256,
+    128
+  ],
+  "m": 128,
+  "n": 128,
+  "host_shapes": 0,
+  "beta": 1,
+  "tool": "normal",
+  "argv": [
+    "/tmp/gpu-semantic-evidence/cutlass_after",
+    "--benchmark=shapes.txt",
+    "--iterations=0",
+    "--raster=h",
+    "--swizzle=1",
+    "--alpha=1",
+    "--beta=1",
+    "--host-shapes=0"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "command_wall_seconds": 0.3914466619999999,
+  "groups": [
+    {
+      "group": 0,
+      "m": 128,
+      "n": 128,
+      "k": 128,
+      "beta": 1,
+      "outputs": 16384,
+      "mismatches": 0,
+      "zero_k_mismatches": 0
+    },
+    {
+      "group": 1,
+      "m": 128,
+      "n": 128,
+      "k": 256,
+      "beta": 1,
+      "outputs": 16384,
+      "mismatches": 0,
+      "zero_k_mismatches": 0
+    },
+    {
+      "group": 2,
+      "m": 128,
+      "n": 128,
+      "k": 128,
+      "beta": 1,
+      "outputs": 16384,
+      "mismatches": 0,
+      "zero_k_mismatches": 0
+    }
+  ],
+  "outputs_checked": 49152,
+  "mismatches": 0,
+  "zero_k_mismatches": 0,
+  "result": "passed",
+  "sanitizer_clean": false,
+  "files": [
+    {
+      "path": "group-0-c.bin",
+      "bytes": 16384,
+      "sha256": "62b2b6ba5790e7e3c33af970bb7f8577de94b60db027e63487c3eb8329f6357e"
+    },
+    {
+      "path": "group-0-observed.bin",
+      "bytes": 16384,
+      "sha256": "62b2b6ba5790e7e3c33af970bb7f8577de94b60db027e63487c3eb8329f6357e"
+    },
+    {
+      "path": "group-0-reference.bin",
+      "bytes": 16384,
+      "sha256": "62b2b6ba5790e7e3c33af970bb7f8577de94b60db027e63487c3eb8329f6357e"
+    },
+    {
+      "path": "group-1-c.bin",
+      "bytes": 16384,
+      "sha256": "a1d76302fd6a4f0d97ac20292c77e59e3645bd254796defc26c91dd15f8f8780"
+    },
+    {
+      "path": "group-1-observed.bin",
+      "bytes": 16384,
+      "sha256": "58398adb8e1e260c81ab932e20cef4181623f3d5b6589b29dcb9c68a7d6b9516"
+    },
+    {
+      "path": "group-1-reference.bin",
+      "bytes": 16384,
+      "sha256": "58398adb8e1e260c81ab932e20cef4181623f3d5b6589b29dcb9c68a7d6b9516"
+    },
+    {
+      "path": "group-2-c.bin",
+      "bytes": 16384,
+      "sha256": "8fc79c9bf150c1e508efa8106301b54b321a70d84aea01473e254dd9b1909ca9"
+    },
+    {
+      "path": "group-2-observed.bin",
+      "bytes": 16384,
+      "sha256": "a0e2afbe8c51e9e9c05ea6f96ee6a06d699fdfc061a4726334304e339d6ac1a9"
+    },
+    {
+      "path": "group-2-reference.bin",
+      "bytes": 16384,
+      "sha256": "a0e2afbe8c51e9e9c05ea6f96ee6a06d699fdfc061a4726334304e339d6ac1a9"
+    },
+    {
+      "path": "shapes.txt",
+      "bytes": 42,
+      "sha256": "0e8d51579119bd4eb86afa12bba67fb97a0c6a62e71436204f5a8ebc89935a7f"
+    },
+    {
+      "path": "stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stdout.txt",
+      "bytes": 750,
+      "sha256": "87f4f7cfe27e33d0997a2e719a2b530dfb7a28b3be50a63fb3e820329b3aefc1"
+    }
+  ]
+}

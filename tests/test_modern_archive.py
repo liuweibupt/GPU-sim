@@ -43,6 +43,25 @@ class ModernArchive(unittest.TestCase):
             with self.assertRaises(ValueError):
                 M.validate_modal(root)
 
+    def test_omitted_binary_binding_and_tampering(self):
+        import json
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for name in ('job.json', 'run_gpu_evidence.py'):
+                (root / name).write_text(name)
+            entry = {'name': 'probe', 'sha256': 'a' * 64, 'bytes': 321, 'omitted': 'compiled executable'}
+            (root / 'probe.sha256.json').write_text(json.dumps(entry))
+            summary = {'format': 'modal-gpu-evidence-job-v1',
+                       'job_sha256': M.sha(b'job.json'),
+                       'runner_sha256': M.sha(b'run_gpu_evidence.py'),
+                       'source_sha256': {'probe': 'a' * 64}, 'source_records': [entry]}
+            (root / 'summary.json').write_text(json.dumps(summary))
+            self.assertEqual(M.validate_modal(root), 3)
+            entry['sha256'] = 'b' * 64
+            (root / 'probe.sha256.json').write_text(json.dumps(entry))
+            with self.assertRaises(ValueError):
+                M.validate_modal(root)
+
 
 if __name__ == "__main__":
     unittest.main()

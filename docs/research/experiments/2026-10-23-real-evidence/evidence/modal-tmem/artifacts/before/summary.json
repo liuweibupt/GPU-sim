@@ -1,0 +1,1197 @@
+{
+  "schema": "natural-tmem-upstream-regression-v1",
+  "variant": "before",
+  "source_commit": "08a3cd4364d87bf2c281067f7a40e17808f22e7b",
+  "source_archive_sha256": "9f1ecc747273db6db642da54b597c9de51d3694c03dec9367206abf7423603b6",
+  "allocator_source_sha256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+  "build_manifest_sha256": "d43103faac0d53a2cb6f2ed7b7d28e6df3f072ce208fd9b79d06e720c8809356",
+  "wheel_sha256": "2c6656f868344cddb8f792bb34270a2cb7c8cb6d4da137973fce5ff9f4c9b80c",
+  "libtriton_sha256": "0760030da6ab8a20c51537533a21ebb84743ecd6426d8496480ab4dd44f13280",
+  "runner_sha256": "13d2006b43da0bd85d9d149f19c50af83a29f8aec9f980630f167b7db4baa70a",
+  "upstream": {
+    "schema": "upstream-test-extraction-v1",
+    "url": "https://raw.githubusercontent.com/1sgtpepper/triton/1f33b120daccd127b9f464623fb960f3d5ece536/python/test/gluon/test_core.py",
+    "upstream_commit": "1f33b120daccd127b9f464623fb960f3d5ece536",
+    "source_sha256": "b5eee96aa509b5d86db7fafa39104daf130a613644d3fdeafaa42a61fb62fae4",
+    "first_line": 6114,
+    "last_line": 6184,
+    "function_and_decorators_sha256": "df8cdfe3917207f6fa6e7ce30478152c12f7c7b83bf2055d5886e707ecaf6462",
+    "module_sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+    "extraction": "Exact full test function and all decorators, with minimal import dependencies; no kernel, parameters or assertions changed.",
+    "license": "MIT; upstream Triton LICENSE accompanies downloaded source archive.",
+    "license_path": "tmem_upstream_LICENSE.txt",
+    "license_sha256": "92640fb97222fd0a698ff28ce0c3782c172623f8d6c609b557636a80f28fb946"
+  },
+  "started_utc": "2026-10-23T13:09:43.901628+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.39",
+  "torch_version": "2.12.0+cu130",
+  "torch_cuda": "13.0",
+  "triton_version": "3.9.0",
+  "triton_distribution_version": "3.9.0+git08a3cd43",
+  "gpu": "NVIDIA B200",
+  "compute_capability": [
+    10,
+    0
+  ],
+  "mlir_pass_dump_enabled": true,
+  "mlir_pass_dump_scope": "Official enable_debug IR printer before passes; compiler context multithreading disabled when requested. No pass additions, IR edits, or in-kernel instrumentation.",
+  "host_observation": "Observe the first two torch.empty tensors; unchanged upstream test/kernel/assertions. Copy valid outputs only after the test call completes or raises.",
+  "claims": "Numerical/compiler regression only; no performance, hardware timeline, or sampled TMEM tag claim.",
+  "runs": [
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-00.json.gz",
+        "sha256": "9a854d0af386615c41c8e2e9a29a9d42303e643dc929a9b69aa63cfca82fd4ba",
+        "bytes": 11784,
+        "uncompressed_sha256": "f396ed5b425b3df48d2e787cb709981cead77e675cb38b4da943a621ac9e58d2"
+      },
+      "compiled_kernel_hashes": [
+        "75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-01.json.gz",
+        "sha256": "6dd65dff2b7ceccb961fae3fc55ae4b5390c476c751f972e969e01a8fdf739e1",
+        "bytes": 11787,
+        "uncompressed_sha256": "10b03f66e82bee4a2a6fb0671b31f6719a64ed40de56286018565004582dcadc"
+      },
+      "compiled_kernel_hashes": [
+        "75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-02.json.gz",
+        "sha256": "bc3b4fa806c0dc84b37e90190cea760477ed5ad868cdff94dc1ca37589204bc9",
+        "bytes": 1882,
+        "uncompressed_sha256": "d71e57b64d0ecf8209dfa6fc5a0b78e2a13b96c636df8925af4cf8bfde439637"
+      },
+      "compiled_kernel_hashes": [
+        "52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 8192
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-03.json.gz",
+        "sha256": "9a138360e596eab1704923a16e2fc6d61bfa8708958f21662f0a325365bac927",
+        "bytes": 11613,
+        "uncompressed_sha256": "bc5008b66c540ced37eb9534dbae674a43650b1fafb30c9f06b126930087db6e"
+      },
+      "compiled_kernel_hashes": [
+        "52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 8192
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-04.json.gz",
+        "sha256": "8c99b869e6268a057ad1973aa00c9a6aaf36bddaf2903ae7351c9fa2e1a58a96",
+        "bytes": 1691,
+        "uncompressed_sha256": "c252a97afc201091ffdaabb7ff4404956b62a94bf1861e9b39935653d7e8d941"
+      },
+      "compiled_kernel_hashes": [
+        "dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 4096
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-05.json.gz",
+        "sha256": "60b49e7f169e631805381d3cca9dd7358cabdbebefcc99c83efddc5ab7163bb4",
+        "bytes": 1696,
+        "uncompressed_sha256": "93ad8f98baee8ff6a175c17727257402368716360a847e7026337c3c99c10a5d"
+      },
+      "compiled_kernel_hashes": [
+        "dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 4096
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-06.json.gz",
+        "sha256": "4f93f060a78d063a6731a4b7b766a8f44fd2686b3fd39cccd53a12c63a0ba0b0",
+        "bytes": 1959,
+        "uncompressed_sha256": "02b0af13027c43e322975ed888a7c90062c6aae83ca3f9efb6f5432a2bfac6b4"
+      },
+      "compiled_kernel_hashes": [
+        "694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "parameters": {
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-07.json.gz",
+        "sha256": "51a59f2239eb7d486e11550ce9e94736711f6938c7663dc4dda22f6c9af9b45f",
+        "bytes": 1960,
+        "uncompressed_sha256": "8f06deca4e73987999aa8b88236d559fb730baf5b6e50eebe7a0fcf853256d55"
+      },
+      "compiled_kernel_hashes": [
+        "694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "parameters": {
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-08.json.gz",
+        "sha256": "30c09334886708077812fde0d1c750d389ca7923bab3f4d51ebd6e66570f09f2",
+        "bytes": 1960,
+        "uncompressed_sha256": "18ccbf7c8bc8f4003e896d78f6405ad0740de109e49378bc6401e7507f30eaba"
+      },
+      "compiled_kernel_hashes": [
+        "631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "parameters": {
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-09.json.gz",
+        "sha256": "c40dc8c5c68325f9626cf2bb271c41dcb685615a49d2494077fd7c55d8ad26c5",
+        "bytes": 1959,
+        "uncompressed_sha256": "10e9681d4ca2b094dd332935d91370708f2155905e3393caaa3af895447e371f"
+      },
+      "compiled_kernel_hashes": [
+        "631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "parameters": {
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-10.json.gz",
+        "sha256": "1b11c3d11e884facd8a1d905800199e71699b0a5e9e5a96940e0b15780b51144",
+        "bytes": 1961,
+        "uncompressed_sha256": "38205b33e81a7632ec4989b8e8c3faf04236c19934980deaa6dd924e913a731a"
+      },
+      "compiled_kernel_hashes": [
+        "17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "parameters": {
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-11.json.gz",
+        "sha256": "000dff6ad84df0cd28fc59ecd4c05d24e640f6796611a1c0c65101795c13baff",
+        "bytes": 1961,
+        "uncompressed_sha256": "8bd30c93b2404f464027d58a2dc5b950ad06225df5a474f13008ff1bf229bade"
+      },
+      "compiled_kernel_hashes": [
+        "17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af"
+      ],
+      "numeric_correct": true,
+      "mismatch_count": 0,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-12.json.gz",
+        "sha256": "c2de93841626ae5c399397f58adab96dbc0f83a6d7d1ddde7d6078b0f0ae1666",
+        "bytes": 11785,
+        "uncompressed_sha256": "77add248233a32d9d0d6bbd883cfbefe89d2028f4fdd25d9baa5c219b3419ab4"
+      },
+      "compiled_kernel_hashes": [
+        "43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-13.json.gz",
+        "sha256": "c6f6af60e49e6a996b70c6964ae3978190a656f031c6bf573fb6faf7b3da1ca1",
+        "bytes": 11786,
+        "uncompressed_sha256": "b51ff7cf2c0e1b58523d3e4b3e6d4fdcf9cfce4d1b66cc01b6b6755aca97b0be"
+      },
+      "compiled_kernel_hashes": [
+        "43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 0
+      },
+      "artifact": {
+        "path": "case-14.json.gz",
+        "sha256": "ffdb912129b3ab0eb42d8db88d7414866cb2b6e84f415c38c52c00b414532e88",
+        "bytes": 11785,
+        "uncompressed_sha256": "6f13458b93f8829b46b92618002524dbb5dd236d38603a77ab7878e299f9a228"
+      },
+      "compiled_kernel_hashes": [
+        "43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 12288
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "parameters": {
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1,
+        "choice": 1
+      },
+      "artifact": {
+        "path": "case-15.json.gz",
+        "sha256": "de43fb21d4d41c28fdf1b367061ebdffbcbd497c6e39c948903455c1c805d13f",
+        "bytes": 11786,
+        "uncompressed_sha256": "209fa8e847a3e432a971a554ee0a33fdeeeafb6dbd68113b2cf8574a799344cd"
+      },
+      "compiled_kernel_hashes": [
+        "43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853"
+      ],
+      "numeric_correct": false,
+      "mismatch_count": 4096,
+      "output_elements": 12288
+    }
+  ],
+  "reports": [
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 0, mode = 'select', columns = 64, early = False, outer_choice = 1\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 2.0 at index (0, 0)\nE       Greatest relative difference: 0.4000000059604645 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 1, mode = 'select', columns = 64, early = False, outer_choice = 1\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 4.0 at index (0, 0)\nE       Greatest relative difference: 1.3333333730697632 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 1, mode = 'select', columns = 32, early = False, outer_choice = 1\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 4.0 at index (0, 0)\nE       Greatest relative difference: 1.3333333730697632 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-32-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-0-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[select-64-True-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[first-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "when": "call",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[second-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 0, mode = 'chain', columns = 64, early = False, outer_choice = 0\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 4.0 at index (0, 0)\nE       Greatest relative difference: 1.3333333730697632 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 1, mode = 'chain', columns = 64, early = False, outer_choice = 0\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 2.0 at index (0, 0)\nE       Greatest relative difference: 0.4000000059604645 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-0-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 0, mode = 'chain', columns = 64, early = False, outer_choice = 1\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 2.0 at index (0, 0)\nE       Greatest relative difference: 0.4000000059604645 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-0]",
+      "when": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "when": "setup",
+      "outcome": "passed"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "when": "call",
+      "outcome": "failed",
+      "failure": "choice = 1, mode = 'chain', columns = 64, early = False, outer_choice = 1\n\n    @pytest.mark.skipif(not is_blackwell(), reason=\"Requires Blackwell\")\n    @pytest.mark.parametrize(\"choice\", [0, 1])\n    @pytest.mark.parametrize(\"mode,columns,early,outer_choice\", [\n        (\"select\", 64, False, 1),\n        (\"select\", 32, False, 1),\n        (\"select\", 0, False, 1),\n        (\"select\", 64, True, 1),\n        (\"first\", 64, False, 1),\n        (\"second\", 64, False, 1),\n        (\"chain\", 64, False, 0),\n        (\"chain\", 64, False, 1),\n    ])\n    def test_tmem_selected_descriptor_lifetime(choice, mode, columns, early, outer_choice):\n    \n        @gluon.jit\n        def kernel(selector, out, temp_out, MODE: ttgl.constexpr, TEMP_COLS: ttgl.constexpr, EARLY_TEMP: ttgl.constexpr):\n            layout: ttgl.constexpr = TensorMemoryLayout([128, 32], 1)\n            first = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            second = allocate_tensor_memory(ttgl.float32, [128, 32], layout)\n            first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))\n            second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))\n            if TEMP_COLS > 0 and EARLY_TEMP:\n                temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n    \n            # This load is a uniform scalar. The condition is not a compile-time argument.\n            choice = ttgl.load(selector)\n            if MODE == \"select\" or MODE == \"chain\":\n                if choice != 0:\n                    selected = first\n                else:\n                    selected = second\n            elif MODE == \"first\":\n                selected = first\n            else:\n                selected = second\n    \n            if MODE == \"chain\":\n                if choice != 0:\n                    alternate = second\n                else:\n                    alternate = first\n                if ttgl.load(selector + 1) == 0:\n                    selected = alternate\n    \n            if TEMP_COLS > 0:\n                if not EARLY_TEMP:\n                    temp = allocate_tensor_memory(ttgl.float32, [128, TEMP_COLS], layout)\n                temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))\n    \n            values = selected.load()\n            reg: ttgl.constexpr = values.type.layout\n            r = ttgl.arange(0, 128, ttgl.SliceLayout(1, reg))[:, None]\n            c = ttgl.arange(0, 32, ttgl.SliceLayout(0, reg))[None, :]\n            ttgl.store(out + r * 32 + c, values)\n            if TEMP_COLS > 0:\n                temporary = temp.load()\n                treg: ttgl.constexpr = temporary.type.layout\n                tr = ttgl.arange(0, 128, ttgl.SliceLayout(1, treg))[:, None]\n                tc = ttgl.arange(0, TEMP_COLS, ttgl.SliceLayout(0, treg))[None, :]\n                ttgl.store(temp_out + tr * TEMP_COLS + tc, temporary)\n    \n        selector = torch.tensor([choice, outer_choice], device=\"cuda\", dtype=torch.int32)\n        out = torch.empty((128, 32), device=\"cuda\", dtype=torch.float32)\n        temporary = torch.empty((128, max(1, columns)), device=\"cuda\", dtype=torch.float32)\n        kernel[(1, )](selector, out, temporary, mode, columns, early, num_warps=4)\n        expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5\n        if mode == \"chain\":\n            expected = 3 if choice == outer_choice else 5\n>       torch.testing.assert_close(out, torch.full_like(out, expected), atol=0, rtol=0)\nE       AssertionError: Tensor-likes are not equal!\nE       \nE       Mismatched elements: 4096 / 4096 (100.0%)\nE       Greatest absolute difference: 4.0 at index (0, 0)\nE       Greatest relative difference: 1.3333333730697632 at index (0, 0)\n\ntmem_upstream_regression.py:78: AssertionError"
+    },
+    {
+      "id": "tmem_upstream_regression.py::test_tmem_selected_descriptor_lifetime[chain-64-False-1-1]",
+      "when": "teardown",
+      "outcome": "passed"
+    }
+  ],
+  "pytest_exit_code": 1,
+  "counts": {
+    "failed": 7,
+    "passed": 9
+  },
+  "numeric_correct_cases": 9,
+  "numeric_wrong_cases": 7,
+  "output_elements": 172032,
+  "mismatch_elements": 28672,
+  "cuobjdump": {
+    "path": "/opt/repro/lib/python3.12/site-packages/triton/backends/nvidia/bin/cuobjdump",
+    "sha256": "8f240516056740fee62c40eec6e1ba5d3d5ab5a309fbba4b0fe26fd54c79767d",
+    "version_stdout": "cuobjdump: NVIDIA (R) fat binary listing tool\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Nov__7_07:23:37_PM_PST_2025\nCuda compilation tools, release 13.1, V13.1.80\nBuild cuda_13.1.r13.1/compiler.36836380_0\n",
+    "version_stderr": "",
+    "version_exit_code": 0
+  },
+  "compiler_artifacts": [
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.cubin",
+      "sha256": "b382c3764beefccee4d1bd87c7d122d6e216d82d0a840dc7a435127e99bdbd8e",
+      "bytes": 20952,
+      "gzip_path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.cubin.gz",
+      "gzip_sha256": "d669579de92a08a421848ff9c2b7602406933558f3947e9dadced6d555a58cb8",
+      "sass_path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.sass",
+      "sass_sha256": "df9fbf9cddcb191212c060fb1937ec795bdd8c7f959f7554f5d742a7144d8b19",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.glir",
+      "sha256": "866e1641f7f9d67c1adda16abf1aecc09af077b9ca97ffea45bc537460a8fbea",
+      "bytes": 9229
+    },
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.json",
+      "sha256": "2b33f710ed11c3897a9d7744805c4f7abb4aab850f85a288fda9f952845e53d7",
+      "bytes": 1280
+    },
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.llir",
+      "sha256": "47733ad6422531508f58bc416fc59ece5f24c09d2d3b467906493c6bd2a77fe1",
+      "bytes": 45881
+    },
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.ptx",
+      "sha256": "199e2d5c7e7f2e0f1f4c3e22bd3efe7e45218ab05c6eb6555a874839f60f0141",
+      "bytes": 11891
+    },
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.source",
+      "sha256": "866e1641f7f9d67c1adda16abf1aecc09af077b9ca97ffea45bc537460a8fbea",
+      "bytes": 9229
+    },
+    {
+      "path": "compiler/17e9422f0bafdbb48654f7e56274d346b574e24768f4a618581cbd4df50aa4af/kernel.ttgir",
+      "sha256": "6ebb6eef9c5091bdccccc4e0bad0edeb318a3720ebd6e3b7e3cec0e0471f706d",
+      "bytes": 6712
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.cubin",
+      "sha256": "b382c3764beefccee4d1bd87c7d122d6e216d82d0a840dc7a435127e99bdbd8e",
+      "bytes": 20952,
+      "gzip_path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.cubin.gz",
+      "gzip_sha256": "d669579de92a08a421848ff9c2b7602406933558f3947e9dadced6d555a58cb8",
+      "sass_path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.sass",
+      "sass_sha256": "df9fbf9cddcb191212c060fb1937ec795bdd8c7f959f7554f5d742a7144d8b19",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.glir",
+      "sha256": "866e1641f7f9d67c1adda16abf1aecc09af077b9ca97ffea45bc537460a8fbea",
+      "bytes": 9229
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.llir",
+      "sha256": "47733ad6422531508f58bc416fc59ece5f24c09d2d3b467906493c6bd2a77fe1",
+      "bytes": 45881
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.ptx",
+      "sha256": "199e2d5c7e7f2e0f1f4c3e22bd3efe7e45218ab05c6eb6555a874839f60f0141",
+      "bytes": 11891
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.sass",
+      "sha256": "df9fbf9cddcb191212c060fb1937ec795bdd8c7f959f7554f5d742a7144d8b19",
+      "bytes": 60078
+    },
+    {
+      "path": "compiler/2FPOJOYSWWX3JQYKPE3NQIR3DZIKTAJHBSFMDFO6JJAEZGECBSIQ/kernel.ttgir",
+      "sha256": "6ebb6eef9c5091bdccccc4e0bad0edeb318a3720ebd6e3b7e3cec0e0471f706d",
+      "bytes": 6712
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.cubin",
+      "sha256": "aa83359eebdd1b2792225d6d7ff6d6440371caf27bb513f184714474da06ca77",
+      "bytes": 21736,
+      "gzip_path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.cubin.gz",
+      "gzip_sha256": "c3954be6fe7444b65acde8437cc0c660432e22b86e87a1c3dae33a77946a8d45",
+      "sass_path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.sass",
+      "sass_sha256": "6d643131fa7f68340bd0183208b855b7507fe845bdba2463539570b5d76ce451",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.glir",
+      "sha256": "88cba2a6b408194c164b7240fe0ad3cb997beae14bff1ffa0aac38c34df5a902",
+      "bytes": 11487
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.json",
+      "sha256": "7fc55a1cc55178402fab3dae6482f4db00635e59fd4c7a7aba799c989208768c",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.llir",
+      "sha256": "2a1cb39d8e7764ffc4b34ff3a02616c746df8a7ec721ee760f160b7ac8c4005b",
+      "bytes": 46830
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.ptx",
+      "sha256": "205878925a9abb4d8d3402603d617ab32169ab408930e3211c472ec9fd431126",
+      "bytes": 13122
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.source",
+      "sha256": "88cba2a6b408194c164b7240fe0ad3cb997beae14bff1ffa0aac38c34df5a902",
+      "bytes": 11487
+    },
+    {
+      "path": "compiler/43c40b2735c830619f066318d536f3c8610151cab4d05687bbd06ea7706b5853/kernel.ttgir",
+      "sha256": "ef930187febb15ba7c8ec2296f08c3a9a5550b772436355ec57dee7a000c015c",
+      "bytes": 8283
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.cubin",
+      "sha256": "d3e243b2e22fc544e8c4fe3a6ebf60a3e37a1faae8336dbc93c946a83186febe",
+      "bytes": 19024,
+      "gzip_path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.cubin.gz",
+      "gzip_sha256": "b20e84facba0df6dcba4799baf9ce51836ad4f4df0060ea831e217f3d438f473",
+      "sass_path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.sass",
+      "sass_sha256": "a9781096ec96a4e557b4f9a1c63bb97d5a112bf3277f62ce333d24bd9e7a01e2",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.glir",
+      "sha256": "e0c94502c2e92b749d45a6da4f2aaf03268449db38dc765660dba39d8061cca0",
+      "bytes": 9690
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.json",
+      "sha256": "33d5a397dd4d766349e7409b58e6d4e85e500d37bf841f92196afeaa96e5e28f",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.llir",
+      "sha256": "8af8e79b5d3edecaa137f55f9d418027deedeb4d3a6e019d758db4452527d704",
+      "bytes": 26316
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.ptx",
+      "sha256": "49f64e2b5757097a0f0693b6be7b42164d2a7868165a0e5ee02b693866ec5edd",
+      "bytes": 10443
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.source",
+      "sha256": "e0c94502c2e92b749d45a6da4f2aaf03268449db38dc765660dba39d8061cca0",
+      "bytes": 9690
+    },
+    {
+      "path": "compiler/52ed57e48e6cfad4c2a9b6f37a6b1797809b29453ed1bb081aa272c1dc4f03ee/kernel.ttgir",
+      "sha256": "a4eb3625befdde5db817e1d3c7baa9375d7141f8f3f957ad7a73b3ea16719033",
+      "bytes": 6051
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.cubin",
+      "sha256": "5a490ecfed9fb3058987bed5a9fb124b7505ef9ba1bbad5c611a79877ebd19c8",
+      "bytes": 21128,
+      "gzip_path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.cubin.gz",
+      "gzip_sha256": "fd5ab13e139fbbb487fe474e8e9d0c4a1503ff3e29a069ab33063da6e3709880",
+      "sass_path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.sass",
+      "sass_sha256": "5f94cf25473b379cc5d3a3e55c84831d77a91410ec0280d4a306b33d9219db58",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.glir",
+      "sha256": "8169c25feb02dbe5f7adf1981c6f82ef22fccd1b21dffce123e4ac2ab5f469ef",
+      "bytes": 9228
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.json",
+      "sha256": "d7b5b6164d729753c1145fa720ff9b9ee683abcd967b66a2352de2f9a0891908",
+      "bytes": 1280
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.llir",
+      "sha256": "86d8afce0fbc2c45b67107f344b30238d0d4cc5184423120e8ef4f00e2320cdd",
+      "bytes": 46031
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.ptx",
+      "sha256": "753153d5e5c9f78b328aeb26114e0aa49d57e20db840292aa5275224ba4fc2b6",
+      "bytes": 11941
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.source",
+      "sha256": "8169c25feb02dbe5f7adf1981c6f82ef22fccd1b21dffce123e4ac2ab5f469ef",
+      "bytes": 9228
+    },
+    {
+      "path": "compiler/631e5f5f879d93c4a96176bf8256333e5025a38e1ff0d70bc6e3f15f407366eb/kernel.ttgir",
+      "sha256": "87f86ee86af59d544aee3a02adfff772e1b538c5cc5e7f65749703b1a7ff6dc1",
+      "bytes": 6711
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.cubin",
+      "sha256": "b1ec24f095a03e0136d29a1eb9b7b3d6a72d48aa8269e0a1c66fa5abeb727602",
+      "bytes": 21416,
+      "gzip_path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.cubin.gz",
+      "gzip_sha256": "7dfbac14f991b4b3e2cd068a1deedba03ebe464b7050ad53cd3df16bde84fdeb",
+      "sass_path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.sass",
+      "sass_sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.glir",
+      "sha256": "bddfc8409fe937cd80c07aff306b0d23481a7977f22347daf3f59f412ffc3739",
+      "bytes": 9896
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.json",
+      "sha256": "cc4924004f46bb3f35985687bafea2e83f7b18d18031a7e518a7a538a26e6140",
+      "bytes": 1280
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.llir",
+      "sha256": "81f506d623fb5ba574aa58ab4df74aeb29a1d7ce15f8e1b5e6958c897ac62903",
+      "bytes": 46356
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.ptx",
+      "sha256": "8fad8c80179abc25a7e91ffa9c24e3b3ae138749ca9c0d1f6a7f570dbf7a77d8",
+      "bytes": 12624
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.source",
+      "sha256": "bddfc8409fe937cd80c07aff306b0d23481a7977f22347daf3f59f412ffc3739",
+      "bytes": 9896
+    },
+    {
+      "path": "compiler/694e7ce9de25d2ad8848eb92007cd9b8617cfa8e6ebf752efcf80a8803e20b11/kernel.ttgir",
+      "sha256": "64f6d50c43a7390653fc0413b5ced559da13efdb58f97445ca8ee9c7310cf20f",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.cubin",
+      "sha256": "b1ec24f095a03e0136d29a1eb9b7b3d6a72d48aa8269e0a1c66fa5abeb727602",
+      "bytes": 21416,
+      "gzip_path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.cubin.gz",
+      "gzip_sha256": "7dfbac14f991b4b3e2cd068a1deedba03ebe464b7050ad53cd3df16bde84fdeb",
+      "sass_path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.sass",
+      "sass_sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.glir",
+      "sha256": "bddfc8409fe937cd80c07aff306b0d23481a7977f22347daf3f59f412ffc3739",
+      "bytes": 9896
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.llir",
+      "sha256": "81f506d623fb5ba574aa58ab4df74aeb29a1d7ce15f8e1b5e6958c897ac62903",
+      "bytes": 46356
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.ptx",
+      "sha256": "8fad8c80179abc25a7e91ffa9c24e3b3ae138749ca9c0d1f6a7f570dbf7a77d8",
+      "bytes": 12624
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.sass",
+      "sha256": "1f83ad5cba0be56558e36a907f5c3905d2a974e8bb87d19d8e07e4d36fccaee1",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/6LD5MIPHDZ2GJ7TCTOPIFTCTW3WMPP2TR2BEN4DIKSGB6GU7V32Q/kernel.ttgir",
+      "sha256": "64f6d50c43a7390653fc0413b5ced559da13efdb58f97445ca8ee9c7310cf20f",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.cubin",
+      "sha256": "eb7a4e54a3bf755eced865b8806fee8e40bdb17aa540ff4f2262c7813ec7fd5d",
+      "bytes": 21448,
+      "gzip_path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.cubin.gz",
+      "gzip_sha256": "cd1d8905792d0b4ca1d7867f86e95d59a0de3103cfe70a98e141e221bb91cade",
+      "sass_path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.sass",
+      "sass_sha256": "9980513837d4888d02f08954723d9d9efa2be8ffb0213bc7396a04276cc9627a",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.glir",
+      "sha256": "69c9977a8aa1c2e704c0ae1aa8f82ed980e190509c4ffceb50560fb2f465f768",
+      "bytes": 9895
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.json",
+      "sha256": "38a4595d5a6e97d1156ab3c883bd9b25d43f6d6c91557205e608369e34a53930",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.llir",
+      "sha256": "c67f962df18af99866470899cc949520da0701208feacc70f3b2863e3ab7b1eb",
+      "bytes": 46448
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.ptx",
+      "sha256": "69c9a64474fa064bdc6a023da82364ae8dc7ea5d466cad62e1997843b2b29110",
+      "bytes": 12640
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.source",
+      "sha256": "69c9977a8aa1c2e704c0ae1aa8f82ed980e190509c4ffceb50560fb2f465f768",
+      "bytes": 9895
+    },
+    {
+      "path": "compiler/75a498c08dd8705ec2cf93eae258036df34eff71de1dc2c84fae04c82a846311/kernel.ttgir",
+      "sha256": "5df4f7a4026397ee93d384c4bfb0e476bb4884eaa8323746bc5add1f1d3a4fca",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.cubin",
+      "sha256": "d3e243b2e22fc544e8c4fe3a6ebf60a3e37a1faae8336dbc93c946a83186febe",
+      "bytes": 19024,
+      "gzip_path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.cubin.gz",
+      "gzip_sha256": "b20e84facba0df6dcba4799baf9ce51836ad4f4df0060ea831e217f3d438f473",
+      "sass_path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.sass",
+      "sass_sha256": "a9781096ec96a4e557b4f9a1c63bb97d5a112bf3277f62ce333d24bd9e7a01e2",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.glir",
+      "sha256": "e0c94502c2e92b749d45a6da4f2aaf03268449db38dc765660dba39d8061cca0",
+      "bytes": 9690
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.llir",
+      "sha256": "8af8e79b5d3edecaa137f55f9d418027deedeb4d3a6e019d758db4452527d704",
+      "bytes": 26316
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.ptx",
+      "sha256": "49f64e2b5757097a0f0693b6be7b42164d2a7868165a0e5ee02b693866ec5edd",
+      "bytes": 10443
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.sass",
+      "sha256": "a9781096ec96a4e557b4f9a1c63bb97d5a112bf3277f62ce333d24bd9e7a01e2",
+      "bytes": 53230
+    },
+    {
+      "path": "compiler/FAJ34RWM5Q2FLPITM3I4ZRUGKFIOBVTPBPHFALSFP2IHWRCIH2SA/kernel.ttgir",
+      "sha256": "a4eb3625befdde5db817e1d3c7baa9375d7141f8f3f957ad7a73b3ea16719033",
+      "bytes": 6051
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.cubin",
+      "sha256": "eb7a4e54a3bf755eced865b8806fee8e40bdb17aa540ff4f2262c7813ec7fd5d",
+      "bytes": 21448,
+      "gzip_path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.cubin.gz",
+      "gzip_sha256": "cd1d8905792d0b4ca1d7867f86e95d59a0de3103cfe70a98e141e221bb91cade",
+      "sass_path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.sass",
+      "sass_sha256": "9980513837d4888d02f08954723d9d9efa2be8ffb0213bc7396a04276cc9627a",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.glir",
+      "sha256": "69c9977a8aa1c2e704c0ae1aa8f82ed980e190509c4ffceb50560fb2f465f768",
+      "bytes": 9895
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.llir",
+      "sha256": "c67f962df18af99866470899cc949520da0701208feacc70f3b2863e3ab7b1eb",
+      "bytes": 46448
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.ptx",
+      "sha256": "69c9a64474fa064bdc6a023da82364ae8dc7ea5d466cad62e1997843b2b29110",
+      "bytes": 12640
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.sass",
+      "sha256": "9980513837d4888d02f08954723d9d9efa2be8ffb0213bc7396a04276cc9627a",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/G5QNWFBJX5HU2IMIVTXAKY5YBENI3LNF2AMZPRVELZ3AWNSEC7CQ/kernel.ttgir",
+      "sha256": "5df4f7a4026397ee93d384c4bfb0e476bb4884eaa8323746bc5add1f1d3a4fca",
+      "bytes": 7343
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.cubin",
+      "sha256": "aa83359eebdd1b2792225d6d7ff6d6440371caf27bb513f184714474da06ca77",
+      "bytes": 21736,
+      "gzip_path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.cubin.gz",
+      "gzip_sha256": "c3954be6fe7444b65acde8437cc0c660432e22b86e87a1c3dae33a77946a8d45",
+      "sass_path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.sass",
+      "sass_sha256": "6d643131fa7f68340bd0183208b855b7507fe845bdba2463539570b5d76ce451",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.glir",
+      "sha256": "88cba2a6b408194c164b7240fe0ad3cb997beae14bff1ffa0aac38c34df5a902",
+      "bytes": 11487
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.llir",
+      "sha256": "2a1cb39d8e7764ffc4b34ff3a02616c746df8a7ec721ee760f160b7ac8c4005b",
+      "bytes": 46830
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.ptx",
+      "sha256": "205878925a9abb4d8d3402603d617ab32169ab408930e3211c472ec9fd431126",
+      "bytes": 13122
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.sass",
+      "sha256": "6d643131fa7f68340bd0183208b855b7507fe845bdba2463539570b5d76ce451",
+      "bytes": 64686
+    },
+    {
+      "path": "compiler/L6JVJUIPWXV7COBDKDCKXBZKKMEUMRXVO733WOL7DKOKLWS2JQEQ/kernel.ttgir",
+      "sha256": "ef930187febb15ba7c8ec2296f08c3a9a5550b772436355ec57dee7a000c015c",
+      "bytes": 8283
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.cubin",
+      "sha256": "5a490ecfed9fb3058987bed5a9fb124b7505ef9ba1bbad5c611a79877ebd19c8",
+      "bytes": 21128,
+      "gzip_path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.cubin.gz",
+      "gzip_sha256": "fd5ab13e139fbbb487fe474e8e9d0c4a1503ff3e29a069ab33063da6e3709880",
+      "sass_path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.sass",
+      "sass_sha256": "5f94cf25473b379cc5d3a3e55c84831d77a91410ec0280d4a306b33d9219db58",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.glir",
+      "sha256": "8169c25feb02dbe5f7adf1981c6f82ef22fccd1b21dffce123e4ac2ab5f469ef",
+      "bytes": 9228
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.llir",
+      "sha256": "86d8afce0fbc2c45b67107f344b30238d0d4cc5184423120e8ef4f00e2320cdd",
+      "bytes": 46031
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.ptx",
+      "sha256": "753153d5e5c9f78b328aeb26114e0aa49d57e20db840292aa5275224ba4fc2b6",
+      "bytes": 11941
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.sass",
+      "sha256": "5f94cf25473b379cc5d3a3e55c84831d77a91410ec0280d4a306b33d9219db58",
+      "bytes": 61790
+    },
+    {
+      "path": "compiler/R75PPBVUSG246IXM2QCZOQMOAVNSXC7WBFC2R6IGOAT4TNGOPPHQ/kernel.ttgir",
+      "sha256": "87f86ee86af59d544aee3a02adfff772e1b538c5cc5e7f65749703b1a7ff6dc1",
+      "bytes": 6711
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.cubin",
+      "sha256": "242febc390f6d21cd9bfbf5e99efb234a7f71f5145826079bc00483879cb8d1b",
+      "bytes": 16384,
+      "gzip_path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.cubin.gz",
+      "gzip_sha256": "d38845389c9af82d98abdcb478aec0ee1da2e358a7065cee882b11babf0cf43f",
+      "sass_path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.sass",
+      "sass_sha256": "cbb000085faad22dd2da87f6bcc7d69397612ac534626a8e4347237faf3d75a7",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.glir",
+      "sha256": "e88ba2ffd8f6cabfc7e50b7aaee11ba3e4d4a7c37b95b5be36a4726679a955eb",
+      "bytes": 6022
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.llir",
+      "sha256": "97d599549dc984e2bc0f407b5ca82e06b03bfd63bc44cfa44555540f80fb55c7",
+      "bytes": 16182
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.ptx",
+      "sha256": "3815fb34c1302b889d4557476334f12cd616d22e9fbcc2ee255e29260e81f2ba",
+      "bytes": 7740
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.sass",
+      "sha256": "cbb000085faad22dd2da87f6bcc7d69397612ac534626a8e4347237faf3d75a7",
+      "bytes": 42958
+    },
+    {
+      "path": "compiler/Z7QU5YEYHOWOWQABTL4GH2ZJGTYYV36422N3IXOCEINF4O4XI2WA/kernel.ttgir",
+      "sha256": "786f8bb4b4aafd660720c670195819b22c98147c2b74cf9ff5b836119e77b7b6",
+      "bytes": 4610
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.cubin",
+      "sha256": "242febc390f6d21cd9bfbf5e99efb234a7f71f5145826079bc00483879cb8d1b",
+      "bytes": 16384,
+      "gzip_path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.cubin.gz",
+      "gzip_sha256": "d38845389c9af82d98abdcb478aec0ee1da2e358a7065cee882b11babf0cf43f",
+      "sass_path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.sass",
+      "sass_sha256": "cbb000085faad22dd2da87f6bcc7d69397612ac534626a8e4347237faf3d75a7",
+      "sass_exit_code": 0
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.glir",
+      "sha256": "e88ba2ffd8f6cabfc7e50b7aaee11ba3e4d4a7c37b95b5be36a4726679a955eb",
+      "bytes": 6022
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.json",
+      "sha256": "9433ed2065055050b074618180c9a05e3d922d3c64cb8a8d4b59b59bb602cf37",
+      "bytes": 1279
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.llir",
+      "sha256": "97d599549dc984e2bc0f407b5ca82e06b03bfd63bc44cfa44555540f80fb55c7",
+      "bytes": 16182
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.ptx",
+      "sha256": "3815fb34c1302b889d4557476334f12cd616d22e9fbcc2ee255e29260e81f2ba",
+      "bytes": 7740
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.source",
+      "sha256": "e88ba2ffd8f6cabfc7e50b7aaee11ba3e4d4a7c37b95b5be36a4726679a955eb",
+      "bytes": 6022
+    },
+    {
+      "path": "compiler/dbb3d585cd7e42f869985aedcfa682e612eaf8b5556ecfc275eeff99e283f91c/kernel.ttgir",
+      "sha256": "786f8bb4b4aafd660720c670195819b22c98147c2b74cf9ff5b836119e77b7b6",
+      "bytes": 4610
+    }
+  ],
+  "matches_reported_reproduction_pattern": true,
+  "finished_utc": "2026-10-23T13:09:56.222824+00:00",
+  "pass_ir": {
+    "path": "pass-ir.mlir.gz",
+    "sha256": "2b31345a63639d7a7d88128f28c39723b8b0545d2350771446d4d414855b1cbf",
+    "bytes": 640394,
+    "uncompressed_sha256": "bc6b88385e93902ec270b73cff3925fc9bfaa2b6ab3e1e74a59b59f06494839f",
+    "uncompressed_bytes": 12176280,
+    "capture_boundary": "Compiler child process exited; C++ dump stream flushed before compression."
+  }
+}

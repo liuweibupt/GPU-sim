@@ -1,0 +1,46 @@
+Generating SQLite file /home/liuwei/GPU-sim/out/research/costs/version-20261023-v3/collection.sqlite from /home/liuwei/GPU-sim/out/research/costs/version-20261023-v3/collection.nsys-rep
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v3/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)                Name               
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  ---------------------------------
+     26.8          7299245         12  608270.4   14735.5      2340   4355670    1279984.5  cudaFreeHost                     
+     24.7          6732530        160   42078.3    4015.5      1490    383455      91041.5  cudaEventSynchronize             
+     18.9          5139363        320   16060.5    3145.0      2549   3095896     172967.4  cudaEventRecord                  
+     13.7          3727982         12  310665.2    6845.0      1821    816969     380744.3  cudaHostAlloc                    
+      5.4          1464548         64   22883.6   24220.0      2741     52451      18415.0  cudaLaunchKernel                 
+      3.9          1072078        128    8375.6    3515.0      2220     35471       9097.4  cudaMemcpyAsync                  
+      3.2           866181         12   72181.8   30420.5      3280    227443      81880.4  cudaFree                         
+      3.1           842209         12   70184.1    6379.5      1560    271143      95353.0  cudaMalloc                       
+      0.1            32861         64     513.5     520.0        60      1840        408.2  cuKernelGetName                  
+      0.1            25280          8    3160.0    1355.0       380     14310       4687.4  cudaEventDestroy                 
+      0.1            22490          8    2811.3    2275.5       360      6489       2571.9  cudaEventCreate                  
+      0.0             2800          1    2800.0    2800.0      2800      2800          0.0  cuModuleGetLoadingMode           
+      0.0             1170          1    1170.0    1170.0      1170      1170          0.0  cudaGetDeviceProperties_v2_v12000
+
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v3/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)                                          Name                                         
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  -------------------------------------------------------------------------------------
+     73.6           147587         32    4612.1    2240.0      1088     13152       4974.3  void cost_version_probe<(bool)1>(int, int, unsigned int, bool, int *, int *, Event *)
+     26.4            52929         32    1654.0    1216.0       928      3584        977.0  void cost_version_probe<(bool)0>(int, int, unsigned int, bool, int *, int *, Event *)
+
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v3/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Time) (cuda_gpu_mem_time_sum):
+
+ Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)           Operation          
+ --------  ---------------  -----  --------  --------  --------  --------  -----------  ----------------------------
+    100.0          6380882    128   49850.6   10752.0       832    223587      74542.9  [CUDA memcpy Device-to-Host]
+
+Processing [/home/liuwei/GPU-sim/out/research/costs/version-20261023-v3/collection.sqlite] with [/opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Size) (cuda_gpu_mem_size_sum):
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)           Operation          
+ ----------  -----  --------  --------  --------  --------  -----------  ----------------------------
+     41.775    128     0.326     0.070     0.000     1.475        0.493  [CUDA memcpy Device-to-Host]
+

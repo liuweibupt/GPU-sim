@@ -1,0 +1,51 @@
+--- examples/68_hopper_fp8_warp_specialized_grouped_gemm_with_blockwise_scaling/68_hopper_fp8_warp_specialized_grouped_gemm_with_blockwise_scaling.cu
++++ cutlass_repro.cu
+@@ -621,7 +621,31 @@
+       block_D_host_kernel.data() + offset_D.at(group_idx)
+     );
+     
+-    passed &= this_group_passed;
++
++    // Research harness: host-only observation after the upstream full reference.
++    size_t mismatches = 0, zero_k_mismatches = 0;
++    std::string prefix = std::string("group-") + std::to_string(group_idx);
++    std::ofstream observed(prefix + "-observed.bin", std::ios::binary);
++    std::ofstream reference(prefix + "-reference.bin", std::ios::binary);
++    std::ofstream input_c(prefix + "-c.bin", std::ios::binary);
++    observed.write(reinterpret_cast<const char*>(block_D_host_kernel.data() + offset_D.at(group_idx)), m*n*sizeof(ElementD));
++    reference.write(reinterpret_cast<const char*>(block_D_host_ref.data() + offset_D.at(group_idx)), m*n*sizeof(ElementD));
++    input_c.write(reinterpret_cast<const char*>(block_C_host.data() + offset_C.at(group_idx)), m*n*sizeof(ElementC));
++    for (int64_t j = 0; j < int64_t(m)*n; ++j) {
++      auto actual = block_D_host_kernel[offset_D.at(group_idx) + j];
++      mismatches += actual != block_D_host_ref[offset_D.at(group_idx) + j];
++      if (k == 0) {
++        // Independent epilogue oracle, no GEMM/reference-mainloop code reused.
++        ElementD expected(float(beta_host.at(group_idx)) * float(block_C_host[offset_C.at(group_idx) + j]));
++        zero_k_mismatches += actual != expected;
++      }
++    }
++    std::cout << "EVIDENCE {\"group\":" << group_idx << ",\"m\":" << m << ",\"n\":" << n
++      << ",\"k\":" << k << ",\"beta\":" << beta_host.at(group_idx)
++      << ",\"outputs\":" << int64_t(m)*n << ",\"mismatches\":" << mismatches
++      << ",\"zero_k_mismatches\":" << zero_k_mismatches << "}" << std::endl;
++
++    passed &= this_group_passed && zero_k_mismatches == 0;
+ 
+ #if 0
+     std::cout << "Group: " << group_idx << " M: " << m << " N: " << n << " K: " << k << " Status: " << this_group_passed << std::endl;
+@@ -758,10 +782,11 @@
+   // Evaluate CUTLASS kernels
+   //
+ 
+-  std::cout << "Running tests with host problem shapes:" << std::endl;
+-  run(options, true);
+-  std::cout << "Running tests without host problem shapes:" << std::endl;
+-  run(options, false);
++  cutlass::CommandLine research_cmd(argc, args);
++  int research_host_shapes = 1;
++  research_cmd.get_cmd_line_argument("host-shapes", research_host_shapes, 1);
++  std::cout << "EVIDENCE host_shapes=" << research_host_shapes << std::endl;
++  run(options, research_host_shapes != 0);
+ 
+ #endif
+ 

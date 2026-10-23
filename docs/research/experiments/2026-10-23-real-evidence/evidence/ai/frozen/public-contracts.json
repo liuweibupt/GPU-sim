@@ -1,0 +1,26 @@
+{
+  "rmsnorm": {
+    "task_id": 1,
+    "signature": "extern \"C\" cudaError_t launch_rmsnorm(const float* x, float* y, int rows, int cols, int x_stride, int y_stride, float epsilon, cudaStream_t stream);",
+    "semantics": "For each row r and 0<=c<cols, y[r*y_stride+c] = x[r*x_stride+c] / sqrt(sum_k(x[r*x_stride+k]^2)/cols + epsilon). No affine weights. Row strides are in elements. Input and output do not alias. Do not modify row padding or inputs.",
+    "domain": "0<=rows<=4096; 1<=cols<=4096; cols<=x_stride,y_stride<=8192; finite FP32 abs(x)<=1024; 1e-6<=epsilon<=1e-2. rows=0 is a successful no-op. All products fit signed int.",
+    "comparison": "Full logical output versus independent double-precision CPU formula, rounded to FP32; abs error <=2e-5 + 2e-4*abs(reference). All padding and guard bytes exactly unchanged.",
+    "public_example": "A contiguous 3-row, 8-column matrix is one legal example; the interface supports the full declared domain."
+  },
+  "transpose": {
+    "task_id": 2,
+    "signature": "extern \"C\" cudaError_t launch_transpose(const float* x, float* y, int rows, int cols, int x_stride, int y_stride, cudaStream_t stream);",
+    "semantics": "Transpose: for 0<=r<rows,0<=c<cols set y[c*y_stride+r] = x[r*x_stride+c]. Input is rows-by-cols; output cols-by-rows. Strides are in FP32 elements. No aliasing. Do not modify input, padding, or guards. Preserve FP32 bits including signed zero.",
+    "domain": "0<=rows,cols<=4096; cols<=x_stride<=8192; rows<=y_stride<=8192; finite FP32 inputs. Either zero dimension is a successful no-op. All index products fit signed int.",
+    "comparison": "Every logical output must match independent CPU indexing bit-for-bit. Padding and guard bytes unchanged.",
+    "public_example": "A contiguous 16-by-16 matrix is one legal example; non-contiguous row strides and tails are supported."
+  },
+  "segments": {
+    "task_id": 3,
+    "signature": "extern \"C\" cudaError_t launch_segments(const int32_t* x, const int32_t* offsets, int64_t* y, int n, int segments, cudaStream_t stream);",
+    "semantics": "For 0<=s<segments, y[s] = sum of x[i] for offsets[s]<=i<offsets[s+1], accumulating exactly in int64. offsets are nondecreasing, offsets[0]=0, offsets[segments]=n. Empty segments produce 0. Inputs/offsets/output do not alias; input and offsets are read-only.",
+    "domain": "0<=n<=1048576; 0<=segments<=65535; each int32 x is in [-1048576,1048576]. If segments=0 then n=0. The mathematical sum fits int64; avoid int32 overflow.",
+    "comparison": "All output int64 values exactly equal an independent Python integer sum. All input/offset/guard bytes unchanged.",
+    "public_example": "Three contiguous segments of length 4 are one legal example; empty and unequal-length segments are supported."
+  }
+}

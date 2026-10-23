@@ -87,6 +87,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--gpu', choices=['B200', 'H100!'], default='B200')
     parser.add_argument('--timeout', type=int, default=240)
+    parser.add_argument('--prepare-image-only', action='store_true', help='Build the CPU image without invoking a GPU function')
     args = parser.parse_args()
     if not 30 <= args.timeout <= 600:
         raise ValueError('one job timeout must be within 30..600 seconds')
@@ -97,12 +98,19 @@ def main():
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     sources = []
+    source_records = []
     for source in job.get('sources', []):
         path = Path(source).resolve()
         data = path.read_bytes()
         sources.append({'name': path.name, 'sha256': hashlib.sha256(data).hexdigest(),
                         'base64': base64.b64encode(data).decode('ascii')})
-        (output / path.name).write_bytes(data)
+        record = {'name': path.name, 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}
+        if data.startswith(b'\x7fELF'):
+            record['omitted'] = 'uploaded compiled executable; retain source, build command and binary hash separately'
+            (output / (path.name + '.sha256.json')).write_text(json.dumps(record, indent=2) + '\n')
+        else:
+            (output / path.name).write_bytes(data)
+        source_records.append(record)
     if len({item['name'] for item in sources}) != len(sources):
         raise ValueError('source basenames must be unique')
     for pattern in job.get('artifact_patterns', []):
@@ -115,6 +123,7 @@ def main():
                'gpu_count': 1, 'timeout_seconds': args.timeout, 'max_containers': 1,
                'image_tag': IMAGE, 'modal_sdk_version': modal.__version__,
                'source_sha256': {item['name']: item['sha256'] for item in sources},
+               'source_records': source_records,
                'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                'job_sha256': hashlib.sha256((output / 'job.json').read_bytes()).hexdigest(),
                'billing': 'No exact bill inferred from command wall times; configured limits bound each job.',
@@ -125,8 +134,29 @@ def main():
     python_version = f'{sys.version_info.major}.{sys.version_info.minor}'
     summary['python_runtime'] = python_version
     image = modal.Image.from_registry(IMAGE, add_python=python_version)
+    image_config = job.get('image', {})
+    if image_config.get('apt_packages'):
+        image = image.apt_install(*image_config['apt_packages'])
+    if image_config.get('commands'):
+        # Explicit, reviewable image-build commands; never serialize local env.
+        image = image.run_commands(*image_config['commands'])
+    summary['image_files'] = []
+    for item in image_config.get('files', []):
+        local = Path(item['local']).resolve()
+        remote = Path(item['remote'])
+        if not remote.is_absolute() or '..' in remote.parts:
+            raise ValueError('image file requires an absolute remote path')
+        raw = local.read_bytes()
+        summary['image_files'].append({'local': str(local), 'remote': str(remote),
+            'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw),
+            'omitted': 'explicit dependency file mounted remotely; bytes not copied to result archive'})
+        image = image.add_local_file(local, str(remote))
+    cpu, memory = job.get('cpu', 2), job.get('memory_mb', 2048)
+    if not isinstance(cpu, (int, float)) or not 1 <= cpu <= 16 or not isinstance(memory, int) or not 2048 <= memory <= 32768:
+        raise ValueError('bounded job resources require CPU 1..16 and memory 2048..32768 MB')
+    summary.update(cpu=cpu, memory_mb=memory, prepare_image_only=args.prepare_image_only)
     app = modal.App('gpu-sim-semantic-probes')
-    function = app.function(image=image, gpu=args.gpu, cpu=2, memory=2048,
+    function = app.function(image=image, gpu=args.gpu, cpu=cpu, memory=memory,
                             timeout=args.timeout, max_containers=1, retries=0,
                             scaledown_window=2, serialized=True)(remote_job)
     try:
@@ -134,6 +164,9 @@ def main():
             summary['app_id'] = app.app_id
             summary['image_id'] = image.object_id
             save()
+            if args.prepare_image_only:
+                summary['status'] = 'image_prepared_no_gpu_invocation'
+                return 0
             result = function.remote({'sources': sources, 'commands': job.get('commands', []),
                                       'artifact_patterns': job.get('artifact_patterns', [])})
         for command in result['commands']:

@@ -2,6 +2,8 @@
 
 更新：2026-10-23。稿件状态：研究规划与已执行实验，尚非完成稿。目标优先为 VIS/TVCG 的可视分析系统；TOG/SIGGRAPH 取决于图形与交互贡献；若主贡献转向 GPU 分析算法和工具，可评估体系结构/系统方向。AI 算子是应用范围，不自动决定投稿社区。实际数据见[现代 GPU 与 agent 实验报告](experiments/2026-10-23-modern-gpu/report.md)。
 
+后续[实际 AI 候选与隐藏输入实验](experiments/2026-10-23-real-evidence/report.md#2-实际-ai-候选与冻结隐藏测试)已执行六个原样 CUDA 候选，而非仅进行符号题回答。六个候选全部通过当前有限测试，属于天花板结果；没有工具条件差异或人类收益证据。公开故障与成本的实测也在该补充报告，继续按不同统计单位陈述。
+
 ## 1. 开发者测试是否必须真人
 
 **技术论文不一律要求用户研究，但关于人的结论需要来自人的证据。** [VIS 2026 审稿说明](https://ieeevis.org/year/2026/info/call-participation/review-instructions/)允许依贡献类型采用不同有效性评价；[SIGGRAPH 2026 审稿说明](https://s2026.siggraph.org/technical-papers-reviewer-instructions-ethics/)明确说明，不是每项贡献都需要端到端应用或用户研究。前者对应 VIS full papers 的 TVCG 发表路径，后者涵盖 SIGGRAPH 的 TOG journal track；不把这些年度规则泛化为所有常规期刊投稿的保证。

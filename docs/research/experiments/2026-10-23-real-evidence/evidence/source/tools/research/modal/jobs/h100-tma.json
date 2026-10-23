@@ -1,0 +1,25 @@
+{
+  "sources": [
+    "tools/research/cuda/tma_version_probe.cu",
+    "tools/research/cuda/tma_run_probe.py"
+  ],
+  "commands": [
+    {
+      "name": "tma_full",
+      "argv": [
+        "python3",
+        "tma_run_probe.py",
+        "--output",
+        "tma-full",
+        "--cuda-root",
+        "/usr/local/cuda",
+        "--arch",
+        "sm_90a"
+      ],
+      "timeout": 360
+    }
+  ],
+  "artifact_patterns": [
+    "tma-full/*"
+  ]
+}

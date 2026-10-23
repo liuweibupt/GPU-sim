@@ -1,0 +1,10 @@
+Write one complete CUDA C++17 translation unit for the contract below, targeting NVIDIA RTX 4090 sm_89 with CUDA 12.6. Return JSON with exactly source (the entire compilable source as a string, no Markdown fences) and notes (short implementation description). Include <cuda_runtime.h> and <cstdint> where needed. Implement exactly the named extern "C" host launcher plus any kernels/helpers. Do not define main. Do not use tools, shell, browsing, files, or external context: all task information is in this prompt. Do not use host I/O, filesystem/network access, process execution, CPU computation of the output, host/device allocation, library calls such as cuBLAS, cudaMemcpy, or synchronization of the entire device. The caller supplies device pointers and a valid CUDA stream. Enqueue only your computation on that stream, and return cudaSuccess for a valid no-op, otherwise return cudaGetLastError() or a launch error. You may use CUDA math, shuffle/shared-memory reductions, and the ordinary C++ standard headers. Prefer simple correct code. There is no repair round or feedback. Tests may exercise any valid contract input.
+
+{
+  "task_id": 1,
+  "signature": "extern \"C\" cudaError_t launch_rmsnorm(const float* x, float* y, int rows, int cols, int x_stride, int y_stride, float epsilon, cudaStream_t stream);",
+  "semantics": "For each row r and 0<=c<cols, y[r*y_stride+c] = x[r*x_stride+c] / sqrt(sum_k(x[r*x_stride+k]^2)/cols + epsilon). No affine weights. Row strides are in elements. Input and output do not alias. Do not modify row padding or inputs.",
+  "domain": "0<=rows<=4096; 1<=cols<=4096; cols<=x_stride,y_stride<=8192; finite FP32 abs(x)<=1024; 1e-6<=epsilon<=1e-2. rows=0 is a successful no-op. All products fit signed int.",
+  "comparison": "Full logical output versus independent double-precision CPU formula, rounded to FP32; abs error <=2e-5 + 2e-4*abs(reference). All padding and guard bytes exactly unchanged.",
+  "public_example": "A contiguous 3-row, 8-column matrix is one legal example; the interface supports the full declared domain."
+}

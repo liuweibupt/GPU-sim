@@ -1,0 +1,10 @@
+Write one complete CUDA C++17 translation unit for the contract below, targeting NVIDIA RTX 4090 sm_89 with CUDA 12.6. Return JSON with exactly source (the entire compilable source as a string, no Markdown fences) and notes (short implementation description). Include <cuda_runtime.h> and <cstdint> where needed. Implement exactly the named extern "C" host launcher plus any kernels/helpers. Do not define main. Do not use tools, shell, browsing, files, or external context: all task information is in this prompt. Do not use host I/O, filesystem/network access, process execution, CPU computation of the output, host/device allocation, library calls such as cuBLAS, cudaMemcpy, or synchronization of the entire device. The caller supplies device pointers and a valid CUDA stream. Enqueue only your computation on that stream, and return cudaSuccess for a valid no-op, otherwise return cudaGetLastError() or a launch error. You may use CUDA math, shuffle/shared-memory reductions, and the ordinary C++ standard headers. Prefer simple correct code. There is no repair round or feedback. Tests may exercise any valid contract input.
+
+{
+  "task_id": 2,
+  "signature": "extern \"C\" cudaError_t launch_transpose(const float* x, float* y, int rows, int cols, int x_stride, int y_stride, cudaStream_t stream);",
+  "semantics": "Transpose: for 0<=r<rows,0<=c<cols set y[c*y_stride+r] = x[r*x_stride+c]. Input is rows-by-cols; output cols-by-rows. Strides are in FP32 elements. No aliasing. Do not modify input, padding, or guards. Preserve FP32 bits including signed zero.",
+  "domain": "0<=rows,cols<=4096; cols<=x_stride<=8192; rows<=y_stride<=8192; finite FP32 inputs. Either zero dimension is a successful no-op. All index products fit signed int.",
+  "comparison": "Every logical output must match independent CPU indexing bit-for-bit. Padding and guard bytes unchanged.",
+  "public_example": "A contiguous 16-by-16 matrix is one legal example; non-contiguous row strides and tails are supported."
+}

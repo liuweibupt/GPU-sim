@@ -31,8 +31,18 @@ def validate_modal(root):
             checks += 1
         check("job.json", doc["job_sha256"])
         check("run_gpu_evidence.py", doc["runner_sha256"])
+        source_records = {item['name']: item for item in doc.get('source_records', [])}
         for name, digest in doc["source_sha256"].items():
-            check(name, digest)
+            entry = source_records.get(name, {})
+            if 'omitted' in entry:
+                # The runner verifies uploaded binary bytes before remote use;
+                # this archive deliberately retains only its hash and metadata.
+                sidecar = json.loads((path.parent / (name + '.sha256.json')).read_text())
+                if sidecar != entry or entry.get('sha256') != digest or entry.get('bytes', 0) <= 0:
+                    raise ValueError(f"Omitted source metadata mismatch: {name}")
+                checks += 1
+            else:
+                check(name, digest)
         for command in doc.get("execution", {}).get("commands", []):
             for stream in ("stdout", "stderr"):
                 entry = command[stream]
@@ -55,8 +65,8 @@ def archive(inputs, output):
         raise ValueError("Each input needs a unique simple name")
     manifest = {"format": "modern-gpu-evidence-archive-v1", "files": [],
                 "inputs": [], "modal_integrity_checks": 0,
-                "binary_policy": "Cloud ELF bytes are omitted; exact compiler binary hashes are retained in Modal and suite manifests.",
-                "compression": "Files >= 100000 bytes use lossless deterministic gzip; original SHA and byte count remain authoritative."}
+                "binary_policy": "Raw ELF files are rejected. Source manifests specify omitted host executables and any deliberately encoded device binaries.",
+                "compression": "Files >= 100000 bytes and .bin output buffers use lossless deterministic gzip; original SHA and byte count remain authoritative."}
     for name, root in inputs:
         root = root.resolve()
         manifest["inputs"].append({"name": name, "source": str(root)})
@@ -68,7 +78,7 @@ def archive(inputs, output):
             if data.startswith(b"\x7fELF"):
                 raise ValueError("Do not accidentally publish executable bytes")
             original = (Path(name) / path.relative_to(root)).as_posix()
-            compressed = len(data) >= 100000
+            compressed = len(data) >= 100000 or path.suffix == '.bin'
             stored = original + (".gz" if compressed else "")
             packed = gzip.compress(data, mtime=0) if compressed else data
             destination = output / stored

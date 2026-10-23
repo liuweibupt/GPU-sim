@@ -1,0 +1,10 @@
+Write one complete CUDA C++17 translation unit for the contract below, targeting NVIDIA RTX 4090 sm_89 with CUDA 12.6. Return JSON with exactly source (the entire compilable source as a string, no Markdown fences) and notes (short implementation description). Include <cuda_runtime.h> and <cstdint> where needed. Implement exactly the named extern "C" host launcher plus any kernels/helpers. Do not define main. Do not use tools, shell, browsing, files, or external context: all task information is in this prompt. Do not use host I/O, filesystem/network access, process execution, CPU computation of the output, host/device allocation, library calls such as cuBLAS, cudaMemcpy, or synchronization of the entire device. The caller supplies device pointers and a valid CUDA stream. Enqueue only your computation on that stream, and return cudaSuccess for a valid no-op, otherwise return cudaGetLastError() or a launch error. You may use CUDA math, shuffle/shared-memory reductions, and the ordinary C++ standard headers. Prefer simple correct code. There is no repair round or feedback. Tests may exercise any valid contract input.
+
+{
+  "task_id": 3,
+  "signature": "extern \"C\" cudaError_t launch_segments(const int32_t* x, const int32_t* offsets, int64_t* y, int n, int segments, cudaStream_t stream);",
+  "semantics": "For 0<=s<segments, y[s] = sum of x[i] for offsets[s]<=i<offsets[s+1], accumulating exactly in int64. offsets are nondecreasing, offsets[0]=0, offsets[segments]=n. Empty segments produce 0. Inputs/offsets/output do not alias; input and offsets are read-only.",
+  "domain": "0<=n<=1048576; 0<=segments<=65535; each int32 x is in [-1048576,1048576]. If segments=0 then n=0. The mathematical sum fits int64; avoid int32 overflow.",
+  "comparison": "All output int64 values exactly equal an independent Python integer sum. All input/offset/guard bytes unchanged.",
+  "public_example": "Three contiguous segments of length 4 are one legal example; empty and unequal-length segments are supported."
+}

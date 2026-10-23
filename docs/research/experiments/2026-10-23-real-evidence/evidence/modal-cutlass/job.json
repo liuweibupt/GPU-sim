@@ -1,0 +1,27 @@
+{
+  "sources": [
+    "tools/research/natural-bugs/cutlass_run_repro.py",
+    "out/research/natural-bugs/cutlass/build-v1/before/cutlass_before",
+    "out/research/natural-bugs/cutlass/build-v1/after/cutlass_after"
+  ],
+  "commands": [
+    {
+      "name": "cutlass_matrix",
+      "argv": [
+        "python",
+        "cutlass_run_repro.py",
+        "--before",
+        "cutlass_before",
+        "--after",
+        "cutlass_after",
+        "--output",
+        "matrix",
+        "--sanitizer"
+      ],
+      "timeout": 490
+    }
+  ],
+  "artifact_patterns": [
+    "matrix/**/*"
+  ]
+}

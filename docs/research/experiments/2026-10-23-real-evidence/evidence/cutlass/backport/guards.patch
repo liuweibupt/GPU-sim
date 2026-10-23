@@ -1,0 +1,45 @@
+--- include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp
++++ include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp
+@@ -816,16 +816,12 @@
+     // Prologue GMMAs
+     tiled_mma.accumulate_ = GMMA::ScaleOut::Zero;
+ 
+-    // WAIT on smem_pipe_read until its data are available (phase bit flips from rdPhaseBit value)
+     auto barrier_token = pipeline.consumer_try_wait(smem_pipe_read);
+-    pipeline.consumer_wait(smem_pipe_read, barrier_token);
+-
+-    // fence_operand();
+     GmmaFP8Accumulation accumulation(accum, ScalePromotionInterval, size<2>(tCrA));
+-
+     warpgroup_fence_operand(accumulation());
+ 
+-    {
++    if (k_tile_count > 0) {
++      pipeline.consumer_wait(smem_pipe_read, barrier_token);
+ 
+       int read_stage = smem_pipe_read.index();
+       // Load per block scale values from shared memory to registers
+@@ -969,7 +965,7 @@
+       ++smem_pipe_release;
+     }
+ 
+-    if (k_tile_count) {
++    if (k_tile_count > 0) {
+       pipeline.consumer_wait(smem_pipe_read, barrier_token);
+ 
+       //
+@@ -1064,9 +1060,11 @@
+   /// Perform a Consumer Epilogue to release all buffers
+   CUTLASS_DEVICE void
+   mma_tail(MainloopPipeline pipeline, PipelineState smem_pipe_release, int k_tile_count) {
+-    // The pipeline is not released in the first iteration
+-    smem_pipe_release.advance(k_tile_count - 1);
+-    pipeline.consumer_release(smem_pipe_release);
++    if (k_tile_count > 0) {
++      // The pipeline is not released in the first iteration
++      smem_pipe_release.advance(k_tile_count - 1);
++      pipeline.consumer_release(smem_pipe_release);
++    }
+   }
+ 
+   //
