@@ -1,0 +1,849 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "completed-reader-before-reuse",
+    "family": "satisfied-obligation",
+    "rootCauseTemplate": "satisfied-obligation",
+    "split": "development",
+    "run": {
+      "id": "completed-reader-before-reuse",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "reader",
+          "type": "operation"
+        },
+        {
+          "id": "release",
+          "type": "operation"
+        },
+        {
+          "id": "writer-next",
+          "type": "operation"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        }
+      ],
+      "edges": [
+        {
+          "id": "writer-output",
+          "from": "writer-next",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        },
+        {
+          "id": "reader-release",
+          "from": "reader",
+          "to": "release",
+          "type": "completion",
+          "evidenceRefs": [
+            "completed"
+          ]
+        },
+        {
+          "id": "release-reuse",
+          "from": "release",
+          "to": "writer-next",
+          "type": "reuse",
+          "evidenceRefs": [
+            "reuse-order"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "completed",
+          "kind": "model-completion",
+          "at": 4
+        },
+        {
+          "id": "reuse-order",
+          "kind": "model-order",
+          "reuseAt": 5
+        },
+        {
+          "id": "rule-safe",
+          "kind": "model-rule",
+          "ruleId": "toy.release-before-reuse"
+        }
+      ],
+      "obligations": [
+        {
+          "id": "safe-check",
+          "kind": "safe-reuse",
+          "subjectIds": [
+            "writer-next"
+          ],
+          "ruleId": "toy.release-before-reuse",
+          "status": "satisfied",
+          "positiveWitnessRefs": [
+            "completed",
+            "reuse-order",
+            "rule-safe"
+          ],
+          "witnessNodeIds": [
+            "reader",
+            "release",
+            "writer-next"
+          ],
+          "witnessEdgeIds": [
+            "reader-release",
+            "release-reuse"
+          ],
+          "unknownRefs": []
+        }
+      ]
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "reader",
+        "release",
+        "writer-next"
+      ],
+      "edgeIds": [
+        "writer-output",
+        "reader-release",
+        "release-reuse"
+      ],
+      "obligationIds": [
+        "safe-check"
+      ],
+      "unknownRefs": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E2",
+      "caseId": "completed-reader-before-reuse",
+      "family": "satisfied-obligation",
+      "split": "development",
+      "template": "satisfied-obligation",
+      "provenance": "synthetic-model",
+      "inputSha256": "0a2a50e124078c0434a2f3e8a146639fd9180b6d04c830a713ea4e7f619d668a",
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 5,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1337,
+          "retained": 1651,
+          "ratio": 1.2348541510845177
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "completed-reader-before-reuse",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "complete",
+          "accesses": "complete",
+          "sync": "complete"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "reader",
+            "type": "operation"
+          },
+          {
+            "id": "release",
+            "type": "operation"
+          },
+          {
+            "id": "writer-next",
+            "type": "operation"
+          },
+          {
+            "id": "distractor",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "writer-output",
+            "from": "writer-next",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "reader-release",
+            "from": "reader",
+            "to": "release",
+            "type": "completion",
+            "evidenceRefs": [
+              "completed"
+            ]
+          },
+          {
+            "id": "release-reuse",
+            "from": "release",
+            "to": "writer-next",
+            "type": "reuse",
+            "evidenceRefs": [
+              "reuse-order"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "completed",
+            "kind": "model-completion",
+            "at": 4
+          },
+          {
+            "id": "reuse-order",
+            "kind": "model-order",
+            "reuseAt": 5
+          },
+          {
+            "id": "rule-safe",
+            "kind": "model-rule",
+            "ruleId": "toy.release-before-reuse"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "safe-check",
+            "kind": "safe-reuse",
+            "subjectIds": [
+              "writer-next"
+            ],
+            "ruleId": "toy.release-before-reuse",
+            "status": "satisfied",
+            "positiveWitnessRefs": [
+              "completed",
+              "reuse-order",
+              "rule-safe"
+            ],
+            "witnessNodeIds": [
+              "reader",
+              "release",
+              "writer-next"
+            ],
+            "witnessEdgeIds": [
+              "reader-release",
+              "release-reuse"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "full",
+          "parentRunId": "completed-reader-before-reuse",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": false,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.04339098930358887,
+          0.04191005229949951,
+          0.03975999355316162,
+          0.04175102710723877,
+          0.04322004318237305,
+          0.03925001621246338,
+          0.038609981536865234,
+          0.0409010648727417,
+          0.03950095176696777,
+          0.03924000263214111,
+          0.03813004493713379,
+          0.03837001323699951,
+          0.03801989555358887,
+          0.040891051292419434,
+          0.03913998603820801,
+          0.039209961891174316,
+          0.038040995597839355,
+          0.037950992584228516,
+          0.037461042404174805,
+          0.037779927253723145,
+          0.03764998912811279,
+          0.04038989543914795,
+          0.03732001781463623,
+          0.03791093826293945,
+          0.04720103740692139,
+          0.03892993927001953,
+          0.03815007209777832,
+          0.03857100009918213,
+          0.03902101516723633,
+          0.040060997009277344
+        ],
+        "median": 0.03908050060272217,
+        "p95": 0.04331406354904175,
+        "minimum": 0.03732001781463623,
+        "maximum": 0.04720103740692139,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "completed-reader-before-reuse",
+      "family": "satisfied-obligation",
+      "split": "development",
+      "template": "satisfied-obligation",
+      "provenance": "synthetic-model",
+      "inputSha256": "0a2a50e124078c0434a2f3e8a146639fd9180b6d04c830a713ea4e7f619d668a",
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 2,
+            "recall": 0.5,
+            "missing": [
+              "\"reader\"",
+              "\"release\""
+            ]
+          },
+          "edges": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"reader-release\"",
+              "\"release-reuse\""
+            ]
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "\"safe-check\""
+            ]
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"completed\"",
+              "\"rule-safe\""
+            ]
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "[\"safe-check\",\"satisfied\"]"
+            ]
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 4,
+        "evidenceRetention": 0.3333333333333333,
+        "completeWitnessRetained": false,
+        "nodes": {
+          "original": 5,
+          "retained": 2,
+          "ratio": 0.4
+        },
+        "edges": {
+          "original": 3,
+          "retained": 1,
+          "ratio": 0.3333333333333333
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 0,
+          "ratio": 0
+        },
+        "bytes": {
+          "original": 1337,
+          "retained": 1007,
+          "ratio": 0.7531787584143605
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "completed-reader-before-reuse",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "writer-next",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "writer-output",
+            "from": "writer-next",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "reuse-order",
+            "kind": "model-order",
+            "reuseAt": 5
+          }
+        ],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "data-ancestors",
+          "parentRunId": "completed-reader-before-reuse",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [
+            {
+              "id": "release-reuse",
+              "from": "release",
+              "to": "writer-next",
+              "type": "reuse",
+              "evidenceRefs": [
+                "reuse-order"
+              ]
+            }
+          ],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.027539968490600586,
+          0.02891993522644043,
+          0.02735006809234619,
+          0.029019951820373535,
+          0.02768099308013916,
+          0.0282210111618042,
+          0.03791999816894531,
+          0.027649998664855957,
+          0.026449918746948242,
+          0.029130101203918457,
+          0.027801036834716797,
+          0.02688002586364746,
+          0.027531027793884277,
+          0.026800036430358887,
+          0.02752101421356201,
+          0.027300000190734863,
+          0.027780890464782715,
+          0.026270031929016113,
+          0.027069926261901855,
+          0.02752995491027832,
+          0.026100993156433105,
+          0.02866995334625244,
+          0.02665102481842041,
+          0.02706003189086914,
+          0.02698993682861328,
+          0.02716994285583496,
+          0.026739954948425293,
+          0.026391029357910156,
+          0.026649951934814453,
+          0.025979995727539062
+        ],
+        "median": 0.027325034141540527,
+        "p95": 0.029080533981323244,
+        "minimum": 0.025979995727539062,
+        "maximum": 0.03791999816894531,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "completed-reader-before-reuse",
+      "family": "satisfied-obligation",
+      "split": "development",
+      "template": "satisfied-obligation",
+      "provenance": "synthetic-model",
+      "inputSha256": "0a2a50e124078c0434a2f3e8a146639fd9180b6d04c830a713ea4e7f619d668a",
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 4,
+          "ratio": 0.8
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1337,
+          "retained": 1612,
+          "ratio": 1.205684367988033
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "completed-reader-before-reuse",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "reader",
+            "type": "operation"
+          },
+          {
+            "id": "release",
+            "type": "operation"
+          },
+          {
+            "id": "writer-next",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "writer-output",
+            "from": "writer-next",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "reader-release",
+            "from": "reader",
+            "to": "release",
+            "type": "completion",
+            "evidenceRefs": [
+              "completed"
+            ]
+          },
+          {
+            "id": "release-reuse",
+            "from": "release",
+            "to": "writer-next",
+            "type": "reuse",
+            "evidenceRefs": [
+              "reuse-order"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "completed",
+            "kind": "model-completion",
+            "at": 4
+          },
+          {
+            "id": "reuse-order",
+            "kind": "model-order",
+            "reuseAt": 5
+          },
+          {
+            "id": "rule-safe",
+            "kind": "model-rule",
+            "ruleId": "toy.release-before-reuse"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "safe-check",
+            "kind": "safe-reuse",
+            "subjectIds": [
+              "writer-next"
+            ],
+            "ruleId": "toy.release-before-reuse",
+            "status": "satisfied",
+            "positiveWitnessRefs": [
+              "completed",
+              "reuse-order",
+              "rule-safe"
+            ],
+            "witnessNodeIds": [
+              "reader",
+              "release",
+              "writer-next"
+            ],
+            "witnessEdgeIds": [
+              "reader-release",
+              "release-reuse"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "completed-reader-before-reuse",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.04367101192474365,
+          0.04363095760345459,
+          0.04337000846862793,
+          0.043650031089782715,
+          0.04144001007080078,
+          0.04291093349456787,
+          0.042791008949279785,
+          0.041159987449645996,
+          0.0419999361038208,
+          0.04078102111816406,
+          0.0420910120010376,
+          0.04162096977233887,
+          0.0417400598526001,
+          0.041131019592285156,
+          0.041429996490478516,
+          0.04822099208831787,
+          0.03987002372741699,
+          0.04041004180908203,
+          0.04569101333618164,
+          0.04056096076965332,
+          0.04144001007080078,
+          0.04077005386352539,
+          0.04156005382537842,
+          0.04120993614196777,
+          0.03956103324890137,
+          0.04114103317260742,
+          0.041271090507507324,
+          0.040740013122558594,
+          0.04044008255004883,
+          0.04088997840881348
+        ],
+        "median": 0.04143500328063965,
+        "p95": 0.04478201270103454,
+        "minimum": 0.03956103324890137,
+        "maximum": 0.04822099208831787,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    }
+  ]
+}

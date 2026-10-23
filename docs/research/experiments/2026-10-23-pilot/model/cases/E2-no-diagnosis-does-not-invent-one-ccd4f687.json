@@ -1,0 +1,613 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "no-diagnosis-does-not-invent-one",
+    "family": "no-diagnostic",
+    "rootCauseTemplate": "no-diagnostic",
+    "split": "validation",
+    "run": {
+      "id": "no-diagnosis-does-not-invent-one",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "producer",
+          "type": "operation"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        }
+      ],
+      "edges": [
+        {
+          "id": "producer-output",
+          "from": "producer",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        }
+      ],
+      "evidence": [],
+      "obligations": []
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "producer"
+      ],
+      "edgeIds": [
+        "producer-output"
+      ],
+      "obligationIds": [],
+      "unknownRefs": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E2",
+      "caseId": "no-diagnosis-does-not-invent-one",
+      "family": "no-diagnostic",
+      "split": "validation",
+      "template": "no-diagnostic",
+      "provenance": "synthetic-model",
+      "inputSha256": "ccd4f687b17ca9106e4166aed430fe1833f6b3380cebc8247a79137603787f12",
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 2,
+            "retained": 2,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          }
+        },
+        "requiredTotal": 3,
+        "retainedTotal": 3,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": null,
+        "nodes": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 0,
+          "retained": 0,
+          "ratio": null
+        },
+        "bytes": {
+          "original": 568,
+          "retained": 885,
+          "ratio": 1.5580985915492958
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "no-diagnosis-does-not-invent-one",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "complete",
+          "accesses": "complete",
+          "sync": "complete"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "producer",
+            "type": "operation"
+          },
+          {
+            "id": "distractor",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "producer-output",
+            "from": "producer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "full",
+          "parentRunId": "no-diagnosis-does-not-invent-one",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 3,
+          "sourceEdgeCount": 1,
+          "isProjection": false,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.020501017570495605,
+          0.021340012550354004,
+          0.018000006675720215,
+          0.018000006675720215,
+          0.019479990005493164,
+          0.02054011821746826,
+          0.020711064338684082,
+          0.0197598934173584,
+          0.019920945167541504,
+          0.02925097942352295,
+          0.019880056381225586,
+          0.01970994472503662,
+          0.0191500186920166,
+          0.02594006061553955,
+          0.01835000514984131,
+          0.01883995532989502,
+          0.018970012664794922,
+          0.019739985466003418,
+          0.0196000337600708,
+          0.019099950790405273,
+          0.019169926643371582,
+          0.0187300443649292,
+          0.018869996070861816,
+          0.02033102512359619,
+          0.021139979362487793,
+          0.02172994613647461,
+          0.01995992660522461,
+          0.019009947776794434,
+          0.02155005931854248,
+          0.021340012550354004
+        ],
+        "median": 0.019749939441680908,
+        "p95": 0.024045509099960314,
+        "minimum": 0.018000006675720215,
+        "maximum": 0.02925097942352295,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 245
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "no-diagnosis-does-not-invent-one",
+      "family": "no-diagnostic",
+      "split": "validation",
+      "template": "no-diagnostic",
+      "provenance": "synthetic-model",
+      "inputSha256": "ccd4f687b17ca9106e4166aed430fe1833f6b3380cebc8247a79137603787f12",
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 2,
+            "retained": 2,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          }
+        },
+        "requiredTotal": 3,
+        "retainedTotal": 3,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": null,
+        "nodes": {
+          "original": 3,
+          "retained": 2,
+          "ratio": 0.6666666666666666
+        },
+        "edges": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 0,
+          "retained": 0,
+          "ratio": null
+        },
+        "bytes": {
+          "original": 568,
+          "retained": 852,
+          "ratio": 1.5
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "no-diagnosis-does-not-invent-one",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "producer",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "producer-output",
+            "from": "producer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "data-ancestors",
+          "parentRunId": "no-diagnosis-does-not-invent-one",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 3,
+          "sourceEdgeCount": 1,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.019909977912902832,
+          0.020090103149414062,
+          0.018139958381652832,
+          0.02190995216369629,
+          0.019790053367614746,
+          0.019811034202575684,
+          0.021420001983642578,
+          0.021390080451965332,
+          0.02109992504119873,
+          0.02063000202178955,
+          0.021359920501708984,
+          0.018650054931640625,
+          0.017729997634887695,
+          0.021580100059509277,
+          0.01906001567840576,
+          0.019380927085876465,
+          0.02014005184173584,
+          0.019181013107299805,
+          0.01881098747253418,
+          0.02240002155303955,
+          0.018990039825439453,
+          0.019569993019104004,
+          0.019790053367614746,
+          0.02025008201599121,
+          0.019860029220581055,
+          0.021579980850219727,
+          0.02072000503540039,
+          0.020960092544555664,
+          0.02049994468688965,
+          0.02369999885559082
+        ],
+        "median": 0.02011507749557495,
+        "p95": 0.02217949032783508,
+        "minimum": 0.017729997634887695,
+        "maximum": 0.02369999885559082,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 245
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "no-diagnosis-does-not-invent-one",
+      "family": "no-diagnostic",
+      "split": "validation",
+      "template": "no-diagnostic",
+      "provenance": "synthetic-model",
+      "inputSha256": "ccd4f687b17ca9106e4166aed430fe1833f6b3380cebc8247a79137603787f12",
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 2,
+            "retained": 2,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          }
+        },
+        "requiredTotal": 3,
+        "retainedTotal": 3,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": null,
+        "nodes": {
+          "original": 3,
+          "retained": 2,
+          "ratio": 0.6666666666666666
+        },
+        "edges": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 0,
+          "retained": 0,
+          "ratio": null
+        },
+        "bytes": {
+          "original": 568,
+          "retained": 846,
+          "ratio": 1.4894366197183098
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "no-diagnosis-does-not-invent-one",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "producer",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "producer-output",
+            "from": "producer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "no-diagnosis-does-not-invent-one",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 3,
+          "sourceEdgeCount": 1,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.01993107795715332,
+          0.020080924034118652,
+          0.019631028175354004,
+          0.018220067024230957,
+          0.019079923629760742,
+          0.02063000202178955,
+          0.02109992504119873,
+          0.019700050354003906,
+          0.020740032196044922,
+          0.020059943199157715,
+          0.019350051879882812,
+          0.018061041831970215,
+          0.01816105842590332,
+          0.020460009574890137,
+          0.018841028213500977,
+          0.020130038261413574,
+          0.02416098117828369,
+          0.0209500789642334,
+          0.018931031227111816,
+          0.019120097160339355,
+          0.01973104476928711,
+          0.018849968910217285,
+          0.01970994472503662,
+          0.019950032234191895,
+          0.021381020545959473,
+          0.02761101722717285,
+          0.02201104164123535,
+          0.021331071853637695,
+          0.0213010311126709,
+          0.021849989891052246
+        ],
+        "median": 0.020004987716674805,
+        "p95": 0.02319350838661193,
+        "minimum": 0.018061041831970215,
+        "maximum": 0.02761101722717285,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 245
+      }
+    }
+  ]
+}

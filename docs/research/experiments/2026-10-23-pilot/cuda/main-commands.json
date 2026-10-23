@@ -1,0 +1,2573 @@
+[
+  {
+    "name": "nvcc_version",
+    "argv": [
+      "/usr/local/cuda-12.6/bin/nvcc",
+      "--version"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.004163341014645994,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "ncu_version",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/ncu",
+      "--version"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.05280085001140833,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_version",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--version"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.009789870004169643,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "nsys_version",
+    "argv": [
+      "nsys",
+      "--version"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.04012527409940958,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "host_compiler_version",
+    "argv": [
+      "g++",
+      "--version"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.005549368099309504,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "gpu_identity",
+    "argv": [
+      "nvidia-smi",
+      "--query-gpu=name,compute_cap,driver_version,memory.total",
+      "--format=csv,noheader"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.02372059295885265,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "compile",
+    "argv": [
+      "/usr/local/cuda-12.6/bin/nvcc",
+      "-std=c++17",
+      "-O3",
+      "-lineinfo",
+      "-arch=sm_89",
+      "--ptxas-options=-v",
+      "/home/liuwei/GPU-sim/tools/research/cuda/gemm_pilot.cu",
+      "-lcublas",
+      "-Xlinker",
+      "-rpath",
+      "-Xlinker",
+      "/usr/local/cuda-12.6/lib64",
+      "-o",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.588149026967585,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "cuda_identity",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "identify"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7660727029433474,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_1x1x1_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "1",
+      "--n",
+      "1",
+      "--k",
+      "1",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4551859049824998,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_7x13x5_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "7",
+      "--n",
+      "13",
+      "--k",
+      "5",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4399749339791015,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_16x16x16_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5025323779555038,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_17x19x23_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "17",
+      "--n",
+      "19",
+      "--k",
+      "23",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5634111909894273,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_31x33x17_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4417124540777877,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_64x48x80_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "64",
+      "--n",
+      "48",
+      "--k",
+      "80",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.46104076702613384,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_127x129x65_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "127",
+      "--n",
+      "129",
+      "--k",
+      "65",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5990944929653779,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_128x128x128_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5281929989578202,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_256x256x256_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4426434289198369,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_256x384x128_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.45785325102042407,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_511x257x129_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4652998090023175,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_baseline_512x512x512_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5940204940270633,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "nsys_baseline",
+    "argv": [
+      "nsys",
+      "profile",
+      "--force-overwrite=true",
+      "--trace=cuda,nvtx",
+      "--sample=none",
+      "--cpuctxsw=none",
+      "--capture-range=cudaProfilerApi",
+      "--capture-range-end=stop",
+      "-o",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/nsys_baseline",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "profile",
+      "--candidate",
+      "baseline",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "20",
+      "--launches",
+      "20"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 4.749020574963652,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "nsys_stats_baseline",
+    "argv": [
+      "nsys",
+      "stats",
+      "--report",
+      "cuda_api_sum,cuda_gpu_kern_sum,cuda_gpu_mem_time_sum,cuda_gpu_mem_size_sum,cuda_kern_exec_sum",
+      "--format",
+      "csv",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/nsys_baseline.nsys-rep"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.2977014210773632,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "ncu_baseline",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/ncu",
+      "--force-overwrite",
+      "--profile-from-start",
+      "off",
+      "--kernel-name",
+      "regex:gemm_baseline",
+      "--launch-count",
+      "1",
+      "--section",
+      "SpeedOfLight",
+      "--section",
+      "MemoryWorkloadAnalysis",
+      "--section",
+      "Occupancy",
+      "--section",
+      "SchedulerStats",
+      "--section",
+      "WarpStateStats",
+      "--section",
+      "LaunchStats",
+      "-o",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/ncu_baseline",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "profile",
+      "--candidate",
+      "baseline",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "20",
+      "--launches",
+      "20"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.5288868489442393,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "ncu_raw_baseline",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/ncu",
+      "--import",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/ncu_baseline.ncu-rep",
+      "--page",
+      "raw",
+      "--csv"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3043680669507012,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_1x1x1_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "1",
+      "--n",
+      "1",
+      "--k",
+      "1",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3939606910571456,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_1x1x1_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "1",
+      "--n",
+      "1",
+      "--k",
+      "1",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.4471670270431787,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_1x1x1_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "1",
+      "--n",
+      "1",
+      "--k",
+      "1",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4995767700020224,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_1x1x1_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "1",
+      "--n",
+      "1",
+      "--k",
+      "1",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4843304550740868,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_1x1x1_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "1",
+      "--n",
+      "1",
+      "--k",
+      "1",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.43219229101669043,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_7x13x5_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "7",
+      "--n",
+      "13",
+      "--k",
+      "5",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.28656132402829826,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_7x13x5_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "7",
+      "--n",
+      "13",
+      "--k",
+      "5",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.4409382229205221,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_7x13x5_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "7",
+      "--n",
+      "13",
+      "--k",
+      "5",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.39632445201277733,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_7x13x5_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "7",
+      "--n",
+      "13",
+      "--k",
+      "5",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4349093079799786,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_7x13x5_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "7",
+      "--n",
+      "13",
+      "--k",
+      "5",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.43295309389941394,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_16x16x16_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.43606669805012643,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_16x16x16_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4306659820722416,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_16x16x16_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.30184383306186646,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_16x16x16_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4506278510671109,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_16x16x16_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3813932940829545,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_17x19x23_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "17",
+      "--n",
+      "19",
+      "--k",
+      "23",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.45961265603546053,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_17x19x23_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "17",
+      "--n",
+      "19",
+      "--k",
+      "23",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.45668016001582146,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_17x19x23_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "17",
+      "--n",
+      "19",
+      "--k",
+      "23",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.45358253095764667,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_17x19x23_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "17",
+      "--n",
+      "19",
+      "--k",
+      "23",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.309647710993886,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_17x19x23_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "17",
+      "--n",
+      "19",
+      "--k",
+      "23",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.47208681399933994,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_31x33x17_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.42391719797160476,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_31x33x17_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.39233030600007623,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_31x33x17_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.41977409506216645,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_31x33x17_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.2799902189290151,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_31x33x17_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.26769443007651716,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_64x48x80_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "64",
+      "--n",
+      "48",
+      "--k",
+      "80",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3635344720678404,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_64x48x80_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "64",
+      "--n",
+      "48",
+      "--k",
+      "80",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.33436981006525457,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_64x48x80_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "64",
+      "--n",
+      "48",
+      "--k",
+      "80",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.36841241898946464,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_64x48x80_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "64",
+      "--n",
+      "48",
+      "--k",
+      "80",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.41758935200050473,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_64x48x80_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "64",
+      "--n",
+      "48",
+      "--k",
+      "80",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.35941740893758833,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_127x129x65_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "127",
+      "--n",
+      "129",
+      "--k",
+      "65",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4107345350785181,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_127x129x65_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "127",
+      "--n",
+      "129",
+      "--k",
+      "65",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.3964347019791603,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_127x129x65_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "127",
+      "--n",
+      "129",
+      "--k",
+      "65",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4024277830030769,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_127x129x65_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "127",
+      "--n",
+      "129",
+      "--k",
+      "65",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.43561577203217894,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_127x129x65_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "127",
+      "--n",
+      "129",
+      "--k",
+      "65",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.366677102050744,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_128x128x128_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4664312170352787,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_128x128x128_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.40295670402701944,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_128x128x128_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.41174080793280154,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_128x128x128_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.40994974598288536,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_128x128x128_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3038560199784115,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_256x256x256_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.39194996596779674,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_256x256x256_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.44762496394105256,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_256x256x256_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4372716889483854,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_256x256x256_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.43608597305137664,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_256x256x256_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.47863934200722724,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_256x384x128_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.400716825039126,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_256x384x128_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3490306839812547,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_256x384x128_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3741005250485614,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_256x384x128_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.2932121439371258,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_256x384x128_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.43335825309623033,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_511x257x129_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4639078549807891,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_511x257x129_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.3972043050453067,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_511x257x129_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.35613964300137013,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_511x257x129_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.36491775792092085,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_511x257x129_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.29788770398590714,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_tiled_512x512x512_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4928956750081852,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_512x512x512_20261023",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5121805740054697,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "verify_baseline_512x512x512_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5322345030726865,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tiled_512x512x512_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5683588220272213,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "verify_tail_bug_512x512x512_20261024",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261024"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.46390521398279816,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "sanitizer_memcheck_baseline",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4388088210253045,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_racecheck_baseline",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8271024679997936,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_initcheck_baseline",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "initcheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.34755570406559855,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_synccheck_baseline",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "synccheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "baseline",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6416480300249532,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_memcheck_tiled",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5391886439174414,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_racecheck_tiled",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9067841679789126,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_initcheck_tiled",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "initcheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.0597789059393108,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_synccheck_tiled",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "synccheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6245207120664418,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "sanitizer_memcheck_tail_bug",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.3255862060468644,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "sanitizer_racecheck_tail_bug",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.8262472290080041,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "sanitizer_initcheck_tail_bug",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "initcheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.569327455945313,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "sanitizer_synccheck_tail_bug",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/compute-sanitizer",
+      "--tool",
+      "synccheck",
+      "--error-exitcode",
+      "99",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "verify",
+      "--candidate",
+      "tail_bug",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.6596657120389864,
+    "expected_exit_codes": [
+      0,
+      2
+    ]
+  },
+  {
+    "name": "nsys_tiled",
+    "argv": [
+      "nsys",
+      "profile",
+      "--force-overwrite=true",
+      "--trace=cuda,nvtx",
+      "--sample=none",
+      "--cpuctxsw=none",
+      "--capture-range=cudaProfilerApi",
+      "--capture-range-end=stop",
+      "-o",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/nsys_tiled",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "profile",
+      "--candidate",
+      "tiled",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "20",
+      "--launches",
+      "20"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 5.8813653730321676,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "nsys_stats_tiled",
+    "argv": [
+      "nsys",
+      "stats",
+      "--report",
+      "cuda_api_sum,cuda_gpu_kern_sum,cuda_gpu_mem_time_sum,cuda_gpu_mem_size_sum,cuda_kern_exec_sum",
+      "--format",
+      "csv",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/nsys_tiled.nsys-rep"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.10492172895465046,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "ncu_tiled",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/ncu",
+      "--force-overwrite",
+      "--profile-from-start",
+      "off",
+      "--kernel-name",
+      "regex:gemm_tiled",
+      "--launch-count",
+      "1",
+      "--section",
+      "SpeedOfLight",
+      "--section",
+      "MemoryWorkloadAnalysis",
+      "--section",
+      "Occupancy",
+      "--section",
+      "SchedulerStats",
+      "--section",
+      "WarpStateStats",
+      "--section",
+      "LaunchStats",
+      "-o",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/ncu_tiled",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "profile",
+      "--candidate",
+      "tiled",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "20",
+      "--launches",
+      "20"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.405531311989762,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "ncu_raw_tiled",
+    "argv": [
+      "/usr/local/cuda-13.1/bin/ncu",
+      "--import",
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/ncu_tiled.ncu-rep",
+      "--page",
+      "raw",
+      "--csv"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.41139388701412827,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_16x16x16",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "16",
+      "--n",
+      "16",
+      "--k",
+      "16",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5316092499997467,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_31x33x17",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "31",
+      "--n",
+      "33",
+      "--k",
+      "17",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6373703191056848,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_128x128x128",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "128",
+      "--n",
+      "128",
+      "--k",
+      "128",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7875058309873566,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_256x256x256",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "256",
+      "--n",
+      "256",
+      "--k",
+      "256",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.510184264043346,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_256x384x128",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "256",
+      "--n",
+      "384",
+      "--k",
+      "128",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7361058079404756,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_511x257x129",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "511",
+      "--n",
+      "257",
+      "--k",
+      "129",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4602022080216557,
+    "expected_exit_codes": [
+      0
+    ]
+  },
+  {
+    "name": "benchmark_baseline-tiled_512x512x512",
+    "argv": [
+      "/home/liuwei/GPU-sim/out/research/cuda/20261023T072425Z/gemm_pilot",
+      "--mode",
+      "benchmark",
+      "--comparison",
+      "baseline-tiled",
+      "--m",
+      "512",
+      "--n",
+      "512",
+      "--k",
+      "512",
+      "--seed",
+      "20261023",
+      "--warmup",
+      "30",
+      "--pairs",
+      "30",
+      "--launches",
+      "30"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.1922483290545642,
+    "expected_exit_codes": [
+      0
+    ]
+  }
+]

@@ -1,0 +1,587 @@
+[
+  {
+    "local_directory": "out/research/cuda/20261023T071643Z",
+    "summary_sha256": "537e9bc9b9ae24e6194766dd86fe05a64cc40db79d1a7c2a27a6fa3fd5b4cd62",
+    "status": "stopped",
+    "started_utc": "20261023T071643Z",
+    "stop_reason": "GPU busy, insufficient headroom, or unexpected device topology: stopping without further launches",
+    "verification_records": 1,
+    "benchmark_records": 0,
+    "commands": [
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "/usr/local/cuda-12.6/bin/nvcc",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.001392862992361188,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "ncu_version",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/ncu",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.027079270919784904,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/compute-sanitizer",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.0047143870033323765,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "nsys_version",
+        "argv": [
+          "nsys",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.028796199010685086,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "host_compiler_version",
+        "argv": [
+          "g++",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.0015778960660099983,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.016040691058151424,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "compile",
+        "argv": [
+          "/usr/local/cuda-12.6/bin/nvcc",
+          "-std=c++17",
+          "-O3",
+          "-lineinfo",
+          "-arch=sm_89",
+          "--ptxas-options=-v",
+          "/home/liuwei/GPU-sim/tools/research/cuda/gemm_pilot.cu",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T071643Z/gemm_pilot"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.5869039359968156,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "cuda_identity",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T071643Z/gemm_pilot",
+          "--mode",
+          "identify"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.14891466998960823,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_1x1x1_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T071643Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "1",
+          "--n",
+          "1",
+          "--k",
+          "1",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.301818368025124,
+        "expected_exit_codes": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "local_directory": "out/research/cuda/20261023T072030Z",
+    "summary_sha256": "69299e1ca372a8700c02952f88029151cdc5236d02e9696fda369ab69b655d10",
+    "status": "stopped",
+    "started_utc": "20261023T072030Z",
+    "stop_reason": "GPU remained busy during bounded observation: stopping without further launches",
+    "verification_records": 12,
+    "benchmark_records": 0,
+    "commands": [
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "/usr/local/cuda-12.6/bin/nvcc",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.0015580710023641586,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "ncu_version",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/ncu",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.031209682929329574,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "/usr/local/cuda-13.1/bin/compute-sanitizer",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.006697232951410115,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "nsys_version",
+        "argv": [
+          "nsys",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.03054030507337302,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "host_compiler_version",
+        "argv": [
+          "g++",
+          "--version"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.0016134519828483462,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.01819123199675232,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "compile",
+        "argv": [
+          "/usr/local/cuda-12.6/bin/nvcc",
+          "-std=c++17",
+          "-O3",
+          "-lineinfo",
+          "-arch=sm_89",
+          "--ptxas-options=-v",
+          "/home/liuwei/GPU-sim/tools/research/cuda/gemm_pilot.cu",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.9392272450495511,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "cuda_identity",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "identify"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.2976601589471102,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_1x1x1_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "1",
+          "--n",
+          "1",
+          "--k",
+          "1",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.41883815301116556,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_7x13x5_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "7",
+          "--n",
+          "13",
+          "--k",
+          "5",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.3638418579939753,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_16x16x16_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "16",
+          "--n",
+          "16",
+          "--k",
+          "16",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.30836126499343663,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_17x19x23_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "17",
+          "--n",
+          "19",
+          "--k",
+          "23",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.3684440919896588,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_31x33x17_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "31",
+          "--n",
+          "33",
+          "--k",
+          "17",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.3960456580389291,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_64x48x80_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "64",
+          "--n",
+          "48",
+          "--k",
+          "80",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.3929996519582346,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_127x129x65_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "127",
+          "--n",
+          "129",
+          "--k",
+          "65",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.4456714920233935,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_128x128x128_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "128",
+          "--n",
+          "128",
+          "--k",
+          "128",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.37830362003296614,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_256x256x256_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "256",
+          "--n",
+          "256",
+          "--k",
+          "256",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.45776141702663153,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_256x384x128_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "256",
+          "--n",
+          "384",
+          "--k",
+          "128",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.39537840499542654,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_511x257x129_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "511",
+          "--n",
+          "257",
+          "--k",
+          "129",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.34446003707125783,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "verify_baseline_512x512x512_20261023",
+        "argv": [
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "verify",
+          "--candidate",
+          "baseline",
+          "--m",
+          "512",
+          "--n",
+          "512",
+          "--k",
+          "512",
+          "--seed",
+          "20261023"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.4738897380884737,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "nsys_baseline",
+        "argv": [
+          "nsys",
+          "profile",
+          "--force-overwrite=true",
+          "--trace=cuda,nvtx",
+          "--sample=none",
+          "--cpuctxsw=none",
+          "--capture-range=cudaProfilerApi",
+          "--capture-range-end=stop",
+          "-o",
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/nsys_baseline",
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/gemm_pilot",
+          "--mode",
+          "profile",
+          "--candidate",
+          "baseline",
+          "--m",
+          "512",
+          "--n",
+          "512",
+          "--k",
+          "512",
+          "--seed",
+          "20261023",
+          "--warmup",
+          "20",
+          "--launches",
+          "20"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 4.978755387943238,
+        "expected_exit_codes": [
+          0
+        ]
+      },
+      {
+        "name": "nsys_stats_baseline",
+        "argv": [
+          "nsys",
+          "stats",
+          "--report",
+          "cuda_api_sum,cuda_gpu_kern_sum,cuda_gpu_mem_time_sum,cuda_gpu_mem_size_sum,cuda_kern_exec_sum",
+          "--format",
+          "csv",
+          "/home/liuwei/GPU-sim/out/research/cuda/20261023T072030Z/nsys_baseline.nsys-rep"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.07402842096053064,
+        "expected_exit_codes": [
+          0
+        ]
+      }
+    ]
+  }
+]

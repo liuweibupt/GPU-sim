@@ -1,0 +1,805 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "missing-completion-remains-unknown",
+    "family": "unknown-boundary",
+    "rootCauseTemplate": "unknown-boundary",
+    "split": "validation",
+    "run": {
+      "id": "missing-completion-remains-unknown",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "partial"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "consumer",
+          "type": "operation"
+        },
+        {
+          "id": "producer",
+          "type": "operation"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        }
+      ],
+      "edges": [
+        {
+          "id": "consumer-output",
+          "from": "consumer",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        },
+        {
+          "id": "producer-consumer",
+          "from": "producer",
+          "to": "consumer",
+          "type": "data",
+          "evidenceRefs": []
+        }
+      ],
+      "evidence": [
+        {
+          "id": "completion-gap",
+          "kind": "missing-observation",
+          "scope": "producer completion / consumer handoff"
+        },
+        {
+          "id": "rule-handoff",
+          "kind": "model-rule",
+          "ruleId": "toy.consumer-needs-observed-handoff"
+        }
+      ],
+      "obligations": [
+        {
+          "id": "handoff-check",
+          "kind": "visibility",
+          "subjectIds": [
+            "consumer"
+          ],
+          "ruleId": "toy.consumer-needs-observed-handoff",
+          "status": "unknown",
+          "positiveWitnessRefs": [
+            "rule-handoff"
+          ],
+          "witnessNodeIds": [
+            "producer",
+            "consumer"
+          ],
+          "witnessEdgeIds": [
+            "producer-consumer"
+          ],
+          "unknownRefs": [
+            "completion-gap"
+          ]
+        }
+      ]
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "consumer",
+        "producer"
+      ],
+      "edgeIds": [
+        "consumer-output",
+        "producer-consumer"
+      ],
+      "obligationIds": [
+        "handoff-check"
+      ],
+      "unknownRefs": [
+        "completion-gap"
+      ]
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E2",
+      "caseId": "missing-completion-remains-unknown",
+      "family": "unknown-boundary",
+      "split": "validation",
+      "template": "unknown-boundary",
+      "provenance": "synthetic-model",
+      "inputSha256": "07a21c3d20ab6615839a89b73d64c10c9601b0890c21575d8f9da5571db21e1a",
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 2,
+            "retained": 2,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 9,
+        "retainedTotal": 9,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 4,
+          "retained": 4,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 2,
+          "retained": 2,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1175,
+          "retained": 1509,
+          "ratio": 1.284255319148936
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "missing-completion-remains-unknown",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "complete",
+          "accesses": "complete",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "consumer",
+            "type": "operation"
+          },
+          {
+            "id": "producer",
+            "type": "operation"
+          },
+          {
+            "id": "distractor",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "consumer-output",
+            "from": "consumer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "producer-consumer",
+            "from": "producer",
+            "to": "consumer",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "completion-gap",
+            "kind": "missing-observation",
+            "scope": "producer completion / consumer handoff"
+          },
+          {
+            "id": "rule-handoff",
+            "kind": "model-rule",
+            "ruleId": "toy.consumer-needs-observed-handoff"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "handoff-check",
+            "kind": "visibility",
+            "subjectIds": [
+              "consumer"
+            ],
+            "ruleId": "toy.consumer-needs-observed-handoff",
+            "status": "unknown",
+            "positiveWitnessRefs": [
+              "rule-handoff"
+            ],
+            "witnessNodeIds": [
+              "producer",
+              "consumer"
+            ],
+            "witnessEdgeIds": [
+              "producer-consumer"
+            ],
+            "unknownRefs": [
+              "completion-gap"
+            ]
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "full",
+          "parentRunId": "missing-completion-remains-unknown",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 4,
+          "sourceEdgeCount": 2,
+          "isProjection": false,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "completion-gap"
+          ]
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.022701025009155273,
+          0.02228105068206787,
+          0.022459983825683594,
+          0.022029995918273926,
+          0.02174997329711914,
+          0.02291107177734375,
+          0.02199995517730713,
+          0.04406094551086426,
+          0.022300004959106445,
+          0.02195000648498535,
+          0.02310001850128174,
+          0.022190093994140625,
+          0.022001028060913086,
+          0.022330045700073242,
+          0.02199995517730713,
+          0.021799921989440918,
+          0.022009968757629395,
+          0.022140026092529297,
+          0.02562999725341797,
+          0.022360920906066895,
+          0.022349953651428223,
+          0.023259997367858887,
+          0.02235102653503418,
+          0.02265000343322754,
+          0.02362990379333496,
+          0.022449970245361328,
+          0.022811055183410645,
+          0.022201061248779297,
+          0.022449970245361328,
+          0.022629976272583008
+        ],
+        "median": 0.0223504900932312,
+        "p95": 0.02472995519638061,
+        "minimum": 0.02174997329711914,
+        "maximum": 0.04406094551086426,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "missing-completion-remains-unknown",
+      "family": "unknown-boundary",
+      "split": "validation",
+      "template": "unknown-boundary",
+      "provenance": "synthetic-model",
+      "inputSha256": "07a21c3d20ab6615839a89b73d64c10c9601b0890c21575d8f9da5571db21e1a",
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 2,
+            "retained": 2,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 9,
+        "retainedTotal": 9,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 4,
+          "retained": 3,
+          "ratio": 0.75
+        },
+        "edges": {
+          "original": 2,
+          "retained": 2,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1175,
+          "retained": 1477,
+          "ratio": 1.2570212765957447
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "missing-completion-remains-unknown",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "consumer",
+            "type": "operation"
+          },
+          {
+            "id": "producer",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "consumer-output",
+            "from": "consumer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "producer-consumer",
+            "from": "producer",
+            "to": "consumer",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "completion-gap",
+            "kind": "missing-observation",
+            "scope": "producer completion / consumer handoff"
+          },
+          {
+            "id": "rule-handoff",
+            "kind": "model-rule",
+            "ruleId": "toy.consumer-needs-observed-handoff"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "handoff-check",
+            "kind": "visibility",
+            "subjectIds": [
+              "consumer"
+            ],
+            "ruleId": "toy.consumer-needs-observed-handoff",
+            "status": "unknown",
+            "positiveWitnessRefs": [
+              "rule-handoff"
+            ],
+            "witnessNodeIds": [
+              "producer",
+              "consumer"
+            ],
+            "witnessEdgeIds": [
+              "producer-consumer"
+            ],
+            "unknownRefs": [
+              "completion-gap"
+            ]
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "data-ancestors",
+          "parentRunId": "missing-completion-remains-unknown",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 4,
+          "sourceEdgeCount": 2,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "completion-gap"
+          ]
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.02226996421813965,
+          0.02267003059387207,
+          0.023509979248046875,
+          0.028380990028381348,
+          0.02387094497680664,
+          0.026489973068237305,
+          0.02258002758026123,
+          0.022840023040771484,
+          0.02379000186920166,
+          0.02266097068786621,
+          0.03037095069885254,
+          0.022249937057495117,
+          0.023530006408691406,
+          0.022969961166381836,
+          0.022181034088134766,
+          0.021899938583374023,
+          0.022381067276000977,
+          0.023760080337524414,
+          0.023290038108825684,
+          0.022859930992126465,
+          0.023060083389282227,
+          0.023460030555725098,
+          0.023749947547912598,
+          0.023080945014953613,
+          0.022679924964904785,
+          0.022850990295410156,
+          0.022369980812072754,
+          0.022719979286193848,
+          0.0231400728225708,
+          0.0225600004196167
+        ],
+        "median": 0.02291494607925415,
+        "p95": 0.027530032396316524,
+        "minimum": 0.021899938583374023,
+        "maximum": 0.03037095069885254,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "missing-completion-remains-unknown",
+      "family": "unknown-boundary",
+      "split": "validation",
+      "template": "unknown-boundary",
+      "provenance": "synthetic-model",
+      "inputSha256": "07a21c3d20ab6615839a89b73d64c10c9601b0890c21575d8f9da5571db21e1a",
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 2,
+            "retained": 2,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 9,
+        "retainedTotal": 9,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 4,
+          "retained": 3,
+          "ratio": 0.75
+        },
+        "edges": {
+          "original": 2,
+          "retained": 2,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1175,
+          "retained": 1471,
+          "ratio": 1.2519148936170212
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "missing-completion-remains-unknown",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "consumer",
+            "type": "operation"
+          },
+          {
+            "id": "producer",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "consumer-output",
+            "from": "consumer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "producer-consumer",
+            "from": "producer",
+            "to": "consumer",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "completion-gap",
+            "kind": "missing-observation",
+            "scope": "producer completion / consumer handoff"
+          },
+          {
+            "id": "rule-handoff",
+            "kind": "model-rule",
+            "ruleId": "toy.consumer-needs-observed-handoff"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "handoff-check",
+            "kind": "visibility",
+            "subjectIds": [
+              "consumer"
+            ],
+            "ruleId": "toy.consumer-needs-observed-handoff",
+            "status": "unknown",
+            "positiveWitnessRefs": [
+              "rule-handoff"
+            ],
+            "witnessNodeIds": [
+              "producer",
+              "consumer"
+            ],
+            "witnessEdgeIds": [
+              "producer-consumer"
+            ],
+            "unknownRefs": [
+              "completion-gap"
+            ]
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "missing-completion-remains-unknown",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 4,
+          "sourceEdgeCount": 2,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "partial"
+          },
+          "unknownRefs": [
+            "completion-gap"
+          ]
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.02562105655670166,
+          0.023290038108825684,
+          0.023540019989013672,
+          0.022870898246765137,
+          0.023081064224243164,
+          0.02315998077392578,
+          0.023169994354248047,
+          0.02390003204345703,
+          0.02293097972869873,
+          0.023820996284484863,
+          0.03148996829986572,
+          0.024340033531188965,
+          0.02372002601623535,
+          0.02342092990875244,
+          0.023100972175598145,
+          0.0243300199508667,
+          0.022860050201416016,
+          0.02358090877532959,
+          0.027899980545043945,
+          0.02376997470855713,
+          0.023360013961791992,
+          0.024981021881103516,
+          0.023740053176879883,
+          0.02340996265411377,
+          0.031129956245422363,
+          0.023239970207214355,
+          0.023739933967590332,
+          0.024309992790222168,
+          0.02408003807067871,
+          0.023571014404296875
+        ],
+        "median": 0.02365046739578247,
+        "p95": 0.029676467180252065,
+        "minimum": 0.022860050201416016,
+        "maximum": 0.03148996829986572,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    }
+  ]
+}

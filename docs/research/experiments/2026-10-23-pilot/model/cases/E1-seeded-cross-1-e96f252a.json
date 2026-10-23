@@ -1,0 +1,1506 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "seeded-cross-1",
+    "family": "cross-retile",
+    "rootCauseTemplate": "cross-retile",
+    "split": "validation",
+    "left": {
+      "id": "seeded-cross-1:left",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "l1a",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                5,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l1b",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                2
+              ],
+              "hi": [
+                5,
+                6
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "right": {
+      "id": "seeded-cross-1:right",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "r1a",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                6
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "r1b",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                2,
+                0
+              ],
+              "hi": [
+                5,
+                6
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "expertReviewed": false,
+      "realGpuMeasurement": false,
+      "generatedFrom": "seeded-integer-grid",
+      "claimScope": "correspondence-given-declared-logical-mapping",
+      "seed": 20261023,
+      "variant": 1,
+      "dimensions": [
+        5,
+        6
+      ],
+      "independentRootCause": false
+    }
+  },
+  "oracle": {
+    "atoms": [
+      {
+        "leftId": "l1a",
+        "rightId": "r1a",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1a",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1a",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1a",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1b",
+        "coordinate": [
+          2,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1b",
+        "coordinate": [
+          2,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1b",
+        "coordinate": [
+          3,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1b",
+        "coordinate": [
+          3,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1b",
+        "coordinate": [
+          4,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1a",
+        "rightId": "r1b",
+        "coordinate": [
+          4,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          0,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          0,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          0,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          0,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          1,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          1,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          1,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1a",
+        "coordinate": [
+          1,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          2,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          2,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          2,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          2,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          3,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          3,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          3,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          3,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          4,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          4,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          4,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1b",
+        "rightId": "r1b",
+        "coordinate": [
+          4,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,5]]]",
+        "actualVersion": "equal"
+      }
+    ],
+    "metadata": {
+      "compatible": true,
+      "incompatibility": null,
+      "unknownNodeIds": {
+        "left": [],
+        "right": []
+      },
+      "evidenceKind": "synthetic-model",
+      "oracle": "integer-enumeration-v1",
+      "validates": "declared-logical-mapping-only"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-1",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "e96f252abdb04e5721c9ee639f0a5fc6f2ce542160025b154791183ed6cf414f",
+      "topology": "many-to-many",
+      "method": "source",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 30,
+        "expectedAtomicRelations": 30,
+        "correctAtomicRelations": 30,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 30,
+        "versionClassEvaluated": 30,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 30,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 30,
+          "recovered": 30,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l1a",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1a",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              0
+            ],
+            "hi": [
+              5,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              2
+            ],
+            "hi": [
+              2,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              2
+            ],
+            "hi": [
+              5,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.009270071983337402,
+          0.008530020713806152,
+          0.008280038833618164,
+          0.009420037269592285,
+          0.017540931701660156,
+          0.008320093154907227,
+          0.010289907455444336,
+          0.008369922637939453,
+          0.008260011672973633,
+          0.008340001106262207,
+          0.009660005569458008,
+          0.00858008861541748,
+          0.00896000862121582,
+          0.008509993553161621,
+          0.010370016098022461,
+          0.008280038833618164,
+          0.008559942245483398,
+          0.008949995040893555,
+          0.008639931678771973,
+          0.008360028266906738,
+          0.008289933204650879,
+          0.008430004119873047,
+          0.009421110153198242,
+          0.00830996036529541,
+          0.009779930114746094,
+          0.008270025253295898,
+          0.00819098949432373,
+          0.008460044860839844,
+          0.00884997844696045,
+          0.008209943771362305
+        ],
+        "median": 0.008520007133483887,
+        "p95": 0.010333967208862304,
+        "minimum": 0.00819098949432373,
+        "maximum": 0.017540931701660156,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 700
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-1",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "e96f252abdb04e5721c9ee639f0a5fc6f2ce542160025b154791183ed6cf414f",
+      "topology": "many-to-many",
+      "method": "region",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 30,
+        "expectedAtomicRelations": 30,
+        "correctAtomicRelations": 30,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 30,
+        "versionClassEvaluated": 30,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 30,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 30,
+          "recovered": 30,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l1a",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1a",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              0
+            ],
+            "hi": [
+              5,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              2
+            ],
+            "hi": [
+              2,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              2
+            ],
+            "hi": [
+              5,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.008170008659362793,
+          0.007969975471496582,
+          0.00821995735168457,
+          0.00803995132446289,
+          0.008880019187927246,
+          0.009020090103149414,
+          0.008691072463989258,
+          0.008369922637939453,
+          0.008181095123291016,
+          0.008229970932006836,
+          0.008280038833618164,
+          0.008659958839416504,
+          0.00801992416381836,
+          0.007960081100463867,
+          0.008919954299926758,
+          0.007979989051818848,
+          0.00950002670288086,
+          0.008030056953430176,
+          0.009950041770935059,
+          0.008029937744140625,
+          0.00923001766204834,
+          0.008130073547363281,
+          0.008221030235290527,
+          0.009090065956115723,
+          0.008049964904785156,
+          0.00848996639251709,
+          0.00793004035949707,
+          0.008269906044006348,
+          0.007970929145812988,
+          0.008030056953430176
+        ],
+        "median": 0.008220493793487549,
+        "p95": 0.009378522634506226,
+        "minimum": 0.00793004035949707,
+        "maximum": 0.009950041770935059,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 700
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-1",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "e96f252abdb04e5721c9ee639f0a5fc6f2ce542160025b154791183ed6cf414f",
+      "topology": "many-to-many",
+      "method": "semantic-scan",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 30,
+        "expectedAtomicRelations": 30,
+        "correctAtomicRelations": 30,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 30,
+        "versionClassEvaluated": 30,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 30,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 30,
+          "recovered": 30,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l1a",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1a",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              0
+            ],
+            "hi": [
+              5,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              2
+            ],
+            "hi": [
+              2,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              2
+            ],
+            "hi": [
+              5,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.010160088539123535,
+          0.007409930229187012,
+          0.00838005542755127,
+          0.008050084114074707,
+          0.008229970932006836,
+          0.0074700117111206055,
+          0.0074700117111206055,
+          0.008249998092651367,
+          0.009299993515014648,
+          0.007669925689697266,
+          0.00913989543914795,
+          0.00812995433807373,
+          0.00961005687713623,
+          0.007570028305053711,
+          0.008540034294128418,
+          0.007939934730529785,
+          0.008199930191040039,
+          0.008300065994262695,
+          0.007681012153625488,
+          0.008310079574584961,
+          0.00837099552154541,
+          0.008390069007873535,
+          0.008790016174316406,
+          0.008650064468383789,
+          0.008949995040893555,
+          0.007419943809509277,
+          0.008220076560974121,
+          0.008800029754638672,
+          0.00812995433807373,
+          0.008080005645751953
+        ],
+        "median": 0.008239984512329102,
+        "p95": 0.009470528364181517,
+        "minimum": 0.007409930229187012,
+        "maximum": 0.010160088539123535,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 700
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-1",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "e96f252abdb04e5721c9ee639f0a5fc6f2ce542160025b154791183ed6cf414f",
+      "topology": "many-to-many",
+      "method": "semantic-fixed-axis",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 30,
+        "expectedAtomicRelations": 30,
+        "correctAtomicRelations": 30,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 30,
+        "versionClassEvaluated": 30,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 30,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 30,
+          "recovered": 30,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l1a",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1a",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              0
+            ],
+            "hi": [
+              5,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              2
+            ],
+            "hi": [
+              2,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              2
+            ],
+            "hi": [
+              5,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.0091400146484375,
+          0.011330008506774902,
+          0.008919954299926758,
+          0.009570002555847168,
+          0.009959936141967773,
+          0.0086899995803833,
+          0.009340047836303711,
+          0.008739948272705078,
+          0.008859992027282715,
+          0.00932002067565918,
+          0.008720993995666504,
+          0.009709954261779785,
+          0.008791089057922363,
+          0.00884997844696045,
+          0.008739948272705078,
+          0.009639978408813477,
+          0.008989930152893066,
+          0.009639978408813477,
+          0.009521007537841797,
+          0.008769989013671875,
+          0.008750081062316895,
+          0.009220004081726074,
+          0.008990049362182617,
+          0.00876009464263916,
+          0.009070038795471191,
+          0.008559942245483398,
+          0.014049887657165527,
+          0.009039998054504395,
+          0.009689927101135254,
+          0.008709907531738281
+        ],
+        "median": 0.009015023708343506,
+        "p95": 0.01071347594261169,
+        "minimum": 0.008559942245483398,
+        "maximum": 0.014049887657165527,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 700
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-1",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "e96f252abdb04e5721c9ee639f0a5fc6f2ce542160025b154791183ed6cf414f",
+      "topology": "many-to-many",
+      "method": "semantic",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 30,
+        "expectedAtomicRelations": 30,
+        "correctAtomicRelations": 30,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 30,
+        "versionClassEvaluated": 30,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 30,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 30,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 30,
+            "recoveredNodeCoordinateUnits": 30,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 30,
+          "recovered": 30,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l1a",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1a",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              0
+            ],
+            "hi": [
+              5,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1a",
+          "region": {
+            "lo": [
+              0,
+              2
+            ],
+            "hi": [
+              2,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1b",
+          "rightId": "r1b",
+          "region": {
+            "lo": [
+              2,
+              2
+            ],
+            "hi": [
+              5,
+              6
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.009600996971130371,
+          0.009310007095336914,
+          0.011729955673217773,
+          0.009070038795471191,
+          0.009269952774047852,
+          0.009630084037780762,
+          0.009840011596679688,
+          0.009130001068115234,
+          0.009559988975524902,
+          0.009250044822692871,
+          0.009271025657653809,
+          0.009750008583068848,
+          0.010399937629699707,
+          0.009770035743713379,
+          0.009060978889465332,
+          0.009080052375793457,
+          0.009910941123962402,
+          0.009189963340759277,
+          0.009589910507202148,
+          0.009179949760437012,
+          0.00911104679107666,
+          0.009150028228759766,
+          0.009709000587463379,
+          0.009009957313537598,
+          0.009929895401000977,
+          0.00915992259979248,
+          0.010769963264465332,
+          0.00950002670288086,
+          0.010721087455749512,
+          0.009770035743713379
+        ],
+        "median": 0.00953000783920288,
+        "p95": 0.010747969150543213,
+        "minimum": 0.009009957313537598,
+        "maximum": 0.011729955673217773,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 700
+      }
+    }
+  ]
+}

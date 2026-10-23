@@ -10,6 +10,8 @@
     "build:wasm": "node scripts/build-wasm.mjs",
     "benchmark": "node scripts/benchmark-playback.mjs",
     "benchmark:pve": "node scripts/benchmark-pve.mjs",
+    "research:model": "node tools/research/run-model-experiments.mjs",
+    "research:cuda": "python3 tools/research/cuda/run_pilot.py",
     "test": "node --test tests/*.test.mjs",
     "validate": "node scripts/validate-trace.mjs examples/gtsim-gemm.json examples/h100-traffic.json examples/h100-traffic-slow-noc.json examples/h100-sm.json examples/h100-sm-bank-conflict.json examples/flashgpu-vectoradd.json examples/flashgpu-vectoradd-pipeline.json"
   },

@@ -1,0 +1,909 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "same-work-renamed",
+    "family": "identity-invariance",
+    "rootCauseTemplate": "identity-invariance",
+    "split": "development",
+    "left": {
+      "id": "same-work-renamed:left",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "old-id",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                4,
+                4
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "right": {
+      "id": "same-work-renamed:right",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "new-id",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:44",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                4,
+                4
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "expertReviewed": false,
+      "realGpuMeasurement": false,
+      "generatedFrom": "hand-authored-contract",
+      "claimScope": "correspondence-given-declared-logical-mapping"
+    }
+  },
+  "oracle": {
+    "atoms": [
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          0,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          0,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          1,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          1,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          2,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          2,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          2,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          2,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          3,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          3,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          3,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "old-id",
+        "rightId": "new-id",
+        "coordinate": [
+          3,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,3]]]",
+        "actualVersion": "equal"
+      }
+    ],
+    "metadata": {
+      "compatible": true,
+      "incompatibility": null,
+      "unknownNodeIds": {
+        "left": [],
+        "right": []
+      },
+      "evidenceKind": "synthetic-model",
+      "oracle": "integer-enumeration-v1",
+      "validates": "declared-logical-mapping-only"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E1",
+      "caseId": "same-work-renamed",
+      "family": "identity-invariance",
+      "split": "development",
+      "template": "identity-invariance",
+      "provenance": "synthetic-model",
+      "inputSha256": "c48784875edbb4d093582c77016c6f5734f7aa9ed2f51c59ff22bd6ca89b0140",
+      "topology": "one-to-one",
+      "method": "source",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 0,
+        "expectedAtomicRelations": 16,
+        "correctAtomicRelations": 0,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 16,
+        "precision": null,
+        "recall": 0,
+        "emittedRegionRelations": 0,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 0,
+        "versionClassEvaluated": 0,
+        "versionClassAccuracy": null,
+        "versionConfusion": {
+          "equal": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 0,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 0,
+            "coverage": 0,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [
+              "old-id"
+            ],
+            "unmatchedNodeRate": 1,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 0,
+            "coverage": 0,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [
+              "new-id"
+            ],
+            "unmatchedNodeRate": 1,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 16,
+          "recovered": 0,
+          "ratio": 0
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": [
+          "[\"old-id\",\"new-id\",[0,0]]",
+          "[\"old-id\",\"new-id\",[0,1]]",
+          "[\"old-id\",\"new-id\",[0,2]]",
+          "[\"old-id\",\"new-id\",[0,3]]",
+          "[\"old-id\",\"new-id\",[1,0]]",
+          "[\"old-id\",\"new-id\",[1,1]]",
+          "[\"old-id\",\"new-id\",[1,2]]",
+          "[\"old-id\",\"new-id\",[1,3]]",
+          "[\"old-id\",\"new-id\",[2,0]]",
+          "[\"old-id\",\"new-id\",[2,1]]",
+          "[\"old-id\",\"new-id\",[2,2]]",
+          "[\"old-id\",\"new-id\",[2,3]]",
+          "[\"old-id\",\"new-id\",[3,0]]",
+          "[\"old-id\",\"new-id\",[3,1]]",
+          "[\"old-id\",\"new-id\",[3,2]]",
+          "[\"old-id\",\"new-id\",[3,3]]"
+        ]
+      },
+      "output": [],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.010850071907043457,
+          0.010179996490478516,
+          0.00905001163482666,
+          0.009310007095336914,
+          0.009680032730102539,
+          0.02583003044128418,
+          0.009570002555847168,
+          0.009680032730102539,
+          0.009310007095336914,
+          0.009570002555847168,
+          0.0098799467086792,
+          0.009559988975524902,
+          0.011620044708251953,
+          0.01706993579864502,
+          0.014150023460388184,
+          0.011399984359741211,
+          0.011059999465942383,
+          0.011260032653808594,
+          0.011420011520385742,
+          0.014990091323852539,
+          0.011839985847473145,
+          0.0113600492477417,
+          0.011299967765808105,
+          0.012400984764099121,
+          0.011960029602050781,
+          0.011970043182373047,
+          0.011670947074890137,
+          0.011279940605163574,
+          0.011870026588439941,
+          0.011110067367553711
+        ],
+        "median": 0.01128995418548584,
+        "p95": 0.016134005784988397,
+        "minimum": 0.00905001163482666,
+        "maximum": 0.02583003044128418,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 105
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "same-work-renamed",
+      "family": "identity-invariance",
+      "split": "development",
+      "template": "identity-invariance",
+      "provenance": "synthetic-model",
+      "inputSha256": "c48784875edbb4d093582c77016c6f5734f7aa9ed2f51c59ff22bd6ca89b0140",
+      "topology": "one-to-one",
+      "method": "region",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 16,
+        "expectedAtomicRelations": 16,
+        "correctAtomicRelations": 16,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 1,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 16,
+        "versionClassEvaluated": 16,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 16,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 16,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 16,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 16,
+          "recovered": 16,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "old-id",
+          "rightId": "new-id",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              4,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.011300086975097656,
+          0.012339949607849121,
+          0.009950041770935059,
+          0.010270953178405762,
+          0.010290026664733887,
+          0.010460972785949707,
+          0.009940028190612793,
+          0.01128995418548584,
+          0.010311007499694824,
+          0.009930014610290527,
+          0.010400056838989258,
+          0.009999990463256836,
+          0.010269999504089355,
+          0.012650012969970703,
+          0.011619925498962402,
+          0.011739969253540039,
+          0.011639952659606934,
+          0.013319969177246094,
+          0.012449979782104492,
+          0.011900901794433594,
+          0.01175999641418457,
+          0.011919975280761719,
+          0.011530041694641113,
+          0.012689948081970215,
+          0.011970043182373047,
+          0.011809945106506348,
+          0.011999964714050293,
+          0.01195991039276123,
+          0.014440059661865234,
+          0.01247096061706543
+        ],
+        "median": 0.011689960956573486,
+        "p95": 0.013036459684371947,
+        "minimum": 0.009930014610290527,
+        "maximum": 0.014440059661865234,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 105
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "same-work-renamed",
+      "family": "identity-invariance",
+      "split": "development",
+      "template": "identity-invariance",
+      "provenance": "synthetic-model",
+      "inputSha256": "c48784875edbb4d093582c77016c6f5734f7aa9ed2f51c59ff22bd6ca89b0140",
+      "topology": "one-to-one",
+      "method": "semantic",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 16,
+        "expectedAtomicRelations": 16,
+        "correctAtomicRelations": 16,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 1,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 16,
+        "versionClassEvaluated": 16,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 16,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 16,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 16,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 16,
+          "recovered": 16,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "old-id",
+          "rightId": "new-id",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              4,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.01184999942779541,
+          0.011319994926452637,
+          0.01156008243560791,
+          0.01147007942199707,
+          0.011399984359741211,
+          0.010849952697753906,
+          0.011420965194702148,
+          0.011209964752197266,
+          0.011110067367553711,
+          0.010879993438720703,
+          0.011029958724975586,
+          0.011320948600769043,
+          0.011550068855285645,
+          0.011440038681030273,
+          0.013580083847045898,
+          0.013810038566589355,
+          0.01371002197265625,
+          0.012850046157836914,
+          0.019250988960266113,
+          0.01417994499206543,
+          0.013620972633361816,
+          0.013520956039428711,
+          0.013360023498535156,
+          0.014670014381408691,
+          0.012891054153442383,
+          0.01633000373840332,
+          0.014719963073730469,
+          0.01368105411529541,
+          0.013069987297058105,
+          0.012759923934936523
+        ],
+        "median": 0.012804985046386719,
+        "p95": 0.015605485439300532,
+        "minimum": 0.010849952697753906,
+        "maximum": 0.019250988960266113,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 105
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "same-work-renamed",
+      "family": "identity-invariance",
+      "split": "development",
+      "template": "identity-invariance",
+      "provenance": "synthetic-model",
+      "inputSha256": "c48784875edbb4d093582c77016c6f5734f7aa9ed2f51c59ff22bd6ca89b0140",
+      "topology": "one-to-one",
+      "method": "semantic-scan",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 16,
+        "expectedAtomicRelations": 16,
+        "correctAtomicRelations": 16,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 1,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 16,
+        "versionClassEvaluated": 16,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 16,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 16,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 16,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 16,
+            "recoveredNodeCoordinateUnits": 16,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 16,
+          "recovered": 16,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "old-id",
+          "rightId": "new-id",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              4,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.011049985885620117,
+          0.010269999504089355,
+          0.010409951210021973,
+          0.010290026664733887,
+          0.010370016098022461,
+          0.010300040245056152,
+          0.010939955711364746,
+          0.01054990291595459,
+          0.010221004486083984,
+          0.010310053825378418,
+          0.010300993919372559,
+          0.012260913848876953,
+          0.010319948196411133,
+          0.05409097671508789,
+          0.012920022010803223,
+          0.013119935989379883,
+          0.014539957046508789,
+          0.012149930000305176,
+          0.012899994850158691,
+          0.012160062789916992,
+          0.013170003890991211,
+          0.012089967727661133,
+          0.01203000545501709,
+          0.012199997901916504,
+          0.012799978256225586,
+          0.012859940528869629,
+          0.013339996337890625,
+          0.012790083885192871,
+          0.012730002403259277,
+          0.013190031051635742
+        ],
+        "median": 0.012154996395111084,
+        "p95": 0.013999974727630612,
+        "minimum": 0.010221004486083984,
+        "maximum": 0.05409097671508789,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 105
+      }
+    }
+  ]
+}

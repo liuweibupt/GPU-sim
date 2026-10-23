@@ -1,0 +1,1356 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "nondivisible-tail",
+    "family": "tail-retile",
+    "rootCauseTemplate": "tail-retile",
+    "split": "validation",
+    "left": {
+      "id": "nondivisible-tail:left",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "whole",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                5,
+                7
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "right": {
+      "id": "nondivisible-tail:right",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "top",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                3,
+                7
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "tail",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                3,
+                0
+              ],
+              "hi": [
+                5,
+                7
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "expertReviewed": false,
+      "realGpuMeasurement": false,
+      "generatedFrom": "hand-authored-contract",
+      "claimScope": "correspondence-given-declared-logical-mapping"
+    }
+  },
+  "oracle": {
+    "atoms": [
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          3,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "tail",
+        "coordinate": [
+          4,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          0,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          1,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "whole",
+        "rightId": "top",
+        "coordinate": [
+          2,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,6]]]",
+        "actualVersion": "equal"
+      }
+    ],
+    "metadata": {
+      "compatible": true,
+      "incompatibility": null,
+      "unknownNodeIds": {
+        "left": [],
+        "right": []
+      },
+      "evidenceKind": "synthetic-model",
+      "oracle": "integer-enumeration-v1",
+      "validates": "declared-logical-mapping-only"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E1",
+      "caseId": "nondivisible-tail",
+      "family": "tail-retile",
+      "split": "validation",
+      "template": "tail-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "0bcccc6a224f29d1c61c8cd25581aa515a19ace8a1b3bff1f6e7970661dcac7f",
+      "topology": "one-to-many",
+      "method": "source",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 35,
+        "expectedAtomicRelations": 35,
+        "correctAtomicRelations": 35,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 35,
+        "versionClassEvaluated": 35,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 35,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 35,
+          "recovered": 35,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "whole",
+          "rightId": "top",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              3,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "whole",
+          "rightId": "tail",
+          "region": {
+            "lo": [
+              3,
+              0
+            ],
+            "hi": [
+              5,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.005860090255737305,
+          0.005610108375549316,
+          0.005640983581542969,
+          0.005750060081481934,
+          0.005609989166259766,
+          0.006080031394958496,
+          0.005720019340515137,
+          0.0059500932693481445,
+          0.005609989166259766,
+          0.006260037422180176,
+          0.006040096282958984,
+          0.005809903144836426,
+          0.0056999921798706055,
+          0.0056999921798706055,
+          0.006201028823852539,
+          0.005650043487548828,
+          0.005919933319091797,
+          0.005650043487548828,
+          0.005800008773803711,
+          0.007149934768676758,
+          0.014589905738830566,
+          0.007689952850341797,
+          0.007689952850341797,
+          0.007080078125,
+          0.007910013198852539,
+          0.007019996643066406,
+          0.008199930191040039,
+          0.007619976997375488,
+          0.007511019706726074,
+          0.007089972496032715
+        ],
+        "median": 0.0059950947761535645,
+        "p95": 0.008069467544555663,
+        "minimum": 0.005609989166259766,
+        "maximum": 0.014589905738830566,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "nondivisible-tail",
+      "family": "tail-retile",
+      "split": "validation",
+      "template": "tail-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "0bcccc6a224f29d1c61c8cd25581aa515a19ace8a1b3bff1f6e7970661dcac7f",
+      "topology": "one-to-many",
+      "method": "region",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 35,
+        "expectedAtomicRelations": 35,
+        "correctAtomicRelations": 35,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 35,
+        "versionClassEvaluated": 35,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 35,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 35,
+          "recovered": 35,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "whole",
+          "rightId": "top",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              3,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "whole",
+          "rightId": "tail",
+          "region": {
+            "lo": [
+              3,
+              0
+            ],
+            "hi": [
+              5,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.005650043487548828,
+          0.0054999589920043945,
+          0.005560040473937988,
+          0.005720019340515137,
+          0.0054399967193603516,
+          0.005900025367736816,
+          0.005479931831359863,
+          0.0053299665451049805,
+          0.005380034446716309,
+          0.005300045013427734,
+          0.005529999732971191,
+          0.0054999589920043945,
+          0.005480051040649414,
+          0.005360007286071777,
+          0.005500078201293945,
+          0.005349993705749512,
+          0.005919933319091797,
+          0.005450010299682617,
+          0.005300045013427734,
+          0.009670019149780273,
+          0.006979942321777344,
+          0.006640076637268066,
+          0.008220076560974121,
+          0.008650064468383789,
+          0.007009983062744141,
+          0.007439970970153809,
+          0.0086899995803833,
+          0.008820056915283203,
+          0.00745999813079834,
+          0.0075800418853759766
+        ],
+        "median": 0.005605041980743408,
+        "p95": 0.008761531114578247,
+        "minimum": 0.005300045013427734,
+        "maximum": 0.009670019149780273,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "nondivisible-tail",
+      "family": "tail-retile",
+      "split": "validation",
+      "template": "tail-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "0bcccc6a224f29d1c61c8cd25581aa515a19ace8a1b3bff1f6e7970661dcac7f",
+      "topology": "one-to-many",
+      "method": "semantic-scan",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 35,
+        "expectedAtomicRelations": 35,
+        "correctAtomicRelations": 35,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 35,
+        "versionClassEvaluated": 35,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 35,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 35,
+          "recovered": 35,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "whole",
+          "rightId": "top",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              3,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "whole",
+          "rightId": "tail",
+          "region": {
+            "lo": [
+              3,
+              0
+            ],
+            "hi": [
+              5,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.0054399967193603516,
+          0.0054399967193603516,
+          0.0054399967193603516,
+          0.005319952964782715,
+          0.005620002746582031,
+          0.0054090023040771484,
+          0.005259990692138672,
+          0.006089925765991211,
+          0.005380034446716309,
+          0.0054399967193603516,
+          0.005339980125427246,
+          0.005700945854187012,
+          0.00540006160736084,
+          0.0055599212646484375,
+          0.005589962005615234,
+          0.0053299665451049805,
+          0.005570054054260254,
+          0.005820035934448242,
+          0.010850071907043457,
+          0.009710073471069336,
+          0.00784003734588623,
+          0.007729053497314453,
+          0.006860017776489258,
+          0.00745999813079834,
+          0.008190035820007324,
+          0.007561087608337402,
+          0.006819963455200195,
+          0.006749987602233887,
+          0.0067501068115234375,
+          0.006830096244812012
+        ],
+        "median": 0.0056604743003845215,
+        "p95": 0.009026056528091426,
+        "minimum": 0.005259990692138672,
+        "maximum": 0.010850071907043457,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "nondivisible-tail",
+      "family": "tail-retile",
+      "split": "validation",
+      "template": "tail-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "0bcccc6a224f29d1c61c8cd25581aa515a19ace8a1b3bff1f6e7970661dcac7f",
+      "topology": "one-to-many",
+      "method": "semantic-fixed-axis",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 35,
+        "expectedAtomicRelations": 35,
+        "correctAtomicRelations": 35,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 35,
+        "versionClassEvaluated": 35,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 35,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 35,
+          "recovered": 35,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "whole",
+          "rightId": "top",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              3,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "whole",
+          "rightId": "tail",
+          "region": {
+            "lo": [
+              3,
+              0
+            ],
+            "hi": [
+              5,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.0058699846267700195,
+          0.006420016288757324,
+          0.0061310529708862305,
+          0.005959987640380859,
+          0.006139993667602539,
+          0.006520986557006836,
+          0.006109952926635742,
+          0.006060004234313965,
+          0.006079912185668945,
+          0.006039977073669434,
+          0.00652003288269043,
+          0.006290912628173828,
+          0.00634002685546875,
+          0.005850076675415039,
+          0.0059310197830200195,
+          0.005900025367736816,
+          0.00596010684967041,
+          0.006079912185668945,
+          0.005980014801025391,
+          0.008260965347290039,
+          0.00784003734588623,
+          0.009289979934692383,
+          0.008170008659362793,
+          0.008439898490905762,
+          0.008059978485107422,
+          0.008260011672973633,
+          0.008239984512329102,
+          0.0084000825881958,
+          0.007519960403442383,
+          0.0086899995803833
+        ],
+        "median": 0.006315469741821289,
+        "p95": 0.008577454090118408,
+        "minimum": 0.005850076675415039,
+        "maximum": 0.009289979934692383,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "nondivisible-tail",
+      "family": "tail-retile",
+      "split": "validation",
+      "template": "tail-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "0bcccc6a224f29d1c61c8cd25581aa515a19ace8a1b3bff1f6e7970661dcac7f",
+      "topology": "one-to-many",
+      "method": "semantic",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 35,
+        "expectedAtomicRelations": 35,
+        "correctAtomicRelations": 35,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 35,
+        "versionClassEvaluated": 35,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 35,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 35,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 1,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 35,
+            "recoveredNodeCoordinateUnits": 35,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 35,
+          "recovered": 35,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "whole",
+          "rightId": "top",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              3,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "whole",
+          "rightId": "tail",
+          "region": {
+            "lo": [
+              3,
+              0
+            ],
+            "hi": [
+              5,
+              7
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.006709933280944824,
+          0.00652003288269043,
+          0.006760001182556152,
+          0.006319999694824219,
+          0.007230043411254883,
+          0.006280064582824707,
+          0.006420016288757324,
+          0.006279945373535156,
+          0.006439924240112305,
+          0.006800055503845215,
+          0.00643002986907959,
+          0.006439924240112305,
+          0.006640076637268066,
+          0.006579995155334473,
+          0.00671994686126709,
+          0.006360054016113281,
+          0.006290078163146973,
+          0.0066111087799072266,
+          0.006489992141723633,
+          0.009070038795471191,
+          0.008520007133483887,
+          0.008810043334960938,
+          0.0089799165725708,
+          0.009009957313537598,
+          0.008570075035095215,
+          0.008430004119873047,
+          0.008599996566772461,
+          0.008639931678771973,
+          0.009400010108947754,
+          0.008319973945617676
+        ],
+        "median": 0.006714940071105957,
+        "p95": 0.009043002128601074,
+        "minimum": 0.006279945373535156,
+        "maximum": 0.009400010108947754,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 350
+      }
+    }
+  ]
+}

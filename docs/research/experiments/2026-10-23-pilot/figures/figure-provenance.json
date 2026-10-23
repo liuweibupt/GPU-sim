@@ -1,0 +1,47 @@
+{
+  "stage": "internal pilot, not submission-ready evidence",
+  "target": "VIS/TVCG or CHI/TOCHI; neutral quantitative style",
+  "community": "visual analytics / human-computer interaction, GPU tooling secondary",
+  "source": {
+    "file": "main.json",
+    "sha256": "d31e2994d7124c13470978a6398b64362a760d6b50919fec1e2a7b53d5781f8b"
+  },
+  "library_source": {
+    "file": "cublas.json",
+    "sha256": "f876f85298350f37bf404f9d6e5b7ce5a1ff6623e632c8475e0b38445aa0eb1d"
+  },
+  "script_sha256": "018823ae4978118188046e8b6d3998913788b21639c17c816470a107ec5ec499",
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "width_inches": 7.1,
+  "heatmap": {
+    "role": "validation",
+    "selection": {
+      "shape_mnk": [
+        17,
+        19,
+        23
+      ],
+      "seed": 20261023
+    },
+    "encoding": "binary numerical-check violation, red=failed; not absolute error magnitude",
+    "note": "Nonfinite poisoned outputs count as failed; these are intentionally injected missing writes."
+  },
+  "performance": {
+    "role": "boundary",
+    "scope": "CUDA event interval per launch, repeated resident inputs",
+    "estimate": "ratio of paired sample means",
+    "interval": "95% paired bootstrap, within one device session only",
+    "baseline": "experiment-authored naive FP32 kernel; not cuBLAS",
+    "selection": "all benchmark configurations, including regressions"
+  },
+  "missing_evidence": [
+    "SM100/TMA/tcgen05",
+    "model-level speedup",
+    "human understanding",
+    "formal correctness"
+  ]
+}

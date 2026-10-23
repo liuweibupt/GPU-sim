@@ -1,0 +1,1827 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "seeded-cross-2",
+    "family": "cross-retile",
+    "rootCauseTemplate": "cross-retile",
+    "split": "validation",
+    "left": {
+      "id": "seeded-cross-2:left",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "l2a",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                9,
+                4
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l2b",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                4
+              ],
+              "hi": [
+                9,
+                9
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "right": {
+      "id": "seeded-cross-2:right",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "r2a",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                8,
+                9
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "r2b",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                8,
+                0
+              ],
+              "hi": [
+                9,
+                9
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "expertReviewed": false,
+      "realGpuMeasurement": false,
+      "generatedFrom": "seeded-integer-grid",
+      "claimScope": "correspondence-given-declared-logical-mapping",
+      "seed": 20261023,
+      "variant": 2,
+      "dimensions": [
+        9,
+        9
+      ],
+      "independentRootCause": false
+    }
+  },
+  "oracle": {
+    "atoms": [
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          2
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,2]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2a",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          3
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,3]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          0,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          1,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          2,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[2,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          3,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[3,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          4,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[4,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          5,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[5,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          6,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[6,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2a",
+        "coordinate": [
+          7,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[7,8]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          4
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,4]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          5
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,5]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          6
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,6]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          7
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,7]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l2b",
+        "rightId": "r2b",
+        "coordinate": [
+          8,
+          8
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[8,8]]]",
+        "actualVersion": "equal"
+      }
+    ],
+    "metadata": {
+      "compatible": true,
+      "incompatibility": null,
+      "unknownNodeIds": {
+        "left": [],
+        "right": []
+      },
+      "evidenceKind": "synthetic-model",
+      "oracle": "integer-enumeration-v1",
+      "validates": "declared-logical-mapping-only"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-2",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "03da0c415b400db00ede6f71cbb2e09188a75ce06f458cb14d14a9cfe83a3b25",
+      "topology": "many-to-many",
+      "method": "source",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 81,
+        "expectedAtomicRelations": 81,
+        "correctAtomicRelations": 81,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 81,
+        "versionClassEvaluated": 81,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 81,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 81,
+          "recovered": 81,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l2a",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              8,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2a",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              0
+            ],
+            "hi": [
+              9,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              4
+            ],
+            "hi": [
+              8,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              4
+            ],
+            "hi": [
+              9,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.009810090065002441,
+          0.01109004020690918,
+          0.010020971298217773,
+          0.010019898414611816,
+          0.010200023651123047,
+          0.009741067886352539,
+          0.00989997386932373,
+          0.00988006591796875,
+          0.00616002082824707,
+          0.006489992141723633,
+          0.006280064582824707,
+          0.006489992141723633,
+          0.006649971008300781,
+          0.0064400434494018555,
+          0.006399989128112793,
+          0.007430076599121094,
+          0.007668972015380859,
+          0.006479978561401367,
+          0.007629990577697754,
+          0.00643002986907959,
+          0.006940007209777832,
+          0.006640076637268066,
+          0.006381034851074219,
+          0.006450057029724121,
+          0.012480020523071289,
+          0.006110072135925293,
+          0.006700038909912109,
+          0.0068100690841674805,
+          0.006389975547790527,
+          0.006470084190368652
+        ],
+        "median": 0.006675004959106445,
+        "p95": 0.010689532756805417,
+        "minimum": 0.006110072135925293,
+        "maximum": 0.012480020523071289,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 560
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-2",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "03da0c415b400db00ede6f71cbb2e09188a75ce06f458cb14d14a9cfe83a3b25",
+      "topology": "many-to-many",
+      "method": "region",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 81,
+        "expectedAtomicRelations": 81,
+        "correctAtomicRelations": 81,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 81,
+        "versionClassEvaluated": 81,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 81,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 81,
+          "recovered": 81,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l2a",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              8,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2a",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              0
+            ],
+            "hi": [
+              9,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              4
+            ],
+            "hi": [
+              8,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              4
+            ],
+            "hi": [
+              9,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.009730100631713867,
+          0.010479927062988281,
+          0.010020017623901367,
+          0.010040044784545898,
+          0.01006007194519043,
+          0.01005101203918457,
+          0.01867997646331787,
+          0.138280987739563,
+          0.007328987121582031,
+          0.005970001220703125,
+          0.006209969520568848,
+          0.006200075149536133,
+          0.006760001182556152,
+          0.0065310001373291016,
+          0.006389975547790527,
+          0.006460070610046387,
+          0.006330013275146484,
+          0.006829977035522461,
+          0.00625002384185791,
+          0.005879998207092285,
+          0.005859971046447754,
+          0.006040096282958984,
+          0.006169915199279785,
+          0.006039977073669434,
+          0.005890011787414551,
+          0.006199955940246582,
+          0.006189942359924316,
+          0.0059299468994140625,
+          0.005959987640380859,
+          0.006170034408569336
+        ],
+        "median": 0.006290018558502197,
+        "p95": 0.014989954233169532,
+        "minimum": 0.005859971046447754,
+        "maximum": 0.138280987739563,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 560
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-2",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "03da0c415b400db00ede6f71cbb2e09188a75ce06f458cb14d14a9cfe83a3b25",
+      "topology": "many-to-many",
+      "method": "semantic",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 81,
+        "expectedAtomicRelations": 81,
+        "correctAtomicRelations": 81,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 81,
+        "versionClassEvaluated": 81,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 81,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 81,
+          "recovered": 81,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l2a",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              8,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2a",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              0
+            ],
+            "hi": [
+              9,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              4
+            ],
+            "hi": [
+              8,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              4
+            ],
+            "hi": [
+              9,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.01173102855682373,
+          0.011190056800842285,
+          0.01157999038696289,
+          0.010920047760009766,
+          0.012100934982299805,
+          0.012310028076171875,
+          0.011709928512573242,
+          0.010751008987426758,
+          0.008090019226074219,
+          0.008270025253295898,
+          0.007870078086853027,
+          0.008211016654968262,
+          0.008149981498718262,
+          0.007959961891174316,
+          0.008099913597106934,
+          0.007869958877563477,
+          0.008099913597106934,
+          0.008409976959228516,
+          0.008409976959228516,
+          0.008100032806396484,
+          0.007879972457885742,
+          0.008450031280517578,
+          0.007800102233886719,
+          0.008270025253295898,
+          0.007950067520141602,
+          0.0073699951171875,
+          0.008049964904785156,
+          0.008620023727416992,
+          0.007670998573303223,
+          0.008120059967041016
+        ],
+        "median": 0.008180499076843262,
+        "p95": 0.01193447709083557,
+        "minimum": 0.0073699951171875,
+        "maximum": 0.012310028076171875,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 560
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "seeded-cross-2",
+      "family": "cross-retile",
+      "split": "validation",
+      "template": "cross-retile",
+      "provenance": "synthetic-model",
+      "inputSha256": "03da0c415b400db00ede6f71cbb2e09188a75ce06f458cb14d14a9cfe83a3b25",
+      "topology": "many-to-many",
+      "method": "semantic-scan",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 81,
+        "expectedAtomicRelations": 81,
+        "correctAtomicRelations": 81,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 81,
+        "versionClassEvaluated": 81,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 81,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 81,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 81,
+            "recoveredNodeCoordinateUnits": 81,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 81,
+          "recovered": 81,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l2a",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              8,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2a",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              0
+            ],
+            "hi": [
+              9,
+              4
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2a",
+          "region": {
+            "lo": [
+              0,
+              4
+            ],
+            "hi": [
+              8,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l2b",
+          "rightId": "r2b",
+          "region": {
+            "lo": [
+              8,
+              4
+            ],
+            "hi": [
+              9,
+              9
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.010360002517700195,
+          0.011680006980895996,
+          0.011079907417297363,
+          0.010100007057189941,
+          0.010520100593566895,
+          0.010480046272277832,
+          0.009649991989135742,
+          0.01027989387512207,
+          0.009361028671264648,
+          0.007609963417053223,
+          0.00830996036529541,
+          0.007220029830932617,
+          0.00755000114440918,
+          0.007179975509643555,
+          0.007109999656677246,
+          0.007270097732543945,
+          0.0064209699630737305,
+          0.006530046463012695,
+          0.006730079650878906,
+          0.007130026817321777,
+          0.006829977035522461,
+          0.006940007209777832,
+          0.0064209699630737305,
+          0.0072100162506103516,
+          0.0076100826263427734,
+          0.006739974021911621,
+          0.006829977035522461,
+          0.006829977035522461,
+          0.0067299604415893555,
+          0.006909966468811035
+        ],
+        "median": 0.007215023040771484,
+        "p95": 0.010827994346618651,
+        "minimum": 0.0064209699630737305,
+        "maximum": 0.011680006980895996,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 560
+      }
+    }
+  ]
+}

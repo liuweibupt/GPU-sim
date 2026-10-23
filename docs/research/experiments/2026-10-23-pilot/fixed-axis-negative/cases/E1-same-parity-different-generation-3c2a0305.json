@@ -1,0 +1,1048 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "same-parity-different-generation",
+    "family": "generation-reuse",
+    "rootCauseTemplate": "generation-reuse",
+    "split": "validation",
+    "left": {
+      "id": "same-parity-different-generation:left",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "l-phase0",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l-phase2",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 2,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@2",
+              "actual": {
+                "status": "known",
+                "value": "A@2"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 2
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "right": {
+      "id": "same-parity-different-generation:right",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "r-phase2",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 2,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@2",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 2
+          }
+        },
+        {
+          "id": "r-phase0",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "expertReviewed": false,
+      "realGpuMeasurement": false,
+      "generatedFrom": "hand-authored-contract",
+      "claimScope": "correspondence-given-declared-logical-mapping"
+    }
+  },
+  "oracle": {
+    "atoms": [
+      {
+        "leftId": "l-phase0",
+        "rightId": "r-phase0",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-phase0",
+        "rightId": "r-phase0",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-phase0",
+        "rightId": "r-phase0",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-phase0",
+        "rightId": "r-phase0",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-phase2",
+        "rightId": "r-phase2",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",2,[0],[4],\"A@2\",[0,0]]]",
+        "actualVersion": "different"
+      },
+      {
+        "leftId": "l-phase2",
+        "rightId": "r-phase2",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",2,[0],[4],\"A@2\",[0,1]]]",
+        "actualVersion": "different"
+      },
+      {
+        "leftId": "l-phase2",
+        "rightId": "r-phase2",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",2,[0],[4],\"A@2\",[1,0]]]",
+        "actualVersion": "different"
+      },
+      {
+        "leftId": "l-phase2",
+        "rightId": "r-phase2",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",2,[0],[4],\"A@2\",[1,1]]]",
+        "actualVersion": "different"
+      }
+    ],
+    "metadata": {
+      "compatible": true,
+      "incompatibility": null,
+      "unknownNodeIds": {
+        "left": [],
+        "right": []
+      },
+      "evidenceKind": "synthetic-model",
+      "oracle": "integer-enumeration-v1",
+      "validates": "declared-logical-mapping-only"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E1",
+      "caseId": "same-parity-different-generation",
+      "family": "generation-reuse",
+      "split": "validation",
+      "template": "generation-reuse",
+      "provenance": "synthetic-model",
+      "inputSha256": "3c2a0305088263761115fa18226d624d138a399c0d43a9aac4c03e5bfe918e2e",
+      "topology": "one-to-one",
+      "method": "source",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 16,
+        "expectedAtomicRelations": 8,
+        "correctAtomicRelations": 8,
+        "falsePositiveAtomicRelations": 8,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 0.5,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 8,
+        "versionClassEvaluated": 8,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 4,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 4,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 4,
+          "different": 4,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 8,
+          "different": 8,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 8,
+          "recovered": 8,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [
+          "[\"l-phase0\",\"r-phase2\",[0,0]]",
+          "[\"l-phase0\",\"r-phase2\",[0,1]]",
+          "[\"l-phase0\",\"r-phase2\",[1,0]]",
+          "[\"l-phase0\",\"r-phase2\",[1,1]]",
+          "[\"l-phase2\",\"r-phase0\",[0,0]]",
+          "[\"l-phase2\",\"r-phase0\",[0,1]]",
+          "[\"l-phase2\",\"r-phase0\",[1,0]]",
+          "[\"l-phase2\",\"r-phase0\",[1,1]]"
+        ],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l-phase0",
+          "rightId": "r-phase2",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-phase0",
+          "rightId": "r-phase0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-phase2",
+          "rightId": "r-phase2",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-phase2",
+          "rightId": "r-phase0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.007730007171630859,
+          0.007429957389831543,
+          0.0068399906158447266,
+          0.007519960403442383,
+          0.007210969924926758,
+          0.00866997241973877,
+          0.0073310136795043945,
+          0.007510066032409668,
+          0.007320046424865723,
+          0.007050037384033203,
+          0.00745999813079834,
+          0.0077800750732421875,
+          0.007650017738342285,
+          0.0076400041580200195,
+          0.0068700313568115234,
+          0.006940007209777832,
+          0.007950901985168457,
+          0.007340073585510254,
+          0.0072710514068603516,
+          0.007599949836730957,
+          0.006940007209777832,
+          0.007371068000793457,
+          0.007050037384033203,
+          0.007259964942932129,
+          0.00745999813079834,
+          0.00699007511138916,
+          0.0074700117111206055,
+          0.00745999813079834,
+          0.008491039276123047,
+          0.007230043411254883
+        ],
+        "median": 0.0074005126953125,
+        "p95": 0.00824797749519348,
+        "minimum": 0.0068399906158447266,
+        "maximum": 0.00866997241973877,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 420
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "same-parity-different-generation",
+      "family": "generation-reuse",
+      "split": "validation",
+      "template": "generation-reuse",
+      "provenance": "synthetic-model",
+      "inputSha256": "3c2a0305088263761115fa18226d624d138a399c0d43a9aac4c03e5bfe918e2e",
+      "topology": "one-to-one",
+      "method": "region",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 16,
+        "expectedAtomicRelations": 8,
+        "correctAtomicRelations": 8,
+        "falsePositiveAtomicRelations": 8,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 0.5,
+        "recall": 1,
+        "emittedRegionRelations": 4,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 8,
+        "versionClassEvaluated": 8,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 4,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 4,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 4,
+          "different": 4,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 8,
+          "different": 8,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 8,
+          "recovered": 8,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [
+          "[\"l-phase0\",\"r-phase2\",[0,0]]",
+          "[\"l-phase0\",\"r-phase2\",[0,1]]",
+          "[\"l-phase0\",\"r-phase2\",[1,0]]",
+          "[\"l-phase0\",\"r-phase2\",[1,1]]",
+          "[\"l-phase2\",\"r-phase0\",[0,0]]",
+          "[\"l-phase2\",\"r-phase0\",[0,1]]",
+          "[\"l-phase2\",\"r-phase0\",[1,0]]",
+          "[\"l-phase2\",\"r-phase0\",[1,1]]"
+        ],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l-phase0",
+          "rightId": "r-phase2",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-phase0",
+          "rightId": "r-phase0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-phase2",
+          "rightId": "r-phase2",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-phase2",
+          "rightId": "r-phase0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.008170008659362793,
+          0.008069992065429688,
+          0.0068509578704833984,
+          0.00690007209777832,
+          0.0073310136795043945,
+          0.006749987602233887,
+          0.007079958915710449,
+          0.007330060005187988,
+          0.007539987564086914,
+          0.007169961929321289,
+          0.007030010223388672,
+          0.007070064544677734,
+          0.00643002986907959,
+          0.007589101791381836,
+          0.006930947303771973,
+          0.007249951362609863,
+          0.0066699981689453125,
+          0.006479978561401367,
+          0.006559967994689941,
+          0.006590008735656738,
+          0.00644993782043457,
+          0.0065299272537231445,
+          0.006599903106689453,
+          0.006250977516174316,
+          0.006480097770690918,
+          0.006600022315979004,
+          0.007300972938537598,
+          0.006479978561401367,
+          0.00680994987487793,
+          0.00652003288269043
+        ],
+        "median": 0.006830453872680664,
+        "p95": 0.007853591442108152,
+        "minimum": 0.006250977516174316,
+        "maximum": 0.008170008659362793,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 420
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "same-parity-different-generation",
+      "family": "generation-reuse",
+      "split": "validation",
+      "template": "generation-reuse",
+      "provenance": "synthetic-model",
+      "inputSha256": "3c2a0305088263761115fa18226d624d138a399c0d43a9aac4c03e5bfe918e2e",
+      "topology": "one-to-one",
+      "method": "semantic",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 8,
+        "expectedAtomicRelations": 8,
+        "correctAtomicRelations": 8,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 8,
+        "versionClassEvaluated": 8,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 4,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 4,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 4,
+          "different": 4,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 4,
+          "different": 4,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 8,
+          "recovered": 8,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l-phase0",
+          "rightId": "r-phase0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-phase2",
+          "rightId": "r-phase2",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.009130001068115234,
+          0.00857996940612793,
+          0.0081099271774292,
+          0.008340001106262207,
+          0.008390069007873535,
+          0.00849008560180664,
+          0.007899999618530273,
+          0.008051037788391113,
+          0.008350014686584473,
+          0.008620023727416992,
+          0.014869928359985352,
+          0.008180022239685059,
+          0.008189916610717773,
+          0.008209943771362305,
+          0.009070038795471191,
+          0.007879972457885742,
+          0.00875997543334961,
+          0.008000016212463379,
+          0.009149909019470215,
+          0.009089946746826172,
+          0.008050084114074707,
+          0.009160995483398438,
+          0.008120059967041016,
+          0.00812995433807373,
+          0.008720040321350098,
+          0.009119987487792969,
+          0.008681058883666992,
+          0.008549928665161133,
+          0.008540034294128418,
+          0.008090019226074219
+        ],
+        "median": 0.008440077304840088,
+        "p95": 0.009156006574630737,
+        "minimum": 0.007879972457885742,
+        "maximum": 0.014869928359985352,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 420
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "same-parity-different-generation",
+      "family": "generation-reuse",
+      "split": "validation",
+      "template": "generation-reuse",
+      "provenance": "synthetic-model",
+      "inputSha256": "3c2a0305088263761115fa18226d624d138a399c0d43a9aac4c03e5bfe918e2e",
+      "topology": "one-to-one",
+      "method": "semantic-scan",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 8,
+        "expectedAtomicRelations": 8,
+        "correctAtomicRelations": 8,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 2,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 8,
+        "versionClassEvaluated": 8,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 4,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 4,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 4,
+          "different": 4,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 4,
+          "different": 4,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 8,
+            "recoveredNodeCoordinateUnits": 8,
+            "coverage": 1,
+            "nodeCount": 2,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 8,
+          "recovered": 8,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l-phase0",
+          "rightId": "r-phase0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-phase2",
+          "rightId": "r-phase2",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.007899999618530273,
+          0.00864100456237793,
+          0.007330060005187988,
+          0.007590055465698242,
+          0.007670998573303223,
+          0.007570028305053711,
+          0.0071599483489990234,
+          0.007570028305053711,
+          0.008089900016784668,
+          0.007160067558288574,
+          0.007249951362609863,
+          0.006940960884094238,
+          0.006989955902099609,
+          0.006969928741455078,
+          0.007979989051818848,
+          0.007059931755065918,
+          0.007079958915710449,
+          0.007380008697509766,
+          0.006700038909912109,
+          0.00727999210357666,
+          0.008749961853027344,
+          0.007969975471496582,
+          0.006930112838745117,
+          0.007089972496032715,
+          0.006850004196166992,
+          0.006790041923522949,
+          0.007590055465698242,
+          0.008230090141296387,
+          0.006721019744873047,
+          0.007310032844543457
+        ],
+        "median": 0.007295012474060059,
+        "p95": 0.008456093072891234,
+        "minimum": 0.006700038909912109,
+        "maximum": 0.008749961853027344,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 420
+      }
+    }
+  ]
+}

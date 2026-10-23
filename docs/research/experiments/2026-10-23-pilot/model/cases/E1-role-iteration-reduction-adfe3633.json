@@ -1,0 +1,2725 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "role-iteration-reduction",
+    "family": "logical-context",
+    "rootCauseTemplate": "logical-context",
+    "split": "development",
+    "left": {
+      "id": "role-iteration-reduction:left",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "l0",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l1",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 1,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@1",
+              "actual": {
+                "status": "known",
+                "value": "A@1"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 1
+          }
+        },
+        {
+          "id": "l-iteration-only",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 3,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l-version-only",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@1",
+              "actual": {
+                "status": "known",
+                "value": "A@1"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l-role",
+          "type": "operation",
+          "role": "epilogue",
+          "sourceLocation": "toy-kernel:80",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "l-k",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                4
+              ],
+              "hi": [
+                8
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "right": {
+      "id": "role-iteration-reduction:right",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "r-k",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                4
+              ],
+              "hi": [
+                8
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "r-role",
+          "type": "operation",
+          "role": "epilogue",
+          "sourceLocation": "toy-kernel:80",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "r-version-only",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@1",
+              "actual": {
+                "status": "known",
+                "value": "A@1"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "r-iteration-only",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 3,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        },
+        {
+          "id": "r1",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 1,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@1",
+              "actual": {
+                "status": "known",
+                "value": "A@1"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 1
+          }
+        },
+        {
+          "id": "r0",
+          "type": "operation",
+          "role": "consume-A",
+          "sourceLocation": "toy-kernel:40",
+          "logical": {
+            "tensor": "A",
+            "region": {
+              "lo": [
+                0,
+                0
+              ],
+              "hi": [
+                2,
+                2
+              ]
+            },
+            "iteration": 0,
+            "reduction": {
+              "lo": [
+                0
+              ],
+              "hi": [
+                4
+              ]
+            },
+            "mappingStatus": "known",
+            "version": {
+              "expected": "A@0",
+              "actual": {
+                "status": "known",
+                "value": "A@0"
+              }
+            }
+          },
+          "storage": {
+            "allocationId": "smem-slot0",
+            "space": "smem",
+            "lo": 0,
+            "hi": 128,
+            "generation": 0
+          }
+        }
+      ],
+      "edges": [],
+      "evidence": [],
+      "obligations": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "expertReviewed": false,
+      "realGpuMeasurement": false,
+      "generatedFrom": "hand-authored-contract",
+      "claimScope": "correspondence-given-declared-logical-mapping"
+    }
+  },
+  "oracle": {
+    "atoms": [
+      {
+        "leftId": "l-iteration-only",
+        "rightId": "r-iteration-only",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",3,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-iteration-only",
+        "rightId": "r-iteration-only",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",3,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-iteration-only",
+        "rightId": "r-iteration-only",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",3,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-iteration-only",
+        "rightId": "r-iteration-only",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",3,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-k",
+        "rightId": "r-k",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[4],[8],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-k",
+        "rightId": "r-k",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[4],[8],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-k",
+        "rightId": "r-k",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[4],[8],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-k",
+        "rightId": "r-k",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[4],[8],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-role",
+        "rightId": "r-role",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"epilogue\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-role",
+        "rightId": "r-role",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"epilogue\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-role",
+        "rightId": "r-role",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"epilogue\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-role",
+        "rightId": "r-role",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"epilogue\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-version-only",
+        "rightId": "r-version-only",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@1\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-version-only",
+        "rightId": "r-version-only",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@1\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-version-only",
+        "rightId": "r-version-only",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@1\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l-version-only",
+        "rightId": "r-version-only",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@1\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l0",
+        "rightId": "r0",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l0",
+        "rightId": "r0",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l0",
+        "rightId": "r0",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l0",
+        "rightId": "r0",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",0,[0],[4],\"A@0\",[1,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1",
+        "rightId": "r1",
+        "coordinate": [
+          0,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",1,[0],[4],\"A@1\",[0,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1",
+        "rightId": "r1",
+        "coordinate": [
+          0,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",1,[0],[4],\"A@1\",[0,1]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1",
+        "rightId": "r1",
+        "coordinate": [
+          1,
+          0
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",1,[0],[4],\"A@1\",[1,0]]]",
+        "actualVersion": "equal"
+      },
+      {
+        "leftId": "l1",
+        "rightId": "r1",
+        "coordinate": [
+          1,
+          1
+        ],
+        "logicalKey": "[[\"tile-copy-v1\",\"synthetic-spec-v1\",\"synthetic-input-v1\",\"toy-async-v1\"],[\"consume-A\",\"A\",1,[0],[4],\"A@1\",[1,1]]]",
+        "actualVersion": "equal"
+      }
+    ],
+    "metadata": {
+      "compatible": true,
+      "incompatibility": null,
+      "unknownNodeIds": {
+        "left": [],
+        "right": []
+      },
+      "evidenceKind": "synthetic-model",
+      "oracle": "integer-enumeration-v1",
+      "validates": "declared-logical-mapping-only"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E1",
+      "caseId": "role-iteration-reduction",
+      "family": "logical-context",
+      "split": "development",
+      "template": "logical-context",
+      "provenance": "synthetic-model",
+      "inputSha256": "adfe3633f9f2604c939b303668db8b9349b9e9175508ff8673cdf16eb08fee13",
+      "topology": "one-to-one",
+      "method": "source",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 104,
+        "expectedAtomicRelations": 24,
+        "correctAtomicRelations": 24,
+        "falsePositiveAtomicRelations": 80,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 0.23076923076923078,
+        "recall": 1,
+        "emittedRegionRelations": 26,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 24,
+        "versionClassEvaluated": 24,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 24,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 56,
+          "different": 48,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 24,
+          "recovered": 24,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [
+          "[\"l0\",\"r-k\",[0,0]]",
+          "[\"l0\",\"r-k\",[0,1]]",
+          "[\"l0\",\"r-k\",[1,0]]",
+          "[\"l0\",\"r-k\",[1,1]]",
+          "[\"l0\",\"r-version-only\",[0,0]]",
+          "[\"l0\",\"r-version-only\",[0,1]]",
+          "[\"l0\",\"r-version-only\",[1,0]]",
+          "[\"l0\",\"r-version-only\",[1,1]]",
+          "[\"l0\",\"r-iteration-only\",[0,0]]",
+          "[\"l0\",\"r-iteration-only\",[0,1]]",
+          "[\"l0\",\"r-iteration-only\",[1,0]]",
+          "[\"l0\",\"r-iteration-only\",[1,1]]",
+          "[\"l0\",\"r1\",[0,0]]",
+          "[\"l0\",\"r1\",[0,1]]",
+          "[\"l0\",\"r1\",[1,0]]",
+          "[\"l0\",\"r1\",[1,1]]",
+          "[\"l1\",\"r-k\",[0,0]]",
+          "[\"l1\",\"r-k\",[0,1]]",
+          "[\"l1\",\"r-k\",[1,0]]",
+          "[\"l1\",\"r-k\",[1,1]]"
+        ],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l0",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.02817988395690918,
+          0.02619004249572754,
+          0.02649998664855957,
+          0.042639970779418945,
+          0.025460004806518555,
+          0.026489973068237305,
+          0.025609970092773438,
+          0.026710987091064453,
+          0.025130033493041992,
+          0.02442002296447754,
+          0.02577996253967285,
+          0.025169968605041504,
+          0.02577996253967285,
+          0.027400970458984375,
+          0.025460004806518555,
+          0.024891018867492676,
+          0.02499997615814209,
+          0.024010062217712402,
+          0.15115201473236084,
+          0.0250399112701416,
+          0.025660991668701172,
+          0.026990056037902832,
+          0.02553105354309082,
+          0.024510979652404785,
+          0.02400994300842285,
+          0.05268096923828125,
+          0.02409994602203369,
+          0.023419976234436035,
+          0.02305006980895996,
+          0.02315998077392578
+        ],
+        "median": 0.025495529174804688,
+        "p95": 0.048162519931793185,
+        "minimum": 0.02305006980895996,
+        "maximum": 0.15115201473236084,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 2800
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "role-iteration-reduction",
+      "family": "logical-context",
+      "split": "development",
+      "template": "logical-context",
+      "provenance": "synthetic-model",
+      "inputSha256": "adfe3633f9f2604c939b303668db8b9349b9e9175508ff8673cdf16eb08fee13",
+      "topology": "one-to-one",
+      "method": "region",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 144,
+        "expectedAtomicRelations": 24,
+        "correctAtomicRelations": 24,
+        "falsePositiveAtomicRelations": 120,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 0.16666666666666666,
+        "recall": 1,
+        "emittedRegionRelations": 36,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 24,
+        "versionClassEvaluated": 24,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 24,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 80,
+          "different": 64,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 24,
+          "recovered": 24,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [
+          "[\"l0\",\"r-k\",[0,0]]",
+          "[\"l0\",\"r-k\",[0,1]]",
+          "[\"l0\",\"r-k\",[1,0]]",
+          "[\"l0\",\"r-k\",[1,1]]",
+          "[\"l0\",\"r-role\",[0,0]]",
+          "[\"l0\",\"r-role\",[0,1]]",
+          "[\"l0\",\"r-role\",[1,0]]",
+          "[\"l0\",\"r-role\",[1,1]]",
+          "[\"l0\",\"r-version-only\",[0,0]]",
+          "[\"l0\",\"r-version-only\",[0,1]]",
+          "[\"l0\",\"r-version-only\",[1,0]]",
+          "[\"l0\",\"r-version-only\",[1,1]]",
+          "[\"l0\",\"r-iteration-only\",[0,0]]",
+          "[\"l0\",\"r-iteration-only\",[0,1]]",
+          "[\"l0\",\"r-iteration-only\",[1,0]]",
+          "[\"l0\",\"r-iteration-only\",[1,1]]",
+          "[\"l0\",\"r1\",[0,0]]",
+          "[\"l0\",\"r1\",[0,1]]",
+          "[\"l0\",\"r1\",[1,0]]",
+          "[\"l0\",\"r1\",[1,1]]"
+        ],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l0",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l0",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "different"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.028720974922180176,
+          0.029340028762817383,
+          0.029110074043273926,
+          0.08143103122711182,
+          0.027359962463378906,
+          0.028580069541931152,
+          0.025870084762573242,
+          0.06150102615356445,
+          0.02618098258972168,
+          0.02656102180480957,
+          0.026359915733337402,
+          0.03668105602264404,
+          0.028851032257080078,
+          0.033879995346069336,
+          0.028910040855407715,
+          0.024880051612854004,
+          0.02535104751586914,
+          0.030511021614074707,
+          0.025990009307861328,
+          0.02553999423980713,
+          0.046350955963134766,
+          0.02572000026702881,
+          0.025320053100585938,
+          0.025230050086975098,
+          0.0307999849319458,
+          0.02716994285583496,
+          0.027000069618225098,
+          0.02694106101989746,
+          0.027261018753051758,
+          0.02976095676422119
+        ],
+        "median": 0.027310490608215332,
+        "p95": 0.054683494567871055,
+        "minimum": 0.024880051612854004,
+        "maximum": 0.08143103122711182,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 2800
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "role-iteration-reduction",
+      "family": "logical-context",
+      "split": "development",
+      "template": "logical-context",
+      "provenance": "synthetic-model",
+      "inputSha256": "adfe3633f9f2604c939b303668db8b9349b9e9175508ff8673cdf16eb08fee13",
+      "topology": "one-to-one",
+      "method": "semantic-scan",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 24,
+        "expectedAtomicRelations": 24,
+        "correctAtomicRelations": 24,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 6,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 24,
+        "versionClassEvaluated": 24,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 24,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 24,
+          "recovered": 24,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l0",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.01856100559234619,
+          0.019119977951049805,
+          0.029900074005126953,
+          0.019279956817626953,
+          0.01852107048034668,
+          0.020000100135803223,
+          0.01825106143951416,
+          0.019881010055541992,
+          0.020931005477905273,
+          0.03179001808166504,
+          0.018391013145446777,
+          0.020389914512634277,
+          0.01890099048614502,
+          0.019269943237304688,
+          0.0194399356842041,
+          0.021090030670166016,
+          0.01903998851776123,
+          0.01819002628326416,
+          0.01937997341156006,
+          0.019119977951049805,
+          0.019269943237304688,
+          0.020169973373413086,
+          0.018419981002807617,
+          0.018980979919433594,
+          0.018739938735961914,
+          0.01762998104095459,
+          0.01810002326965332,
+          0.01798999309539795,
+          0.018830060958862305,
+          0.017009973526000977
+        ],
+        "median": 0.019079983234405518,
+        "p95": 0.025935554504394505,
+        "minimum": 0.017009973526000977,
+        "maximum": 0.03179001808166504,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 2800
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "role-iteration-reduction",
+      "family": "logical-context",
+      "split": "development",
+      "template": "logical-context",
+      "provenance": "synthetic-model",
+      "inputSha256": "adfe3633f9f2604c939b303668db8b9349b9e9175508ff8673cdf16eb08fee13",
+      "topology": "one-to-one",
+      "method": "semantic-fixed-axis",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 24,
+        "expectedAtomicRelations": 24,
+        "correctAtomicRelations": 24,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 6,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 24,
+        "versionClassEvaluated": 24,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 24,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 24,
+          "recovered": 24,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l0",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.022369980812072754,
+          0.022639989852905273,
+          0.02481997013092041,
+          0.02224099636077881,
+          0.02264094352722168,
+          0.021890997886657715,
+          0.02435004711151123,
+          0.023039937019348145,
+          0.022279977798461914,
+          0.021319985389709473,
+          0.021281003952026367,
+          0.021809935569763184,
+          0.03979992866516113,
+          0.022840023040771484,
+          0.0221099853515625,
+          0.02210104465484619,
+          0.026690006256103516,
+          0.021899938583374023,
+          0.02177107334136963,
+          0.021420001983642578,
+          0.02406001091003418,
+          0.021220922470092773,
+          0.022610068321228027,
+          0.021899938583374023,
+          0.022909998893737793,
+          0.023880958557128906,
+          0.020560026168823242,
+          0.021179914474487305,
+          0.02090001106262207,
+          0.04165995121002197
+        ],
+        "median": 0.02226048707962036,
+        "p95": 0.033900463581085165,
+        "minimum": 0.020560026168823242,
+        "maximum": 0.04165995121002197,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 2800
+      }
+    },
+    {
+      "experiment": "E1",
+      "caseId": "role-iteration-reduction",
+      "family": "logical-context",
+      "split": "development",
+      "template": "logical-context",
+      "provenance": "synthetic-model",
+      "inputSha256": "adfe3633f9f2604c939b303668db8b9349b9e9175508ff8673cdf16eb08fee13",
+      "topology": "one-to-one",
+      "method": "semantic",
+      "status": "ok",
+      "metrics": {
+        "predictedAtomicRelations": 24,
+        "expectedAtomicRelations": 24,
+        "correctAtomicRelations": 24,
+        "falsePositiveAtomicRelations": 0,
+        "falseNegativeAtomicRelations": 0,
+        "precision": 1,
+        "recall": 1,
+        "emittedRegionRelations": 6,
+        "duplicateAtomicRelations": 0,
+        "versionClassCorrect": 24,
+        "versionClassEvaluated": 24,
+        "versionClassAccuracy": 1,
+        "versionConfusion": {
+          "equal": {
+            "equal": 24,
+            "different": 0,
+            "unknown": 0
+          },
+          "different": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          },
+          "unknown": {
+            "equal": 0,
+            "different": 0,
+            "unknown": 0
+          }
+        },
+        "expectedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "predictedVersionClasses": {
+          "equal": 24,
+          "different": 0,
+          "unknown": 0
+        },
+        "unknownVersionFalseCertaintyCount": 0,
+        "sideCoverage": {
+          "left": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          },
+          "right": {
+            "expectedNodeCoordinateUnits": 24,
+            "recoveredNodeCoordinateUnits": 24,
+            "coverage": 1,
+            "nodeCount": 6,
+            "unmatchedNodeIds": [],
+            "unmatchedNodeRate": 0,
+            "unknownMappingNodeIds": [],
+            "unknownMappingNodeRate": 0
+          }
+        },
+        "logicalElementCoverage": {
+          "expected": 24,
+          "recovered": 24,
+          "ratio": 1
+        },
+        "falsePositiveExamples": [],
+        "falseNegativeExamples": []
+      },
+      "output": [
+        {
+          "leftId": "l0",
+          "rightId": "r0",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l1",
+          "rightId": "r1",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-iteration-only",
+          "rightId": "r-iteration-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-version-only",
+          "rightId": "r-version-only",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-role",
+          "rightId": "r-role",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        },
+        {
+          "leftId": "l-k",
+          "rightId": "r-k",
+          "region": {
+            "lo": [
+              0,
+              0
+            ],
+            "hi": [
+              2,
+              2
+            ]
+          },
+          "actualVersion": "equal"
+        }
+      ],
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.024089932441711426,
+          0.023910999298095703,
+          0.025889992713928223,
+          0.024230003356933594,
+          0.023580074310302734,
+          0.07411110401153564,
+          0.02369999885559082,
+          0.026690006256103516,
+          0.02507007122039795,
+          0.02312004566192627,
+          0.023550033569335938,
+          0.023460030555725098,
+          0.02460002899169922,
+          0.023689985275268555,
+          0.024219989776611328,
+          0.02335989475250244,
+          0.02294003963470459,
+          0.024389982223510742,
+          0.023550033569335938,
+          0.02602100372314453,
+          0.0238800048828125,
+          0.023780107498168945,
+          0.02363002300262451,
+          0.025609970092773438,
+          0.023549914360046387,
+          0.024699926376342773,
+          0.028180956840515137,
+          0.022499918937683105,
+          0.02260005474090576,
+          0.02441990375518799
+        ],
+        "median": 0.0238955020904541,
+        "p95": 0.027510029077529904,
+        "minimum": 0.022499918937683105,
+        "maximum": 0.07411110401153564,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 2800
+      }
+    }
+  ]
+}

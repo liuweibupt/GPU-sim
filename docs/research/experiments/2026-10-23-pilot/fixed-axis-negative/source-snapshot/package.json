@@ -1,0 +1,19 @@
+{
+  "name": "gpu-sim-workbench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GPU simulation and profile trace workbench",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build-site.mjs",
+    "build:wasm": "node scripts/build-wasm.mjs",
+    "benchmark": "node scripts/benchmark-playback.mjs",
+    "benchmark:pve": "node scripts/benchmark-pve.mjs",
+    "research:model": "node tools/research/run-model-experiments.mjs",
+    "research:cuda": "python3 tools/research/cuda/run_pilot.py",
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate-trace.mjs examples/gtsim-gemm.json examples/h100-traffic.json examples/h100-traffic-slow-noc.json examples/h100-sm.json examples/h100-sm-bank-conflict.json examples/flashgpu-vectoradd.json examples/flashgpu-vectoradd-pipeline.json"
+  },
+  "engines": { "node": ">=18" }
+}

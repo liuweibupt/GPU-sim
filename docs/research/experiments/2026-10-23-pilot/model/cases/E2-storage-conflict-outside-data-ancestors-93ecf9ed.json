@@ -1,0 +1,889 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "storage-conflict-outside-data-ancestors",
+    "family": "storage-witness",
+    "rootCauseTemplate": "storage-witness",
+    "split": "development",
+    "run": {
+      "id": "storage-conflict-outside-data-ancestors",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "reader",
+          "type": "operation"
+        },
+        {
+          "id": "writer-next",
+          "type": "operation"
+        },
+        {
+          "id": "allocation",
+          "type": "storage"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        }
+      ],
+      "edges": [
+        {
+          "id": "reader-output",
+          "from": "reader",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        },
+        {
+          "id": "alias",
+          "from": "reader",
+          "to": "writer-next",
+          "type": "storage-alias",
+          "evidenceRefs": [
+            "overlap"
+          ]
+        },
+        {
+          "id": "allocation-reader",
+          "from": "allocation",
+          "to": "reader",
+          "type": "storage-alias",
+          "evidenceRefs": [
+            "allocation-generation"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "overlap",
+          "kind": "model-read-write-overlap",
+          "readerInterval": [
+            2,
+            8
+          ],
+          "writerStart": 5
+        },
+        {
+          "id": "allocation-generation",
+          "kind": "model-storage-identity",
+          "allocationId": "slot",
+          "readerGeneration": 0,
+          "writerGeneration": 1
+        },
+        {
+          "id": "rule-live-reader",
+          "kind": "model-rule",
+          "ruleId": "toy.no-overwrite-live-reader"
+        }
+      ],
+      "obligations": [
+        {
+          "id": "reuse-check",
+          "kind": "safe-reuse",
+          "subjectIds": [
+            "reader",
+            "writer-next"
+          ],
+          "ruleId": "toy.no-overwrite-live-reader",
+          "status": "violated",
+          "positiveWitnessRefs": [
+            "overlap",
+            "allocation-generation",
+            "rule-live-reader"
+          ],
+          "witnessNodeIds": [
+            "reader",
+            "writer-next",
+            "allocation"
+          ],
+          "witnessEdgeIds": [
+            "alias",
+            "allocation-reader"
+          ],
+          "unknownRefs": []
+        }
+      ]
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "reader",
+        "writer-next",
+        "allocation"
+      ],
+      "edgeIds": [
+        "reader-output",
+        "alias",
+        "allocation-reader"
+      ],
+      "obligationIds": [
+        "reuse-check"
+      ],
+      "unknownRefs": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E2",
+      "caseId": "storage-conflict-outside-data-ancestors",
+      "family": "storage-witness",
+      "split": "development",
+      "template": "storage-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "93ecf9edc030ebbf6f4b7571b89cfcfa159b9536ff49a2b96295754aa6b92103",
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 5,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1507,
+          "retained": 1831,
+          "ratio": 1.214996682149967
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "storage-conflict-outside-data-ancestors",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "complete",
+          "accesses": "complete",
+          "sync": "complete"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "reader",
+            "type": "operation"
+          },
+          {
+            "id": "writer-next",
+            "type": "operation"
+          },
+          {
+            "id": "allocation",
+            "type": "storage"
+          },
+          {
+            "id": "distractor",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "reader-output",
+            "from": "reader",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "alias",
+            "from": "reader",
+            "to": "writer-next",
+            "type": "storage-alias",
+            "evidenceRefs": [
+              "overlap"
+            ]
+          },
+          {
+            "id": "allocation-reader",
+            "from": "allocation",
+            "to": "reader",
+            "type": "storage-alias",
+            "evidenceRefs": [
+              "allocation-generation"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "overlap",
+            "kind": "model-read-write-overlap",
+            "readerInterval": [
+              2,
+              8
+            ],
+            "writerStart": 5
+          },
+          {
+            "id": "allocation-generation",
+            "kind": "model-storage-identity",
+            "allocationId": "slot",
+            "readerGeneration": 0,
+            "writerGeneration": 1
+          },
+          {
+            "id": "rule-live-reader",
+            "kind": "model-rule",
+            "ruleId": "toy.no-overwrite-live-reader"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "reuse-check",
+            "kind": "safe-reuse",
+            "subjectIds": [
+              "reader",
+              "writer-next"
+            ],
+            "ruleId": "toy.no-overwrite-live-reader",
+            "status": "violated",
+            "positiveWitnessRefs": [
+              "overlap",
+              "allocation-generation",
+              "rule-live-reader"
+            ],
+            "witnessNodeIds": [
+              "reader",
+              "writer-next",
+              "allocation"
+            ],
+            "witnessEdgeIds": [
+              "alias",
+              "allocation-reader"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "full",
+          "parentRunId": "storage-conflict-outside-data-ancestors",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": false,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.027961015701293945,
+          0.026690006256103516,
+          0.026739954948425293,
+          0.026999950408935547,
+          0.027500033378601074,
+          0.027899980545043945,
+          0.027290940284729004,
+          0.02692997455596924,
+          0.026669979095458984,
+          0.03228104114532471,
+          0.0283200740814209,
+          0.02814006805419922,
+          0.03371000289916992,
+          0.02721095085144043,
+          0.026440978050231934,
+          0.02659010887145996,
+          0.027370095252990723,
+          0.028120040893554688,
+          0.027589917182922363,
+          0.027539968490600586,
+          0.026890039443969727,
+          0.027460098266601562,
+          0.027720093727111816,
+          0.026620030403137207,
+          0.026110053062438965,
+          0.02663099765777588,
+          0.03140997886657715,
+          0.026890039443969727,
+          0.02660989761352539,
+          0.026560068130493164
+        ],
+        "median": 0.027250945568084717,
+        "p95": 0.0318890631198883,
+        "minimum": 0.026110053062438965,
+        "maximum": 0.03371000289916992,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "storage-conflict-outside-data-ancestors",
+      "family": "storage-witness",
+      "split": "development",
+      "template": "storage-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "93ecf9edc030ebbf6f4b7571b89cfcfa159b9536ff49a2b96295754aa6b92103",
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 2,
+            "recall": 0.5,
+            "missing": [
+              "\"writer-next\"",
+              "\"allocation\""
+            ]
+          },
+          "edges": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"alias\"",
+              "\"allocation-reader\""
+            ]
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "\"reuse-check\""
+            ]
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 2,
+            "recall": 0.6666666666666666,
+            "missing": [
+              "\"rule-live-reader\""
+            ]
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "[\"reuse-check\",\"violated\"]"
+            ]
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 5,
+        "evidenceRetention": 0.4166666666666667,
+        "completeWitnessRetained": false,
+        "nodes": {
+          "original": 5,
+          "retained": 2,
+          "ratio": 0.4
+        },
+        "edges": {
+          "original": 3,
+          "retained": 1,
+          "ratio": 0.3333333333333333
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 0,
+          "ratio": 0
+        },
+        "bytes": {
+          "original": 1507,
+          "retained": 1300,
+          "ratio": 0.8626410086264101
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "storage-conflict-outside-data-ancestors",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "reader",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "reader-output",
+            "from": "reader",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "overlap",
+            "kind": "model-read-write-overlap",
+            "readerInterval": [
+              2,
+              8
+            ],
+            "writerStart": 5
+          },
+          {
+            "id": "allocation-generation",
+            "kind": "model-storage-identity",
+            "allocationId": "slot",
+            "readerGeneration": 0,
+            "writerGeneration": 1
+          }
+        ],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "data-ancestors",
+          "parentRunId": "storage-conflict-outside-data-ancestors",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [
+            {
+              "id": "alias",
+              "from": "reader",
+              "to": "writer-next",
+              "type": "storage-alias",
+              "evidenceRefs": [
+                "overlap"
+              ]
+            },
+            {
+              "id": "allocation-reader",
+              "from": "allocation",
+              "to": "reader",
+              "type": "storage-alias",
+              "evidenceRefs": [
+                "allocation-generation"
+              ]
+            }
+          ],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.022539973258972168,
+          0.021789908409118652,
+          0.021401047706604004,
+          0.021489977836608887,
+          0.022210001945495605,
+          0.02217996120452881,
+          0.02201998233795166,
+          0.02201998233795166,
+          0.02134990692138672,
+          0.021160006523132324,
+          0.02154099941253662,
+          0.0212399959564209,
+          0.02288997173309326,
+          0.02105998992919922,
+          0.02171003818511963,
+          0.021319985389709473,
+          0.02150094509124756,
+          0.02555990219116211,
+          0.02168107032775879,
+          0.02165091037750244,
+          0.021530985832214355,
+          0.021400928497314453,
+          0.021481037139892578,
+          0.021380066871643066,
+          0.021470069885253906,
+          0.021829962730407715,
+          0.02136993408203125,
+          0.02154099941253662,
+          0.021081089973449707,
+          0.020939946174621582
+        ],
+        "median": 0.021515965461730957,
+        "p95": 0.022732472419738768,
+        "minimum": 0.020939946174621582,
+        "maximum": 0.02555990219116211,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "storage-conflict-outside-data-ancestors",
+      "family": "storage-witness",
+      "split": "development",
+      "template": "storage-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "93ecf9edc030ebbf6f4b7571b89cfcfa159b9536ff49a2b96295754aa6b92103",
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 4,
+          "ratio": 0.8
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1507,
+          "retained": 1792,
+          "ratio": 1.1891174518911745
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "storage-conflict-outside-data-ancestors",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "reader",
+            "type": "operation"
+          },
+          {
+            "id": "writer-next",
+            "type": "operation"
+          },
+          {
+            "id": "allocation",
+            "type": "storage"
+          }
+        ],
+        "edges": [
+          {
+            "id": "reader-output",
+            "from": "reader",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "alias",
+            "from": "reader",
+            "to": "writer-next",
+            "type": "storage-alias",
+            "evidenceRefs": [
+              "overlap"
+            ]
+          },
+          {
+            "id": "allocation-reader",
+            "from": "allocation",
+            "to": "reader",
+            "type": "storage-alias",
+            "evidenceRefs": [
+              "allocation-generation"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "overlap",
+            "kind": "model-read-write-overlap",
+            "readerInterval": [
+              2,
+              8
+            ],
+            "writerStart": 5
+          },
+          {
+            "id": "allocation-generation",
+            "kind": "model-storage-identity",
+            "allocationId": "slot",
+            "readerGeneration": 0,
+            "writerGeneration": 1
+          },
+          {
+            "id": "rule-live-reader",
+            "kind": "model-rule",
+            "ruleId": "toy.no-overwrite-live-reader"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "reuse-check",
+            "kind": "safe-reuse",
+            "subjectIds": [
+              "reader",
+              "writer-next"
+            ],
+            "ruleId": "toy.no-overwrite-live-reader",
+            "status": "violated",
+            "positiveWitnessRefs": [
+              "overlap",
+              "allocation-generation",
+              "rule-live-reader"
+            ],
+            "witnessNodeIds": [
+              "reader",
+              "writer-next",
+              "allocation"
+            ],
+            "witnessEdgeIds": [
+              "alias",
+              "allocation-reader"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "storage-conflict-outside-data-ancestors",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.0291900634765625,
+          0.028610944747924805,
+          0.028149962425231934,
+          0.02855098247528076,
+          0.02817094326019287,
+          0.02905094623565674,
+          0.028479933738708496,
+          0.02840101718902588,
+          0.029899954795837402,
+          0.03130006790161133,
+          0.02880096435546875,
+          0.030110955238342285,
+          0.03284096717834473,
+          0.027860045433044434,
+          0.0286099910736084,
+          0.028540968894958496,
+          0.030650019645690918,
+          0.04088103771209717,
+          0.02786993980407715,
+          0.030080080032348633,
+          0.028550028800964355,
+          0.02881002426147461,
+          0.028750061988830566,
+          0.030020952224731445,
+          0.035980939865112305,
+          0.028689980506896973,
+          0.027969956398010254,
+          0.02845001220703125,
+          0.027849912643432617,
+          0.028810977935791016
+        ],
+        "median": 0.02872002124786377,
+        "p95": 0.03456795215606689,
+        "minimum": 0.027849912643432617,
+        "maximum": 0.04088103771209717,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    }
+  ]
+}

@@ -1,0 +1,633 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "scale-slicing-16",
+    "family": "scale-fixed-witness",
+    "rootCauseTemplate": "storage-witness",
+    "split": "scaling",
+    "run": {
+      "id": "scale-slicing-16",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "reader",
+          "type": "operation"
+        },
+        {
+          "id": "writer-next",
+          "type": "operation"
+        },
+        {
+          "id": "allocation",
+          "type": "storage"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        },
+        {
+          "id": "unrelated-0",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-1",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-2",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-3",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-4",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-5",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-6",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-7",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-8",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-9",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-10",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-11",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-12",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-13",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-14",
+          "type": "unrelated-model-record"
+        },
+        {
+          "id": "unrelated-15",
+          "type": "unrelated-model-record"
+        }
+      ],
+      "edges": [
+        {
+          "id": "reader-output",
+          "from": "reader",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        },
+        {
+          "id": "alias",
+          "from": "reader",
+          "to": "writer-next",
+          "type": "storage-alias",
+          "evidenceRefs": [
+            "overlap"
+          ]
+        },
+        {
+          "id": "allocation-reader",
+          "from": "allocation",
+          "to": "reader",
+          "type": "storage-alias",
+          "evidenceRefs": [
+            "allocation-generation"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "overlap",
+          "kind": "model-read-write-overlap",
+          "readerInterval": [
+            2,
+            8
+          ],
+          "writerStart": 5
+        },
+        {
+          "id": "allocation-generation",
+          "kind": "model-storage-identity",
+          "allocationId": "slot",
+          "readerGeneration": 0,
+          "writerGeneration": 1
+        },
+        {
+          "id": "rule-live-reader",
+          "kind": "model-rule",
+          "ruleId": "toy.no-overwrite-live-reader"
+        }
+      ],
+      "obligations": [
+        {
+          "id": "reuse-check",
+          "kind": "safe-reuse",
+          "subjectIds": [
+            "reader",
+            "writer-next"
+          ],
+          "ruleId": "toy.no-overwrite-live-reader",
+          "status": "violated",
+          "positiveWitnessRefs": [
+            "overlap",
+            "allocation-generation",
+            "rule-live-reader"
+          ],
+          "witnessNodeIds": [
+            "reader",
+            "writer-next",
+            "allocation"
+          ],
+          "witnessEdgeIds": [
+            "alias",
+            "allocation-reader"
+          ],
+          "unknownRefs": []
+        }
+      ]
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "reader",
+        "writer-next",
+        "allocation"
+      ],
+      "edgeIds": [
+        "reader-output",
+        "alias",
+        "allocation-reader"
+      ],
+      "obligationIds": [
+        "reuse-check"
+      ],
+      "unknownRefs": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-scale-only",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection",
+      "scaleOnly": true,
+      "measurementScope": "synthetic-CPU-analysis-not-GPU-execution",
+      "additionalUnrelatedNodes": 16,
+      "fixedBaselineNodes": 5,
+      "totalInputNodes": 21,
+      "topology": "fixed-witness-plus-disconnected-nodes"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E7",
+      "functionKind": "slicing",
+      "caseId": "scale-slicing-16",
+      "family": "scale-fixed-witness",
+      "split": "scaling",
+      "template": "storage-witness",
+      "provenance": "synthetic-model",
+      "distribution": "fixed-witness-plus-disconnected-nodes",
+      "inputSha256": "fb7bfa26843c68c99c143bd8920b98a31db0687ac34f1110acfe7dc088c73688",
+      "inputNodeCount": 21,
+      "inputEdgeCount": 3,
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 21,
+          "retained": 21,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 2338,
+          "retained": 2640,
+          "ratio": 1.129170230966638
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "outputSummary": {
+        "sha256": "89a53abbcca42bd262a77cc7f22530b7233eae5bd2a556afbe7012b6748a768c",
+        "nodeCount": 21,
+        "edgeCount": 3,
+        "obligationCount": 1,
+        "evidenceCount": 3
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.03532099723815918,
+          0.0359799861907959,
+          0.038001060485839844,
+          0.0370100736618042,
+          0.036080002784729004,
+          0.03592097759246826,
+          0.035441040992736816,
+          0.03575003147125244,
+          0.03530097007751465,
+          0.03599107265472412,
+          0.03617095947265625,
+          0.035580992698669434,
+          0.040820956230163574,
+          0.035560011863708496,
+          0.03576099872589111,
+          0.03620004653930664,
+          0.035130977630615234,
+          0.03532004356384277,
+          0.037011027336120605,
+          0.0352400541305542,
+          0.03622007369995117,
+          0.03549003601074219,
+          0.03555107116699219,
+          0.035580992698669434,
+          0.035961031913757324,
+          0.03596997261047363,
+          0.03607010841369629,
+          0.036460041999816895,
+          0.06145000457763672,
+          0.036250948905944824
+        ],
+        "median": 0.03596550226211548,
+        "p95": 0.03955200314521789,
+        "minimum": 0.035130977630615234,
+        "maximum": 0.06145000457763672,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 945
+      }
+    },
+    {
+      "experiment": "E7",
+      "functionKind": "slicing",
+      "caseId": "scale-slicing-16",
+      "family": "scale-fixed-witness",
+      "split": "scaling",
+      "template": "storage-witness",
+      "provenance": "synthetic-model",
+      "distribution": "fixed-witness-plus-disconnected-nodes",
+      "inputSha256": "fb7bfa26843c68c99c143bd8920b98a31db0687ac34f1110acfe7dc088c73688",
+      "inputNodeCount": 21,
+      "inputEdgeCount": 3,
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 2,
+            "recall": 0.5,
+            "missing": [
+              "\"writer-next\"",
+              "\"allocation\""
+            ]
+          },
+          "edges": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"alias\"",
+              "\"allocation-reader\""
+            ]
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "\"reuse-check\""
+            ]
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 2,
+            "recall": 0.6666666666666666,
+            "missing": [
+              "\"rule-live-reader\""
+            ]
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "[\"reuse-check\",\"violated\"]"
+            ]
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 5,
+        "evidenceRetention": 0.4166666666666667,
+        "completeWitnessRetained": false,
+        "nodes": {
+          "original": 21,
+          "retained": 2,
+          "ratio": 0.09523809523809523
+        },
+        "edges": {
+          "original": 3,
+          "retained": 1,
+          "ratio": 0.3333333333333333
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 0,
+          "ratio": 0
+        },
+        "bytes": {
+          "original": 2338,
+          "retained": 1255,
+          "ratio": 0.5367835757057314
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "outputSummary": {
+        "sha256": "d5edbdb8bb099b88559856cf03c6dca0d44f8c405cb79777309e3f7957066f6e",
+        "nodeCount": 2,
+        "edgeCount": 1,
+        "obligationCount": 0,
+        "evidenceCount": 2
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.021989941596984863,
+          0.022700071334838867,
+          0.030169963836669922,
+          0.021690964698791504,
+          0.022540926933288574,
+          0.02198004722595215,
+          0.022570013999938965,
+          0.021780967712402344,
+          0.021809935569763184,
+          0.021589994430541992,
+          0.02191007137298584,
+          0.021399974822998047,
+          0.02174997329711914,
+          0.027341008186340332,
+          0.021719932556152344,
+          0.0216599702835083,
+          0.02174997329711914,
+          0.022459983825683594,
+          0.021469950675964355,
+          0.021720051765441895,
+          0.022079944610595703,
+          0.022060036659240723,
+          0.021519899368286133,
+          0.0234299898147583,
+          0.022300004959106445,
+          0.028929948806762695,
+          0.022130966186523438,
+          0.024581074714660645,
+          0.02383100986480713,
+          0.0221099853515625
+        ],
+        "median": 0.022024989128112793,
+        "p95": 0.028214925527572626,
+        "minimum": 0.021399974822998047,
+        "maximum": 0.030169963836669922,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 945
+      }
+    },
+    {
+      "experiment": "E7",
+      "functionKind": "slicing",
+      "caseId": "scale-slicing-16",
+      "family": "scale-fixed-witness",
+      "split": "scaling",
+      "template": "storage-witness",
+      "provenance": "synthetic-model",
+      "distribution": "fixed-witness-plus-disconnected-nodes",
+      "inputSha256": "fb7bfa26843c68c99c143bd8920b98a31db0687ac34f1110acfe7dc088c73688",
+      "inputNodeCount": 21,
+      "inputEdgeCount": 3,
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 21,
+          "retained": 4,
+          "ratio": 0.19047619047619047
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 2338,
+          "retained": 1747,
+          "ratio": 0.7472198460222412
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "outputSummary": {
+        "sha256": "1b98b36c6afe7cabe9fb6cb430be78adba2947b656f88658edb347aa541a40d3",
+        "nodeCount": 4,
+        "edgeCount": 3,
+        "obligationCount": 1,
+        "evidenceCount": 3
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.028839945793151855,
+          0.028771042823791504,
+          0.028949975967407227,
+          0.029070019721984863,
+          0.030159950256347656,
+          0.028869986534118652,
+          0.0287400484085083,
+          0.028370022773742676,
+          0.028460979461669922,
+          0.028779983520507812,
+          0.02833998203277588,
+          0.028480052947998047,
+          0.030300021171569824,
+          0.028460025787353516,
+          0.02903008460998535,
+          0.028970956802368164,
+          0.02866995334625244,
+          0.028210997581481934,
+          0.02869999408721924,
+          0.028950929641723633,
+          0.029621005058288574,
+          0.028790950775146484,
+          0.028710007667541504,
+          0.029429912567138672,
+          0.03202998638153076,
+          0.029220938682556152,
+          0.0763700008392334,
+          0.028959989547729492,
+          0.03357100486755371,
+          0.02995002269744873
+        ],
+        "median": 0.02890998125076294,
+        "p95": 0.03287754654884338,
+        "minimum": 0.028210997581481934,
+        "maximum": 0.0763700008392334,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 945
+      }
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "shape_mnk": [
+    512,
+    512,
+    512
+  ],
+  "scope": "Instrumented profiler executions, separate from native timing",
+  "nsys_capture": "20 launches after warmup; input copies and initialization are outside capture",
+  "ncu_capture": "One selected kernel launch after warmup, replayed for section metrics",
+  "candidates": {
+    "baseline": {
+      "ncu_metrics": {
+        "gpu__time_duration.sum": {
+          "value": "69.856000",
+          "unit": "us"
+        },
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "90.325592",
+          "unit": "%"
+        },
+        "sm__inst_executed_pipe_lsu.avg.pct_of_peak_sustained_elapsed": {
+          "value": "90.325592",
+          "unit": "%"
+        },
+        "gpu__compute_memory_access_throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "67.760937",
+          "unit": "%"
+        },
+        "gpu__compute_memory_request_throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "90.325592",
+          "unit": "%"
+        },
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "2.991878",
+          "unit": "%"
+        },
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": {
+          "value": "93.493789",
+          "unit": "%"
+        },
+        "l1tex__t_sector_hit_rate.pct": {
+          "value": "90.436003",
+          "unit": "%"
+        },
+        "lts__t_sector_hit_rate.pct": {
+          "value": "95.808864",
+          "unit": "%"
+        },
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "23.537038",
+          "unit": "%"
+        },
+        "sm__warps_active.avg.pct_of_peak_sustained_active": {
+          "value": "71.864184",
+          "unit": "%"
+        },
+        "smsp__warps_eligible.avg.per_cycle_active": {
+          "value": "1.128522",
+          "unit": "warp"
+        },
+        "smsp__average_warps_issue_stalled_long_scoreboard_per_issue_active.ratio": {
+          "value": "5.956641",
+          "unit": "inst"
+        },
+        "smsp__average_warps_issue_stalled_short_scoreboard_per_issue_active.ratio": {
+          "value": "0.014301",
+          "unit": "inst"
+        },
+        "smsp__average_warps_issue_stalled_barrier_per_issue_active.ratio": {
+          "value": "0",
+          "unit": "inst"
+        },
+        "launch__registers_per_thread": {
+          "value": "40",
+          "unit": "register/thread"
+        },
+        "launch__shared_mem_per_block_static": {
+          "value": "0",
+          "unit": "byte/block"
+        }
+      },
+      "nsys_kernel_summary": [
+        {
+          "Time (%)": "100.0",
+          "Total Time (ns)": "1163345",
+          "Instances": "20",
+          "Avg (ns)": "58167.3",
+          "Med (ns)": "57504.5",
+          "Min (ns)": "57089",
+          "Max (ns)": "65729",
+          "StdDev (ns)": "2162.9",
+          "Name": "gemm_baseline(const float *, const float *, float *, int, int, int)"
+        }
+      ],
+      "nsys_cuda_api_summary": [
+        {
+          "Time (%)": "87.0",
+          "Total Time (ns)": "1091793",
+          "Num Calls": "1",
+          "Avg (ns)": "1091793.0",
+          "Med (ns)": "1091793.0",
+          "Min (ns)": "1091793",
+          "Max (ns)": "1091793",
+          "StdDev (ns)": "0.0",
+          "Name": "cudaDeviceSynchronize"
+        },
+        {
+          "Time (%)": "12.3",
+          "Total Time (ns)": "154072",
+          "Num Calls": "20",
+          "Avg (ns)": "7703.6",
+          "Med (ns)": "3230.0",
+          "Min (ns)": "2680",
+          "Max (ns)": "84011",
+          "StdDev (ns)": "18017.9",
+          "Name": "cudaLaunchKernel"
+        },
+        {
+          "Time (%)": "0.7",
+          "Total Time (ns)": "8980",
+          "Num Calls": "1",
+          "Avg (ns)": "8980.0",
+          "Med (ns)": "8980.0",
+          "Min (ns)": "8980",
+          "Max (ns)": "8980",
+          "StdDev (ns)": "0.0",
+          "Name": "cuProfilerStart"
+        }
+      ],
+      "nsys_kernel_execution_summary": [
+        {
+          "PID": "2950122",
+          "TID": "2950122",
+          "DevId": "0",
+          "Count": "20",
+          "QCount": "19",
+          "TAvg (ns)": "578557.7",
+          "TMed (ns)": "572927.5",
+          "TMin (ns)": "117803",
+          "TMax (ns)": "1090349",
+          "TStdDev (ns)": "313532.1",
+          "AAvg (ns)": "7703.6",
+          "AMed (ns)": "3230.0",
+          "AMin (ns)": "2680",
+          "AMax (ns)": "84011",
+          "AStdDev (ns)": "18017.9",
+          "QAvg (ns)": "540182.1",
+          "QMed (ns)": "539762.0",
+          "QMin (ns)": "48670",
+          "QMax (ns)": "1030150",
+          "QStdDev (ns)": "305555.3",
+          "KAvg (ns)": "58167.3",
+          "KMed (ns)": "57504.5",
+          "KMin (ns)": "57089",
+          "KMax (ns)": "65729",
+          "KStdDev (ns)": "2162.9",
+          "API Name": "cudaLaunchKernel",
+          "Kernel Name": "gemm_baseline(const float *, const float *, float *, int, int, int)"
+        }
+      ],
+      "nsys_memory_capture": "No GPU copy rows in the marked resident-compute range; not zero application transfer cost"
+    },
+    "tiled": {
+      "ncu_metrics": {
+        "gpu__time_duration.sum": {
+          "value": "53.792000",
+          "unit": "us"
+        },
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "85.737999",
+          "unit": "%"
+        },
+        "sm__inst_executed_pipe_lsu.avg.pct_of_peak_sustained_elapsed": {
+          "value": "85.737999",
+          "unit": "%"
+        },
+        "gpu__compute_memory_access_throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "54.942555",
+          "unit": "%"
+        },
+        "gpu__compute_memory_request_throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "85.737999",
+          "unit": "%"
+        },
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "3.881422",
+          "unit": "%"
+        },
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": {
+          "value": "88.991074",
+          "unit": "%"
+        },
+        "l1tex__t_sector_hit_rate.pct": {
+          "value": "18.734570",
+          "unit": "%"
+        },
+        "lts__t_sector_hit_rate.pct": {
+          "value": "96.527856",
+          "unit": "%"
+        },
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": {
+          "value": "23.568662",
+          "unit": "%"
+        },
+        "sm__warps_active.avg.pct_of_peak_sustained_active": {
+          "value": "74.694371",
+          "unit": "%"
+        },
+        "smsp__warps_eligible.avg.per_cycle_active": {
+          "value": "1.005137",
+          "unit": "warp"
+        },
+        "smsp__average_warps_issue_stalled_long_scoreboard_per_issue_active.ratio": {
+          "value": "5.680440",
+          "unit": "inst"
+        },
+        "smsp__average_warps_issue_stalled_short_scoreboard_per_issue_active.ratio": {
+          "value": "0.326741",
+          "unit": "inst"
+        },
+        "smsp__average_warps_issue_stalled_barrier_per_issue_active.ratio": {
+          "value": "4.596418",
+          "unit": "inst"
+        },
+        "launch__registers_per_thread": {
+          "value": "38",
+          "unit": "register/thread"
+        },
+        "launch__shared_mem_per_block_static": {
+          "value": "2.048000",
+          "unit": "Kbyte/block"
+        }
+      },
+      "nsys_kernel_summary": [
+        {
+          "Time (%)": "100.0",
+          "Total Time (ns)": "915209",
+          "Instances": "20",
+          "Avg (ns)": "45760.4",
+          "Med (ns)": "45249.0",
+          "Min (ns)": "44961",
+          "Max (ns)": "50976",
+          "StdDev (ns)": "1483.1",
+          "Name": "gemm_tiled(const float *, const float *, float *, int, int, int)"
+        }
+      ],
+      "nsys_cuda_api_summary": [
+        {
+          "Time (%)": "87.6",
+          "Total Time (ns)": "859431",
+          "Num Calls": "1",
+          "Avg (ns)": "859431.0",
+          "Med (ns)": "859431.0",
+          "Min (ns)": "859431",
+          "Max (ns)": "859431",
+          "StdDev (ns)": "0.0",
+          "Name": "cudaDeviceSynchronize"
+        },
+        {
+          "Time (%)": "11.9",
+          "Total Time (ns)": "116390",
+          "Num Calls": "20",
+          "Avg (ns)": "5819.5",
+          "Med (ns)": "2640.0",
+          "Min (ns)": "2330",
+          "Max (ns)": "59160",
+          "StdDev (ns)": "12607.0",
+          "Name": "cudaLaunchKernel"
+        },
+        {
+          "Time (%)": "0.5",
+          "Total Time (ns)": "5369",
+          "Num Calls": "1",
+          "Avg (ns)": "5369.0",
+          "Med (ns)": "5369.0",
+          "Min (ns)": "5369",
+          "Max (ns)": "5369",
+          "StdDev (ns)": "0.0",
+          "Name": "cuProfilerStart"
+        }
+      ],
+      "nsys_kernel_execution_summary": [
+        {
+          "PID": "2977089",
+          "TID": "2977089",
+          "DevId": "0",
+          "Count": "20",
+          "QCount": "19",
+          "TAvg (ns)": "453328.7",
+          "TMed (ns)": "448991.5",
+          "TMin (ns)": "91348",
+          "TMax (ns)": "856844",
+          "TStdDev (ns)": "247530.8",
+          "AAvg (ns)": "5819.5",
+          "AMed (ns)": "2640.0",
+          "AMin (ns)": "2330",
+          "AMax (ns)": "59160",
+          "AStdDev (ns)": "12607.0",
+          "QAvg (ns)": "423274.1",
+          "QMed (ns)": "422707.0",
+          "QMin (ns)": "37213",
+          "QMax (ns)": "809098",
+          "QStdDev (ns)": "240829.1",
+          "KAvg (ns)": "45760.4",
+          "KMed (ns)": "45249.0",
+          "KMin (ns)": "44961",
+          "KMax (ns)": "50976",
+          "KStdDev (ns)": "1483.1",
+          "API Name": "cudaLaunchKernel",
+          "Kernel Name": "gemm_tiled(const float *, const float *, float *, int, int, int)"
+        }
+      ],
+      "nsys_memory_capture": "No GPU copy rows in the marked resident-compute range; not zero application transfer cost"
+    }
+  },
+  "sanitizers": [
+    {
+      "candidate": "baseline",
+      "tool": "memcheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_memcheck_baseline",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "baseline",
+      "tool": "racecheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_racecheck_baseline",
+      "tool_summary_lines": [
+        "========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "baseline",
+      "tool": "initcheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_initcheck_baseline",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "baseline",
+      "tool": "synccheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_synccheck_baseline",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tiled",
+      "tool": "memcheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_memcheck_tiled",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tiled",
+      "tool": "racecheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_racecheck_tiled",
+      "tool_summary_lines": [
+        "========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tiled",
+      "tool": "initcheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_initcheck_tiled",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tiled",
+      "tool": "synccheck",
+      "exit_code": 0,
+      "expected_application_numerical_failure": false,
+      "log": "sanitizer_synccheck_tiled",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tail_bug",
+      "tool": "memcheck",
+      "exit_code": 2,
+      "expected_application_numerical_failure": true,
+      "log": "sanitizer_memcheck_tail_bug",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tail_bug",
+      "tool": "racecheck",
+      "exit_code": 2,
+      "expected_application_numerical_failure": true,
+      "log": "sanitizer_racecheck_tail_bug",
+      "tool_summary_lines": [
+        "========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tail_bug",
+      "tool": "initcheck",
+      "exit_code": 2,
+      "expected_application_numerical_failure": true,
+      "log": "sanitizer_initcheck_tail_bug",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    },
+    {
+      "candidate": "tail_bug",
+      "tool": "synccheck",
+      "exit_code": 2,
+      "expected_application_numerical_failure": true,
+      "log": "sanitizer_synccheck_tail_bug",
+      "tool_summary_lines": [
+        "========= ERROR SUMMARY: 0 errors"
+      ],
+      "shape_mnk": [
+        31,
+        33,
+        17
+      ],
+      "meaning": "Tool-specific findings, independently from the program's numerical exit code"
+    }
+  ]
+}

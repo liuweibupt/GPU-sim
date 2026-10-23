@@ -1,0 +1,870 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "same-parity-different-phase-witness",
+    "family": "phase-witness",
+    "rootCauseTemplate": "phase-witness",
+    "split": "validation",
+    "run": {
+      "id": "same-parity-different-phase-witness",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "consumer",
+          "type": "operation"
+        },
+        {
+          "id": "phase0",
+          "type": "token"
+        },
+        {
+          "id": "phase2",
+          "type": "token"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        }
+      ],
+      "edges": [
+        {
+          "id": "consumer-output",
+          "from": "consumer",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        },
+        {
+          "id": "phase0-consumer",
+          "from": "phase0",
+          "to": "consumer",
+          "type": "completion",
+          "evidenceRefs": [
+            "phase-expectation"
+          ]
+        },
+        {
+          "id": "phase2-consumer",
+          "from": "phase2",
+          "to": "consumer",
+          "type": "completion",
+          "evidenceRefs": [
+            "phase-observed"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "phase-expectation",
+          "kind": "model-expected-token",
+          "epoch": 0,
+          "parity": 0
+        },
+        {
+          "id": "phase-observed",
+          "kind": "model-observed-token",
+          "epoch": 2,
+          "parity": 0
+        },
+        {
+          "id": "rule-phase",
+          "kind": "model-rule",
+          "ruleId": "toy.match-full-phase"
+        }
+      ],
+      "obligations": [
+        {
+          "id": "phase-check",
+          "kind": "completion-phase",
+          "subjectIds": [
+            "consumer"
+          ],
+          "ruleId": "toy.match-full-phase",
+          "status": "violated",
+          "positiveWitnessRefs": [
+            "phase-expectation",
+            "phase-observed",
+            "rule-phase"
+          ],
+          "witnessNodeIds": [
+            "consumer",
+            "phase0",
+            "phase2"
+          ],
+          "witnessEdgeIds": [
+            "phase0-consumer",
+            "phase2-consumer"
+          ],
+          "unknownRefs": []
+        }
+      ]
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "consumer",
+        "phase0",
+        "phase2"
+      ],
+      "edgeIds": [
+        "consumer-output",
+        "phase0-consumer",
+        "phase2-consumer"
+      ],
+      "obligationIds": [
+        "phase-check"
+      ],
+      "unknownRefs": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E2",
+      "caseId": "same-parity-different-phase-witness",
+      "family": "phase-witness",
+      "split": "validation",
+      "template": "phase-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "db3269d906eaed743b894384993246161966c6599ac6abd6a18c216e0dadd874",
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 5,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1400,
+          "retained": 1720,
+          "ratio": 1.2285714285714286
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "same-parity-different-phase-witness",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "complete",
+          "accesses": "complete",
+          "sync": "complete"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "consumer",
+            "type": "operation"
+          },
+          {
+            "id": "phase0",
+            "type": "token"
+          },
+          {
+            "id": "phase2",
+            "type": "token"
+          },
+          {
+            "id": "distractor",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "consumer-output",
+            "from": "consumer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "phase0-consumer",
+            "from": "phase0",
+            "to": "consumer",
+            "type": "completion",
+            "evidenceRefs": [
+              "phase-expectation"
+            ]
+          },
+          {
+            "id": "phase2-consumer",
+            "from": "phase2",
+            "to": "consumer",
+            "type": "completion",
+            "evidenceRefs": [
+              "phase-observed"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "phase-expectation",
+            "kind": "model-expected-token",
+            "epoch": 0,
+            "parity": 0
+          },
+          {
+            "id": "phase-observed",
+            "kind": "model-observed-token",
+            "epoch": 2,
+            "parity": 0
+          },
+          {
+            "id": "rule-phase",
+            "kind": "model-rule",
+            "ruleId": "toy.match-full-phase"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "phase-check",
+            "kind": "completion-phase",
+            "subjectIds": [
+              "consumer"
+            ],
+            "ruleId": "toy.match-full-phase",
+            "status": "violated",
+            "positiveWitnessRefs": [
+              "phase-expectation",
+              "phase-observed",
+              "rule-phase"
+            ],
+            "witnessNodeIds": [
+              "consumer",
+              "phase0",
+              "phase2"
+            ],
+            "witnessEdgeIds": [
+              "phase0-consumer",
+              "phase2-consumer"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "full",
+          "parentRunId": "same-parity-different-phase-witness",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": false,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.04196000099182129,
+          0.04083096981048584,
+          0.04236006736755371,
+          0.04089999198913574,
+          0.04434096813201904,
+          0.04255092144012451,
+          0.04076099395751953,
+          0.041330933570861816,
+          0.04171097278594971,
+          0.041471004486083984,
+          0.04172098636627197,
+          0.04773998260498047,
+          0.0420299768447876,
+          0.04175102710723877,
+          0.04156088829040527,
+          0.04237008094787598,
+          0.0377500057220459,
+          0.0368809700012207,
+          0.04634106159210205,
+          0.037330031394958496,
+          0.07215094566345215,
+          0.04129993915557861,
+          0.0389409065246582,
+          0.04504096508026123,
+          0.04139089584350586,
+          0.04392099380493164,
+          0.03870999813079834,
+          0.04069101810455322,
+          0.040821075439453125,
+          0.040470004081726074
+        ],
+        "median": 0.04151594638824463,
+        "p95": 0.047110468149185174,
+        "minimum": 0.0368809700012207,
+        "maximum": 0.07215094566345215,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "same-parity-different-phase-witness",
+      "family": "phase-witness",
+      "split": "validation",
+      "template": "phase-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "db3269d906eaed743b894384993246161966c6599ac6abd6a18c216e0dadd874",
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 2,
+            "recall": 0.5,
+            "missing": [
+              "\"phase0\"",
+              "\"phase2\""
+            ]
+          },
+          "edges": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"phase0-consumer\"",
+              "\"phase2-consumer\""
+            ]
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "\"phase-check\""
+            ]
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 2,
+            "recall": 0.6666666666666666,
+            "missing": [
+              "\"rule-phase\""
+            ]
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "[\"phase-check\",\"violated\"]"
+            ]
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 5,
+        "evidenceRetention": 0.4166666666666667,
+        "completeWitnessRetained": false,
+        "nodes": {
+          "original": 5,
+          "retained": 2,
+          "ratio": 0.4
+        },
+        "edges": {
+          "original": 3,
+          "retained": 1,
+          "ratio": 0.3333333333333333
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 0,
+          "ratio": 0
+        },
+        "bytes": {
+          "original": 1400,
+          "retained": 1234,
+          "ratio": 0.8814285714285715
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "same-parity-different-phase-witness",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "consumer",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "consumer-output",
+            "from": "consumer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "phase-expectation",
+            "kind": "model-expected-token",
+            "epoch": 0,
+            "parity": 0
+          },
+          {
+            "id": "phase-observed",
+            "kind": "model-observed-token",
+            "epoch": 2,
+            "parity": 0
+          }
+        ],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "data-ancestors",
+          "parentRunId": "same-parity-different-phase-witness",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [
+            {
+              "id": "phase0-consumer",
+              "from": "phase0",
+              "to": "consumer",
+              "type": "completion",
+              "evidenceRefs": [
+                "phase-expectation"
+              ]
+            },
+            {
+              "id": "phase2-consumer",
+              "from": "phase2",
+              "to": "consumer",
+              "type": "completion",
+              "evidenceRefs": [
+                "phase-observed"
+              ]
+            }
+          ],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.03222000598907471,
+          0.032600998878479004,
+          0.03261995315551758,
+          0.03233003616333008,
+          0.036741018295288086,
+          0.03240001201629639,
+          0.03193998336791992,
+          0.0322110652923584,
+          0.03227996826171875,
+          0.03795003890991211,
+          0.03259992599487305,
+          0.0329899787902832,
+          0.031770944595336914,
+          0.033569931983947754,
+          0.032959938049316406,
+          0.02851998805999756,
+          0.029880046844482422,
+          0.029739975929260254,
+          0.030290961265563965,
+          0.029940009117126465,
+          0.031190037727355957,
+          0.031391024589538574,
+          0.029150009155273438,
+          0.030879974365234375,
+          0.05299997329711914,
+          0.037040114402770996,
+          0.030161023139953613,
+          0.03295004367828369,
+          0.02955007553100586,
+          0.03060007095336914
+        ],
+        "median": 0.03221553564071655,
+        "p95": 0.037540572881698604,
+        "minimum": 0.02851998805999756,
+        "maximum": 0.05299997329711914,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "same-parity-different-phase-witness",
+      "family": "phase-witness",
+      "split": "validation",
+      "template": "phase-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "db3269d906eaed743b894384993246161966c6599ac6abd6a18c216e0dadd874",
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 4,
+          "ratio": 0.8
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1400,
+          "retained": 1681,
+          "ratio": 1.2007142857142856
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "same-parity-different-phase-witness",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "consumer",
+            "type": "operation"
+          },
+          {
+            "id": "phase0",
+            "type": "token"
+          },
+          {
+            "id": "phase2",
+            "type": "token"
+          }
+        ],
+        "edges": [
+          {
+            "id": "consumer-output",
+            "from": "consumer",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "phase0-consumer",
+            "from": "phase0",
+            "to": "consumer",
+            "type": "completion",
+            "evidenceRefs": [
+              "phase-expectation"
+            ]
+          },
+          {
+            "id": "phase2-consumer",
+            "from": "phase2",
+            "to": "consumer",
+            "type": "completion",
+            "evidenceRefs": [
+              "phase-observed"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "phase-expectation",
+            "kind": "model-expected-token",
+            "epoch": 0,
+            "parity": 0
+          },
+          {
+            "id": "phase-observed",
+            "kind": "model-observed-token",
+            "epoch": 2,
+            "parity": 0
+          },
+          {
+            "id": "rule-phase",
+            "kind": "model-rule",
+            "ruleId": "toy.match-full-phase"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "phase-check",
+            "kind": "completion-phase",
+            "subjectIds": [
+              "consumer"
+            ],
+            "ruleId": "toy.match-full-phase",
+            "status": "violated",
+            "positiveWitnessRefs": [
+              "phase-expectation",
+              "phase-observed",
+              "rule-phase"
+            ],
+            "witnessNodeIds": [
+              "consumer",
+              "phase0",
+              "phase2"
+            ],
+            "witnessEdgeIds": [
+              "phase0-consumer",
+              "phase2-consumer"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "same-parity-different-phase-witness",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.04321098327636719,
+          0.051509976387023926,
+          0.04478096961975098,
+          0.044381022453308105,
+          0.04453003406524658,
+          0.04420006275177002,
+          0.04470992088317871,
+          0.04372990131378174,
+          0.04527091979980469,
+          0.04332995414733887,
+          0.04507100582122803,
+          0.04560995101928711,
+          0.044119954109191895,
+          0.04377102851867676,
+          0.04544103145599365,
+          0.0423809289932251,
+          0.04056107997894287,
+          0.04119002819061279,
+          0.04319000244140625,
+          0.03876006603240967,
+          0.04235994815826416,
+          0.04273104667663574,
+          0.03956007957458496,
+          0.042529940605163574,
+          0.04505109786987305,
+          0.04301011562347412,
+          0.047821044921875,
+          0.03940093517303467,
+          0.04033994674682617,
+          0.043620944023132324
+        ],
+        "median": 0.04367542266845703,
+        "p95": 0.046826052665710445,
+        "minimum": 0.03876006603240967,
+        "maximum": 0.051509976387023926,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    }
+  ]
+}

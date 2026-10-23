@@ -1,0 +1,852 @@
+{
+  "provenance": "synthetic-model",
+  "input": {
+    "id": "resource-competitor-outside-data-ancestors",
+    "family": "resource-witness",
+    "rootCauseTemplate": "resource-witness",
+    "split": "validation",
+    "run": {
+      "id": "resource-competitor-outside-data-ancestors",
+      "provenance": {
+        "kind": "synthetic-model",
+        "model": "toy-async-v1"
+      },
+      "identity": {
+        "specId": "tile-copy-v1",
+        "specHash": "synthetic-spec-v1",
+        "inputId": "synthetic-input-v1",
+        "semanticsId": "toy-async-v1"
+      },
+      "capabilities": {
+        "logicalMapping": "complete",
+        "accesses": "complete",
+        "sync": "complete"
+      },
+      "nodes": [
+        {
+          "id": "output",
+          "type": "operation"
+        },
+        {
+          "id": "waiting",
+          "type": "operation"
+        },
+        {
+          "id": "competitor",
+          "type": "operation"
+        },
+        {
+          "id": "release",
+          "type": "operation"
+        },
+        {
+          "id": "distractor",
+          "type": "operation"
+        }
+      ],
+      "edges": [
+        {
+          "id": "waiting-output",
+          "from": "waiting",
+          "to": "output",
+          "type": "data",
+          "evidenceRefs": []
+        },
+        {
+          "id": "competitor-release",
+          "from": "competitor",
+          "to": "release",
+          "type": "completion",
+          "evidenceRefs": [
+            "lease"
+          ]
+        },
+        {
+          "id": "release-waiting",
+          "from": "release",
+          "to": "waiting",
+          "type": "resource-wait",
+          "evidenceRefs": [
+            "wait-record"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "lease",
+          "kind": "model-resource-lease",
+          "resource": "toy-channel",
+          "owner": "competitor"
+        },
+        {
+          "id": "wait-record",
+          "kind": "model-scheduler-wait",
+          "releasedBy": "release"
+        },
+        {
+          "id": "rule-resource",
+          "kind": "model-rule",
+          "ruleId": "toy.single-capacity-resource"
+        }
+      ],
+      "obligations": [
+        {
+          "id": "wait-explanation",
+          "kind": "resource-wait",
+          "subjectIds": [
+            "waiting"
+          ],
+          "ruleId": "toy.single-capacity-resource",
+          "status": "satisfied",
+          "positiveWitnessRefs": [
+            "lease",
+            "wait-record",
+            "rule-resource"
+          ],
+          "witnessNodeIds": [
+            "waiting",
+            "competitor",
+            "release"
+          ],
+          "witnessEdgeIds": [
+            "competitor-release",
+            "release-waiting"
+          ],
+          "unknownRefs": []
+        }
+      ]
+    },
+    "seeds": [
+      "output"
+    ],
+    "expected": {
+      "nodeIds": [
+        "output",
+        "waiting",
+        "competitor",
+        "release"
+      ],
+      "edgeIds": [
+        "waiting-output",
+        "competitor-release",
+        "release-waiting"
+      ],
+      "obligationIds": [
+        "wait-explanation"
+      ],
+      "unknownRefs": []
+    },
+    "metadata": {
+      "evidenceKind": "synthetic-model",
+      "evaluationStatus": "development-structural-coverage",
+      "preregistered": false,
+      "blinded": false,
+      "realGpuMeasurement": false,
+      "truthMethod": "hand-declared-required-witness",
+      "expertReviewed": false,
+      "claimScope": "preservation-of-supplied-diagnostics-not-detection"
+    }
+  },
+  "records": [
+    {
+      "experiment": "E2",
+      "caseId": "resource-competitor-outside-data-ancestors",
+      "family": "resource-witness",
+      "split": "validation",
+      "template": "resource-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "4b3b15cf725ffc37f3605d23452d573e0d12d51154ef4741a25210093087581d",
+      "method": "full",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 5,
+          "ratio": 1
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1439,
+          "retained": 1766,
+          "ratio": 1.2272411396803335
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "resource-competitor-outside-data-ancestors",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "complete",
+          "accesses": "complete",
+          "sync": "complete"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "waiting",
+            "type": "operation"
+          },
+          {
+            "id": "competitor",
+            "type": "operation"
+          },
+          {
+            "id": "release",
+            "type": "operation"
+          },
+          {
+            "id": "distractor",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "waiting-output",
+            "from": "waiting",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "competitor-release",
+            "from": "competitor",
+            "to": "release",
+            "type": "completion",
+            "evidenceRefs": [
+              "lease"
+            ]
+          },
+          {
+            "id": "release-waiting",
+            "from": "release",
+            "to": "waiting",
+            "type": "resource-wait",
+            "evidenceRefs": [
+              "wait-record"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "lease",
+            "kind": "model-resource-lease",
+            "resource": "toy-channel",
+            "owner": "competitor"
+          },
+          {
+            "id": "wait-record",
+            "kind": "model-scheduler-wait",
+            "releasedBy": "release"
+          },
+          {
+            "id": "rule-resource",
+            "kind": "model-rule",
+            "ruleId": "toy.single-capacity-resource"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "wait-explanation",
+            "kind": "resource-wait",
+            "subjectIds": [
+              "waiting"
+            ],
+            "ruleId": "toy.single-capacity-resource",
+            "status": "satisfied",
+            "positiveWitnessRefs": [
+              "lease",
+              "wait-record",
+              "rule-resource"
+            ],
+            "witnessNodeIds": [
+              "waiting",
+              "competitor",
+              "release"
+            ],
+            "witnessEdgeIds": [
+              "competitor-release",
+              "release-waiting"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "full",
+          "parentRunId": "resource-competitor-outside-data-ancestors",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": false,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.04388999938964844,
+          0.04313099384307861,
+          0.0430910587310791,
+          0.04218101501464844,
+          0.04285097122192383,
+          0.048501014709472656,
+          0.04325103759765625,
+          0.04515993595123291,
+          0.04284107685089111,
+          0.04613995552062988,
+          0.04262089729309082,
+          0.04396998882293701,
+          0.04259991645812988,
+          0.04405999183654785,
+          0.08765089511871338,
+          0.049180030822753906,
+          0.041671037673950195,
+          0.04060995578765869,
+          0.04106104373931885,
+          0.04104006290435791,
+          0.04146099090576172,
+          0.04684090614318848,
+          0.042140960693359375,
+          0.041719913482666016,
+          0.04062998294830322,
+          0.04145097732543945,
+          0.043959975242614746,
+          0.04135000705718994,
+          0.041180968284606934,
+          0.04124093055725098
+        ],
+        "median": 0.04273098707199097,
+        "p95": 0.04887447357177734,
+        "minimum": 0.04060995578765869,
+        "maximum": 0.08765089511871338,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "resource-competitor-outside-data-ancestors",
+      "family": "resource-witness",
+      "split": "validation",
+      "template": "resource-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "4b3b15cf725ffc37f3605d23452d573e0d12d51154ef4741a25210093087581d",
+      "method": "data-ancestors",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 2,
+            "recall": 0.5,
+            "missing": [
+              "\"competitor\"",
+              "\"release\""
+            ]
+          },
+          "edges": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"competitor-release\"",
+              "\"release-waiting\""
+            ]
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "\"wait-explanation\""
+            ]
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 1,
+            "recall": 0.3333333333333333,
+            "missing": [
+              "\"lease\"",
+              "\"rule-resource\""
+            ]
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 0,
+            "recall": 0,
+            "missing": [
+              "[\"wait-explanation\",\"satisfied\"]"
+            ]
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 4,
+        "evidenceRetention": 0.3333333333333333,
+        "completeWitnessRetained": false,
+        "nodes": {
+          "original": 5,
+          "retained": 2,
+          "ratio": 0.4
+        },
+        "edges": {
+          "original": 3,
+          "retained": 1,
+          "ratio": 0.3333333333333333
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 0,
+          "ratio": 0
+        },
+        "bytes": {
+          "original": 1439,
+          "retained": 1052,
+          "ratio": 0.7310632383599722
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "resource-competitor-outside-data-ancestors",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "waiting",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "waiting-output",
+            "from": "waiting",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          }
+        ],
+        "evidence": [
+          {
+            "id": "wait-record",
+            "kind": "model-scheduler-wait",
+            "releasedBy": "release"
+          }
+        ],
+        "obligations": [],
+        "sliceMetadata": {
+          "mode": "data-ancestors",
+          "parentRunId": "resource-competitor-outside-data-ancestors",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [
+            {
+              "id": "release-waiting",
+              "from": "release",
+              "to": "waiting",
+              "type": "resource-wait",
+              "evidenceRefs": [
+                "wait-record"
+              ]
+            }
+          ],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.03103005886077881,
+          0.030629992485046387,
+          0.030069947242736816,
+          0.03446996212005615,
+          0.030090928077697754,
+          0.029649972915649414,
+          0.030980944633483887,
+          0.031430959701538086,
+          0.031129956245422363,
+          0.030169963836669922,
+          0.031010985374450684,
+          0.030580997467041016,
+          0.02981102466583252,
+          0.03922104835510254,
+          0.03420090675354004,
+          0.03492105007171631,
+          0.028329968452453613,
+          0.028851032257080078,
+          0.02854001522064209,
+          0.028600096702575684,
+          0.02911996841430664,
+          0.028210043907165527,
+          0.029889941215515137,
+          0.029289960861206055,
+          0.029200077056884766,
+          0.028661012649536133,
+          0.029019951820373535,
+          0.028460025787353516,
+          0.02875995635986328,
+          0.027820110321044922
+        ],
+        "median": 0.029850482940673828,
+        "p95": 0.03471806049346924,
+        "minimum": 0.027820110321044922,
+        "maximum": 0.03922104835510254,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    },
+    {
+      "experiment": "E2",
+      "caseId": "resource-competitor-outside-data-ancestors",
+      "family": "resource-witness",
+      "split": "validation",
+      "template": "resource-witness",
+      "provenance": "synthetic-model",
+      "inputSha256": "4b3b15cf725ffc37f3605d23452d573e0d12d51154ef4741a25210093087581d",
+      "method": "evidence",
+      "status": "ok",
+      "metrics": {
+        "categories": {
+          "nodes": {
+            "required": 4,
+            "retained": 4,
+            "recall": 1,
+            "missing": []
+          },
+          "edges": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligations": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          },
+          "unknown": {
+            "required": 0,
+            "retained": 0,
+            "recall": null,
+            "missing": []
+          },
+          "positiveEvidence": {
+            "required": 3,
+            "retained": 3,
+            "recall": 1,
+            "missing": []
+          },
+          "obligationStatuses": {
+            "required": 1,
+            "retained": 1,
+            "recall": 1,
+            "missing": []
+          }
+        },
+        "requiredTotal": 12,
+        "retainedTotal": 12,
+        "evidenceRetention": 1,
+        "completeWitnessRetained": true,
+        "nodes": {
+          "original": 5,
+          "retained": 4,
+          "ratio": 0.8
+        },
+        "edges": {
+          "original": 3,
+          "retained": 3,
+          "ratio": 1
+        },
+        "obligations": {
+          "original": 1,
+          "retained": 1,
+          "ratio": 1
+        },
+        "bytes": {
+          "original": 1439,
+          "retained": 1727,
+          "ratio": 1.2001389854065323
+        },
+        "byteScope": "UTF-8 JSON serialization including sliceMetadata; not process memory"
+      },
+      "output": {
+        "id": "resource-competitor-outside-data-ancestors",
+        "provenance": {
+          "kind": "synthetic-model",
+          "model": "toy-async-v1"
+        },
+        "identity": {
+          "specId": "tile-copy-v1",
+          "specHash": "synthetic-spec-v1",
+          "inputId": "synthetic-input-v1",
+          "semanticsId": "toy-async-v1"
+        },
+        "capabilities": {
+          "logicalMapping": "partial",
+          "accesses": "partial",
+          "sync": "partial"
+        },
+        "nodes": [
+          {
+            "id": "output",
+            "type": "operation"
+          },
+          {
+            "id": "waiting",
+            "type": "operation"
+          },
+          {
+            "id": "competitor",
+            "type": "operation"
+          },
+          {
+            "id": "release",
+            "type": "operation"
+          }
+        ],
+        "edges": [
+          {
+            "id": "waiting-output",
+            "from": "waiting",
+            "to": "output",
+            "type": "data",
+            "evidenceRefs": []
+          },
+          {
+            "id": "competitor-release",
+            "from": "competitor",
+            "to": "release",
+            "type": "completion",
+            "evidenceRefs": [
+              "lease"
+            ]
+          },
+          {
+            "id": "release-waiting",
+            "from": "release",
+            "to": "waiting",
+            "type": "resource-wait",
+            "evidenceRefs": [
+              "wait-record"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "id": "lease",
+            "kind": "model-resource-lease",
+            "resource": "toy-channel",
+            "owner": "competitor"
+          },
+          {
+            "id": "wait-record",
+            "kind": "model-scheduler-wait",
+            "releasedBy": "release"
+          },
+          {
+            "id": "rule-resource",
+            "kind": "model-rule",
+            "ruleId": "toy.single-capacity-resource"
+          }
+        ],
+        "obligations": [
+          {
+            "id": "wait-explanation",
+            "kind": "resource-wait",
+            "subjectIds": [
+              "waiting"
+            ],
+            "ruleId": "toy.single-capacity-resource",
+            "status": "satisfied",
+            "positiveWitnessRefs": [
+              "lease",
+              "wait-record",
+              "rule-resource"
+            ],
+            "witnessNodeIds": [
+              "waiting",
+              "competitor",
+              "release"
+            ],
+            "witnessEdgeIds": [
+              "competitor-release",
+              "release-waiting"
+            ],
+            "unknownRefs": []
+          }
+        ],
+        "sliceMetadata": {
+          "mode": "evidence",
+          "parentRunId": "resource-competitor-outside-data-ancestors",
+          "seedIds": [
+            "output"
+          ],
+          "boundaryEdges": [],
+          "sourceNodeCount": 5,
+          "sourceEdgeCount": 3,
+          "isProjection": true,
+          "infersNewDiagnosis": false,
+          "sourceCapabilities": {
+            "logicalMapping": "complete",
+            "accesses": "complete",
+            "sync": "complete"
+          },
+          "unknownRefs": []
+        }
+      },
+      "timing": {
+        "unit": "ms",
+        "scope": "host-wall-core-call",
+        "samples": [
+          0.046890974044799805,
+          0.044631004333496094,
+          0.045611023902893066,
+          0.045910000801086426,
+          0.04484999179840088,
+          0.04637002944946289,
+          0.04677999019622803,
+          0.04983103275299072,
+          0.04875004291534424,
+          0.045410990715026855,
+          0.04541003704071045,
+          0.0451200008392334,
+          0.045780062675476074,
+          0.049960970878601074,
+          0.04947006702423096,
+          0.04611003398895264,
+          0.04392993450164795,
+          0.04295003414154053,
+          0.0443500280380249,
+          0.04426002502441406,
+          0.04386007785797119,
+          0.05564093589782715,
+          0.04332101345062256,
+          0.0433809757232666,
+          0.04410099983215332,
+          0.044569969177246094,
+          0.04582095146179199,
+          0.04311096668243408,
+          0.04368007183074951,
+          0.043511033058166504
+        ],
+        "median": 0.045265018939971924,
+        "p95": 0.049902498722076416,
+        "minimum": 0.04295003414154053,
+        "maximum": 0.05564093589782715,
+        "warmupCallsRequested": 5,
+        "measuredCallsRequested": 30,
+        "measuredCalls": 30,
+        "checksum": 385
+      }
+    }
+  ]
+}
