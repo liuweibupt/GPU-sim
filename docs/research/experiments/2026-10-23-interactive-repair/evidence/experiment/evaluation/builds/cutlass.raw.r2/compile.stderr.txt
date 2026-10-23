@@ -1,0 +1,35 @@
+ptxas info    : (C7510) Potential Performance Loss: wgmma.mma_async instructions are serialized due to wgmma pipeline crossing function boundary at a function call in the function '_ZN7cutlass13device_kernelINS_4gemm6kernel13GemmUniversalINS1_17GroupProblemShapeIN4cute5tupleIJiiiEEEEENS1_10collective13CollectiveMmaINS1_51MainloopSm90ArrayTmaGmmaWarpSpecializedBlockScalingILi6ENS6_IJNS5_1CILi1EEENSC_ILi2EEESD_EEENS1_62KernelPtrArrayTmaWarpSpecializedCooperativeFP8BlockScaledAccumEEENS6_IJNSC_ILi128EEESI_SI_EEENS_12float_e4m3_tENS6_IJPNS6_IJlSD_NSC_ILi0EEEEEEPNS5_6LayoutINS6_IJNS6_IJSD_iEEENS6_IJSI_iEEEiEEENS6_IJNS6_IJSL_SD_EEENS6_IJSL_iEEEiEEEEEEEESK_NS6_IJSN_PNSO_INS6_IJSQ_SQ_iEEESU_EEEEENS5_8TiledMMAINS5_8MMA_AtomIJNS5_4SM904GMMA31MMA_64x128x32_F32E4M3E4M3_SS_TNILNS15_7ScaleInE1ELS17_1EEEEEENSO_INS6_IJSE_SD_SD_EEENS6_IJSD_SL_SL_EEEEENS6_IJNS5_10UnderscoreES1D_S1D_EEEEENS5_23SM90_TMA_LOAD_MULTICASTENS5_14ComposedLayoutINS5_7SwizzleILi3ELi4ELi3EEENS5_18smem_ptr_flag_bitsILi8EEENSO_INS6_IJNSC_ILi8EEESI_EEENS6_IJSI_SD_EEEEEEEvNS5_8identityENS5_13SM90_TMA_LOADES1Q_vS1R_EENS_8epilogue10collective18CollectiveEpilogueINS1U_30Sm90PtrArrayTmaWarpSpecializedILi4ELi2ELi16ELb0ELb0ELi2EEEJSJ_NS6_IJSI_NSC_ILi32EEEEEESK_PNS6_IJSD_lSL_EEESK_S22_NS1U_6fusion15FusionCallbacksIS1Y_NS23_17LinearCombinationISK_fSK_fLNS_15FloatRoundStyleE2EEESJ_S20_JEEES1S_NS1H_IS1J_S1L_NSO_INS6_IJSI_S1M_EEENS6_IJSD_SI_EEEEEEENS5_39AutoVectorizingCopyWithAssumedAlignmentILi128EEENS5_14SM90_TMA_STOREES2C_S2E_NS5_9Copy_AtomIJNS5_17SM90_U32x4_STSM_NENS_6half_tEEEEvEEEvvEEEEvNT_6ParamsE' in line 4805
+/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.raw.r2/tree/include/cutlass/platform/platform.h:599:33: warning: ‘long4’ is deprecated: use long4_16a or long4_32a [-Wdeprecated-declarations]
+  599 | struct alignment_of<long4> {
+      |                                 ^    
+In file included from /usr/local/cuda-13.1/targets/x86_64-linux/include/driver_types.h:61,
+                 from /usr/local/cuda-13.1/bin/../targets/x86_64-linux/include/builtin_types.h:59,
+                 from /usr/local/cuda-13.1/bin/../targets/x86_64-linux/include/crt/host_runtime.h:58,
+                 from /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:218:
+/usr/local/cuda-13.1/targets/x86_64-linux/include/vector_types.h:532:98: note: declared here
+  532 | typedef __device_builtin__ struct long4 __VECTOR_TYPE_DEPRECATED__("use long4_16a or long4_32a") long4;
+      |                                                                                                  ^~~~~
+/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.raw.r2/tree/include/cutlass/platform/platform.h:603:33: warning: ‘ulong4’ is deprecated: use ulong4_16a or ulong4_32a [-Wdeprecated-declarations]
+  603 | struct alignment_of<ulong4> {
+      |                                 ^     
+/usr/local/cuda-13.1/targets/x86_64-linux/include/vector_types.h:533:101: note: declared here
+  533 | typedef __device_builtin__ struct ulong4 __VECTOR_TYPE_DEPRECATED__("use ulong4_16a or ulong4_32a") ulong4;
+      |                                                                                                     ^~~~~~
+/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.raw.r2/tree/include/cutlass/platform/platform.h:619:33: warning: ‘longlong4’ is deprecated: use longlong4_16a or longlong4_32a [-Wdeprecated-declarations]
+  619 | struct alignment_of<longlong4> {
+      |                                 ^        
+/usr/local/cuda-13.1/targets/x86_64-linux/include/vector_types.h:550:110: note: declared here
+  550 | typedef __device_builtin__ struct longlong4 __VECTOR_TYPE_DEPRECATED__("use longlong4_16a or longlong4_32a") longlong4;
+      |                                                                                                              ^~~~~~~~~
+/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.raw.r2/tree/include/cutlass/platform/platform.h:623:33: warning: ‘ulonglong4’ is deprecated: use ulonglong4_16a or ulonglong4_32a [-Wdeprecated-declarations]
+  623 | struct alignment_of<ulonglong4> {
+      |                                 ^         
+/usr/local/cuda-13.1/targets/x86_64-linux/include/vector_types.h:551:113: note: declared here
+  551 | typedef __device_builtin__ struct ulonglong4 __VECTOR_TYPE_DEPRECATED__("use ulonglong4_16a or ulonglong4_32a") ulonglong4;
+      |                                                                                                                 ^~~~~~~~~~
+/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.raw.r2/tree/include/cutlass/platform/platform.h:627:33: warning: ‘double4’ is deprecated: use double4_16a or double4_32a [-Wdeprecated-declarations]
+  627 | struct alignment_of<double4> {
+      |                                 ^      
+/usr/local/cuda-13.1/targets/x86_64-linux/include/vector_types.h:561:104: note: declared here
+  561 | typedef __device_builtin__ struct double4 __VECTOR_TYPE_DEPRECATED__("use double4_16a or double4_32a") double4;
+      |                                                                                                        ^~~~~~~

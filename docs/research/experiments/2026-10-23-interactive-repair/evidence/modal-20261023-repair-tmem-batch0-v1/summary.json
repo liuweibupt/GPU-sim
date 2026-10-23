@@ -1,0 +1,2040 @@
+{
+  "format": "modal-gpu-evidence-job-v1",
+  "status": "completed",
+  "started_utc": "2026-10-23T13:51:41.064801+00:00",
+  "requested_gpu": "B200",
+  "gpu_count": 1,
+  "timeout_seconds": 600,
+  "max_containers": 1,
+  "image_tag": "docker.io/nvidia/cuda:13.1.0-devel-ubuntu24.04",
+  "modal_sdk_version": "1.6.2",
+  "source_sha256": {
+    "hidden_gpu.py": "cda7017a3b2a310946e066e63b8d9e328de0353743f04018e12dde5ccd606b65",
+    "plan.json": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+    "regression_0.py": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+    "regression_1.py": "3346dd5b0fe328aef1aba8008d3583fb9bf8bccddb345fe543094108452167d6",
+    "regression_2.py": "728e5d160d4492fd978a4c5098a3f0773ea0b8baa848721e35d74cd4cbba8ee3"
+  },
+  "source_records": [
+    {
+      "name": "hidden_gpu.py",
+      "sha256": "cda7017a3b2a310946e066e63b8d9e328de0353743f04018e12dde5ccd606b65",
+      "bytes": 6467
+    },
+    {
+      "name": "plan.json",
+      "sha256": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+      "bytes": 18024
+    },
+    {
+      "name": "regression_0.py",
+      "sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+      "bytes": 3697
+    },
+    {
+      "name": "regression_1.py",
+      "sha256": "3346dd5b0fe328aef1aba8008d3583fb9bf8bccddb345fe543094108452167d6",
+      "bytes": 3705
+    },
+    {
+      "name": "regression_2.py",
+      "sha256": "728e5d160d4492fd978a4c5098a3f0773ea0b8baa848721e35d74cd4cbba8ee3",
+      "bytes": 3702
+    }
+  ],
+  "runner_sha256": "e766e606b51d7e2ee8fd2ddf8609fa483c4a500199758a1a508ec24c0884f747",
+  "job_sha256": "6508fa78f0d4694077cf129974eaf7e326dc391dcd453b0a5dc0b534ac9fa0fb",
+  "billing": "No exact bill inferred from command wall times; configured limits bound each job.",
+  "deployment": "Ephemeral App.run with no persistent deployment, volumes, endpoints or minimum containers.",
+  "python_runtime": "3.13",
+  "image_files": [
+    {
+      "local": "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/tmem.diagnostic.r1/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "remote": "/opt/candidates/tmem.diagnostic.r1/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "sha256": "ae53cc322c50e30f3d2f49ab4cef32b3cc90380b77d49dc4185287dac236e6b2",
+      "bytes": 274634713,
+      "omitted": "explicit dependency file mounted remotely; bytes not copied to result archive"
+    },
+    {
+      "local": "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/tmem.diagnostic.r2/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "remote": "/opt/candidates/tmem.diagnostic.r2/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "sha256": "9808a75bf3260d8c6098d4973120bbfab9ab075ec8026d18462479544f873f35",
+      "bytes": 274633628,
+      "omitted": "explicit dependency file mounted remotely; bytes not copied to result archive"
+    }
+  ],
+  "cpu": 8,
+  "memory_mb": 16384,
+  "prepare_image_only": false,
+  "app_id": "ap-na6MIZXAAXRoIrycCGRlD5",
+  "image_id": "im-gDd8nmqGPm6dw6iPm93buz",
+  "execution": {
+    "format": "modal-gpu-evidence-execution-v1",
+    "commands": [
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.05979912900000006,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "gpu_identity.stdout.txt",
+          "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+          "bytes": 41
+        },
+        "stderr": {
+          "path": "gpu_identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "nvcc",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.008041120000000013,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "nvcc_version.stdout.txt",
+          "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+          "bytes": 211
+        },
+        "stderr": {
+          "path": "nvcc_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "compute-sanitizer",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.008951826999999968,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "sanitizer_version.stdout.txt",
+          "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+          "bytes": 125
+        },
+        "stderr": {
+          "path": "sanitizer_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version",
+          "--format=csv,noheader"
+        ],
+        "timeout": 10,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.019166216000000014,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "identity.stdout.txt",
+          "sha256": "55c1858b89d0bdb6c6ca89335fa48f9176ef6052aae3f975f466729245f2c129",
+          "bytes": 29
+        },
+        "stderr": {
+          "path": "identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "install-tmem.diagnostic.r1",
+        "argv": [
+          "/opt/repro/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "--no-deps",
+          "--force-reinstall",
+          "--no-compile",
+          "/opt/candidates/tmem.diagnostic.r1/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+        ],
+        "timeout": 90,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 3.370500921,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "install-tmem.diagnostic.r1.stdout.txt",
+          "sha256": "4e4168e796640c9e21602c4ddad9107ce3cf0b13d13fc8f3a5628488dc36d19e",
+          "bytes": 338
+        },
+        "stderr": {
+          "path": "install-tmem.diagnostic.r1.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tmem.diagnostic.r1",
+        "argv": [
+          "/opt/repro/bin/python",
+          "hidden_gpu.py",
+          "--family",
+          "tmem",
+          "--plan",
+          "plan.json",
+          "--output",
+          "tmem.diagnostic.r1",
+          "--native-sha256",
+          "427d80bb8e55415b9c497b02ea41491ccfd4aea63d2268aa616a2ce0ca7aebab"
+        ],
+        "timeout": 180,
+        "continue_on_failure": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 6.519861287,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tmem.diagnostic.r1.stdout.txt",
+          "sha256": "21fdef656bf17addcc0829bb1c07799ff34b9d724ad4fc526fb4275861c2b5fc",
+          "bytes": 1728
+        },
+        "stderr": {
+          "path": "tmem.diagnostic.r1.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "install-tmem.diagnostic.r2",
+        "argv": [
+          "/opt/repro/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "--no-deps",
+          "--force-reinstall",
+          "--no-compile",
+          "/opt/candidates/tmem.diagnostic.r2/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+        ],
+        "timeout": 90,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 2.6513761130000013,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "install-tmem.diagnostic.r2.stdout.txt",
+          "sha256": "4ee1d938a59da4be208ac337164f952589983e3b1a9e824418782fc26820a0da",
+          "bytes": 374
+        },
+        "stderr": {
+          "path": "install-tmem.diagnostic.r2.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tmem.diagnostic.r2",
+        "argv": [
+          "/opt/repro/bin/python",
+          "hidden_gpu.py",
+          "--family",
+          "tmem",
+          "--plan",
+          "plan.json",
+          "--output",
+          "tmem.diagnostic.r2",
+          "--native-sha256",
+          "af9d30e9ee90c72762acf6b5dd5ce9af429bcfe599d105f20114c4d94740d211"
+        ],
+        "timeout": 180,
+        "continue_on_failure": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 5.173568179999998,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tmem.diagnostic.r2.stdout.txt",
+          "sha256": "21fdef656bf17addcc0829bb1c07799ff34b9d724ad4fc526fb4275861c2b5fc",
+          "bytes": 1728
+        },
+        "stderr": {
+          "path": "tmem.diagnostic.r2.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tmem.diagnostic.r1/case-00.json.gz",
+        "sha256": "1425a3a3eabd84b3f34c927bbe56844b6cba7d051ed04429bf1ac5987b8ffec2",
+        "bytes": 813
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-01.json.gz",
+        "sha256": "7389c56f4ca76b53560e05f7c135ec143944d563cafa80645452935d758f14ac",
+        "bytes": 757
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-02.json.gz",
+        "sha256": "6d505527ac5c3f3fa366b24d6b3c868ccdae791d411c2c466428cc8712c44754",
+        "bytes": 671
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-03.json.gz",
+        "sha256": "50579957200d603d8f9d86aad6afc5c65eb69f35bde381da6344b54fd685ad64",
+        "bytes": 813
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-04.json.gz",
+        "sha256": "5011f2d91f5fd14e67744396f41edf6f078c8538e9b14e41bb4b342bb499e02e",
+        "bytes": 814
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-05.json.gz",
+        "sha256": "f375d98900464ce0b1a7f01e78ac3b065767307ea2a32d67deb38f5c69191cd7",
+        "bytes": 811
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-06.json.gz",
+        "sha256": "c6975073d52626838c82c1109770b4566373d08c0ecffc39366569864f86eadc",
+        "bytes": 815
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-07.json.gz",
+        "sha256": "90d51c2f4ca94fb7318c93dbb8ba03e95ac15436c838ee2b91727b4689ccec38",
+        "bytes": 817
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-08.json.gz",
+        "sha256": "c44feb8b5cd919a0da96435a87092dfa2ad81f976365f323f4263789620e9c46",
+        "bytes": 814
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-09.json.gz",
+        "sha256": "572ab51743ca656330984f369af58a3e29c31097c01aaab7a3c850d4d168454a",
+        "bytes": 757
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-10.json.gz",
+        "sha256": "845f2a7f5971c75cbbb0215496f5f2b5581a7dd3cd04931c57c72fe3715bfaec",
+        "bytes": 671
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-11.json.gz",
+        "sha256": "030c0b45205c6be73471099876030ed3268421e8829a58eedfb31082cdc27825",
+        "bytes": 813
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-12.json.gz",
+        "sha256": "d329d056c7f60f67ab1a5e1483ec63ebf2aa8314c036c4f990561b18d3268720",
+        "bytes": 815
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-13.json.gz",
+        "sha256": "4a096387812dd12e2d2990596bae536aaa54f2463949a0927f2b95d22bd93217",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-14.json.gz",
+        "sha256": "cc289bcb64afc5aa7574e3b5ff8df432ed6f97a8a05fc216f794cece8085d588",
+        "bytes": 813
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-15.json.gz",
+        "sha256": "be291d1970e6784d742b77348adad833a0dd78d46fe158acb39880cad59844ed",
+        "bytes": 818
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-16.json.gz",
+        "sha256": "fd51ed52380b554a6521467fbc9f2305634f1fa8b10b7d3f5a469e6ab53ed907",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-17.json.gz",
+        "sha256": "8bd74b727b29409465b932f9cd5f4fb88951f49fb1747518c5ee8624c2924286",
+        "bytes": 775
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-18.json.gz",
+        "sha256": "af95a609cc981849de08508ef9a72682264ad77c1ed0fe79a0a0f894a939d962",
+        "bytes": 678
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-19.json.gz",
+        "sha256": "6ceaae2efad3eba1e73705b4e418e781ccfb9186df3bbdf844058bf48a4f5dea",
+        "bytes": 839
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-20.json.gz",
+        "sha256": "e7214c333bdeb652236060f09d85ea8cd0bf3bb1a6f55cf3958383ae9455eccf",
+        "bytes": 844
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-21.json.gz",
+        "sha256": "2f06a4318b417dae66ba443081267d02c921c8fb2d94488d8ad0aa9d1d83c758",
+        "bytes": 838
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-22.json.gz",
+        "sha256": "13aaafb6cdd5d5d239e43cde3311a528db925520eca0bfe9fff5a0602055d8df",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-23.json.gz",
+        "sha256": "33051ce5ad56cefecc5973b50c3c0f37da70345aca524ce4104578aa7df6dccb",
+        "bytes": 846
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-24.json.gz",
+        "sha256": "76e503c246b6cf67e5d8dc2cd5a32d3971bc547e6765248df927aa31e5e76b16",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-25.json.gz",
+        "sha256": "684b58452c59c3e7d73d772c48bd6845002f5983905e13bf18d4618393568907",
+        "bytes": 773
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-26.json.gz",
+        "sha256": "75493c64033a1b23bc33b0ceacf971977b369efc41cdbc2b445d5e5e7f770264",
+        "bytes": 677
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-27.json.gz",
+        "sha256": "897281333fe5acf6732f59aed94e8e21019a95dda6ab1235bf271f17bd3d108b",
+        "bytes": 838
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-28.json.gz",
+        "sha256": "0a377bc883ded6a8a1429da9b6cb051a279ea7cc68da4c4a83bcb3a9cd5acaa2",
+        "bytes": 843
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-29.json.gz",
+        "sha256": "79949e50c8938a00abb5c03fff7894c0196827af669f382e2beb4e5730a0c7bb",
+        "bytes": 838
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-30.json.gz",
+        "sha256": "9985075d8ff9f75175a4894d6fbb559813ae78e166cccbcb7ffac4bc4792fb0b",
+        "bytes": 844
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-31.json.gz",
+        "sha256": "d4a5392541e98593417132c7da69093b940f743220449d3e21f07e8c8ec09096",
+        "bytes": 844
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-32.json.gz",
+        "sha256": "0a8bd6ca7b5f05b6bffdf1b8b0c683a37b89b58d269623405005a21e01bf901d",
+        "bytes": 825
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-33.json.gz",
+        "sha256": "060000ce27ec6e1d7a1cbd9508e5bcda9d09d2e001b77998b9e1b8380ebdd385",
+        "bytes": 767
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-34.json.gz",
+        "sha256": "b02b29b39159160a25bb1788b406f77fb482801f26888e222c59756d14ddf34d",
+        "bytes": 674
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-35.json.gz",
+        "sha256": "698c09c1c1afdd2b188d83e1484361b9883576f7b8aa7ef9c46f606dd22d137e",
+        "bytes": 828
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-36.json.gz",
+        "sha256": "45e455be73f6064a188fe2e0654f4654b8074dadaa36605318bd0ce7faa9edb7",
+        "bytes": 845
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-37.json.gz",
+        "sha256": "30431488387be53560035cfc8eef235b1c92f35bdaa35e8423ce61ef5b2f55c2",
+        "bytes": 831
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-38.json.gz",
+        "sha256": "aabb9b5fe4ed206587601b82088b523043f5482356fe22349bc8de1300d78020",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-39.json.gz",
+        "sha256": "07c31a78d7373e90dbf746773614290fc5546222f4399bb84db2c520f669177b",
+        "bytes": 834
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-40.json.gz",
+        "sha256": "578e9ef9cf09f1ec3ee2952efee7ff692c75a1a3718fa9de2304a27cb6a7cf6a",
+        "bytes": 839
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-41.json.gz",
+        "sha256": "829ec20d639b615ee9695ce39b79785a94b45121ffe1b828aad6942ee122b757",
+        "bytes": 778
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-42.json.gz",
+        "sha256": "7fc7f51258dce938d4637cf80a588ffae3ec029cec119c30d7b9177262ab502f",
+        "bytes": 684
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-43.json.gz",
+        "sha256": "a8180e9e670ff856b5ab492f8ddc0a53d9bfbae9d9ff7822fa3ad079bdf218bc",
+        "bytes": 838
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-44.json.gz",
+        "sha256": "1407d7019f7c50e5fd9febbb78bc94f5b0efd23cfc7c93aa254949121f2f017a",
+        "bytes": 846
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-45.json.gz",
+        "sha256": "0a2cb8109b048391e194f8240c013aec4b326a6c81ca06850da5f88e3fac7372",
+        "bytes": 832
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-46.json.gz",
+        "sha256": "f718e53dfd4de4ddebb6b82c3af7ae97cbc6e2ab50a1855442ed1d6fd6f42374",
+        "bytes": 833
+      },
+      {
+        "path": "tmem.diagnostic.r1/case-47.json.gz",
+        "sha256": "defb5475a26dc91243202c22add9b2d3fdf14352777745c61b53e007179a327a",
+        "bytes": 845
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0154858c41174ebca213abea3210afcb04f292779422a0d8d2d60793bf510687/kernel.glir",
+        "sha256": "9f52fde8eeb79ec872934a016c9fd33f167087550c564de5a514f7e06ad72f12",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0154858c41174ebca213abea3210afcb04f292779422a0d8d2d60793bf510687/kernel.json",
+        "sha256": "4d4bc791e49fe1a29f94dd15eb00f96265afdf25e18aca6638893ae7182ba394",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0154858c41174ebca213abea3210afcb04f292779422a0d8d2d60793bf510687/kernel.llir",
+        "sha256": "49393fe686bd0f7ae2e0fd57ccd858bf46747ca437076b8ff1d24c408edef37b",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0154858c41174ebca213abea3210afcb04f292779422a0d8d2d60793bf510687/kernel.ptx",
+        "sha256": "5fa1eae02ecd932ec9089250b61ddd954cd69b79c21ec088a5ed49533d4209fd",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0154858c41174ebca213abea3210afcb04f292779422a0d8d2d60793bf510687/kernel.source",
+        "sha256": "9f52fde8eeb79ec872934a016c9fd33f167087550c564de5a514f7e06ad72f12",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0154858c41174ebca213abea3210afcb04f292779422a0d8d2d60793bf510687/kernel.ttgir",
+        "sha256": "21b46dd76957961db18413774b084c99cc1a15ba7a8e54349c4bc0b380fc6118",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0fade3df2dc82c50ff4dbcaf221fc4b80d5dc31cc3ece9dcb30e7d82ee032feb/kernel.glir",
+        "sha256": "869374ffec3e9ce47a6cac75dbe10f644d49597de9f76c2f1195461a3b0b32d6",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0fade3df2dc82c50ff4dbcaf221fc4b80d5dc31cc3ece9dcb30e7d82ee032feb/kernel.json",
+        "sha256": "23bdb6dbe4321d2b6af3766b0d872df9876b63ce4c3bcc6f4d817d12b056282c",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0fade3df2dc82c50ff4dbcaf221fc4b80d5dc31cc3ece9dcb30e7d82ee032feb/kernel.llir",
+        "sha256": "62c4db9f06b9deea463dabaeef2bd19a6bf093ae13e0b9b3e2346b077aa2f4fa",
+        "bytes": 45869
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0fade3df2dc82c50ff4dbcaf221fc4b80d5dc31cc3ece9dcb30e7d82ee032feb/kernel.ptx",
+        "sha256": "af479372a7cb776bde0d45321baf3244d8b4e022e8721322d1f10243096350f4",
+        "bytes": 11330
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0fade3df2dc82c50ff4dbcaf221fc4b80d5dc31cc3ece9dcb30e7d82ee032feb/kernel.source",
+        "sha256": "869374ffec3e9ce47a6cac75dbe10f644d49597de9f76c2f1195461a3b0b32d6",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/0fade3df2dc82c50ff4dbcaf221fc4b80d5dc31cc3ece9dcb30e7d82ee032feb/kernel.ttgir",
+        "sha256": "4a851bc06638a83301a2ecf9a5bf54f13cb5f6f3fc70f95bb1371a2a1a798b9d",
+        "bytes": 6483
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/15a951c3fd6bd8d6680baffaaff31b1f2b20f080488cbfcc7922d2fa7413a959/kernel.glir",
+        "sha256": "62983509c2d4461a84f6e1ac5b1acc7a7f2d90f6cdb95b399cf409acd47412d4",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/15a951c3fd6bd8d6680baffaaff31b1f2b20f080488cbfcc7922d2fa7413a959/kernel.json",
+        "sha256": "0b9ccf6288b65f32424fc7b6470581ba5ca52326b900e6410d44e382c7348058",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/15a951c3fd6bd8d6680baffaaff31b1f2b20f080488cbfcc7922d2fa7413a959/kernel.llir",
+        "sha256": "738dba76bcc675212de6a41720133cdb72c66bfadd88b5c810eb89982a6c4716",
+        "bytes": 46576
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/15a951c3fd6bd8d6680baffaaff31b1f2b20f080488cbfcc7922d2fa7413a959/kernel.ptx",
+        "sha256": "af5b1652585e140e8173022a5aa016f44ea919f95f9790ed9c6b98133e240ba9",
+        "bytes": 12375
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/15a951c3fd6bd8d6680baffaaff31b1f2b20f080488cbfcc7922d2fa7413a959/kernel.source",
+        "sha256": "62983509c2d4461a84f6e1ac5b1acc7a7f2d90f6cdb95b399cf409acd47412d4",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/15a951c3fd6bd8d6680baffaaff31b1f2b20f080488cbfcc7922d2fa7413a959/kernel.ttgir",
+        "sha256": "66be25d6d33a00a522020a0ce5e10918b7027f495ac6d1a578a0d19b1316aab4",
+        "bytes": 7971
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/17109b90f86898adb2a1ff7f9f3f8e00807b29db3b4afedd28fb7eaeaf326768/kernel.glir",
+        "sha256": "7f80fba4c0c13fdc443cc8c938f8e7a4c027d9cde92bcd8eeba08c1789fe4061",
+        "bytes": 9597
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/17109b90f86898adb2a1ff7f9f3f8e00807b29db3b4afedd28fb7eaeaf326768/kernel.json",
+        "sha256": "e84b5fccd26d951a1445a961e5b6ed7aafe1d3945646332ee348640af83e3c0e",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/17109b90f86898adb2a1ff7f9f3f8e00807b29db3b4afedd28fb7eaeaf326768/kernel.llir",
+        "sha256": "791f4f2841e3ee06a17da398efb72243e7e00fca28e9290331e6bb9c5341c922",
+        "bytes": 46226
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/17109b90f86898adb2a1ff7f9f3f8e00807b29db3b4afedd28fb7eaeaf326768/kernel.ptx",
+        "sha256": "ef026f6243b77abd01e95dc71b1cdd58b0fbf862b32252db1093aba62ec1fe0c",
+        "bytes": 11942
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/17109b90f86898adb2a1ff7f9f3f8e00807b29db3b4afedd28fb7eaeaf326768/kernel.source",
+        "sha256": "7f80fba4c0c13fdc443cc8c938f8e7a4c027d9cde92bcd8eeba08c1789fe4061",
+        "bytes": 9597
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/17109b90f86898adb2a1ff7f9f3f8e00807b29db3b4afedd28fb7eaeaf326768/kernel.ttgir",
+        "sha256": "0483a60bc13fc2c3dbd4907bb212e5b99d94dabc9139301da737def0dc93e44f",
+        "bytes": 7080
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/194b7c7b8c1cbc0fac95aceb1dc74e00b1ef70a248f0fc6bddf1d101c3da773f/kernel.glir",
+        "sha256": "76eeead84df203620603204a286b50beeea1a45ff792c2f649ad8d3778c126cf",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/194b7c7b8c1cbc0fac95aceb1dc74e00b1ef70a248f0fc6bddf1d101c3da773f/kernel.json",
+        "sha256": "8643f0cd6b00bc23b187ce730dbba518f7b39a78783c9dd59e80006199904d42",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/194b7c7b8c1cbc0fac95aceb1dc74e00b1ef70a248f0fc6bddf1d101c3da773f/kernel.llir",
+        "sha256": "6d6a197386dfb4c3630d28fef3514e8fdca211451ad03d98c8a68ff97ae7d041",
+        "bytes": 45719
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/194b7c7b8c1cbc0fac95aceb1dc74e00b1ef70a248f0fc6bddf1d101c3da773f/kernel.ptx",
+        "sha256": "1c82579b53e054b6aa8baddf77ae9f46d99fa9670b68a1f5950a6d7756a9085f",
+        "bytes": 11280
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/194b7c7b8c1cbc0fac95aceb1dc74e00b1ef70a248f0fc6bddf1d101c3da773f/kernel.source",
+        "sha256": "76eeead84df203620603204a286b50beeea1a45ff792c2f649ad8d3778c126cf",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/194b7c7b8c1cbc0fac95aceb1dc74e00b1ef70a248f0fc6bddf1d101c3da773f/kernel.ttgir",
+        "sha256": "8d87a11077e721a9f920fe4f68627a30af3cd4ea5b364c3464c4d9febf7d9f93",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/41066c712c7fced4cf16f9d7d37253112eb5ccaf7b064e1c0df4e0fe56e1bfb3/kernel.glir",
+        "sha256": "a21e15c0466f4b0eba09d67411f06df3a979f97d441238e85cce0fac8767e4d1",
+        "bytes": 8955
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/41066c712c7fced4cf16f9d7d37253112eb5ccaf7b064e1c0df4e0fe56e1bfb3/kernel.json",
+        "sha256": "1afbf83d01a10b107453daff50d088821a5c8cba0d83c4cf06b758ba79cd4630",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/41066c712c7fced4cf16f9d7d37253112eb5ccaf7b064e1c0df4e0fe56e1bfb3/kernel.llir",
+        "sha256": "01659b7081ec49fd8f33dd8b003a5d33ba026a3a1a3f8469c643b647b9a60468",
+        "bytes": 45751
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/41066c712c7fced4cf16f9d7d37253112eb5ccaf7b064e1c0df4e0fe56e1bfb3/kernel.ptx",
+        "sha256": "60c70c57a759039627a886610d1b1d2e50f7a63b9bc6e09651466f22dfc8caa0",
+        "bytes": 11281
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/41066c712c7fced4cf16f9d7d37253112eb5ccaf7b064e1c0df4e0fe56e1bfb3/kernel.source",
+        "sha256": "a21e15c0466f4b0eba09d67411f06df3a979f97d441238e85cce0fac8767e4d1",
+        "bytes": 8955
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/41066c712c7fced4cf16f9d7d37253112eb5ccaf7b064e1c0df4e0fe56e1bfb3/kernel.ttgir",
+        "sha256": "05b2c57a843bbe2f5f27f4bebc1f859cd5a9b5570654fad645d4746b4592e381",
+        "bytes": 6485
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4678f4e02596ec1cc307ff71991793637e01d6e9e15f0f6d1b8546944e7a6b17/kernel.glir",
+        "sha256": "141dbb010107a438e1735dd7f74dc3bcc2c91d686a7b76baed24f9cafe77313e",
+        "bytes": 5832
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4678f4e02596ec1cc307ff71991793637e01d6e9e15f0f6d1b8546944e7a6b17/kernel.json",
+        "sha256": "06c368875eaae5402b46d70d40ba2a3b712837d159fdb6f6e10eedcb9c83fae0",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4678f4e02596ec1cc307ff71991793637e01d6e9e15f0f6d1b8546944e7a6b17/kernel.llir",
+        "sha256": "ba9a5952c9869e9d942d69e848a0a34ad078a6c97926cb9eb45f79387eece87e",
+        "bytes": 16052
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4678f4e02596ec1cc307ff71991793637e01d6e9e15f0f6d1b8546944e7a6b17/kernel.ptx",
+        "sha256": "47c9244cbf1323015f85cbfd9c708387716f820f2be91e6db5872da3201946dc",
+        "bytes": 7334
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4678f4e02596ec1cc307ff71991793637e01d6e9e15f0f6d1b8546944e7a6b17/kernel.source",
+        "sha256": "141dbb010107a438e1735dd7f74dc3bcc2c91d686a7b76baed24f9cafe77313e",
+        "bytes": 5832
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4678f4e02596ec1cc307ff71991793637e01d6e9e15f0f6d1b8546944e7a6b17/kernel.ttgir",
+        "sha256": "7b19181989a72b58279a786e429972683f0e15cd5974bd19bd15c1ffd8e99bb9",
+        "bytes": 4443
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4ba0de9febecae5d2423af653fc8f1a47a9e91cc2acc3712ca7f1f1d108f1e25/kernel.glir",
+        "sha256": "6b0b3c7d6415b57ba4fbd51d83816846b2a168c410ec3751d6e9e34871c679d6",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4ba0de9febecae5d2423af653fc8f1a47a9e91cc2acc3712ca7f1f1d108f1e25/kernel.json",
+        "sha256": "fbe4cd7c08d1516e98a6f754b3cb24190b08e18041c91803d864860a1a96ab09",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4ba0de9febecae5d2423af653fc8f1a47a9e91cc2acc3712ca7f1f1d108f1e25/kernel.llir",
+        "sha256": "0b6fbcb0b393871c62760fda8a9f3b4aedca7693098abf5d0cb96c00e8cceea4",
+        "bytes": 45719
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4ba0de9febecae5d2423af653fc8f1a47a9e91cc2acc3712ca7f1f1d108f1e25/kernel.ptx",
+        "sha256": "45f5b30eacabdf3b4b23b858d0d6c3893751aec674651624f5b7d49712cde83d",
+        "bytes": 11280
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4ba0de9febecae5d2423af653fc8f1a47a9e91cc2acc3712ca7f1f1d108f1e25/kernel.source",
+        "sha256": "6b0b3c7d6415b57ba4fbd51d83816846b2a168c410ec3751d6e9e34871c679d6",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/4ba0de9febecae5d2423af653fc8f1a47a9e91cc2acc3712ca7f1f1d108f1e25/kernel.ttgir",
+        "sha256": "59762b645b5106511e31fb0ff018273ad9d7c0cdaa8f8f303858df2979714e42",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/52cc2d216ac5372b8e6530c9c6105a3dbe170be5f79d8d87b6b48a8a81d76edc/kernel.glir",
+        "sha256": "40784439870aad7088bf4c0b4b9a645aa6f7844f61afa0de175b83901f493295",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/52cc2d216ac5372b8e6530c9c6105a3dbe170be5f79d8d87b6b48a8a81d76edc/kernel.json",
+        "sha256": "b64e616825e3b0637468bf8e7007d2a534bc632ae8e39021a4e3a8948acbd25f",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/52cc2d216ac5372b8e6530c9c6105a3dbe170be5f79d8d87b6b48a8a81d76edc/kernel.llir",
+        "sha256": "8a2f0204a2619d95c33af283cfb19cba1bf8d817bbf8bd1b280f2554340dc1d8",
+        "bytes": 16020
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/52cc2d216ac5372b8e6530c9c6105a3dbe170be5f79d8d87b6b48a8a81d76edc/kernel.ptx",
+        "sha256": "c4f9bc8a48015d9994e55ed84d8d421812bf0b7ebf3801393a2c0ff8095d2304",
+        "bytes": 7333
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/52cc2d216ac5372b8e6530c9c6105a3dbe170be5f79d8d87b6b48a8a81d76edc/kernel.source",
+        "sha256": "40784439870aad7088bf4c0b4b9a645aa6f7844f61afa0de175b83901f493295",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/52cc2d216ac5372b8e6530c9c6105a3dbe170be5f79d8d87b6b48a8a81d76edc/kernel.ttgir",
+        "sha256": "0e818edcbf1c5c681cc229eb809c4160988f440610f57f29d58b57a332531992",
+        "bytes": 4442
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6544856606e2a59e1be0b2f853e751e8bcb06eaae6d60293bb3e82092319b8c8/kernel.glir",
+        "sha256": "81929c9900009d8161531b47eb2442e5bd548bbb54f74ba7cadeb272755601b8",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6544856606e2a59e1be0b2f853e751e8bcb06eaae6d60293bb3e82092319b8c8/kernel.json",
+        "sha256": "20dfe7284668c85fc966dd754136c746a300e8cea6a355e1c23f661efc9e889c",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6544856606e2a59e1be0b2f853e751e8bcb06eaae6d60293bb3e82092319b8c8/kernel.llir",
+        "sha256": "21275d09aca30c4112ca14a508aa21c446eb576568e4d56623cf9b6faf7b70b0",
+        "bytes": 45869
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6544856606e2a59e1be0b2f853e751e8bcb06eaae6d60293bb3e82092319b8c8/kernel.ptx",
+        "sha256": "93e0bdcf4df692fd86b540216e0274f8e3d571fb20258eb75f5f6a82561a246a",
+        "bytes": 11330
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6544856606e2a59e1be0b2f853e751e8bcb06eaae6d60293bb3e82092319b8c8/kernel.source",
+        "sha256": "81929c9900009d8161531b47eb2442e5bd548bbb54f74ba7cadeb272755601b8",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6544856606e2a59e1be0b2f853e751e8bcb06eaae6d60293bb3e82092319b8c8/kernel.ttgir",
+        "sha256": "17b8ddd69ade74cd8df0de7d9d2c8742c94a10aacd8a6dff0684f7ce67caf1d5",
+        "bytes": 6483
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/67070d78b3323210c59420323660ddf787dd49f94e3c71eb433a277072f8ea62/kernel.glir",
+        "sha256": "eb462aaf05d390d5fc078fe779fe603d22e973951530dbc147247302d3b4a196",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/67070d78b3323210c59420323660ddf787dd49f94e3c71eb433a277072f8ea62/kernel.json",
+        "sha256": "8e344dccbfdb9fcc3e4781005ff487fd49e931fd9f9d467c33edb63b9fb6d450",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/67070d78b3323210c59420323660ddf787dd49f94e3c71eb433a277072f8ea62/kernel.llir",
+        "sha256": "49393fe686bd0f7ae2e0fd57ccd858bf46747ca437076b8ff1d24c408edef37b",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/67070d78b3323210c59420323660ddf787dd49f94e3c71eb433a277072f8ea62/kernel.ptx",
+        "sha256": "5fa1eae02ecd932ec9089250b61ddd954cd69b79c21ec088a5ed49533d4209fd",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/67070d78b3323210c59420323660ddf787dd49f94e3c71eb433a277072f8ea62/kernel.source",
+        "sha256": "eb462aaf05d390d5fc078fe779fe603d22e973951530dbc147247302d3b4a196",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/67070d78b3323210c59420323660ddf787dd49f94e3c71eb433a277072f8ea62/kernel.ttgir",
+        "sha256": "2dd9d0380fe241894d69b35dea382c94e19fc0bbe930c424e1794c8fd26ce842",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6c0a5e4522ab90a1c9b9160a0b50a5e50ac6d05e322a0405477be504fac577e2/kernel.glir",
+        "sha256": "1dda06b8b4ede7f9c996c507e54ab98593d6ce354362d1e3aa4e12bbb4322013",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6c0a5e4522ab90a1c9b9160a0b50a5e50ac6d05e322a0405477be504fac577e2/kernel.json",
+        "sha256": "d650563ea5d1d00b66066f5dd3dcf72dc3168b668cd06ebfba10873a49f3ab12",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6c0a5e4522ab90a1c9b9160a0b50a5e50ac6d05e322a0405477be504fac577e2/kernel.llir",
+        "sha256": "1618efb1c1b65cca41464aca5c03e909f33a0b496f96e9f4fead6a75de9b10d4",
+        "bytes": 16020
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6c0a5e4522ab90a1c9b9160a0b50a5e50ac6d05e322a0405477be504fac577e2/kernel.ptx",
+        "sha256": "bf21ac92e4a41870146d5862fe4dad506c810d251a8fa2cb7aac9eb291c1b604",
+        "bytes": 7333
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6c0a5e4522ab90a1c9b9160a0b50a5e50ac6d05e322a0405477be504fac577e2/kernel.source",
+        "sha256": "1dda06b8b4ede7f9c996c507e54ab98593d6ce354362d1e3aa4e12bbb4322013",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6c0a5e4522ab90a1c9b9160a0b50a5e50ac6d05e322a0405477be504fac577e2/kernel.ttgir",
+        "sha256": "e6a5b3fc8457f350a6bcccc8160e64838d339a1baf5cffd4a3693fd4d622b56f",
+        "bytes": 4442
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6fbd41173757e0f978a26da92b11998976ec9aeafd56146e3d5f118a3ebadca0/kernel.glir",
+        "sha256": "80398be060d14458ea6fd6fa7e2c76c9fb94d5c0fefb5d0759ddbafc8afd57f6",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6fbd41173757e0f978a26da92b11998976ec9aeafd56146e3d5f118a3ebadca0/kernel.json",
+        "sha256": "b94b952dfd57d7fc8f31b93d03ce3d63bee91647dee594d77806cef10ac9fafb",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6fbd41173757e0f978a26da92b11998976ec9aeafd56146e3d5f118a3ebadca0/kernel.llir",
+        "sha256": "69184380430c1b33b75ec1cd9b5e48c656c806d009d400a6d5c60590119b9658",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6fbd41173757e0f978a26da92b11998976ec9aeafd56146e3d5f118a3ebadca0/kernel.ptx",
+        "sha256": "4133e12d71c07b58754acce99bc0254027e98176d6167cb4bd0e7f56b46dda17",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6fbd41173757e0f978a26da92b11998976ec9aeafd56146e3d5f118a3ebadca0/kernel.source",
+        "sha256": "80398be060d14458ea6fd6fa7e2c76c9fb94d5c0fefb5d0759ddbafc8afd57f6",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/6fbd41173757e0f978a26da92b11998976ec9aeafd56146e3d5f118a3ebadca0/kernel.ttgir",
+        "sha256": "ef0d24e24d520902a918ec66cd2a5192d087555f851cba707e3c7a01c74902b0",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/744d37c9f8c4ed50162e324011d1deee2f1192fc41e6876031d0a979aa1ad5c4/kernel.glir",
+        "sha256": "8fa51e750b2bc76a4833fc38010a022f3b05d24290ea60f1005468ee6810e236",
+        "bytes": 8954
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/744d37c9f8c4ed50162e324011d1deee2f1192fc41e6876031d0a979aa1ad5c4/kernel.json",
+        "sha256": "04d574887410206153d9c341a89d051c1c4824cb2bd29f106a44d2b5cac3ad84",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/744d37c9f8c4ed50162e324011d1deee2f1192fc41e6876031d0a979aa1ad5c4/kernel.llir",
+        "sha256": "3293f38dd932e1dbcc3751117f6db7a81f6716a18ec3a79f499c8c18f4b206c7",
+        "bytes": 45901
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/744d37c9f8c4ed50162e324011d1deee2f1192fc41e6876031d0a979aa1ad5c4/kernel.ptx",
+        "sha256": "4e0a377ac048522a0fac63f4fc435f86057ca8933291ff924847e717cac62fce",
+        "bytes": 11331
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/744d37c9f8c4ed50162e324011d1deee2f1192fc41e6876031d0a979aa1ad5c4/kernel.source",
+        "sha256": "8fa51e750b2bc76a4833fc38010a022f3b05d24290ea60f1005468ee6810e236",
+        "bytes": 8954
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/744d37c9f8c4ed50162e324011d1deee2f1192fc41e6876031d0a979aa1ad5c4/kernel.ttgir",
+        "sha256": "a18e19ade910d3b1de71faa3c903cb7bea674038ce36eba309aa0a133f46c778",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/82a455b8996365a486088560a03c8b1217b30a1a80fb484847d95c7081bd276e/kernel.glir",
+        "sha256": "8d6bca7165ef3433f7abcaa3d3fbe9fb8c020f79b99008a484a142b6d4e06f19",
+        "bytes": 9392
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/82a455b8996365a486088560a03c8b1217b30a1a80fb484847d95c7081bd276e/kernel.json",
+        "sha256": "a8bdd18975c13817422d612e75748f4f4c14579bf6df1662c354c0d2eb05f173",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/82a455b8996365a486088560a03c8b1217b30a1a80fb484847d95c7081bd276e/kernel.llir",
+        "sha256": "e903ddc953041ed11fe5289773f803682fe1ae9bcf9093a5f003cc7155bc836a",
+        "bytes": 26094
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/82a455b8996365a486088560a03c8b1217b30a1a80fb484847d95c7081bd276e/kernel.ptx",
+        "sha256": "a596b88f21a8360b5aa663bb532f768612da5a4b2977ae8018b5dba3d75fadcf",
+        "bytes": 9863
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/82a455b8996365a486088560a03c8b1217b30a1a80fb484847d95c7081bd276e/kernel.source",
+        "sha256": "8d6bca7165ef3433f7abcaa3d3fbe9fb8c020f79b99008a484a142b6d4e06f19",
+        "bytes": 9392
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/82a455b8996365a486088560a03c8b1217b30a1a80fb484847d95c7081bd276e/kernel.ttgir",
+        "sha256": "92655a9317a046631f9a39e8378b6b9301185322266b43ae62b0defa7da6e4dc",
+        "bytes": 5824
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/87b5ad4de94bef5f6439808e7468a004ab4ba0bb8c49cf2e3574b370a7d07f2e/kernel.glir",
+        "sha256": "7c4233d52a2357f0f88ba3e285c1b32038b813d39238621be2321fac00a86c98",
+        "bytes": 11129
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/87b5ad4de94bef5f6439808e7468a004ab4ba0bb8c49cf2e3574b370a7d07f2e/kernel.json",
+        "sha256": "5e633b9e2825812bf16568380e1089f01b4901160823de1cea5747d8a6b3a9fe",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/87b5ad4de94bef5f6439808e7468a004ab4ba0bb8c49cf2e3574b370a7d07f2e/kernel.llir",
+        "sha256": "eb45f529a09cdc1e4904b949dcafa1b215074d6830c589a532b88f6189976c51",
+        "bytes": 46608
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/87b5ad4de94bef5f6439808e7468a004ab4ba0bb8c49cf2e3574b370a7d07f2e/kernel.ptx",
+        "sha256": "fdf97d3a3bccefeae3886667e7e765ec15f7d1a241b13add838cad1f7a9b90db",
+        "bytes": 12376
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/87b5ad4de94bef5f6439808e7468a004ab4ba0bb8c49cf2e3574b370a7d07f2e/kernel.source",
+        "sha256": "7c4233d52a2357f0f88ba3e285c1b32038b813d39238621be2321fac00a86c98",
+        "bytes": 11129
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/87b5ad4de94bef5f6439808e7468a004ab4ba0bb8c49cf2e3574b370a7d07f2e/kernel.ttgir",
+        "sha256": "4696132b94c98c35bb47fb5582c47c51c83d9f3b99b57f5371562b924370ec18",
+        "bytes": 7972
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/b6f7a2b97fb56a023ef18a9ca952ff76fdff48fa599727e31b0f39fb4f5fa69a/kernel.glir",
+        "sha256": "7e0378a779289d85cbf8c4c0ee4f32863bb827468c4abed6cf3cc3fdcd9fbf20",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/b6f7a2b97fb56a023ef18a9ca952ff76fdff48fa599727e31b0f39fb4f5fa69a/kernel.json",
+        "sha256": "4ac1fb0ab3110dcfdaa6c70a63dae1377e1bb8a63da3bd9a1cdbffce07ffbdac",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/b6f7a2b97fb56a023ef18a9ca952ff76fdff48fa599727e31b0f39fb4f5fa69a/kernel.llir",
+        "sha256": "722edd7ea7cf83955182ef9c2dafc02c3cc90fe6d4a7d56185852d1445a6d6e7",
+        "bytes": 26062
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/b6f7a2b97fb56a023ef18a9ca952ff76fdff48fa599727e31b0f39fb4f5fa69a/kernel.ptx",
+        "sha256": "ddf85ceb44e3d193ef41b666b476a883f3f9e717a02125f589deccd4e7df690e",
+        "bytes": 9862
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/b6f7a2b97fb56a023ef18a9ca952ff76fdff48fa599727e31b0f39fb4f5fa69a/kernel.source",
+        "sha256": "7e0378a779289d85cbf8c4c0ee4f32863bb827468c4abed6cf3cc3fdcd9fbf20",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/b6f7a2b97fb56a023ef18a9ca952ff76fdff48fa599727e31b0f39fb4f5fa69a/kernel.ttgir",
+        "sha256": "f207e98f7873c697802d125bef475053789bda3b5d7ee07830d573795acca7bd",
+        "bytes": 5823
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/bac5c400a01fec59ed6fc6801ba5d102715963b592add21c89100fabed4c9178/kernel.glir",
+        "sha256": "5c8c60304cb5b59a7baba941a1ce692eb9ecc14ca157ebeb4304445bc9ed7e43",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/bac5c400a01fec59ed6fc6801ba5d102715963b592add21c89100fabed4c9178/kernel.json",
+        "sha256": "e40c27db36ed4f18f58de6b8b26932144b08022a1f040047813e18eae4b29944",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/bac5c400a01fec59ed6fc6801ba5d102715963b592add21c89100fabed4c9178/kernel.llir",
+        "sha256": "a5e9a3a0ae87cdb37f3e14c106cc28693e132c703cadfc84f7111477f60ac22f",
+        "bytes": 46576
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/bac5c400a01fec59ed6fc6801ba5d102715963b592add21c89100fabed4c9178/kernel.ptx",
+        "sha256": "b473c6851ca930199f9335f45fdae7e9bfcac48e7806ac52df3782d23c67ab15",
+        "bytes": 12375
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/bac5c400a01fec59ed6fc6801ba5d102715963b592add21c89100fabed4c9178/kernel.source",
+        "sha256": "5c8c60304cb5b59a7baba941a1ce692eb9ecc14ca157ebeb4304445bc9ed7e43",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/bac5c400a01fec59ed6fc6801ba5d102715963b592add21c89100fabed4c9178/kernel.ttgir",
+        "sha256": "c51c8392402a6a28127992b18b101aabc590d98e26f6d84872ec168f10246037",
+        "bytes": 7971
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/d5bb49ad7e2eaa3714ba999b0b07feafbf3cc8136baeed4938134e3db59b6472/kernel.glir",
+        "sha256": "3770487564b3c4783a2dd081965fe7bc5159be80ffb0983d027bb907c4c47b14",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/d5bb49ad7e2eaa3714ba999b0b07feafbf3cc8136baeed4938134e3db59b6472/kernel.json",
+        "sha256": "b10327c436c29386934bb49529010a39853baf58c5c25c67ce0623464056b344",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/d5bb49ad7e2eaa3714ba999b0b07feafbf3cc8136baeed4938134e3db59b6472/kernel.llir",
+        "sha256": "12f979b7d183873714de37f3ff9067f4726d6a6d4c10e1ef102ab5ba86e8e084",
+        "bytes": 26062
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/d5bb49ad7e2eaa3714ba999b0b07feafbf3cc8136baeed4938134e3db59b6472/kernel.ptx",
+        "sha256": "9a38835b421bb30bf782f166c6d2e446c82b06313946138460cec4f360c17188",
+        "bytes": 9862
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/d5bb49ad7e2eaa3714ba999b0b07feafbf3cc8136baeed4938134e3db59b6472/kernel.source",
+        "sha256": "3770487564b3c4783a2dd081965fe7bc5159be80ffb0983d027bb907c4c47b14",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/d5bb49ad7e2eaa3714ba999b0b07feafbf3cc8136baeed4938134e3db59b6472/kernel.ttgir",
+        "sha256": "425e5d9c2fdaf52d26dd1c5232a11af9cf32397ca656bcf55a9a14d20239f5b7",
+        "bytes": 5823
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/e371822bafbe9bd871dcd28d700ac48bc53bb3c14afa9fc75b35d7179b2d955c/kernel.glir",
+        "sha256": "b787586cee1ce92d1f0f5ff87ad84df18f414f2762c5b83bc36243c86ed31c21",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/e371822bafbe9bd871dcd28d700ac48bc53bb3c14afa9fc75b35d7179b2d955c/kernel.json",
+        "sha256": "cf5d44f26e9ee644aee38591d0be8d606c41c9bbca8d34de7c7c8fbf8cab4674",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/e371822bafbe9bd871dcd28d700ac48bc53bb3c14afa9fc75b35d7179b2d955c/kernel.llir",
+        "sha256": "69184380430c1b33b75ec1cd9b5e48c656c806d009d400a6d5c60590119b9658",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/e371822bafbe9bd871dcd28d700ac48bc53bb3c14afa9fc75b35d7179b2d955c/kernel.ptx",
+        "sha256": "4133e12d71c07b58754acce99bc0254027e98176d6167cb4bd0e7f56b46dda17",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/e371822bafbe9bd871dcd28d700ac48bc53bb3c14afa9fc75b35d7179b2d955c/kernel.source",
+        "sha256": "b787586cee1ce92d1f0f5ff87ad84df18f414f2762c5b83bc36243c86ed31c21",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/e371822bafbe9bd871dcd28d700ac48bc53bb3c14afa9fc75b35d7179b2d955c/kernel.ttgir",
+        "sha256": "25666ece46db6863b83f651f1c28b8bd41ce746bbe83347c2979cee7474b206f",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/fbbd58a5d2fd99fe3c77d554643390bc14f7a1b28b5c506add30c01cc39d213e/kernel.glir",
+        "sha256": "9554b9c2963329692af0868fa5fa699c1adc9902344abed30942747a4b096351",
+        "bytes": 9598
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/fbbd58a5d2fd99fe3c77d554643390bc14f7a1b28b5c506add30c01cc39d213e/kernel.json",
+        "sha256": "6134c67b83662c8ccf1c6c1b7d2ded08977042233c31227e63d8fc5a9e1c497f",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/fbbd58a5d2fd99fe3c77d554643390bc14f7a1b28b5c506add30c01cc39d213e/kernel.llir",
+        "sha256": "791f4f2841e3ee06a17da398efb72243e7e00fca28e9290331e6bb9c5341c922",
+        "bytes": 46226
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/fbbd58a5d2fd99fe3c77d554643390bc14f7a1b28b5c506add30c01cc39d213e/kernel.ptx",
+        "sha256": "ef026f6243b77abd01e95dc71b1cdd58b0fbf862b32252db1093aba62ec1fe0c",
+        "bytes": 11942
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/fbbd58a5d2fd99fe3c77d554643390bc14f7a1b28b5c506add30c01cc39d213e/kernel.source",
+        "sha256": "9554b9c2963329692af0868fa5fa699c1adc9902344abed30942747a4b096351",
+        "bytes": 9598
+      },
+      {
+        "path": "tmem.diagnostic.r1/compiler/fbbd58a5d2fd99fe3c77d554643390bc14f7a1b28b5c506add30c01cc39d213e/kernel.ttgir",
+        "sha256": "4be894af8714311fa7948c79ebdef9d3deedb768b613cfdc4f2bc7fd60e4b823",
+        "bytes": 7080
+      },
+      {
+        "path": "tmem.diagnostic.r1/summary.json",
+        "sha256": "a8a6382be02fb7051ef05d100a06b60556ea7155a5c867707b724a4667d2a3b4",
+        "bytes": 31475
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-00.json.gz",
+        "sha256": "ca42a2fab2aa8128311b850af0a7ca028087a273f94544a50f0aa528d1401427",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-01.json.gz",
+        "sha256": "b41bc1d4ab2a4ab16320cd3493ed8841137616d34b26dd65dfd5a036a7690c79",
+        "bytes": 758
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-02.json.gz",
+        "sha256": "236246e5086815da8dfc22950f2690d05c69ece5c5d137f49ee624c983deb6f4",
+        "bytes": 670
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-03.json.gz",
+        "sha256": "009e68ab66ff84ca1ee0fdbc90d90b21a1429e73a3885d8f9d710e6fc949a4fc",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-04.json.gz",
+        "sha256": "80bb84f6947e79a24811d97fe6410a3d63c88c446224f22bca6784394cd8cec6",
+        "bytes": 815
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-05.json.gz",
+        "sha256": "d705f639655a7ddd0c256c407c0189e649455822346448021ffab97a5283de77",
+        "bytes": 814
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-06.json.gz",
+        "sha256": "0f05540f15020b015debea7d52235bbd9bc830a080a5aa7791e85b9928599374",
+        "bytes": 815
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-07.json.gz",
+        "sha256": "dbe4ff243e015f9332eb075cf82239c9e50cc55e962ba5205655a00b4c955f12",
+        "bytes": 818
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-08.json.gz",
+        "sha256": "00255ab2da1a4f28e160228ebada523c8803b5be3185e603fe2d0a77d7ad40f2",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-09.json.gz",
+        "sha256": "97a71d375485c7d4bbbc344f3cb7a5d720e585c04d7c8be7a85969ad1f3ee358",
+        "bytes": 757
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-10.json.gz",
+        "sha256": "3c12a5b5f1565c35fe5231ac37e64567c3ca7ace61e70cd090c3c7daba1ccae9",
+        "bytes": 670
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-11.json.gz",
+        "sha256": "37e4c29f943f39a8ba4f5b77cd6e6d628c767f48c5d9467e8e937003bacd97ea",
+        "bytes": 813
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-12.json.gz",
+        "sha256": "2a65bd9126ebbf190690fee130de14bdd2141be2a644d31596851095f8c46a88",
+        "bytes": 815
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-13.json.gz",
+        "sha256": "1f2714c1d81a2d38565362626dae2be06e129c697468cb589622c2b23905c504",
+        "bytes": 814
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-14.json.gz",
+        "sha256": "b123183488b0a57e14ebbdbb1334f1633e6d5cc07e76805738e151a0bdb82464",
+        "bytes": 817
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-15.json.gz",
+        "sha256": "45d94269bb96e873d78a1e9233621884a9d98237d80e953fc173c8704c6b4a20",
+        "bytes": 818
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-16.json.gz",
+        "sha256": "3e8c5b263e337b5ce1c5a3f88f7f69f3ae4c3406c9eb5405e40ca5323b9cf740",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-17.json.gz",
+        "sha256": "0098448fefc3e52b71c6a3dd6c086d1faae82e8dc8a0d7f23038770a7ec90ae1",
+        "bytes": 776
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-18.json.gz",
+        "sha256": "3c13781c0a034a6aa68de61443b3fdd9a2834561a656760c45188d90671060ab",
+        "bytes": 682
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-19.json.gz",
+        "sha256": "8800bee2424a1c97c825e31f0912544dd60befdc760cb50a63264823398279bd",
+        "bytes": 837
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-20.json.gz",
+        "sha256": "50920419407752bcdd8b8126c9f6cf9c13637b01d832b45f05d095b5aabc767a",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-21.json.gz",
+        "sha256": "9f21c5dcbfbfda6b7db24253715285e6c8b7c79145ff9a972fb60a451d0856c5",
+        "bytes": 836
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-22.json.gz",
+        "sha256": "08eee24b18fbc21f0ad254bfe13c3337bd1219253f32f98f5b55fff423ca61f6",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-23.json.gz",
+        "sha256": "7317fa1b738f1861d16a678df8dcd6e87f355190f769bed182cfe972452fd2ba",
+        "bytes": 845
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-24.json.gz",
+        "sha256": "d98d1e521f8c973de946af2eb8f1cae3b3466476b96d65b94c41843ad4310a0c",
+        "bytes": 840
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-25.json.gz",
+        "sha256": "c47bd5f50d160ce0ed6888a13a8cffd0a6fd59f7b82c4cf11ec2e27580b3cd49",
+        "bytes": 774
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-26.json.gz",
+        "sha256": "e0088e4cbc2a8c572ba456a3690d8b0e5c60d2b8657ab68adced9f2f1f5b49b7",
+        "bytes": 680
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-27.json.gz",
+        "sha256": "3840e19cbafdb44fcff82067625e3298f71ae216497ec8ad99c088c4d6cec6b9",
+        "bytes": 835
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-28.json.gz",
+        "sha256": "a1cdef76e28bec55d74d6f9c02deb852d6d678b159721e8a222c00c57de7aab2",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-29.json.gz",
+        "sha256": "2683b4fd1f3bad945c57f98e5fdf7391cc0883996019c107397ff0485b876a1a",
+        "bytes": 838
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-30.json.gz",
+        "sha256": "40a1370275424db37c9bb90138e7f705465e9f4b7cfb5881f8906aeb73bc8db0",
+        "bytes": 844
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-31.json.gz",
+        "sha256": "e454524ffbc50cd1cccecc78e6b1c126bea925308d073e234ff4099624badb29",
+        "bytes": 844
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-32.json.gz",
+        "sha256": "69a92840c37e831ab23d76835d5484a84f4ddc4f3f190a53240e31ee03306adf",
+        "bytes": 829
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-33.json.gz",
+        "sha256": "2375a616189f4d27c2fd0c4835c6939be0e275c1c8278d101585a7e6bf9c89de",
+        "bytes": 769
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-34.json.gz",
+        "sha256": "8bffb6c763005e140b56480cdac39e3929026a64bb792c6101eb663f1b3c173b",
+        "bytes": 672
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-35.json.gz",
+        "sha256": "964ddd91c166df1e558c83c1d9c7aec2229fe3efd242371b213f3405cfa90ae0",
+        "bytes": 830
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-36.json.gz",
+        "sha256": "d8e4520174e13c963f026330bd3f064de62d1f95b4884335cc99ef5e3f70db28",
+        "bytes": 846
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-37.json.gz",
+        "sha256": "47e8a42f15ab203e278be6307fe9f3c2383af82745ec216bd763e0f6704b9ad2",
+        "bytes": 831
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-38.json.gz",
+        "sha256": "f6f9e748884aee01c7ea9e0fa4a89c00c8cb80660c79038fe053944d11109696",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-39.json.gz",
+        "sha256": "b18596e4ec37c12d60df19dfcd4fbe19ae20337fd8c7bb8dfc59b3f1d5dd195f",
+        "bytes": 832
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-40.json.gz",
+        "sha256": "12c3bc15ea39129031a7ed5efc07bf5c20c78ebee865130cc79f565922ac4c23",
+        "bytes": 839
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-41.json.gz",
+        "sha256": "5c970eedfad757928aa6b67685053a067c1089858e45ddfa9c4e1e472d3dc7a7",
+        "bytes": 778
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-42.json.gz",
+        "sha256": "ad166e2952ad852c152bf39f0a66396bc2cc4927d3c95f79ae86dc265f6e1052",
+        "bytes": 683
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-43.json.gz",
+        "sha256": "270e05b4480c93eb87c2dc18a661d55eda257b101258ea3fb724c02bb8526ca7",
+        "bytes": 839
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-44.json.gz",
+        "sha256": "97eb0de5e066ea7f288a19d46d084a3cddfa5bf96f803b0936aeefe15932e50c",
+        "bytes": 848
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-45.json.gz",
+        "sha256": "86ca889088a374d568000e50c79438d4744c2c90e804fb5d6e81af123ae1553c",
+        "bytes": 832
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-46.json.gz",
+        "sha256": "abac7ef5da1d115b14812109525bbfe2d41b12aea2b78f3655fa3a6e89d0718f",
+        "bytes": 832
+      },
+      {
+        "path": "tmem.diagnostic.r2/case-47.json.gz",
+        "sha256": "5721cd900e9049dca46c98ab8ead26eeec119196dd8a12e8e226d48f2068f23e",
+        "bytes": 845
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0a652f37cf7865a3ad78583aee3281b279e9dc2153220d5fd5cad76aca2b3ee6/kernel.glir",
+        "sha256": "7c4233d52a2357f0f88ba3e285c1b32038b813d39238621be2321fac00a86c98",
+        "bytes": 11129
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0a652f37cf7865a3ad78583aee3281b279e9dc2153220d5fd5cad76aca2b3ee6/kernel.json",
+        "sha256": "905cade805b10a3dbf0222dfbc7b898cb69b2dc4f9aedaf735018f4cb4cf054e",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0a652f37cf7865a3ad78583aee3281b279e9dc2153220d5fd5cad76aca2b3ee6/kernel.llir",
+        "sha256": "eb45f529a09cdc1e4904b949dcafa1b215074d6830c589a532b88f6189976c51",
+        "bytes": 46608
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0a652f37cf7865a3ad78583aee3281b279e9dc2153220d5fd5cad76aca2b3ee6/kernel.ptx",
+        "sha256": "fdf97d3a3bccefeae3886667e7e765ec15f7d1a241b13add838cad1f7a9b90db",
+        "bytes": 12376
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0a652f37cf7865a3ad78583aee3281b279e9dc2153220d5fd5cad76aca2b3ee6/kernel.source",
+        "sha256": "7c4233d52a2357f0f88ba3e285c1b32038b813d39238621be2321fac00a86c98",
+        "bytes": 11129
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0a652f37cf7865a3ad78583aee3281b279e9dc2153220d5fd5cad76aca2b3ee6/kernel.ttgir",
+        "sha256": "4696132b94c98c35bb47fb5582c47c51c83d9f3b99b57f5371562b924370ec18",
+        "bytes": 7972
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0fdc1be0406d330c0663b2f1f3f604b7ad6cf9526f65fad1052c7d44e0576fb7/kernel.glir",
+        "sha256": "8d6bca7165ef3433f7abcaa3d3fbe9fb8c020f79b99008a484a142b6d4e06f19",
+        "bytes": 9392
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0fdc1be0406d330c0663b2f1f3f604b7ad6cf9526f65fad1052c7d44e0576fb7/kernel.json",
+        "sha256": "96a467f5425115d2419b75c17e3f9a7afd595e90246ba88fcc9a83ec1b221f8b",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0fdc1be0406d330c0663b2f1f3f604b7ad6cf9526f65fad1052c7d44e0576fb7/kernel.llir",
+        "sha256": "e903ddc953041ed11fe5289773f803682fe1ae9bcf9093a5f003cc7155bc836a",
+        "bytes": 26094
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0fdc1be0406d330c0663b2f1f3f604b7ad6cf9526f65fad1052c7d44e0576fb7/kernel.ptx",
+        "sha256": "a596b88f21a8360b5aa663bb532f768612da5a4b2977ae8018b5dba3d75fadcf",
+        "bytes": 9863
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0fdc1be0406d330c0663b2f1f3f604b7ad6cf9526f65fad1052c7d44e0576fb7/kernel.source",
+        "sha256": "8d6bca7165ef3433f7abcaa3d3fbe9fb8c020f79b99008a484a142b6d4e06f19",
+        "bytes": 9392
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/0fdc1be0406d330c0663b2f1f3f604b7ad6cf9526f65fad1052c7d44e0576fb7/kernel.ttgir",
+        "sha256": "92655a9317a046631f9a39e8378b6b9301185322266b43ae62b0defa7da6e4dc",
+        "bytes": 5824
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/1df81558e6427d80baa973434dba1635f9b0162bde3ee897a5cb09ec04e77522/kernel.glir",
+        "sha256": "a21e15c0466f4b0eba09d67411f06df3a979f97d441238e85cce0fac8767e4d1",
+        "bytes": 8955
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/1df81558e6427d80baa973434dba1635f9b0162bde3ee897a5cb09ec04e77522/kernel.json",
+        "sha256": "467e3f282cfd725c5164e1d714cd256b978799d50de3eb8be14b201ca79b8e7f",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/1df81558e6427d80baa973434dba1635f9b0162bde3ee897a5cb09ec04e77522/kernel.llir",
+        "sha256": "01659b7081ec49fd8f33dd8b003a5d33ba026a3a1a3f8469c643b647b9a60468",
+        "bytes": 45751
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/1df81558e6427d80baa973434dba1635f9b0162bde3ee897a5cb09ec04e77522/kernel.ptx",
+        "sha256": "60c70c57a759039627a886610d1b1d2e50f7a63b9bc6e09651466f22dfc8caa0",
+        "bytes": 11281
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/1df81558e6427d80baa973434dba1635f9b0162bde3ee897a5cb09ec04e77522/kernel.source",
+        "sha256": "a21e15c0466f4b0eba09d67411f06df3a979f97d441238e85cce0fac8767e4d1",
+        "bytes": 8955
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/1df81558e6427d80baa973434dba1635f9b0162bde3ee897a5cb09ec04e77522/kernel.ttgir",
+        "sha256": "05b2c57a843bbe2f5f27f4bebc1f859cd5a9b5570654fad645d4746b4592e381",
+        "bytes": 6485
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/23769bdccc98d33a78a04cf91eceb767b4eea4b07f9b93c37bfa86009439da36/kernel.glir",
+        "sha256": "3770487564b3c4783a2dd081965fe7bc5159be80ffb0983d027bb907c4c47b14",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/23769bdccc98d33a78a04cf91eceb767b4eea4b07f9b93c37bfa86009439da36/kernel.json",
+        "sha256": "131f948c3b5363e505acb285aee06010fd9aa360dd1b4e4d2676f522fb06e62e",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/23769bdccc98d33a78a04cf91eceb767b4eea4b07f9b93c37bfa86009439da36/kernel.llir",
+        "sha256": "12f979b7d183873714de37f3ff9067f4726d6a6d4c10e1ef102ab5ba86e8e084",
+        "bytes": 26062
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/23769bdccc98d33a78a04cf91eceb767b4eea4b07f9b93c37bfa86009439da36/kernel.ptx",
+        "sha256": "9a38835b421bb30bf782f166c6d2e446c82b06313946138460cec4f360c17188",
+        "bytes": 9862
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/23769bdccc98d33a78a04cf91eceb767b4eea4b07f9b93c37bfa86009439da36/kernel.source",
+        "sha256": "3770487564b3c4783a2dd081965fe7bc5159be80ffb0983d027bb907c4c47b14",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/23769bdccc98d33a78a04cf91eceb767b4eea4b07f9b93c37bfa86009439da36/kernel.ttgir",
+        "sha256": "425e5d9c2fdaf52d26dd1c5232a11af9cf32397ca656bcf55a9a14d20239f5b7",
+        "bytes": 5823
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/27e4a27602f06f6207b67eb945ef2a565876bad3f3eab03111a99c756dc43776/kernel.glir",
+        "sha256": "62983509c2d4461a84f6e1ac5b1acc7a7f2d90f6cdb95b399cf409acd47412d4",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/27e4a27602f06f6207b67eb945ef2a565876bad3f3eab03111a99c756dc43776/kernel.json",
+        "sha256": "f693564e9f4020a2230c0657dfc4d9dc6181120458d00f01c15be7c635cb46aa",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/27e4a27602f06f6207b67eb945ef2a565876bad3f3eab03111a99c756dc43776/kernel.llir",
+        "sha256": "738dba76bcc675212de6a41720133cdb72c66bfadd88b5c810eb89982a6c4716",
+        "bytes": 46576
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/27e4a27602f06f6207b67eb945ef2a565876bad3f3eab03111a99c756dc43776/kernel.ptx",
+        "sha256": "af5b1652585e140e8173022a5aa016f44ea919f95f9790ed9c6b98133e240ba9",
+        "bytes": 12375
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/27e4a27602f06f6207b67eb945ef2a565876bad3f3eab03111a99c756dc43776/kernel.source",
+        "sha256": "62983509c2d4461a84f6e1ac5b1acc7a7f2d90f6cdb95b399cf409acd47412d4",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/27e4a27602f06f6207b67eb945ef2a565876bad3f3eab03111a99c756dc43776/kernel.ttgir",
+        "sha256": "66be25d6d33a00a522020a0ce5e10918b7027f495ac6d1a578a0d19b1316aab4",
+        "bytes": 7971
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/334fb4cb1eaeb2b43905487c0acf3317f05251c43d3e7ac318aa1c41fd24ecfa/kernel.glir",
+        "sha256": "80398be060d14458ea6fd6fa7e2c76c9fb94d5c0fefb5d0759ddbafc8afd57f6",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/334fb4cb1eaeb2b43905487c0acf3317f05251c43d3e7ac318aa1c41fd24ecfa/kernel.json",
+        "sha256": "5f4bbd379797029504487f4e93fa94ab5e708761e0e5e0d2cd00388f06698f05",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/334fb4cb1eaeb2b43905487c0acf3317f05251c43d3e7ac318aa1c41fd24ecfa/kernel.llir",
+        "sha256": "69184380430c1b33b75ec1cd9b5e48c656c806d009d400a6d5c60590119b9658",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/334fb4cb1eaeb2b43905487c0acf3317f05251c43d3e7ac318aa1c41fd24ecfa/kernel.ptx",
+        "sha256": "4133e12d71c07b58754acce99bc0254027e98176d6167cb4bd0e7f56b46dda17",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/334fb4cb1eaeb2b43905487c0acf3317f05251c43d3e7ac318aa1c41fd24ecfa/kernel.source",
+        "sha256": "80398be060d14458ea6fd6fa7e2c76c9fb94d5c0fefb5d0759ddbafc8afd57f6",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/334fb4cb1eaeb2b43905487c0acf3317f05251c43d3e7ac318aa1c41fd24ecfa/kernel.ttgir",
+        "sha256": "ef0d24e24d520902a918ec66cd2a5192d087555f851cba707e3c7a01c74902b0",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/3bb0c0c4a0d4eb873affee061a3a98230679ec015fded46bc281f333c4d6c544/kernel.glir",
+        "sha256": "7e0378a779289d85cbf8c4c0ee4f32863bb827468c4abed6cf3cc3fdcd9fbf20",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/3bb0c0c4a0d4eb873affee061a3a98230679ec015fded46bc281f333c4d6c544/kernel.json",
+        "sha256": "710516924cf1ad04d740c4dddc283f58b19182f1b88b163cc0cb4c0848c118c7",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/3bb0c0c4a0d4eb873affee061a3a98230679ec015fded46bc281f333c4d6c544/kernel.llir",
+        "sha256": "722edd7ea7cf83955182ef9c2dafc02c3cc90fe6d4a7d56185852d1445a6d6e7",
+        "bytes": 26062
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/3bb0c0c4a0d4eb873affee061a3a98230679ec015fded46bc281f333c4d6c544/kernel.ptx",
+        "sha256": "ddf85ceb44e3d193ef41b666b476a883f3f9e717a02125f589deccd4e7df690e",
+        "bytes": 9862
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/3bb0c0c4a0d4eb873affee061a3a98230679ec015fded46bc281f333c4d6c544/kernel.source",
+        "sha256": "7e0378a779289d85cbf8c4c0ee4f32863bb827468c4abed6cf3cc3fdcd9fbf20",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/3bb0c0c4a0d4eb873affee061a3a98230679ec015fded46bc281f333c4d6c544/kernel.ttgir",
+        "sha256": "f207e98f7873c697802d125bef475053789bda3b5d7ee07830d573795acca7bd",
+        "bytes": 5823
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/5831ab80ee7230a91f5a5fa79937da7911280bbfbc2cd606fc0640ec40bd09ea/kernel.glir",
+        "sha256": "1dda06b8b4ede7f9c996c507e54ab98593d6ce354362d1e3aa4e12bbb4322013",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/5831ab80ee7230a91f5a5fa79937da7911280bbfbc2cd606fc0640ec40bd09ea/kernel.json",
+        "sha256": "ee869ddeee4fecaec3d39299e286db8b081c04759142f0fc61649cbdcf3c1053",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/5831ab80ee7230a91f5a5fa79937da7911280bbfbc2cd606fc0640ec40bd09ea/kernel.llir",
+        "sha256": "1618efb1c1b65cca41464aca5c03e909f33a0b496f96e9f4fead6a75de9b10d4",
+        "bytes": 16020
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/5831ab80ee7230a91f5a5fa79937da7911280bbfbc2cd606fc0640ec40bd09ea/kernel.ptx",
+        "sha256": "bf21ac92e4a41870146d5862fe4dad506c810d251a8fa2cb7aac9eb291c1b604",
+        "bytes": 7333
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/5831ab80ee7230a91f5a5fa79937da7911280bbfbc2cd606fc0640ec40bd09ea/kernel.source",
+        "sha256": "1dda06b8b4ede7f9c996c507e54ab98593d6ce354362d1e3aa4e12bbb4322013",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/5831ab80ee7230a91f5a5fa79937da7911280bbfbc2cd606fc0640ec40bd09ea/kernel.ttgir",
+        "sha256": "e6a5b3fc8457f350a6bcccc8160e64838d339a1baf5cffd4a3693fd4d622b56f",
+        "bytes": 4442
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/67f76cd82e8e7745d0a0e111a44ec94d945a0d0273711627f32d19f01356cc2b/kernel.glir",
+        "sha256": "76eeead84df203620603204a286b50beeea1a45ff792c2f649ad8d3778c126cf",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/67f76cd82e8e7745d0a0e111a44ec94d945a0d0273711627f32d19f01356cc2b/kernel.json",
+        "sha256": "108dfad063bda7ec0531209a531fe046183934cc7ffce668dbbfebf5b761daaf",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/67f76cd82e8e7745d0a0e111a44ec94d945a0d0273711627f32d19f01356cc2b/kernel.llir",
+        "sha256": "6d6a197386dfb4c3630d28fef3514e8fdca211451ad03d98c8a68ff97ae7d041",
+        "bytes": 45719
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/67f76cd82e8e7745d0a0e111a44ec94d945a0d0273711627f32d19f01356cc2b/kernel.ptx",
+        "sha256": "1c82579b53e054b6aa8baddf77ae9f46d99fa9670b68a1f5950a6d7756a9085f",
+        "bytes": 11280
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/67f76cd82e8e7745d0a0e111a44ec94d945a0d0273711627f32d19f01356cc2b/kernel.source",
+        "sha256": "76eeead84df203620603204a286b50beeea1a45ff792c2f649ad8d3778c126cf",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/67f76cd82e8e7745d0a0e111a44ec94d945a0d0273711627f32d19f01356cc2b/kernel.ttgir",
+        "sha256": "8d87a11077e721a9f920fe4f68627a30af3cd4ea5b364c3464c4d9febf7d9f93",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6901b234df4e20567ee5bd2a358529928e198d11bb568f955784f1c7fce0e8a2/kernel.glir",
+        "sha256": "9554b9c2963329692af0868fa5fa699c1adc9902344abed30942747a4b096351",
+        "bytes": 9598
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6901b234df4e20567ee5bd2a358529928e198d11bb568f955784f1c7fce0e8a2/kernel.json",
+        "sha256": "b353db3f7fe2a580a43216c6fee8c19257a3575a04bc99c341669ba0a4874b6a",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6901b234df4e20567ee5bd2a358529928e198d11bb568f955784f1c7fce0e8a2/kernel.llir",
+        "sha256": "791f4f2841e3ee06a17da398efb72243e7e00fca28e9290331e6bb9c5341c922",
+        "bytes": 46226
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6901b234df4e20567ee5bd2a358529928e198d11bb568f955784f1c7fce0e8a2/kernel.ptx",
+        "sha256": "ef026f6243b77abd01e95dc71b1cdd58b0fbf862b32252db1093aba62ec1fe0c",
+        "bytes": 11942
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6901b234df4e20567ee5bd2a358529928e198d11bb568f955784f1c7fce0e8a2/kernel.source",
+        "sha256": "9554b9c2963329692af0868fa5fa699c1adc9902344abed30942747a4b096351",
+        "bytes": 9598
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6901b234df4e20567ee5bd2a358529928e198d11bb568f955784f1c7fce0e8a2/kernel.ttgir",
+        "sha256": "4be894af8714311fa7948c79ebdef9d3deedb768b613cfdc4f2bc7fd60e4b823",
+        "bytes": 7080
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6e49f557d7aa05d9843217778147b222246543c9060f868acbc5e8c3661adaa8/kernel.glir",
+        "sha256": "40784439870aad7088bf4c0b4b9a645aa6f7844f61afa0de175b83901f493295",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6e49f557d7aa05d9843217778147b222246543c9060f868acbc5e8c3661adaa8/kernel.json",
+        "sha256": "91407858478671193d1d743d74cea39592f65327128be463894fefb05b95b355",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6e49f557d7aa05d9843217778147b222246543c9060f868acbc5e8c3661adaa8/kernel.llir",
+        "sha256": "8a2f0204a2619d95c33af283cfb19cba1bf8d817bbf8bd1b280f2554340dc1d8",
+        "bytes": 16020
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6e49f557d7aa05d9843217778147b222246543c9060f868acbc5e8c3661adaa8/kernel.ptx",
+        "sha256": "c4f9bc8a48015d9994e55ed84d8d421812bf0b7ebf3801393a2c0ff8095d2304",
+        "bytes": 7333
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6e49f557d7aa05d9843217778147b222246543c9060f868acbc5e8c3661adaa8/kernel.source",
+        "sha256": "40784439870aad7088bf4c0b4b9a645aa6f7844f61afa0de175b83901f493295",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/6e49f557d7aa05d9843217778147b222246543c9060f868acbc5e8c3661adaa8/kernel.ttgir",
+        "sha256": "0e818edcbf1c5c681cc229eb809c4160988f440610f57f29d58b57a332531992",
+        "bytes": 4442
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/847e76d5e9c213eb81109f8c854fa5356a279037af7aae4394fdbae229f0ba4d/kernel.glir",
+        "sha256": "869374ffec3e9ce47a6cac75dbe10f644d49597de9f76c2f1195461a3b0b32d6",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/847e76d5e9c213eb81109f8c854fa5356a279037af7aae4394fdbae229f0ba4d/kernel.json",
+        "sha256": "d9e34b5c94ef0c8b80babb5640158f816df2121fb69a3cfbdda5f7e0d39242b9",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/847e76d5e9c213eb81109f8c854fa5356a279037af7aae4394fdbae229f0ba4d/kernel.llir",
+        "sha256": "62c4db9f06b9deea463dabaeef2bd19a6bf093ae13e0b9b3e2346b077aa2f4fa",
+        "bytes": 45869
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/847e76d5e9c213eb81109f8c854fa5356a279037af7aae4394fdbae229f0ba4d/kernel.ptx",
+        "sha256": "af479372a7cb776bde0d45321baf3244d8b4e022e8721322d1f10243096350f4",
+        "bytes": 11330
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/847e76d5e9c213eb81109f8c854fa5356a279037af7aae4394fdbae229f0ba4d/kernel.source",
+        "sha256": "869374ffec3e9ce47a6cac75dbe10f644d49597de9f76c2f1195461a3b0b32d6",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/847e76d5e9c213eb81109f8c854fa5356a279037af7aae4394fdbae229f0ba4d/kernel.ttgir",
+        "sha256": "4a851bc06638a83301a2ecf9a5bf54f13cb5f6f3fc70f95bb1371a2a1a798b9d",
+        "bytes": 6483
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/88302e2e5ae67817da0ca3ce1b28e9b061c8af1166d0670f99f8b7afbbaec519/kernel.glir",
+        "sha256": "81929c9900009d8161531b47eb2442e5bd548bbb54f74ba7cadeb272755601b8",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/88302e2e5ae67817da0ca3ce1b28e9b061c8af1166d0670f99f8b7afbbaec519/kernel.json",
+        "sha256": "02f125afe6f55570c7f913591192499ed048a2b7cc927018128b472999dd2087",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/88302e2e5ae67817da0ca3ce1b28e9b061c8af1166d0670f99f8b7afbbaec519/kernel.llir",
+        "sha256": "21275d09aca30c4112ca14a508aa21c446eb576568e4d56623cf9b6faf7b70b0",
+        "bytes": 45869
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/88302e2e5ae67817da0ca3ce1b28e9b061c8af1166d0670f99f8b7afbbaec519/kernel.ptx",
+        "sha256": "93e0bdcf4df692fd86b540216e0274f8e3d571fb20258eb75f5f6a82561a246a",
+        "bytes": 11330
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/88302e2e5ae67817da0ca3ce1b28e9b061c8af1166d0670f99f8b7afbbaec519/kernel.source",
+        "sha256": "81929c9900009d8161531b47eb2442e5bd548bbb54f74ba7cadeb272755601b8",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/88302e2e5ae67817da0ca3ce1b28e9b061c8af1166d0670f99f8b7afbbaec519/kernel.ttgir",
+        "sha256": "17b8ddd69ade74cd8df0de7d9d2c8742c94a10aacd8a6dff0684f7ce67caf1d5",
+        "bytes": 6483
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/985a9e6c4387cd2fbf47dd4ee7402ff7e658f215bd5b9ddaa4f33f3828c7a660/kernel.glir",
+        "sha256": "141dbb010107a438e1735dd7f74dc3bcc2c91d686a7b76baed24f9cafe77313e",
+        "bytes": 5832
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/985a9e6c4387cd2fbf47dd4ee7402ff7e658f215bd5b9ddaa4f33f3828c7a660/kernel.json",
+        "sha256": "9aa7e6a32e44374970b48dd1d5ab2b254ce35a6bfa3fc6e8044f88d1f1cfc6cd",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/985a9e6c4387cd2fbf47dd4ee7402ff7e658f215bd5b9ddaa4f33f3828c7a660/kernel.llir",
+        "sha256": "ba9a5952c9869e9d942d69e848a0a34ad078a6c97926cb9eb45f79387eece87e",
+        "bytes": 16052
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/985a9e6c4387cd2fbf47dd4ee7402ff7e658f215bd5b9ddaa4f33f3828c7a660/kernel.ptx",
+        "sha256": "47c9244cbf1323015f85cbfd9c708387716f820f2be91e6db5872da3201946dc",
+        "bytes": 7334
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/985a9e6c4387cd2fbf47dd4ee7402ff7e658f215bd5b9ddaa4f33f3828c7a660/kernel.source",
+        "sha256": "141dbb010107a438e1735dd7f74dc3bcc2c91d686a7b76baed24f9cafe77313e",
+        "bytes": 5832
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/985a9e6c4387cd2fbf47dd4ee7402ff7e658f215bd5b9ddaa4f33f3828c7a660/kernel.ttgir",
+        "sha256": "7b19181989a72b58279a786e429972683f0e15cd5974bd19bd15c1ffd8e99bb9",
+        "bytes": 4443
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/a631e839ea1f7c7e052ecaf0883fdeebf3c0b818e1048726a7478a241acf8e69/kernel.glir",
+        "sha256": "6b0b3c7d6415b57ba4fbd51d83816846b2a168c410ec3751d6e9e34871c679d6",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/a631e839ea1f7c7e052ecaf0883fdeebf3c0b818e1048726a7478a241acf8e69/kernel.json",
+        "sha256": "2106299074d3f4ececf4bef0854dd15ec23d38a5c4a5fc12b5ac05c45017eaf9",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/a631e839ea1f7c7e052ecaf0883fdeebf3c0b818e1048726a7478a241acf8e69/kernel.llir",
+        "sha256": "0b6fbcb0b393871c62760fda8a9f3b4aedca7693098abf5d0cb96c00e8cceea4",
+        "bytes": 45719
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/a631e839ea1f7c7e052ecaf0883fdeebf3c0b818e1048726a7478a241acf8e69/kernel.ptx",
+        "sha256": "45f5b30eacabdf3b4b23b858d0d6c3893751aec674651624f5b7d49712cde83d",
+        "bytes": 11280
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/a631e839ea1f7c7e052ecaf0883fdeebf3c0b818e1048726a7478a241acf8e69/kernel.source",
+        "sha256": "6b0b3c7d6415b57ba4fbd51d83816846b2a168c410ec3751d6e9e34871c679d6",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/a631e839ea1f7c7e052ecaf0883fdeebf3c0b818e1048726a7478a241acf8e69/kernel.ttgir",
+        "sha256": "59762b645b5106511e31fb0ff018273ad9d7c0cdaa8f8f303858df2979714e42",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d4ffe6d8bfa100c05b774b8eadd7e288b337f46d74b55604ce91e8ef0f371d97/kernel.glir",
+        "sha256": "eb462aaf05d390d5fc078fe779fe603d22e973951530dbc147247302d3b4a196",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d4ffe6d8bfa100c05b774b8eadd7e288b337f46d74b55604ce91e8ef0f371d97/kernel.json",
+        "sha256": "303038c1744e5db545be3db1fd657333ad58e5dee2ffcda5645e5617652b29d5",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d4ffe6d8bfa100c05b774b8eadd7e288b337f46d74b55604ce91e8ef0f371d97/kernel.llir",
+        "sha256": "49393fe686bd0f7ae2e0fd57ccd858bf46747ca437076b8ff1d24c408edef37b",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d4ffe6d8bfa100c05b774b8eadd7e288b337f46d74b55604ce91e8ef0f371d97/kernel.ptx",
+        "sha256": "5fa1eae02ecd932ec9089250b61ddd954cd69b79c21ec088a5ed49533d4209fd",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d4ffe6d8bfa100c05b774b8eadd7e288b337f46d74b55604ce91e8ef0f371d97/kernel.source",
+        "sha256": "eb462aaf05d390d5fc078fe779fe603d22e973951530dbc147247302d3b4a196",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d4ffe6d8bfa100c05b774b8eadd7e288b337f46d74b55604ce91e8ef0f371d97/kernel.ttgir",
+        "sha256": "2dd9d0380fe241894d69b35dea382c94e19fc0bbe930c424e1794c8fd26ce842",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d9a26e3f38ed7777407aaa8b705a317edadcead986c0d46a9250149aab65f1ed/kernel.glir",
+        "sha256": "7f80fba4c0c13fdc443cc8c938f8e7a4c027d9cde92bcd8eeba08c1789fe4061",
+        "bytes": 9597
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d9a26e3f38ed7777407aaa8b705a317edadcead986c0d46a9250149aab65f1ed/kernel.json",
+        "sha256": "061893ce29b894a628b9136789539ea3e5169b6a91fd7c4735f3aca32a59a2f8",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d9a26e3f38ed7777407aaa8b705a317edadcead986c0d46a9250149aab65f1ed/kernel.llir",
+        "sha256": "791f4f2841e3ee06a17da398efb72243e7e00fca28e9290331e6bb9c5341c922",
+        "bytes": 46226
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d9a26e3f38ed7777407aaa8b705a317edadcead986c0d46a9250149aab65f1ed/kernel.ptx",
+        "sha256": "ef026f6243b77abd01e95dc71b1cdd58b0fbf862b32252db1093aba62ec1fe0c",
+        "bytes": 11942
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d9a26e3f38ed7777407aaa8b705a317edadcead986c0d46a9250149aab65f1ed/kernel.source",
+        "sha256": "7f80fba4c0c13fdc443cc8c938f8e7a4c027d9cde92bcd8eeba08c1789fe4061",
+        "bytes": 9597
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/d9a26e3f38ed7777407aaa8b705a317edadcead986c0d46a9250149aab65f1ed/kernel.ttgir",
+        "sha256": "0483a60bc13fc2c3dbd4907bb212e5b99d94dabc9139301da737def0dc93e44f",
+        "bytes": 7080
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/dc7f4854b9cecf1766d5782cbea0a912a65a77e8798034a69c7564c34d4f23a0/kernel.glir",
+        "sha256": "9f52fde8eeb79ec872934a016c9fd33f167087550c564de5a514f7e06ad72f12",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/dc7f4854b9cecf1766d5782cbea0a912a65a77e8798034a69c7564c34d4f23a0/kernel.json",
+        "sha256": "fdada3ce2d116b8f29b253ef92c79663c48c84957ee14b1f314e136945cbeb96",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/dc7f4854b9cecf1766d5782cbea0a912a65a77e8798034a69c7564c34d4f23a0/kernel.llir",
+        "sha256": "49393fe686bd0f7ae2e0fd57ccd858bf46747ca437076b8ff1d24c408edef37b",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/dc7f4854b9cecf1766d5782cbea0a912a65a77e8798034a69c7564c34d4f23a0/kernel.ptx",
+        "sha256": "5fa1eae02ecd932ec9089250b61ddd954cd69b79c21ec088a5ed49533d4209fd",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/dc7f4854b9cecf1766d5782cbea0a912a65a77e8798034a69c7564c34d4f23a0/kernel.source",
+        "sha256": "9f52fde8eeb79ec872934a016c9fd33f167087550c564de5a514f7e06ad72f12",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/dc7f4854b9cecf1766d5782cbea0a912a65a77e8798034a69c7564c34d4f23a0/kernel.ttgir",
+        "sha256": "21b46dd76957961db18413774b084c99cc1a15ba7a8e54349c4bc0b380fc6118",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/e43bf0c961c80a300747fe8725a805557a7b27d404008a4bd0dc57975afb406f/kernel.glir",
+        "sha256": "b787586cee1ce92d1f0f5ff87ad84df18f414f2762c5b83bc36243c86ed31c21",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/e43bf0c961c80a300747fe8725a805557a7b27d404008a4bd0dc57975afb406f/kernel.json",
+        "sha256": "cd0f49324942b0923e37f2b855655dc04920608a9ccd2ee0f14e8d5145fa8088",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/e43bf0c961c80a300747fe8725a805557a7b27d404008a4bd0dc57975afb406f/kernel.llir",
+        "sha256": "69184380430c1b33b75ec1cd9b5e48c656c806d009d400a6d5c60590119b9658",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/e43bf0c961c80a300747fe8725a805557a7b27d404008a4bd0dc57975afb406f/kernel.ptx",
+        "sha256": "4133e12d71c07b58754acce99bc0254027e98176d6167cb4bd0e7f56b46dda17",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/e43bf0c961c80a300747fe8725a805557a7b27d404008a4bd0dc57975afb406f/kernel.source",
+        "sha256": "b787586cee1ce92d1f0f5ff87ad84df18f414f2762c5b83bc36243c86ed31c21",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/e43bf0c961c80a300747fe8725a805557a7b27d404008a4bd0dc57975afb406f/kernel.ttgir",
+        "sha256": "25666ece46db6863b83f651f1c28b8bd41ce746bbe83347c2979cee7474b206f",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fa17e0909929741cd664a362cd7d67d724db390a54152c1e86cb6e07134e2287/kernel.glir",
+        "sha256": "8fa51e750b2bc76a4833fc38010a022f3b05d24290ea60f1005468ee6810e236",
+        "bytes": 8954
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fa17e0909929741cd664a362cd7d67d724db390a54152c1e86cb6e07134e2287/kernel.json",
+        "sha256": "6ce9f531a5e369b70c3d113e6460022031b19139d59c4dc3613ffca5fcd6e7f2",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fa17e0909929741cd664a362cd7d67d724db390a54152c1e86cb6e07134e2287/kernel.llir",
+        "sha256": "3293f38dd932e1dbcc3751117f6db7a81f6716a18ec3a79f499c8c18f4b206c7",
+        "bytes": 45901
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fa17e0909929741cd664a362cd7d67d724db390a54152c1e86cb6e07134e2287/kernel.ptx",
+        "sha256": "4e0a377ac048522a0fac63f4fc435f86057ca8933291ff924847e717cac62fce",
+        "bytes": 11331
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fa17e0909929741cd664a362cd7d67d724db390a54152c1e86cb6e07134e2287/kernel.source",
+        "sha256": "8fa51e750b2bc76a4833fc38010a022f3b05d24290ea60f1005468ee6810e236",
+        "bytes": 8954
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fa17e0909929741cd664a362cd7d67d724db390a54152c1e86cb6e07134e2287/kernel.ttgir",
+        "sha256": "a18e19ade910d3b1de71faa3c903cb7bea674038ce36eba309aa0a133f46c778",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fc5b3383821829d239577338e74c73992888b82378377f49ca02b6db8fb2daea/kernel.glir",
+        "sha256": "5c8c60304cb5b59a7baba941a1ce692eb9ecc14ca157ebeb4304445bc9ed7e43",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fc5b3383821829d239577338e74c73992888b82378377f49ca02b6db8fb2daea/kernel.json",
+        "sha256": "c13031b35f5c8373bf9957400c2e07d76d360f676a2cdc8ac59d9bb3bfa966be",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fc5b3383821829d239577338e74c73992888b82378377f49ca02b6db8fb2daea/kernel.llir",
+        "sha256": "a5e9a3a0ae87cdb37f3e14c106cc28693e132c703cadfc84f7111477f60ac22f",
+        "bytes": 46576
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fc5b3383821829d239577338e74c73992888b82378377f49ca02b6db8fb2daea/kernel.ptx",
+        "sha256": "b473c6851ca930199f9335f45fdae7e9bfcac48e7806ac52df3782d23c67ab15",
+        "bytes": 12375
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fc5b3383821829d239577338e74c73992888b82378377f49ca02b6db8fb2daea/kernel.source",
+        "sha256": "5c8c60304cb5b59a7baba941a1ce692eb9ecc14ca157ebeb4304445bc9ed7e43",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.diagnostic.r2/compiler/fc5b3383821829d239577338e74c73992888b82378377f49ca02b6db8fb2daea/kernel.ttgir",
+        "sha256": "c51c8392402a6a28127992b18b101aabc590d98e26f6d84872ec168f10246037",
+        "bytes": 7971
+      },
+      {
+        "path": "tmem.diagnostic.r2/summary.json",
+        "sha256": "4eb3a2190052ff95957a0c491841d701385adca09b627cef821248dd23b4d1d5",
+        "bytes": 31475
+      }
+    ],
+    "status": "completed",
+    "measurement_claim": "Command stdout/artifacts; no inferred GPU timestamps or benchmark claim.",
+    "remote_wall_seconds": 17.843645359
+  },
+  "finished_utc": "2026-10-23T13:52:48.067806+00:00"
+}

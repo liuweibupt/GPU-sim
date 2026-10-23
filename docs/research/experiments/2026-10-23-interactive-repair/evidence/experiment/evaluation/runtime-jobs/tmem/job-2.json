@@ -1,0 +1,76 @@
+{
+  "sources": [
+    "/home/liuwei/GPU-sim/tools/research/natural-repair-eval/hidden_gpu.py",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/hidden-v1/plan.json",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/hidden-v1/regression_0.py",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/hidden-v1/regression_1.py",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/hidden-v1/regression_2.py"
+  ],
+  "commands": [
+    {
+      "name": "identity",
+      "argv": [
+        "nvidia-smi",
+        "--query-gpu=name,compute_cap,driver_version",
+        "--format=csv,noheader"
+      ],
+      "timeout": 10
+    },
+    {
+      "name": "install-tmem.raw.r3",
+      "argv": [
+        "/opt/repro/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "--force-reinstall",
+        "--no-compile",
+        "/opt/candidates/tmem.raw.r3/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+      ],
+      "timeout": 90
+    },
+    {
+      "name": "tmem.raw.r3",
+      "argv": [
+        "/opt/repro/bin/python",
+        "hidden_gpu.py",
+        "--family",
+        "tmem",
+        "--plan",
+        "plan.json",
+        "--output",
+        "tmem.raw.r3",
+        "--native-sha256",
+        "cf79bf2f60fd1a03e1145b644b7d908f530ee2fb95ec9bc9bdf6cffb93d25646"
+      ],
+      "timeout": 180,
+      "continue_on_failure": true
+    }
+  ],
+  "artifact_patterns": [
+    "tmem.raw.r3/summary.json",
+    "tmem.raw.r3/case-*.json.gz",
+    "tmem.raw.r3/compiler/**/*"
+  ],
+  "cpu": 8,
+  "memory_mb": 16384,
+  "image": {
+    "apt_packages": [
+      "python3.12",
+      "python3.12-venv",
+      "python3.12-dev"
+    ],
+    "commands": [
+      "python3.12 -m venv /opt/repro",
+      "/opt/repro/bin/python -m pip install torch==2.12.0+cu130 --index-url https://download.pytorch.org/whl/cu130",
+      "/opt/repro/bin/python -m pip install pytest==9.1.1 numpy==2.5.4"
+    ],
+    "files": [
+      {
+        "local": "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/tmem.raw.r3/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+        "remote": "/opt/candidates/tmem.raw.r3/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+      }
+    ]
+  }
+}

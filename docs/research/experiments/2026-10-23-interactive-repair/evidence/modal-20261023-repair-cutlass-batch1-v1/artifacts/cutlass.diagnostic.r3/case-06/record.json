@@ -1,0 +1,98 @@
+{
+  "id": "case-06",
+  "partition": "hidden",
+  "k": [
+    128,
+    256
+  ],
+  "m": 256,
+  "n": 128,
+  "host_shapes": 0,
+  "tool": "normal",
+  "argv": [
+    "/tmp/gpu-semantic-evidence/cutlass.diagnostic.r3.bin",
+    "--benchmark=shapes.txt",
+    "--iterations=0",
+    "--raster=h",
+    "--swizzle=1",
+    "--alpha=1",
+    "--beta=0",
+    "--host-shapes=0"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 0.3529391250000007,
+  "groups": [
+    {
+      "group": 0,
+      "m": 256,
+      "n": 128,
+      "k": 128,
+      "beta": 0,
+      "outputs": 32768,
+      "mismatches": 0,
+      "zero_k_mismatches": 0
+    },
+    {
+      "group": 1,
+      "m": 256,
+      "n": 128,
+      "k": 256,
+      "beta": 0,
+      "outputs": 32768,
+      "mismatches": 0,
+      "zero_k_mismatches": 0
+    }
+  ],
+  "mismatches": 0,
+  "outputs": 65536,
+  "passed": true,
+  "sanitizer_clean": false,
+  "files": [
+    {
+      "path": "group-0-c.bin",
+      "bytes": 32768,
+      "sha256": "97ad89f0e7a6fb5d47d56fdac66c18026b9878f32b3f1969bb68e5b5818dc57f"
+    },
+    {
+      "path": "group-0-observed.bin",
+      "bytes": 32768,
+      "sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479"
+    },
+    {
+      "path": "group-0-reference.bin",
+      "bytes": 32768,
+      "sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479"
+    },
+    {
+      "path": "group-1-c.bin",
+      "bytes": 32768,
+      "sha256": "49d5f9222cd176e38d7d06866f6972c9da416979dbee71e3cb51d9c213650b27"
+    },
+    {
+      "path": "group-1-observed.bin",
+      "bytes": 32768,
+      "sha256": "be50fb144054168077bf59c31e62f826b09e8bff7bed92f9ad68ccc0a487235f"
+    },
+    {
+      "path": "group-1-reference.bin",
+      "bytes": 32768,
+      "sha256": "be50fb144054168077bf59c31e62f826b09e8bff7bed92f9ad68ccc0a487235f"
+    },
+    {
+      "path": "shapes.txt",
+      "bytes": 28,
+      "sha256": "3b26fd8afb1e387a324011279b914a45f00d9c55fed25d230061b6b86b2dfcc0"
+    },
+    {
+      "path": "stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stdout.txt",
+      "bytes": 259,
+      "sha256": "776fa3a357f4924d794d1c6a2f8d69cce664b6f5ec261f8ce279602309a46e74"
+    }
+  ]
+}

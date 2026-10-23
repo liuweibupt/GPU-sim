@@ -1,0 +1,56 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "id": null,
+    "start": null,
+    "end": null,
+    "search": null,
+    "groupBy": null
+  },
+  "diagnosis": "getLiveIntervals follows descriptor views but stops at arith.select, so backing allocations can expire before the selected descriptor's final use. In case-24, %temp occupies columns [0,64), overlapping both selectable allocations; all 4096 selected values become 7 instead of 5 (fact-24/fact-25). The 32-column contrast supports this diagnosis: case-26 passes when selecting the non-overlapping second allocation, while case-27 fails when selecting the overlapping first allocation (fact-27/fact-29/fact-28). Case-32 demonstrates legal reuse of the dead second allocation while the first remains live (fact-36/fact-37). Extend the existing traversal through select results, including chained selects and views, and deduplicate visited operations. This retains lifetime-based reuse, first-fit placement, row constraints, alignment, and allocation-size rounding. Static IR does not establish hardware timestamps; the proposed repair has not been compiled or tested.",
+  "locations": [
+    {
+      "source_id": "source-01",
+      "start_line": 120,
+      "end_line": 135
+    },
+    {
+      "source_id": "source-02",
+      "start_line": 17,
+      "end_line": 26
+    },
+    {
+      "source_id": "source-03",
+      "start_line": 15,
+      "end_line": 24
+    },
+    {
+      "source_id": "source-06",
+      "start_line": 16,
+      "end_line": 22
+    }
+  ],
+  "evidence_ids": [
+    "case-24",
+    "fact-24",
+    "fact-25",
+    "case-26",
+    "fact-27",
+    "case-27",
+    "fact-29",
+    "fact-28",
+    "case-32",
+    "fact-36",
+    "fact-37",
+    "case-36",
+    "fact-42",
+    "fact-43"
+  ],
+  "edits": [
+    {
+      "old": "  // Merge the alloc liverange with the liverange of any subview of the\n  // allocation.\n  SmallVector<Operation *> users(value.getUsers());\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>())\n      continue;\n",
+      "new": "  // Merge the alloc liverange with the liveranges of descriptors derived\n  // through views or selects, including chains of these operations.\n  SmallVector<Operation *> users(value.getUsers());\n  DenseSet<Operation *> seen;\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!seen.insert(user).second)\n      continue;\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>() &&\n        !isa<arith::SelectOp>(user))\n      continue;\n"
+    }
+  ]
+}

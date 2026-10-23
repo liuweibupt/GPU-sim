@@ -1,0 +1,506 @@
+{
+  "format": "natural-repair-independent-results-review-v1",
+  "reviewedAt": "2026-10-23T13:57:16.359Z",
+  "reviewer": "diagnostic_integration_map; tool implementation author, independent of generation/build/scoring implementation; not an external human reviewer",
+  "status": "passed-with-disclosed-methodological-limits",
+  "summarySHA256": "b0194b4b9c62bfb6ee7e3e94b78c5d515f80eae0349b6b6ef8bace2955f9d55a",
+  "freezeManifestSHA256": "9c0315b20f55939946d7cd8131bba0ee1149d9860fbb792217d26ebcbab4a17d",
+  "generationSummaryFileSHA256": "44bf96e926583dfda01023ee63f7723dce62ffbffcc83761a22a6b13d9a6bfeb",
+  "generationSummaryPythonSortedJSONSHA256": "5e2cb42fd66e538f88cbcc581b6e9241a58bee134c40f3256461bed78ae26fd4",
+  "buildSummarySHA256": "fb4892d64edce2948181949bbdd5e05b0c805adee9799bd1a4d55b9cbe633e37",
+  "localizationPosthocSHA256": "7d9669e7b7008469b51dd6ea6afffd19c52b24ad904a0724514c32525c0f9861",
+  "integrityChecks": 26,
+  "counts": {
+    "model_trials": 12,
+    "model_calls": 30,
+    "queries": 18,
+    "unique_source_candidates": 11,
+    "actual_candidate_gpu_cases": 348,
+    "actual_candidate_output_elements": 16539648,
+    "candidate_sanitizer_calls": 12,
+    "rawJSONLChecks": 30,
+    "uniqueCLIThreads": 30,
+    "originalSupportedLocalization": 6,
+    "postHocSupportedLocalization": 12
+  },
+  "ordering": {
+    "frozenAt": "2026-10-23T13:41:59.615Z",
+    "firstGenerationStarted": "2026-10-23T13:41:59.759Z",
+    "lastGenerationFinished": "2026-10-23T13:47:28.585Z",
+    "buildBatchStarted": "2026-10-23T13:47:31.609531+00:00",
+    "allFreezeBeforeGenerationBeforeBuild": true
+  },
+  "trialAudit": [
+    {
+      "id": "cutlass.raw.r1",
+      "family": "cutlass",
+      "condition": "raw",
+      "generationStarted": "2026-10-23T13:41:59.759Z",
+      "generationFinished": "2026-10-23T13:42:55.014Z",
+      "buildStarted": "2026-10-23T13:48:01.995636+00:00",
+      "candidateSHA256": "f12aab08a1d2e46bc491363e7652ac50b20e3417c73593940f8ecac3a577a96e",
+      "originalSupportedLocalization": true,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 3,
+      "queries": 2,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "cutlass.diagnostic.r1",
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "generationStarted": "2026-10-23T13:41:59.760Z",
+      "generationFinished": "2026-10-23T13:43:08.847Z",
+      "buildStarted": "2026-10-23T13:47:31.645578+00:00",
+      "candidateSHA256": "8023fc26ca811c4efabab0e2e9ce4937b9ad96bc74cc39618335db1088fa27bf",
+      "originalSupportedLocalization": true,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 3,
+      "queries": 2,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "tmem.raw.r1",
+      "family": "tmem",
+      "condition": "raw",
+      "generationStarted": "2026-10-23T13:43:08.866Z",
+      "generationFinished": "2026-10-23T13:43:52.455Z",
+      "buildStarted": "2026-10-23T13:51:05.866921+00:00",
+      "candidateSHA256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+      "originalSupportedLocalization": false,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 2,
+      "queries": 1,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "tmem.diagnostic.r1",
+      "family": "tmem",
+      "condition": "diagnostic",
+      "generationStarted": "2026-10-23T13:43:08.866Z",
+      "generationFinished": "2026-10-23T13:43:46.908Z",
+      "buildStarted": "2026-10-23T13:49:01.007228+00:00",
+      "candidateSHA256": "918eacda13cc181957d4ae1b40e0b240dd8d4605397a756bac472422cc2711ec",
+      "originalSupportedLocalization": false,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 2,
+      "queries": 1,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "tmem.diagnostic.r2",
+      "family": "tmem",
+      "condition": "diagnostic",
+      "generationStarted": "2026-10-23T13:43:52.474Z",
+      "generationFinished": "2026-10-23T13:44:33.384Z",
+      "buildStarted": "2026-10-23T13:49:04.276616+00:00",
+      "candidateSHA256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+      "originalSupportedLocalization": false,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 2,
+      "queries": 1,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "tmem.raw.r2",
+      "family": "tmem",
+      "condition": "raw",
+      "generationStarted": "2026-10-23T13:43:52.474Z",
+      "generationFinished": "2026-10-23T13:44:33.895Z",
+      "buildStarted": "2026-10-23T13:49:46.863438+00:00",
+      "candidateSHA256": "d75e66cf78f92c32fefd2eb276834de71c8a5e59d50f05308ee1e2b4bacbe6c4",
+      "originalSupportedLocalization": false,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 2,
+      "queries": 1,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "cutlass.diagnostic.r2",
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "generationStarted": "2026-10-23T13:44:33.899Z",
+      "generationFinished": "2026-10-23T13:45:27.284Z",
+      "buildStarted": "2026-10-23T13:47:31.646435+00:00",
+      "candidateSHA256": "736f65daae8416d1908af4427b0317620c07677cc537253736f69fe545cef9fd",
+      "originalSupportedLocalization": true,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 3,
+      "queries": 2,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "cutlass.raw.r2",
+      "family": "cutlass",
+      "condition": "raw",
+      "generationStarted": "2026-10-23T13:44:33.899Z",
+      "generationFinished": "2026-10-23T13:45:30.521Z",
+      "buildStarted": "2026-10-23T13:48:31.796221+00:00",
+      "candidateSHA256": "54f652a8e0549feaa4f04595d3c9909dff5597118bf2d890601cb20d43e3a28d",
+      "originalSupportedLocalization": true,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 3,
+      "queries": 2,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "cutlass.raw.r3",
+      "family": "cutlass",
+      "condition": "raw",
+      "generationStarted": "2026-10-23T13:45:30.528Z",
+      "generationFinished": "2026-10-23T13:46:23.254Z",
+      "buildStarted": "2026-10-23T13:48:32.157444+00:00",
+      "candidateSHA256": "80039f2bc99c427bedc7d816634c875fe8cc7dd1e33f052fbfe58cf460cde88a",
+      "originalSupportedLocalization": true,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 3,
+      "queries": 2,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "cutlass.diagnostic.r3",
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "generationStarted": "2026-10-23T13:45:30.528Z",
+      "generationFinished": "2026-10-23T13:46:43.556Z",
+      "buildStarted": "2026-10-23T13:48:01.245179+00:00",
+      "candidateSHA256": "32b622a6288e9e62af8915b77e3e47966f30dbbc975c51abd67bbcef4e0b6b28",
+      "originalSupportedLocalization": true,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 3,
+      "queries": 2,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "tmem.raw.r3",
+      "family": "tmem",
+      "condition": "raw",
+      "generationStarted": "2026-10-23T13:46:43.578Z",
+      "generationFinished": "2026-10-23T13:47:22.029Z",
+      "buildStarted": "2026-10-23T13:50:23.582449+00:00",
+      "candidateSHA256": "0fa897fc594dc91894b78e818239383738c72b172834a6373d8653398354e5ae",
+      "originalSupportedLocalization": false,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 2,
+      "queries": 1,
+      "submittedEditsExactlyApplied": true
+    },
+    {
+      "id": "tmem.diagnostic.r3",
+      "family": "tmem",
+      "condition": "diagnostic",
+      "generationStarted": "2026-10-23T13:46:43.578Z",
+      "generationFinished": "2026-10-23T13:47:28.585Z",
+      "buildStarted": "2026-10-23T13:49:42.395609+00:00",
+      "candidateSHA256": "a2f88ab616a9aeae1e0c89ac15b80fc4b6bcc8c337e5f68a2e94555db05386e1",
+      "originalSupportedLocalization": false,
+      "postHocSupportedLocalization": true,
+      "observedFailureAndControlCovered": true,
+      "calls": 2,
+      "queries": 1,
+      "submittedEditsExactlyApplied": true
+    }
+  ],
+  "runtimeAudit": [
+    {
+      "canonicalTrial": "cutlass.diagnostic.r1",
+      "linkedTrials": [
+        "cutlass.diagnostic.r1"
+      ],
+      "candidateSHA256": "8023fc26ca811c4efabab0e2e9ce4937b9ad96bc74cc39618335db1088fa27bf",
+      "family": "cutlass",
+      "passed": 18,
+      "expected": 18,
+      "partitions": {
+        "known": {
+          "passed": 4,
+          "expected": 4
+        },
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        }
+      },
+      "verificationSHA256": "00d4ed15cc57ef1defe52f5dd312ae9499e4bcb65c9b45425c95c6e23297b242",
+      "runtimeSummarySHA256": "eef6836e72ec06197a4743f9d225d85fe3791ae443b3eff23eade64da32b4e78"
+    },
+    {
+      "canonicalTrial": "cutlass.diagnostic.r2",
+      "linkedTrials": [
+        "cutlass.diagnostic.r2"
+      ],
+      "candidateSHA256": "736f65daae8416d1908af4427b0317620c07677cc537253736f69fe545cef9fd",
+      "family": "cutlass",
+      "passed": 18,
+      "expected": 18,
+      "partitions": {
+        "known": {
+          "passed": 4,
+          "expected": 4
+        },
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        }
+      },
+      "verificationSHA256": "cf2480edc75edb6fa59f63c0eb7c15d244ac4032fa1d93c1fb86d297722005b2",
+      "runtimeSummarySHA256": "7f4b14e62b229143750af1202ff636234385acc31695c39b4597435b89089186"
+    },
+    {
+      "canonicalTrial": "cutlass.diagnostic.r3",
+      "linkedTrials": [
+        "cutlass.diagnostic.r3"
+      ],
+      "candidateSHA256": "32b622a6288e9e62af8915b77e3e47966f30dbbc975c51abd67bbcef4e0b6b28",
+      "family": "cutlass",
+      "passed": 18,
+      "expected": 18,
+      "partitions": {
+        "known": {
+          "passed": 4,
+          "expected": 4
+        },
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        }
+      },
+      "verificationSHA256": "45b4be8477ce0560e84d46867ab9af8b97840236285eb84354cc8142c6138956",
+      "runtimeSummarySHA256": "6383846126cbb9ebb542d7dac7d7b77f00b768d891b8ad62c8f40e4dd3bebf14"
+    },
+    {
+      "canonicalTrial": "cutlass.raw.r1",
+      "linkedTrials": [
+        "cutlass.raw.r1"
+      ],
+      "candidateSHA256": "f12aab08a1d2e46bc491363e7652ac50b20e3417c73593940f8ecac3a577a96e",
+      "family": "cutlass",
+      "passed": 18,
+      "expected": 18,
+      "partitions": {
+        "known": {
+          "passed": 4,
+          "expected": 4
+        },
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        }
+      },
+      "verificationSHA256": "c6c275a96aadf363dca2425cce99914db9c31e1f451b21b3d1d617d3480b2ab6",
+      "runtimeSummarySHA256": "8722cc856b9bb6e1194e4e3e60ccb07225e20a3d83e318f71bff862d4c25fdf8"
+    },
+    {
+      "canonicalTrial": "cutlass.raw.r2",
+      "linkedTrials": [
+        "cutlass.raw.r2"
+      ],
+      "candidateSHA256": "54f652a8e0549feaa4f04595d3c9909dff5597118bf2d890601cb20d43e3a28d",
+      "family": "cutlass",
+      "passed": 18,
+      "expected": 18,
+      "partitions": {
+        "known": {
+          "passed": 4,
+          "expected": 4
+        },
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        }
+      },
+      "verificationSHA256": "7e2e5f9c6ae4d8f4409fb3c4f5744f7d438f7c76d35d80410b0dd553ec7ff9d7",
+      "runtimeSummarySHA256": "2f4c17adf8a9c26ce6f8d4215889f77069c960500ec3921906203fc918184ab8"
+    },
+    {
+      "canonicalTrial": "cutlass.raw.r3",
+      "linkedTrials": [
+        "cutlass.raw.r3"
+      ],
+      "candidateSHA256": "80039f2bc99c427bedc7d816634c875fe8cc7dd1e33f052fbfe58cf460cde88a",
+      "family": "cutlass",
+      "passed": 18,
+      "expected": 18,
+      "partitions": {
+        "known": {
+          "passed": 4,
+          "expected": 4
+        },
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        }
+      },
+      "verificationSHA256": "952199087a08d9083b494b1bb95a7d88bd78611ebc556feba4f35c0e8ad90e24",
+      "runtimeSummarySHA256": "3901878d810ae3063a2ae70b21d2ecff7c341e3db3fb37cfb070b473d03912bc"
+    },
+    {
+      "canonicalTrial": "tmem.diagnostic.r1",
+      "linkedTrials": [
+        "tmem.diagnostic.r1"
+      ],
+      "candidateSHA256": "918eacda13cc181957d4ae1b40e0b240dd8d4605397a756bac472422cc2711ec",
+      "family": "tmem",
+      "passed": 48,
+      "expected": 48,
+      "partitions": {
+        "known": {
+          "passed": 16,
+          "expected": 16
+        },
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        }
+      },
+      "verificationSHA256": "1b81be8436ba89cff39517274d208b5924fe3f076a19574e942c5d85697b602a",
+      "runtimeSummarySHA256": "a8a6382be02fb7051ef05d100a06b60556ea7155a5c867707b724a4667d2a3b4"
+    },
+    {
+      "canonicalTrial": "tmem.diagnostic.r2",
+      "linkedTrials": [
+        "tmem.diagnostic.r2",
+        "tmem.raw.r1"
+      ],
+      "candidateSHA256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+      "family": "tmem",
+      "passed": 48,
+      "expected": 48,
+      "partitions": {
+        "known": {
+          "passed": 16,
+          "expected": 16
+        },
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        }
+      },
+      "verificationSHA256": "ce657b806f0df5040401e91a79266ba76c0950bdbcb6af0a1c4eb74743258e4f",
+      "runtimeSummarySHA256": "4eb3a2190052ff95957a0c491841d701385adca09b627cef821248dd23b4d1d5"
+    },
+    {
+      "canonicalTrial": "tmem.diagnostic.r3",
+      "linkedTrials": [
+        "tmem.diagnostic.r3"
+      ],
+      "candidateSHA256": "a2f88ab616a9aeae1e0c89ac15b80fc4b6bcc8c337e5f68a2e94555db05386e1",
+      "family": "tmem",
+      "passed": 48,
+      "expected": 48,
+      "partitions": {
+        "known": {
+          "passed": 16,
+          "expected": 16
+        },
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        }
+      },
+      "verificationSHA256": "847747d6303e8e3b997f7e9c1ed1876a551e017aa52cb51e5ca5c30c1761fac7",
+      "runtimeSummarySHA256": "ad17687e977360206b8c086b5c75ae6b042e8be2089658342baabc7b8c6f3f6e"
+    },
+    {
+      "canonicalTrial": "tmem.raw.r2",
+      "linkedTrials": [
+        "tmem.raw.r2"
+      ],
+      "candidateSHA256": "d75e66cf78f92c32fefd2eb276834de71c8a5e59d50f05308ee1e2b4bacbe6c4",
+      "family": "tmem",
+      "passed": 48,
+      "expected": 48,
+      "partitions": {
+        "known": {
+          "passed": 16,
+          "expected": 16
+        },
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        }
+      },
+      "verificationSHA256": "9cdb3d4a0c62d80d9de8c0c0f16f897d888b7a03b98e98bc76d5049727435252",
+      "runtimeSummarySHA256": "139c73961d99b141a9e8d9393278fcef86cde6388fcc8b3544fa995a5224b614"
+    },
+    {
+      "canonicalTrial": "tmem.raw.r3",
+      "linkedTrials": [
+        "tmem.raw.r3"
+      ],
+      "candidateSHA256": "0fa897fc594dc91894b78e818239383738c72b172834a6373d8653398354e5ae",
+      "family": "tmem",
+      "passed": 48,
+      "expected": 48,
+      "partitions": {
+        "known": {
+          "passed": 16,
+          "expected": 16
+        },
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        }
+      },
+      "verificationSHA256": "8bb8b40906ce5d9665327bd06dfa6903b03a1ded77070f8b2b15e4f662653883",
+      "runtimeSummarySHA256": "843c760baaf4106503f23e31da28ed6a9b0060bcf52889747a63a464abff8b8c"
+    }
+  ],
+  "checks": {
+    "allQueryResponsesReproducedFromSameBeforeOnlyFamilyData": true,
+    "allWithinTrialPromptHistoriesReconstructed": true,
+    "allRawModelFinalMessagesMatchSavedAnswers": true,
+    "noUnregisteredToolsInJSONL": true,
+    "allSubmittedEditsAppliedExactly": true,
+    "originalFrozenScoresUnchanged": true,
+    "strictPosthocEvidenceUsesCaseOrDeviceObservationNotSharedIR": true,
+    "posthocSourceScopeExpansionDisclosed": true,
+    "runtimeIdentityBindsToCompiledArtifact": true,
+    "summaryDenominatorsExcludeDuplicateExecution": true,
+    "summaryCellsAndTimingsRecomputed": true
+  },
+  "limits": [
+    "Two public prelocalized defects, one model, three repeats per condition; no human or visual-comprehension benefit measured.",
+    "Runtime audit checks verifier receipts, source/native/binary identity and raw summary hashes; this reviewer did not rerun GPUs or independently decode every device output again.",
+    "12 proposals map to 11 unique sources. TMEM diagnostic.r2 and raw.r1 are byte-identical and share one GPU validation; 348 actual GPU cases must not be reported as 396 independent executions.",
+    "Primary localization 6/12 is preserved. Post-hoc 12/12 additionally accepts valid IR source citations and insists on observed case/output references. It is not a replacement preregistered score.",
+    "The build receipt generation_summary_sha256_at_start hashes Python json.dumps(parsed,sort_keys=True), not original file bytes. Both hashes match their declared encodings; no generation-summary rewriting was observed.",
+    "Only CUTLASS has 12 candidate memcheck calls. TMEM has numerical tests and CPU allocation lit, not these sanitizers.",
+    "All repairs passed, so these data do not show a success-rate advantage. Timing medians are descriptive under unequal actual tokens and shared service/queue effects."
+  ]
+}

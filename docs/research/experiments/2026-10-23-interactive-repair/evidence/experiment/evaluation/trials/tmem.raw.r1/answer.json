@@ -1,0 +1,73 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "id": null,
+    "start": null,
+    "end": null,
+    "search": null,
+    "groupBy": null
+  },
+  "diagnosis": "getLiveIntervals follows descriptor views but stops at arith.select, so backing allocations can expire before the selected descriptor's load. In case-24/25, the temporary occupies columns [0,64), overlapping both selected candidates; all selected outputs become 7 (fact-24/26). With a 32-column temporary, only the candidate at column 0 is overwritten: case-27 fails while case-26 passes (fact-29/27). Early allocation avoids overlap and passes (case-30/31, fact-33/35). The repair transitively merges select-result liveness, including chained selects and intervening views, with a visited set to avoid repeated traversal at converging paths. It preserves first-fit placement, alignment, row constraints, and reuse after actual last use; the direct-first control's reuse of the dead second allocation remains legal (case-32, fact-36/37). Limitations: static IR does not establish GPU timestamps; compilation and runtime validation of this proposed edit were unavailable.",
+  "locations": [
+    {
+      "source_id": "source-01",
+      "start_line": 120,
+      "end_line": 135
+    },
+    {
+      "source_id": "source-02",
+      "start_line": 17,
+      "end_line": 26
+    },
+    {
+      "source_id": "source-03",
+      "start_line": 15,
+      "end_line": 24
+    },
+    {
+      "source_id": "source-05",
+      "start_line": 17,
+      "end_line": 26
+    },
+    {
+      "source_id": "source-06",
+      "start_line": 16,
+      "end_line": 22
+    },
+    {
+      "source_id": "source-08",
+      "start_line": 18,
+      "end_line": 32
+    }
+  ],
+  "evidence_ids": [
+    "case-24",
+    "case-25",
+    "fact-24",
+    "fact-25",
+    "fact-26",
+    "case-26",
+    "case-27",
+    "fact-27",
+    "fact-28",
+    "fact-29",
+    "case-30",
+    "case-31",
+    "fact-33",
+    "fact-34",
+    "fact-35",
+    "case-32",
+    "fact-36",
+    "fact-37",
+    "case-36",
+    "fact-42",
+    "fact-43"
+  ],
+  "edits": [
+    {
+      "old": "  // Merge the alloc liverange with the liverange of any subview of the\n  // allocation.\n  SmallVector<Operation *> users(value.getUsers());\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>())\n      continue;\n    auto usersLivness = liveness.resolveLiveness(user->getResult(0));\n    liveOperations.insert(liveOperations.end(), usersLivness.begin(),\n                          usersLivness.end());\n    users.append(user->getResult(0).getUsers().begin(),\n                 user->getResult(0).getUsers().end());\n  }\n",
+      "new": "  // Merge the alloc liverange with the liveranges of descriptors that may\n  // alias it through views or selects, including chains of these operations.\n  SmallVector<Operation *> users(value.getUsers());\n  DenseSet<Operation *> seen;\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!seen.insert(user).second)\n      continue;\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>() &&\n        !isa<arith::SelectOp>(user))\n      continue;\n    auto usersLivness = liveness.resolveLiveness(user->getResult(0));\n    liveOperations.insert(liveOperations.end(), usersLivness.begin(),\n                          usersLivness.end());\n    users.append(user->getResult(0).getUsers().begin(),\n                 user->getResult(0).getUsers().end());\n  }\n"
+    }
+  ]
+}

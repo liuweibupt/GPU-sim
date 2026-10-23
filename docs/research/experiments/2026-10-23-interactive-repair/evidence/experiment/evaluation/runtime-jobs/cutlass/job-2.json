@@ -1,0 +1,57 @@
+{
+  "sources": [
+    "/home/liuwei/GPU-sim/tools/research/natural-repair-eval/hidden_gpu.py",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/hidden-v1/plan.json",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/runtime-jobs/cutlass/cutlass.raw.r2.bin",
+    "/home/liuwei/GPU-sim/out/research/natural-repair-eval/runtime-jobs/cutlass/cutlass.raw.r3.bin"
+  ],
+  "commands": [
+    {
+      "name": "identity",
+      "argv": [
+        "nvidia-smi",
+        "--query-gpu=name,compute_cap,driver_version",
+        "--format=csv,noheader"
+      ],
+      "timeout": 10
+    },
+    {
+      "name": "cutlass.raw.r2",
+      "argv": [
+        "python",
+        "hidden_gpu.py",
+        "--family",
+        "cutlass",
+        "--plan",
+        "plan.json",
+        "--output",
+        "cutlass.raw.r2",
+        "--binary",
+        "cutlass.raw.r2.bin"
+      ],
+      "timeout": 240,
+      "continue_on_failure": true
+    },
+    {
+      "name": "cutlass.raw.r3",
+      "argv": [
+        "python",
+        "hidden_gpu.py",
+        "--family",
+        "cutlass",
+        "--plan",
+        "plan.json",
+        "--output",
+        "cutlass.raw.r3",
+        "--binary",
+        "cutlass.raw.r3.bin"
+      ],
+      "timeout": 240,
+      "continue_on_failure": true
+    }
+  ],
+  "artifact_patterns": [
+    "cutlass.raw.r2/**/*",
+    "cutlass.raw.r3/**/*"
+  ]
+}

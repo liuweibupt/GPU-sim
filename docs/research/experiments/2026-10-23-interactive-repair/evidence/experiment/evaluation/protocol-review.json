@@ -1,0 +1,134 @@
+{
+  "format": "natural-repair-blind-protocol-review-v1",
+  "reviewedAt": "2026-10-23T13:48:31.119467+00:00",
+  "reviewer": "diagnostic_integration_map; implementation author independently inspecting evaluator inputs and scoring code, not independent of the tool design",
+  "status": "matched-input-checks-passed-with-scoring-caveat",
+  "reviewScope": "Frozen protocol, source code and input artifacts only. No trial answers, patches, model responses, or outcome files opened.",
+  "freezeManifestSHA256": "9c0315b20f55939946d7cd8131bba0ee1149d9860fbb792217d26ebcbab4a17d",
+  "frozenAt": "2026-10-23T13:41:59.615Z",
+  "integrityChecks": [
+    "input:benchmark-before.json",
+    "input:response.schema.json",
+    "input:tasks.json",
+    "input:protocol.json",
+    "input:cutlass.before",
+    "input:cutlass.data.json",
+    "input:cutlass.packet.json",
+    "input:cutlass.raw.prompt.txt",
+    "input:cutlass.diagnostic.prompt.txt",
+    "input:tmem.before",
+    "input:tmem.data.json",
+    "input:tmem.packet.json",
+    "input:tmem.raw.prompt.txt",
+    "input:tmem.diagnostic.prompt.txt",
+    "hidden-hash-only:plan.json",
+    "hidden-hash-only:regression_0.py",
+    "hidden-hash-only:regression_1.py",
+    "hidden-hash-only:regression_2.py",
+    "execution-source:tools/research/natural-repair-eval/experiment.mjs",
+    "execution-source:tools/research/natural-repair-eval/hidden_gpu.py",
+    "execution-source:tools/research/natural-repair-eval/prepare_hidden.py",
+    "execution-source:lib/research/natural-diagnostic.js"
+  ],
+  "families": [
+    {
+      "family": "cutlass",
+      "rawAndDiagnosticPacketIdentical": true,
+      "packetSha256": "24013031129d5677d5e0511c9994151fcf1d487bc58074963e818b46bbd95039",
+      "packetBytes": 73999,
+      "rleDecodesToCompleteFamilyData": true,
+      "cases": 24,
+      "sourceSHA256": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+      "sourceLines": 1240,
+      "fullEditableFilePresent": true
+    },
+    {
+      "family": "tmem",
+      "rawAndDiagnosticPacketIdentical": true,
+      "packetSha256": "34d5ecb98022aed9d53ad1f100dfd836cea4369590e585ff7b0c5327116ae833",
+      "packetBytes": 85127,
+      "rleDecodesToCompleteFamilyData": true,
+      "cases": 16,
+      "sourceSHA256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+      "sourceLines": 435,
+      "fullEditableFilePresent": true
+    }
+  ],
+  "benchmarkBoundary": {
+    "onlyInputVersions": true,
+    "sourceTextsUnchanged": true,
+    "neutralMetadata": true,
+    "noRepairOutcomeOrPatchMetadata": true,
+    "noSavedOverlapConclusion": true,
+    "trainingContaminationExcluded": false
+  },
+  "queryImplementation": {
+    "sha256": "233b4e99180b36d7aa01ded58329ac1bd0e40f070fc247f13f2469df6fc6c370",
+    "sameImplementationAsViewer": true,
+    "pureQueries": true,
+    "rawOps": [
+      "cases",
+      "list_cases",
+      "case",
+      "evidence",
+      "source"
+    ],
+    "diagnosticExtraOps": [
+      "overlap",
+      "contrast"
+    ],
+    "derivationsUseOnlySuppliedBeforeFacts": true,
+    "derivedResultsCarryRawRefs": true
+  },
+  "budget": {
+    "model": "gpt-6-astra",
+    "reasoning": "low",
+    "repetitions": 3,
+    "trials": 12,
+    "maxQueries": 2,
+    "maxCalls": 3,
+    "timeoutSecondsPerCall": 90,
+    "queryResponseLimitBytes": 180000,
+    "maxConcurrency": 2
+  },
+  "findings": [
+    {
+      "severity": "measurement-caveat",
+      "id": "shared-static-fact-reference-credit",
+      "detail": "Frozen localization() covers statuses through any case.evidenceRefs. A shared compiler-ir fact can therefore receive failure-and-control credit without citing two execution observations. Preserve frozen scores; report an additional strict score counting case IDs or device-output/execution-observation facts only.",
+      "sharedFacts": [
+        {
+          "factId": "fact-28",
+          "kind": "compiler-ir",
+          "linkedCaseIds": [
+            "case-26",
+            "case-27"
+          ],
+          "statuses": [
+            "passed",
+            "wrong_value"
+          ]
+        }
+      ]
+    },
+    {
+      "severity": "provenance-caveat",
+      "id": "transitive-helper-not-prefrozen",
+      "detail": "experiment.mjs imports auditJSONL from tools/research/agent-eval/run.mjs, which is not in the freeze source list. Its hash is recorded now as a supplementary audit, not as pre-execution freezing.",
+      "helperPath": "tools/research/agent-eval/run.mjs",
+      "currentSHA256": "fcbbcc85d4510f97b0c611c152abe3c5ff7f1fe2fb540ece5074a54e32952f1a"
+    }
+  ],
+  "limitations": [
+    "No human participant or visual interaction outcome is measured; the model receives text queries from the same backend.",
+    "Only two selected public root causes. Three repetitions of one model/configuration do not create six independent root causes or developers.",
+    "Both tasks provide the complete prelocalized editable file and name the defect scope. Localization is within a supplied file, not repository-wide discovery.",
+    "Both groups must query first; diagnostic must query overlap/contrast. This measures a mandated diagnostic workflow, not voluntary tool adoption.",
+    "Maximum calls/query count and per-call time are equal; actual tokens and prompt lengths differ by tool descriptions, returned query data and number of calls.",
+    "Raw already receives all source and observations, so extra diagnostic data are derived organization/computation rather than additional raw measurement.",
+    "Runtime time includes service, network and queue delays. Actual endpoint execution/model identity beyond registered alias was not independently verified here.",
+    "The prompt/cwd/tool audit limits visible experimental input; it cannot prove absence of public-bug training contamination.",
+    "A correct patch does not establish minimality, production performance or generality. Function-range localization is not explanation-quality scoring."
+  ],
+  "reviewScriptSHA256": "229432af09758d107c18c9f5e359f0ad7daa27c178cfc3d9cc3b4637beb5209f"
+}

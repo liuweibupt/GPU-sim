@@ -1,0 +1,373 @@
+{
+  "format": "natural-repair-trial-v1",
+  "id": "tmem.diagnostic.r2",
+  "family": "tmem",
+  "condition": "diagnostic",
+  "rep": 2,
+  "startedAt": "2026-10-23T13:43:52.474Z",
+  "calls": [
+    {
+      "round": 1,
+      "startedAt": "2026-10-23T13:43:52.475Z",
+      "finishedAt": "2026-10-23T13:44:01.099Z",
+      "wallSeconds": 8.624720716953277,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/natural-repair-Y95P1w/work",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/natural-repair-Y95P1w/schema.json",
+        "-o",
+        "/tmp/natural-repair-Y95P1w/answer.json",
+        "-"
+      ],
+      "promptSHA256": "7ee0a3d8ee0939b921b322be07f6a50cd99324e4afb6677d4ff39bb34c31d9cb",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null,
+      "valid": true,
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "overlap",
+          "id": "case-24",
+          "start": null,
+          "end": null,
+          "search": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "evidence_ids": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a16900-f3ef-73d0-bb3a-262c47b94f13"
+      },
+      "usage": [
+        {
+          "input_tokens": 46383,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 60,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "startedAt": "2026-10-23T13:44:01.101Z",
+      "finishedAt": "2026-10-23T13:44:33.383Z",
+      "wallSeconds": 32.28108968198299,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/natural-repair-48VR57/work",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/natural-repair-48VR57/schema.json",
+        "-o",
+        "/tmp/natural-repair-48VR57/answer.json",
+        "-"
+      ],
+      "promptSHA256": "94ee60739dec6ee5c1e380bd5869c58d7bd8db9ecd80f3b4bdc5e82d0d090c2e",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null,
+      "valid": true,
+      "finalMatches": true,
+      "answer": {
+        "action": "final",
+        "query": {
+          "op": "none",
+          "id": null,
+          "start": null,
+          "end": null,
+          "search": null,
+          "groupBy": null
+        },
+        "diagnosis": "getLiveIntervals follows descriptor views but stops at arith.select, so backing allocations can expire before the selected descriptor's final use. In case-24/25, the temporary occupies columns [0,64), overlapping both selected sources; selected outputs become 7 (fact-24/26). The 32-column contrast isolates the overlap: case-26 passes when selecting [32,64), while case-27 fails when selecting [0,32) (fact-27/29). Early allocation controls case-30/31 pass with the temporary at column 64 (fact-33/35). Case-32 also demonstrates legal reuse of the dead second allocation (fact-36/37). Extend the existing traversal through select results, transitively covering chained selects and views; deduplicate visited operations to avoid repeated traversal of converging chains. Allocation sizes, alignment, row constraints, first-fit policy, and lifetime-based reuse remain unchanged. Static IR supports premature reuse but does not measure hardware execution timestamps. Compilation and post-repair GPU validation are unavailable; repair success is not experimentally verified.",
+        "locations": [
+          {
+            "source_id": "source-01",
+            "start_line": 120,
+            "end_line": 135
+          },
+          {
+            "source_id": "source-02",
+            "start_line": 17,
+            "end_line": 26
+          },
+          {
+            "source_id": "source-03",
+            "start_line": 15,
+            "end_line": 24
+          },
+          {
+            "source_id": "source-05",
+            "start_line": 17,
+            "end_line": 26
+          },
+          {
+            "source_id": "source-06",
+            "start_line": 16,
+            "end_line": 22
+          }
+        ],
+        "evidence_ids": [
+          "case-24",
+          "case-25",
+          "fact-24",
+          "fact-25",
+          "fact-26",
+          "case-26",
+          "case-27",
+          "fact-27",
+          "fact-28",
+          "fact-29",
+          "case-30",
+          "case-31",
+          "fact-33",
+          "fact-34",
+          "fact-35",
+          "case-32",
+          "fact-36",
+          "fact-37",
+          "case-36",
+          "fact-42",
+          "fact-43"
+        ],
+        "edits": [
+          {
+            "old": "  // Merge the alloc liverange with the liverange of any subview of the\n  // allocation.\n  SmallVector<Operation *> users(value.getUsers());\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>())\n      continue;",
+            "new": "  // Merge the alloc liverange with the liveranges of descriptors that may\n  // alias it through views or selects, including chains of these operations.\n  SmallVector<Operation *> users(value.getUsers());\n  DenseSet<Operation *> seen;\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!seen.insert(user).second)\n      continue;\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>() &&\n        !isa<arith::SelectOp>(user))\n      continue;"
+          }
+        ]
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a16901-15a0-7a10-be4d-256bbde68002"
+      },
+      "usage": [
+        {
+          "input_tokens": 47453,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 725,
+          "reasoning_output_tokens": 70
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "round": 1,
+      "request": {
+        "op": "overlap",
+        "id": "case-24",
+        "start": null,
+        "end": null,
+        "search": null,
+        "groupBy": null
+      },
+      "response": {
+        "caseId": "case-24",
+        "supported": true,
+        "sourceId": "source-02",
+        "allocations": [
+          {
+            "ssa": "%selected",
+            "line": 17,
+            "rows": 128,
+            "columns": 32,
+            "interval": [
+              0,
+              32
+            ],
+            "raw": "    %selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc36)"
+          },
+          {
+            "ssa": "%selected_4",
+            "line": 18,
+            "rows": 128,
+            "columns": 32,
+            "interval": [
+              32,
+              64
+            ],
+            "raw": "    %selected_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc37)"
+          },
+          {
+            "ssa": "%temp",
+            "line": 24,
+            "rows": 128,
+            "columns": 64,
+            "interval": [
+              0,
+              64
+            ],
+            "raw": "    %temp = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc29)"
+          }
+        ],
+        "stores": [
+          {
+            "line": 19,
+            "destination": "%selected",
+            "value": 3,
+            "raw": "    ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+          },
+          {
+            "line": 20,
+            "destination": "%selected_4",
+            "value": 5,
+            "raw": "    ttng.tmem_store %cst_0, %selected_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+          },
+          {
+            "line": 25,
+            "destination": "%temp",
+            "value": 7,
+            "raw": "    ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+          }
+        ],
+        "loads": [
+          {
+            "line": 26,
+            "source": "%1",
+            "raw": "    %values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+          },
+          {
+            "line": 38,
+            "source": "%temp",
+            "raw": "    %temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc33)"
+          }
+        ],
+        "selects": {
+          "%1": [
+            "%selected",
+            "%selected_4"
+          ]
+        },
+        "candidates": [
+          {
+            "selectedSource": "%selected",
+            "selectedSourceValue": 3,
+            "overwritingAllocation": "%temp",
+            "overwritingValue": 7,
+            "interval": [
+              0,
+              32
+            ],
+            "storeLine": 25,
+            "loadLine": 26,
+            "rawRefs": [
+              {
+                "id": "source-02",
+                "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b",
+                "lines": [
+                  17,
+                  19,
+                  24,
+                  25,
+                  26
+                ]
+              }
+            ]
+          },
+          {
+            "selectedSource": "%selected_4",
+            "selectedSourceValue": 5,
+            "overwritingAllocation": "%temp",
+            "overwritingValue": 7,
+            "interval": [
+              32,
+              64
+            ],
+            "storeLine": 25,
+            "loadLine": 26,
+            "rawRefs": [
+              {
+                "id": "source-02",
+                "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b",
+                "lines": [
+                  18,
+                  20,
+                  24,
+                  25,
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "scope": "Possible selected-source overlap in this straight-line 128-row compiler IR. No sampled hardware ordering or generic alias analysis.",
+        "rawRefs": [
+          {
+            "id": "source-02",
+            "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b"
+          },
+          {
+            "id": "raw-024",
+            "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b"
+          }
+        ]
+      },
+      "wallMilliseconds": 0.3920379877090454,
+      "responseSHA256": "18b3d4cb1a25161700040f4350472957657ab3f9d63e4c99126988ae633f20f5"
+    }
+  ],
+  "valid": true,
+  "finishedAt": "2026-10-23T13:44:33.384Z",
+  "scores": {
+    "locationHit": true,
+    "allLocationsValid": false,
+    "referencesValid": true,
+    "failureAndControlCovered": true,
+    "supportedLocalization": false
+  },
+  "modelWallSeconds": 40.90581039893627,
+  "queryMilliseconds": 0.3920379877090454,
+  "usage": {
+    "input_tokens": 93836,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 785,
+    "reasoning_output_tokens": 70
+  }
+}

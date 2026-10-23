@@ -1,0 +1,113 @@
+{
+  "totals": {
+    "model_trials": 12,
+    "model_calls": 30,
+    "queries": 18,
+    "unique_source_candidates": 11,
+    "actual_candidate_gpu_cases": 348,
+    "actual_candidate_output_elements": 16539648,
+    "candidate_sanitizer_calls": 12
+  },
+  "cells": [
+    {
+      "family": "cutlass",
+      "condition": "raw",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 3,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 55.24139936304093,
+      "model_wall_range_seconds": [
+        52.717283876895905,
+        56.6085430110693
+      ],
+      "queries": 6,
+      "query_median_milliseconds": 1.8650550842285156,
+      "usage": {
+        "input_tokens": 446774,
+        "cached_input_tokens": 43776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2636,
+        "reasoning_output_tokens": 396
+      }
+    },
+    {
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 3,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 69.06917295396329,
+      "model_wall_range_seconds": [
+        53.377476683974265,
+        73.01702020299435
+      ],
+      "queries": 6,
+      "query_median_milliseconds": 1.0629620552062988,
+      "usage": {
+        "input_tokens": 369083,
+        "cached_input_tokens": 43776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3247,
+        "reasoning_output_tokens": 833
+      }
+    },
+    {
+      "family": "tmem",
+      "condition": "raw",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 0,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 41.41148488986492,
+      "model_wall_range_seconds": [
+        38.446108517050746,
+        43.58478868091107
+      ],
+      "queries": 3,
+      "query_median_milliseconds": 0.23012399673461914,
+      "usage": {
+        "input_tokens": 279615,
+        "cached_input_tokens": 29184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2538,
+        "reasoning_output_tokens": 199
+      }
+    },
+    {
+      "family": "tmem",
+      "condition": "diagnostic",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 0,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 40.90581039893627,
+      "model_wall_range_seconds": [
+        38.032260974049564,
+        44.998696109056475
+      ],
+      "queries": 3,
+      "query_median_milliseconds": 0.4974100589752197,
+      "usage": {
+        "input_tokens": 281512,
+        "cached_input_tokens": 14592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2291,
+        "reasoning_output_tokens": 250
+      }
+    }
+  ]
+}

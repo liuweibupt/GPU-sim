@@ -1,0 +1,1017 @@
+{
+  "format": "natural-repair-hidden-plan-v1",
+  "cutlass": [
+    {
+      "partition": "known",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "known",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "known",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "known",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        128,
+        256
+      ],
+      "m": 256,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        128,
+        256
+      ],
+      "m": 256,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        0,
+        128,
+        0,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        0,
+        128,
+        0,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        128,
+        256,
+        0,
+        128,
+        0,
+        256,
+        0,
+        128
+      ],
+      "m": 256,
+      "n": 256,
+      "host_shapes": 0,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden",
+      "k": [
+        128,
+        256,
+        0,
+        128,
+        0,
+        256,
+        0,
+        128
+      ],
+      "m": 256,
+      "n": 256,
+      "host_shapes": 1,
+      "tool": "normal"
+    },
+    {
+      "partition": "hidden-sanitizer",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "memcheck"
+    },
+    {
+      "partition": "hidden-sanitizer",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "memcheck"
+    }
+  ],
+  "tmem": [
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      }
+    },
+    {
+      "partition": "known",
+      "module": "regression_0.py",
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_1.py",
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      }
+    },
+    {
+      "partition": "hidden",
+      "module": "regression_2.py",
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      }
+    }
+  ],
+  "modules": {
+    "regression_0.py": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+    "regression_1.py": "3346dd5b0fe328aef1aba8008d3583fb9bf8bccddb345fe543094108452167d6",
+    "regression_2.py": "728e5d160d4492fd978a4c5098a3f0773ea0b8baa848721e35d74cd4cbba8ee3"
+  },
+  "limits": [
+    "CUTLASS beta=0 only: old beta=1 has a separate positive-control failure.",
+    "TMEM hidden cases are new constant substitutions in the same 16-configuration regression; not independent root causes.",
+    "Known public regressions are withheld from prompts only, not proven absent from training."
+  ]
+}

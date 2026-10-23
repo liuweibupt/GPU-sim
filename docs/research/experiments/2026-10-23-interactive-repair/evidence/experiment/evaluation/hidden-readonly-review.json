@@ -1,0 +1,97 @@
+{
+  "scope": "Read-only static review, no GPU or model calls",
+  "plan_sha256": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+  "modules": [
+    {
+      "module": "regression_0.py",
+      "sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+      "changed_lines": [],
+      "line_count_unchanged": true
+    },
+    {
+      "module": "regression_1.py",
+      "sha256": "3346dd5b0fe328aef1aba8008d3583fb9bf8bccddb345fe543094108452167d6",
+      "changed_lines": [
+        {
+          "line": 29,
+          "before": "        first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))",
+          "after": "        first.store(ttgl.full([128, 32], 11, ttgl.float32, first.get_reg_layout()))"
+        },
+        {
+          "line": 30,
+          "before": "        second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))",
+          "after": "        second.store(ttgl.full([128, 32], 13, ttgl.float32, second.get_reg_layout()))"
+        },
+        {
+          "line": 57,
+          "before": "            temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))",
+          "after": "            temp.store(ttgl.full([128, TEMP_COLS], 17, ttgl.float32, temp.get_reg_layout()))"
+        },
+        {
+          "line": 75,
+          "before": "    expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5",
+          "after": "    expected = 11 if mode == \"first\" or (mode == \"select\" and choice) else 13"
+        },
+        {
+          "line": 77,
+          "before": "        expected = 3 if choice == outer_choice else 5",
+          "after": "        expected = 11 if choice == outer_choice else 13"
+        },
+        {
+          "line": 80,
+          "before": "        torch.testing.assert_close(temporary, torch.full_like(temporary, 7), atol=0, rtol=0)",
+          "after": "        torch.testing.assert_close(temporary, torch.full_like(temporary, 17), atol=0, rtol=0)"
+        }
+      ],
+      "line_count_unchanged": true
+    },
+    {
+      "module": "regression_2.py",
+      "sha256": "728e5d160d4492fd978a4c5098a3f0773ea0b8baa848721e35d74cd4cbba8ee3",
+      "changed_lines": [
+        {
+          "line": 29,
+          "before": "        first.store(ttgl.full([128, 32], 3, ttgl.float32, first.get_reg_layout()))",
+          "after": "        first.store(ttgl.full([128, 32], -2, ttgl.float32, first.get_reg_layout()))"
+        },
+        {
+          "line": 30,
+          "before": "        second.store(ttgl.full([128, 32], 5, ttgl.float32, second.get_reg_layout()))",
+          "after": "        second.store(ttgl.full([128, 32], 9, ttgl.float32, second.get_reg_layout()))"
+        },
+        {
+          "line": 57,
+          "before": "            temp.store(ttgl.full([128, TEMP_COLS], 7, ttgl.float32, temp.get_reg_layout()))",
+          "after": "            temp.store(ttgl.full([128, TEMP_COLS], 23, ttgl.float32, temp.get_reg_layout()))"
+        },
+        {
+          "line": 75,
+          "before": "    expected = 3 if mode == \"first\" or (mode == \"select\" and choice) else 5",
+          "after": "    expected = -2 if mode == \"first\" or (mode == \"select\" and choice) else 9"
+        },
+        {
+          "line": 77,
+          "before": "        expected = 3 if choice == outer_choice else 5",
+          "after": "        expected = -2 if choice == outer_choice else 9"
+        },
+        {
+          "line": 80,
+          "before": "        torch.testing.assert_close(temporary, torch.full_like(temporary, 7), atol=0, rtol=0)",
+          "after": "        torch.testing.assert_close(temporary, torch.full_like(temporary, 23), atol=0, rtol=0)"
+        }
+      ],
+      "line_count_unchanged": true
+    }
+  ],
+  "cases": {
+    "cutlass": 18,
+    "tmem": 48
+  },
+  "formula_checked": "For choice/outer_choice in {0,1}, chain selects a iff choice==outer_choice; early/direct controls unchanged. Temporary excluded at columns=0.",
+  "required_offline_validation": [
+    "CUTLASS retained FP8/shape/group coverage independent verification",
+    "Unique complete sanitizer summary/banner",
+    "Missing runtime cases retained as failure/incomplete, not omitted denominator"
+  ],
+  "limits": "Hidden TMEM inputs change constants only; no independent root-cause/scalability claim."
+}

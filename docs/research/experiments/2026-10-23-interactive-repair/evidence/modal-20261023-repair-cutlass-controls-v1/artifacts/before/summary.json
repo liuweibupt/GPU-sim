@@ -1,0 +1,1151 @@
+{
+  "format": "natural-repair-cutlass-runtime-v1",
+  "plan_sha256": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+  "binary_sha256": "53706081687daf5dbaad76e9ee03cb6cfebd20ee0add0dc637a7e260da625c2a",
+  "records": [
+    {
+      "id": "case-00",
+      "partition": "known",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 0.3234156650000002,
+      "groups": [
+        {
+          "group": 0,
+          "m": 128,
+          "n": 128,
+          "k": 128,
+          "beta": 0,
+          "outputs": 16384,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        },
+        {
+          "group": 1,
+          "m": 128,
+          "n": 128,
+          "k": 256,
+          "beta": 0,
+          "outputs": 16384,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        },
+        {
+          "group": 2,
+          "m": 128,
+          "n": 128,
+          "k": 128,
+          "beta": 0,
+          "outputs": 16384,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        }
+      ],
+      "mismatches": 0,
+      "outputs": 49152,
+      "passed": true,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "group-0-c.bin",
+          "bytes": 16384,
+          "sha256": "62b2b6ba5790e7e3c33af970bb7f8577de94b60db027e63487c3eb8329f6357e"
+        },
+        {
+          "path": "group-0-observed.bin",
+          "bytes": 16384,
+          "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe"
+        },
+        {
+          "path": "group-0-reference.bin",
+          "bytes": 16384,
+          "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe"
+        },
+        {
+          "path": "group-1-c.bin",
+          "bytes": 16384,
+          "sha256": "a1d76302fd6a4f0d97ac20292c77e59e3645bd254796defc26c91dd15f8f8780"
+        },
+        {
+          "path": "group-1-observed.bin",
+          "bytes": 16384,
+          "sha256": "937322749981cc7ffb6a89bd55e21862ea91be3eca459fee7abb8bc16ada9da5"
+        },
+        {
+          "path": "group-1-reference.bin",
+          "bytes": 16384,
+          "sha256": "937322749981cc7ffb6a89bd55e21862ea91be3eca459fee7abb8bc16ada9da5"
+        },
+        {
+          "path": "group-2-c.bin",
+          "bytes": 16384,
+          "sha256": "8fc79c9bf150c1e508efa8106301b54b321a70d84aea01473e254dd9b1909ca9"
+        },
+        {
+          "path": "group-2-observed.bin",
+          "bytes": 16384,
+          "sha256": "2ce1af61eaee1d56377208dbabc937f42889a91592ffc740fee4493d3f35792d"
+        },
+        {
+          "path": "group-2-reference.bin",
+          "bytes": 16384,
+          "sha256": "2ce1af61eaee1d56377208dbabc937f42889a91592ffc740fee4493d3f35792d"
+        },
+        {
+          "path": "shapes.txt",
+          "bytes": 42,
+          "sha256": "0e8d51579119bd4eb86afa12bba67fb97a0c6a62e71436204f5a8ebc89935a7f"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 366,
+          "sha256": "346cdcfd5fcc43c60640464a400842013a34d02a862b2c222cf02edc8d9aea48"
+        }
+      ]
+    },
+    {
+      "id": "case-01",
+      "partition": "known",
+      "k": [
+        128,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 0.35069042400000017,
+      "groups": [
+        {
+          "group": 0,
+          "m": 128,
+          "n": 128,
+          "k": 128,
+          "beta": 0,
+          "outputs": 16384,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        },
+        {
+          "group": 1,
+          "m": 128,
+          "n": 128,
+          "k": 256,
+          "beta": 0,
+          "outputs": 16384,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        },
+        {
+          "group": 2,
+          "m": 128,
+          "n": 128,
+          "k": 128,
+          "beta": 0,
+          "outputs": 16384,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        }
+      ],
+      "mismatches": 0,
+      "outputs": 49152,
+      "passed": true,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "group-0-c.bin",
+          "bytes": 16384,
+          "sha256": "62b2b6ba5790e7e3c33af970bb7f8577de94b60db027e63487c3eb8329f6357e"
+        },
+        {
+          "path": "group-0-observed.bin",
+          "bytes": 16384,
+          "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe"
+        },
+        {
+          "path": "group-0-reference.bin",
+          "bytes": 16384,
+          "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe"
+        },
+        {
+          "path": "group-1-c.bin",
+          "bytes": 16384,
+          "sha256": "a1d76302fd6a4f0d97ac20292c77e59e3645bd254796defc26c91dd15f8f8780"
+        },
+        {
+          "path": "group-1-observed.bin",
+          "bytes": 16384,
+          "sha256": "937322749981cc7ffb6a89bd55e21862ea91be3eca459fee7abb8bc16ada9da5"
+        },
+        {
+          "path": "group-1-reference.bin",
+          "bytes": 16384,
+          "sha256": "937322749981cc7ffb6a89bd55e21862ea91be3eca459fee7abb8bc16ada9da5"
+        },
+        {
+          "path": "group-2-c.bin",
+          "bytes": 16384,
+          "sha256": "8fc79c9bf150c1e508efa8106301b54b321a70d84aea01473e254dd9b1909ca9"
+        },
+        {
+          "path": "group-2-observed.bin",
+          "bytes": 16384,
+          "sha256": "2ce1af61eaee1d56377208dbabc937f42889a91592ffc740fee4493d3f35792d"
+        },
+        {
+          "path": "group-2-reference.bin",
+          "bytes": 16384,
+          "sha256": "2ce1af61eaee1d56377208dbabc937f42889a91592ffc740fee4493d3f35792d"
+        },
+        {
+          "path": "shapes.txt",
+          "bytes": 42,
+          "sha256": "0e8d51579119bd4eb86afa12bba67fb97a0c6a62e71436204f5a8ebc89935a7f"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 366,
+          "sha256": "5ce3ad9d0dafb9c9d673c9438b2cb288b4ac525a611691878122e07796c5b06d"
+        }
+      ]
+    },
+    {
+      "id": "case-02",
+      "partition": "known",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.106679948,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 40,
+          "sha256": "a4461d8d2622ff8867e318c3a0f7c93d734b1f2182ef7c723e12211b399a136a"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "6bccc731ce55b4436f1bae9fcd1ed9293636941bc8a9dbe335b3683ff4fba44e"
+        }
+      ]
+    },
+    {
+      "id": "case-03",
+      "partition": "known",
+      "k": [
+        0,
+        128,
+        256
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.097087682999998,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 40,
+          "sha256": "a4461d8d2622ff8867e318c3a0f7c93d734b1f2182ef7c723e12211b399a136a"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "0c10e81cff0423e64110da1dcbc98d16b2b0ebf06da8b913b9228d9b27814307"
+        }
+      ]
+    },
+    {
+      "id": "case-04",
+      "partition": "hidden",
+      "k": [
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.090057320999996,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 12,
+          "sha256": "75bae8a81fe8fac193b18843c064a077f42256f2e79c32e4ebeb65de3e058a75"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "6bccc731ce55b4436f1bae9fcd1ed9293636941bc8a9dbe335b3683ff4fba44e"
+        }
+      ]
+    },
+    {
+      "id": "case-05",
+      "partition": "hidden",
+      "k": [
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.090111723999996,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 12,
+          "sha256": "75bae8a81fe8fac193b18843c064a077f42256f2e79c32e4ebeb65de3e058a75"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "0c10e81cff0423e64110da1dcbc98d16b2b0ebf06da8b913b9228d9b27814307"
+        }
+      ]
+    },
+    {
+      "id": "case-06",
+      "partition": "hidden",
+      "k": [
+        128,
+        256
+      ],
+      "m": 256,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 0.6309449069999999,
+      "groups": [
+        {
+          "group": 0,
+          "m": 256,
+          "n": 128,
+          "k": 128,
+          "beta": 0,
+          "outputs": 32768,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        },
+        {
+          "group": 1,
+          "m": 256,
+          "n": 128,
+          "k": 256,
+          "beta": 0,
+          "outputs": 32768,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        }
+      ],
+      "mismatches": 0,
+      "outputs": 65536,
+      "passed": true,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "group-0-c.bin",
+          "bytes": 32768,
+          "sha256": "97ad89f0e7a6fb5d47d56fdac66c18026b9878f32b3f1969bb68e5b5818dc57f"
+        },
+        {
+          "path": "group-0-observed.bin",
+          "bytes": 32768,
+          "sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479"
+        },
+        {
+          "path": "group-0-reference.bin",
+          "bytes": 32768,
+          "sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479"
+        },
+        {
+          "path": "group-1-c.bin",
+          "bytes": 32768,
+          "sha256": "49d5f9222cd176e38d7d06866f6972c9da416979dbee71e3cb51d9c213650b27"
+        },
+        {
+          "path": "group-1-observed.bin",
+          "bytes": 32768,
+          "sha256": "be50fb144054168077bf59c31e62f826b09e8bff7bed92f9ad68ccc0a487235f"
+        },
+        {
+          "path": "group-1-reference.bin",
+          "bytes": 32768,
+          "sha256": "be50fb144054168077bf59c31e62f826b09e8bff7bed92f9ad68ccc0a487235f"
+        },
+        {
+          "path": "shapes.txt",
+          "bytes": 28,
+          "sha256": "3b26fd8afb1e387a324011279b914a45f00d9c55fed25d230061b6b86b2dfcc0"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 259,
+          "sha256": "776fa3a357f4924d794d1c6a2f8d69cce664b6f5ec261f8ce279602309a46e74"
+        }
+      ]
+    },
+    {
+      "id": "case-07",
+      "partition": "hidden",
+      "k": [
+        128,
+        256
+      ],
+      "m": 256,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_seconds": 0.2889894159999997,
+      "groups": [
+        {
+          "group": 0,
+          "m": 256,
+          "n": 128,
+          "k": 128,
+          "beta": 0,
+          "outputs": 32768,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        },
+        {
+          "group": 1,
+          "m": 256,
+          "n": 128,
+          "k": 256,
+          "beta": 0,
+          "outputs": 32768,
+          "mismatches": 0,
+          "zero_k_mismatches": 0
+        }
+      ],
+      "mismatches": 0,
+      "outputs": 65536,
+      "passed": true,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "group-0-c.bin",
+          "bytes": 32768,
+          "sha256": "97ad89f0e7a6fb5d47d56fdac66c18026b9878f32b3f1969bb68e5b5818dc57f"
+        },
+        {
+          "path": "group-0-observed.bin",
+          "bytes": 32768,
+          "sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479"
+        },
+        {
+          "path": "group-0-reference.bin",
+          "bytes": 32768,
+          "sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479"
+        },
+        {
+          "path": "group-1-c.bin",
+          "bytes": 32768,
+          "sha256": "49d5f9222cd176e38d7d06866f6972c9da416979dbee71e3cb51d9c213650b27"
+        },
+        {
+          "path": "group-1-observed.bin",
+          "bytes": 32768,
+          "sha256": "be50fb144054168077bf59c31e62f826b09e8bff7bed92f9ad68ccc0a487235f"
+        },
+        {
+          "path": "group-1-reference.bin",
+          "bytes": 32768,
+          "sha256": "be50fb144054168077bf59c31e62f826b09e8bff7bed92f9ad68ccc0a487235f"
+        },
+        {
+          "path": "shapes.txt",
+          "bytes": 28,
+          "sha256": "3b26fd8afb1e387a324011279b914a45f00d9c55fed25d230061b6b86b2dfcc0"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 259,
+          "sha256": "1aad53b4f8beeffc55a2ee3a00fdb77a1ba8ab1e93eb70becfe9bed9d2da1ff7"
+        }
+      ]
+    },
+    {
+      "id": "case-08",
+      "partition": "hidden",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.093362491999997,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 52,
+          "sha256": "bccfb6b369db5aed250f12af0b5a9962098f74d11d46b93dd069891f356abace"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "6bccc731ce55b4436f1bae9fcd1ed9293636941bc8a9dbe335b3683ff4fba44e"
+        }
+      ]
+    },
+    {
+      "id": "case-09",
+      "partition": "hidden",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.089026687999997,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 52,
+          "sha256": "bccfb6b369db5aed250f12af0b5a9962098f74d11d46b93dd069891f356abace"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "0c10e81cff0423e64110da1dcbc98d16b2b0ebf06da8b913b9228d9b27814307"
+        }
+      ]
+    },
+    {
+      "id": "case-10",
+      "partition": "hidden",
+      "k": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.093661963000002,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 60,
+          "sha256": "264f8a48149ffbfb1786b5d44713b4521b949909ca684fd10cc206dcd6c6c017"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "6bccc731ce55b4436f1bae9fcd1ed9293636941bc8a9dbe335b3683ff4fba44e"
+        }
+      ]
+    },
+    {
+      "id": "case-11",
+      "partition": "hidden",
+      "k": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.097907148999994,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 60,
+          "sha256": "264f8a48149ffbfb1786b5d44713b4521b949909ca684fd10cc206dcd6c6c017"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "0c10e81cff0423e64110da1dcbc98d16b2b0ebf06da8b913b9228d9b27814307"
+        }
+      ]
+    },
+    {
+      "id": "case-12",
+      "partition": "hidden",
+      "k": [
+        0,
+        128,
+        0,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.167774630000011,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 66,
+          "sha256": "69505d58ad1c29c79b487374df874dc01262b1e324093a43e6fb3d38a5291266"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "6bccc731ce55b4436f1bae9fcd1ed9293636941bc8a9dbe335b3683ff4fba44e"
+        }
+      ]
+    },
+    {
+      "id": "case-13",
+      "partition": "hidden",
+      "k": [
+        0,
+        128,
+        0,
+        256,
+        128
+      ],
+      "m": 128,
+      "n": 256,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.097662353000004,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 66,
+          "sha256": "69505d58ad1c29c79b487374df874dc01262b1e324093a43e6fb3d38a5291266"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "0c10e81cff0423e64110da1dcbc98d16b2b0ebf06da8b913b9228d9b27814307"
+        }
+      ]
+    },
+    {
+      "id": "case-14",
+      "partition": "hidden",
+      "k": [
+        128,
+        256,
+        0,
+        128,
+        0,
+        256,
+        0,
+        128
+      ],
+      "m": 256,
+      "n": 256,
+      "host_shapes": 0,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.116282092000006,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 106,
+          "sha256": "9394a6ef6e105295b83a121822446b4690fb08c4b72f31231e7c466b5a58245b"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "6bccc731ce55b4436f1bae9fcd1ed9293636941bc8a9dbe335b3683ff4fba44e"
+        }
+      ]
+    },
+    {
+      "id": "case-15",
+      "partition": "hidden",
+      "k": [
+        128,
+        256,
+        0,
+        128,
+        0,
+        256,
+        0,
+        128
+      ],
+      "m": 256,
+      "n": 256,
+      "host_shapes": 1,
+      "tool": "normal",
+      "argv": [
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 10.132891947999994,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 106,
+          "sha256": "9394a6ef6e105295b83a121822446b4690fb08c4b72f31231e7c466b5a58245b"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 23,
+          "sha256": "0c10e81cff0423e64110da1dcbc98d16b2b0ebf06da8b913b9228d9b27814307"
+        }
+      ]
+    },
+    {
+      "id": "case-16",
+      "partition": "hidden-sanitizer",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 0,
+      "tool": "memcheck",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "86",
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=0"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 30.00369884300001,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 52,
+          "sha256": "bccfb6b369db5aed250f12af0b5a9962098f74d11d46b93dd069891f356abace"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 51,
+          "sha256": "21f818f9f85a2011b1e3bcf7578d4a5fea30090bab42130d518cca4380bf6dce"
+        }
+      ]
+    },
+    {
+      "id": "case-17",
+      "partition": "hidden-sanitizer",
+      "k": [
+        128,
+        0,
+        256,
+        0
+      ],
+      "m": 128,
+      "n": 128,
+      "host_shapes": 1,
+      "tool": "memcheck",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "86",
+        "/tmp/gpu-semantic-evidence/cutlass_before",
+        "--benchmark=shapes.txt",
+        "--iterations=0",
+        "--raster=h",
+        "--swizzle=1",
+        "--alpha=1",
+        "--beta=0",
+        "--host-shapes=1"
+      ],
+      "exit_code": null,
+      "timed_out": true,
+      "wall_seconds": 30.003490752999994,
+      "groups": [],
+      "mismatches": 0,
+      "outputs": 0,
+      "passed": false,
+      "sanitizer_clean": false,
+      "files": [
+        {
+          "path": "shapes.txt",
+          "bytes": 52,
+          "sha256": "bccfb6b369db5aed250f12af0b5a9962098f74d11d46b93dd069891f356abace"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stdout.txt",
+          "bytes": 51,
+          "sha256": "1692364962721079c09a08aa080859ee3fba97207dcf885df223dfa952a01db4"
+        }
+      ]
+    }
+  ]
+}

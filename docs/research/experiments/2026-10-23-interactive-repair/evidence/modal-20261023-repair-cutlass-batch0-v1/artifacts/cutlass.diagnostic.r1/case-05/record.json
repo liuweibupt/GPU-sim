@@ -1,0 +1,72 @@
+{
+  "id": "case-05",
+  "partition": "hidden",
+  "k": [
+    0
+  ],
+  "m": 128,
+  "n": 128,
+  "host_shapes": 1,
+  "tool": "normal",
+  "argv": [
+    "/tmp/gpu-semantic-evidence/cutlass.diagnostic.r1.bin",
+    "--benchmark=shapes.txt",
+    "--iterations=0",
+    "--raster=h",
+    "--swizzle=1",
+    "--alpha=1",
+    "--beta=0",
+    "--host-shapes=1"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 0.9893269519999999,
+  "groups": [
+    {
+      "group": 0,
+      "m": 128,
+      "n": 128,
+      "k": 0,
+      "beta": 0,
+      "outputs": 16384,
+      "mismatches": 0,
+      "zero_k_mismatches": 0
+    }
+  ],
+  "mismatches": 0,
+  "outputs": 16384,
+  "passed": true,
+  "sanitizer_clean": false,
+  "files": [
+    {
+      "path": "group-0-c.bin",
+      "bytes": 16384,
+      "sha256": "62b2b6ba5790e7e3c33af970bb7f8577de94b60db027e63487c3eb8329f6357e"
+    },
+    {
+      "path": "group-0-observed.bin",
+      "bytes": 16384,
+      "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe"
+    },
+    {
+      "path": "group-0-reference.bin",
+      "bytes": 16384,
+      "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe"
+    },
+    {
+      "path": "shapes.txt",
+      "bytes": 12,
+      "sha256": "75bae8a81fe8fac193b18843c064a077f42256f2e79c32e4ebeb65de3e058a75"
+    },
+    {
+      "path": "stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stdout.txt",
+      "bytes": 150,
+      "sha256": "30b39f5d15cb30d7ba2f6d696a11d87f736aa5e4c1b85b5feca58e000dc07f56"
+    }
+  ]
+}

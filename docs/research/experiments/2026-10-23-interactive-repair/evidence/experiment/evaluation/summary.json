@@ -1,0 +1,699 @@
+{
+  "format": "natural-repair-comparison-v1",
+  "created_at": "2026-10-23T13:54:19.307607+00:00",
+  "protocol_sha256": "406c30acd3d653a1812103a19e0ef6222f9e25e41c3d64abc2876c4dad3eb03f",
+  "freeze_manifest_sha256": "9c0315b20f55939946d7cd8131bba0ee1149d9860fbb792217d26ebcbab4a17d",
+  "generation_summary_sha256": "44bf96e926583dfda01023ee63f7723dce62ffbffcc83761a22a6b13d9a6bfeb",
+  "reporter_sha256": "78072e8a03dc0b9827954d040cf5d249e4154a88b34f7181cb50ed1b85440b48",
+  "cells": [
+    {
+      "family": "cutlass",
+      "condition": "raw",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 3,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 55.24139936304093,
+      "model_wall_range_seconds": [
+        52.717283876895905,
+        56.6085430110693
+      ],
+      "queries": 6,
+      "query_median_milliseconds": 1.8650550842285156,
+      "usage": {
+        "input_tokens": 446774,
+        "cached_input_tokens": 43776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2636,
+        "reasoning_output_tokens": 396
+      }
+    },
+    {
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 3,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 69.06917295396329,
+      "model_wall_range_seconds": [
+        53.377476683974265,
+        73.01702020299435
+      ],
+      "queries": 6,
+      "query_median_milliseconds": 1.0629620552062988,
+      "usage": {
+        "input_tokens": 369083,
+        "cached_input_tokens": 43776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3247,
+        "reasoning_output_tokens": 833
+      }
+    },
+    {
+      "family": "tmem",
+      "condition": "raw",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 0,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 41.41148488986492,
+      "model_wall_range_seconds": [
+        38.446108517050746,
+        43.58478868091107
+      ],
+      "queries": 3,
+      "query_median_milliseconds": 0.23012399673461914,
+      "usage": {
+        "input_tokens": 279615,
+        "cached_input_tokens": 29184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2538,
+        "reasoning_output_tokens": 199
+      }
+    },
+    {
+      "family": "tmem",
+      "condition": "diagnostic",
+      "trials": 3,
+      "valid": 3,
+      "location_hits": 3,
+      "original_supported_localization": 0,
+      "secondary_supported_localization": 3,
+      "compiled": 3,
+      "runtime_repair_passed": 3,
+      "model_wall_median_seconds": 40.90581039893627,
+      "model_wall_range_seconds": [
+        38.032260974049564,
+        44.998696109056475
+      ],
+      "queries": 3,
+      "query_median_milliseconds": 0.4974100589752197,
+      "usage": {
+        "input_tokens": 281512,
+        "cached_input_tokens": 14592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2291,
+        "reasoning_output_tokens": 250
+      }
+    }
+  ],
+  "rows": [
+    {
+      "id": "cutlass.diagnostic.r1",
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "repetition": 1,
+      "generation_valid": true,
+      "answer_sha256": "b9f9e239824066898869d11a74cc67a3aae3b9f6c60fe9492c64eed1b94a87fe",
+      "candidate_source_sha256": "8023fc26ca811c4efabab0e2e9ce4937b9ad96bc74cc39618335db1088fa27bf",
+      "compile_status": "built",
+      "build_result_sha256": "b681be89acafe8890ef1868461fd9dd90cfabe2790ece087fbe415ae88ab6704",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": true,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": true
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 2,
+      "model_calls": 3,
+      "model_wall_seconds": 69.06917295396329,
+      "query_milliseconds": 1.1516469717025757,
+      "usage": {
+        "input_tokens": 122660,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1210,
+        "reasoning_output_tokens": 254
+      },
+      "runtime_canonical_trial": "cutlass.diagnostic.r1",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "00d4ed15cc57ef1defe52f5dd312ae9499e4bcb65c9b45425c95c6e23297b242",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        },
+        "known": {
+          "passed": 4,
+          "expected": 4
+        }
+      },
+      "cpu_lit_passed": null,
+      "build_command_wall_seconds": 29.362202030955814
+    },
+    {
+      "id": "cutlass.diagnostic.r2",
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "repetition": 2,
+      "generation_valid": true,
+      "answer_sha256": "c95ba84a8b2311fca183e42089eaf04d650f1da45c8ea83e458c55c6749e5e95",
+      "candidate_source_sha256": "736f65daae8416d1908af4427b0317620c07677cc537253736f69fe545cef9fd",
+      "compile_status": "built",
+      "build_result_sha256": "9a8a45b103e0ca4ac06be481c071f2588add00260e9315c284b9072494ae1c57",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": true,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": true
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 2,
+      "model_calls": 3,
+      "model_wall_seconds": 53.377476683974265,
+      "query_milliseconds": 1.0629620552062988,
+      "usage": {
+        "input_tokens": 123758,
+        "cached_input_tokens": 29184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 867,
+        "reasoning_output_tokens": 179
+      },
+      "runtime_canonical_trial": "cutlass.diagnostic.r2",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "cf2480edc75edb6fa59f63c0eb7c15d244ac4032fa1d93c1fb86d297722005b2",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        },
+        "known": {
+          "passed": 4,
+          "expected": 4
+        }
+      },
+      "cpu_lit_passed": null,
+      "build_command_wall_seconds": 30.108635128941387
+    },
+    {
+      "id": "cutlass.diagnostic.r3",
+      "family": "cutlass",
+      "condition": "diagnostic",
+      "repetition": 3,
+      "generation_valid": true,
+      "answer_sha256": "3990058c958edcc9d59a578fa4738d6ef526c732819914c569211ed3ba527306",
+      "candidate_source_sha256": "32b622a6288e9e62af8915b77e3e47966f30dbbc975c51abd67bbcef4e0b6b28",
+      "compile_status": "built",
+      "build_result_sha256": "9d20dccacc0484ce3ea6cd698f32e908d510ba83ffc09db24e35de22d13b0f75",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": true,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": true
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 2,
+      "model_calls": 3,
+      "model_wall_seconds": 73.01702020299435,
+      "query_milliseconds": 0.7464158535003662,
+      "usage": {
+        "input_tokens": 122665,
+        "cached_input_tokens": 14592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1170,
+        "reasoning_output_tokens": 400
+      },
+      "runtime_canonical_trial": "cutlass.diagnostic.r3",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "45b4be8477ce0560e84d46867ab9af8b97840236285eb84354cc8142c6138956",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        },
+        "known": {
+          "passed": 4,
+          "expected": 4
+        }
+      },
+      "cpu_lit_passed": null,
+      "build_command_wall_seconds": 30.7619118449511
+    },
+    {
+      "id": "cutlass.raw.r1",
+      "family": "cutlass",
+      "condition": "raw",
+      "repetition": 1,
+      "generation_valid": true,
+      "answer_sha256": "d3f6b85c16b91eb9b7b77143535852e4ecd5474439bf8c7457d739c46c7dbe4c",
+      "candidate_source_sha256": "f12aab08a1d2e46bc491363e7652ac50b20e3417c73593940f8ecac3a577a96e",
+      "compile_status": "built",
+      "build_result_sha256": "2f84b89c4f05699a9b2c08e0e644d6418a0de0a828b15a373c1ff8fa4ce5757e",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": true,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": true
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 2,
+      "model_calls": 3,
+      "model_wall_seconds": 55.24139936304093,
+      "query_milliseconds": 1.8650550842285156,
+      "usage": {
+        "input_tokens": 148955,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 956,
+        "reasoning_output_tokens": 176
+      },
+      "runtime_canonical_trial": "cutlass.raw.r1",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "c6c275a96aadf363dca2425cce99914db9c31e1f451b21b3d1d617d3480b2ab6",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        },
+        "known": {
+          "passed": 4,
+          "expected": 4
+        }
+      },
+      "cpu_lit_passed": null,
+      "build_command_wall_seconds": 29.659580422914587
+    },
+    {
+      "id": "cutlass.raw.r2",
+      "family": "cutlass",
+      "condition": "raw",
+      "repetition": 2,
+      "generation_valid": true,
+      "answer_sha256": "8a3aeb2907b6b2dc52b26e3779e70716bdf187ea09bbb5ae71d8d61b21b09f24",
+      "candidate_source_sha256": "54f652a8e0549feaa4f04595d3c9909dff5597118bf2d890601cb20d43e3a28d",
+      "compile_status": "built",
+      "build_result_sha256": "eed16231be708ea73c25a417be85959aca182e328f820a4f352a0636222696e6",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": true,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": true
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 2,
+      "model_calls": 3,
+      "model_wall_seconds": 56.6085430110693,
+      "query_milliseconds": 1.7456270456314087,
+      "usage": {
+        "input_tokens": 148956,
+        "cached_input_tokens": 29184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 858,
+        "reasoning_output_tokens": 118
+      },
+      "runtime_canonical_trial": "cutlass.raw.r2",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "7e2e5f9c6ae4d8f4409fb3c4f5744f7d438f7c76d35d80410b0dd553ec7ff9d7",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        },
+        "known": {
+          "passed": 4,
+          "expected": 4
+        }
+      },
+      "cpu_lit_passed": null,
+      "build_command_wall_seconds": 29.0646917859558
+    },
+    {
+      "id": "cutlass.raw.r3",
+      "family": "cutlass",
+      "condition": "raw",
+      "repetition": 3,
+      "generation_valid": true,
+      "answer_sha256": "b28054fb4102349ef433c009f9c81bf8cbf2010d914eae06d9662231a1947cdc",
+      "candidate_source_sha256": "80039f2bc99c427bedc7d816634c875fe8cc7dd1e33f052fbfe58cf460cde88a",
+      "compile_status": "built",
+      "build_result_sha256": "ad56c85e12ad5bb3d2882dd4fd3aa5b9451ba42fbfcbdb1dafb1566ac573ead9",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": true,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": true
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 2,
+      "model_calls": 3,
+      "model_wall_seconds": 52.717283876895905,
+      "query_milliseconds": 2.433429002761841,
+      "usage": {
+        "input_tokens": 148863,
+        "cached_input_tokens": 14592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 822,
+        "reasoning_output_tokens": 102
+      },
+      "runtime_canonical_trial": "cutlass.raw.r3",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "952199087a08d9083b494b1bb95a7d88bd78611ebc556feba4f35c0e8ad90e24",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 12,
+          "expected": 12
+        },
+        "hidden-sanitizer": {
+          "passed": 2,
+          "expected": 2
+        },
+        "known": {
+          "passed": 4,
+          "expected": 4
+        }
+      },
+      "cpu_lit_passed": null,
+      "build_command_wall_seconds": 31.97989893797785
+    },
+    {
+      "id": "tmem.diagnostic.r1",
+      "family": "tmem",
+      "condition": "diagnostic",
+      "repetition": 1,
+      "generation_valid": true,
+      "answer_sha256": "2196e685356060e49c0c7883cfc91cfc847ba5a9301f03be0babe930332b4d4e",
+      "candidate_source_sha256": "918eacda13cc181957d4ae1b40e0b240dd8d4605397a756bac472422cc2711ec",
+      "compile_status": "built",
+      "build_result_sha256": "5776eb40342e4c263604163616685abfa4e6ad2946b64ea41194a9b7738b7522",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": false,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": false
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 1,
+      "model_calls": 2,
+      "model_wall_seconds": 38.032260974049564,
+      "query_milliseconds": 1.6279869079589844,
+      "usage": {
+        "input_tokens": 93838,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 731,
+        "reasoning_output_tokens": 84
+      },
+      "runtime_canonical_trial": "tmem.diagnostic.r1",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "1b81be8436ba89cff39517274d208b5924fe3f076a19574e942c5d85697b602a",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        },
+        "known": {
+          "passed": 16,
+          "expected": 16
+        }
+      },
+      "cpu_lit_passed": true,
+      "build_command_wall_seconds": 13.438036462059245
+    },
+    {
+      "id": "tmem.diagnostic.r2",
+      "family": "tmem",
+      "condition": "diagnostic",
+      "repetition": 2,
+      "generation_valid": true,
+      "answer_sha256": "46f091f80d828349cd0e55e309b1b46ea0d53d210d177d6737eded84cdc5b044",
+      "candidate_source_sha256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+      "compile_status": "built",
+      "build_result_sha256": "ff823e5f0be9dede2a5873748209328d9e165c3309e602ddb33482a338ffe896",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": false,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": false
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 1,
+      "model_calls": 2,
+      "model_wall_seconds": 40.90581039893627,
+      "query_milliseconds": 0.3920379877090454,
+      "usage": {
+        "input_tokens": 93836,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 785,
+        "reasoning_output_tokens": 70
+      },
+      "runtime_canonical_trial": "tmem.diagnostic.r2",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "ce657b806f0df5040401e91a79266ba76c0950bdbcb6af0a1c4eb74743258e4f",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        },
+        "known": {
+          "passed": 16,
+          "expected": 16
+        }
+      },
+      "cpu_lit_passed": true,
+      "build_command_wall_seconds": 13.836288163787685
+    },
+    {
+      "id": "tmem.diagnostic.r3",
+      "family": "tmem",
+      "condition": "diagnostic",
+      "repetition": 3,
+      "generation_valid": true,
+      "answer_sha256": "15328d0cea140eb304b6dc1043a9be9358a8da792e6518c226349fd7466f644f",
+      "candidate_source_sha256": "a2f88ab616a9aeae1e0c89ac15b80fc4b6bcc8c337e5f68a2e94555db05386e1",
+      "compile_status": "built",
+      "build_result_sha256": "ca75c0e4afeedfbe073dd8c258833ebd7009df727fd19396cf598fa01f4fcd03",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": false,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": false
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 1,
+      "model_calls": 2,
+      "model_wall_seconds": 44.998696109056475,
+      "query_milliseconds": 0.4974100589752197,
+      "usage": {
+        "input_tokens": 93838,
+        "cached_input_tokens": 14592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 775,
+        "reasoning_output_tokens": 96
+      },
+      "runtime_canonical_trial": "tmem.diagnostic.r3",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "847747d6303e8e3b997f7e9c1ed1876a551e017aa52cb51e5ca5c30c1761fac7",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        },
+        "known": {
+          "passed": 16,
+          "expected": 16
+        }
+      },
+      "cpu_lit_passed": true,
+      "build_command_wall_seconds": 13.435377592686564
+    },
+    {
+      "id": "tmem.raw.r1",
+      "family": "tmem",
+      "condition": "raw",
+      "repetition": 1,
+      "generation_valid": true,
+      "answer_sha256": "69047829705ca774bc08d679459a98e3fbff1168e65848b411a0da6aa51776b5",
+      "candidate_source_sha256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+      "compile_status": "built",
+      "build_result_sha256": "9e1598c84944a30b8d9c4c3e7eb2d4c869db30191ac822344b66ec219a5bc17e",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": false,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": false
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 1,
+      "model_calls": 2,
+      "model_wall_seconds": 43.58478868091107,
+      "query_milliseconds": 0.7263369560241699,
+      "usage": {
+        "input_tokens": 93205,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 948,
+        "reasoning_output_tokens": 69
+      },
+      "runtime_canonical_trial": "tmem.diagnostic.r2",
+      "runtime_reused": true,
+      "runtime_verification_sha256": "ce657b806f0df5040401e91a79266ba76c0950bdbcb6af0a1c4eb74743258e4f",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        },
+        "known": {
+          "passed": 16,
+          "expected": 16
+        }
+      },
+      "cpu_lit_passed": true,
+      "build_command_wall_seconds": 0
+    },
+    {
+      "id": "tmem.raw.r2",
+      "family": "tmem",
+      "condition": "raw",
+      "repetition": 2,
+      "generation_valid": true,
+      "answer_sha256": "5f4ead58648b614b84248c23ca26e1dcab868cfd5a610b216adce3b7b8521b39",
+      "candidate_source_sha256": "d75e66cf78f92c32fefd2eb276834de71c8a5e59d50f05308ee1e2b4bacbe6c4",
+      "compile_status": "built",
+      "build_result_sha256": "ce5e270187d6a6c00c93f10a60a93370c90faa84141aae81fda1caa1c999dc7d",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": false,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": false
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 1,
+      "model_calls": 2,
+      "model_wall_seconds": 41.41148488986492,
+      "query_milliseconds": 0.21867501735687256,
+      "usage": {
+        "input_tokens": 93205,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 817,
+        "reasoning_output_tokens": 68
+      },
+      "runtime_canonical_trial": "tmem.raw.r2",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "9cdb3d4a0c62d80d9de8c0c0f16f897d888b7a03b98e98bc76d5049727435252",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        },
+        "known": {
+          "passed": 16,
+          "expected": 16
+        }
+      },
+      "cpu_lit_passed": true,
+      "build_command_wall_seconds": 14.285827094106935
+    },
+    {
+      "id": "tmem.raw.r3",
+      "family": "tmem",
+      "condition": "raw",
+      "repetition": 3,
+      "generation_valid": true,
+      "answer_sha256": "6e99a2925671a160c83ce4ed3a70de3afd9f64be3d398821223557db6d421f77",
+      "candidate_source_sha256": "0fa897fc594dc91894b78e818239383738c72b172834a6373d8653398354e5ae",
+      "compile_status": "built",
+      "build_result_sha256": "151728fd52285601272126c47f627f358305951c82f9e772362a9c6f0f3761eb",
+      "original_scores": {
+        "locationHit": true,
+        "allLocationsValid": false,
+        "referencesValid": true,
+        "failureAndControlCovered": true,
+        "supportedLocalization": false
+      },
+      "secondary_observed_and_source_audit": true,
+      "queries": 1,
+      "model_calls": 2,
+      "model_wall_seconds": 38.446108517050746,
+      "query_milliseconds": 0.23012399673461914,
+      "usage": {
+        "input_tokens": 93205,
+        "cached_input_tokens": 29184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 773,
+        "reasoning_output_tokens": 62
+      },
+      "runtime_canonical_trial": "tmem.raw.r3",
+      "runtime_reused": false,
+      "runtime_verification_sha256": "8bb8b40906ce5d9665327bd06dfa6903b03a1ded77070f8b2b15e4f662653883",
+      "runtime_passed": true,
+      "partitions": {
+        "hidden": {
+          "passed": 32,
+          "expected": 32
+        },
+        "known": {
+          "passed": 16,
+          "expected": 16
+        }
+      },
+      "cpu_lit_passed": true,
+      "build_command_wall_seconds": 12.94375192176085
+    }
+  ],
+  "totals": {
+    "model_trials": 12,
+    "model_calls": 30,
+    "queries": 18,
+    "unique_source_candidates": 11,
+    "actual_candidate_gpu_cases": 348,
+    "actual_candidate_output_elements": 16539648,
+    "candidate_sanitizer_calls": 12
+  },
+  "conclusion": "Both conditions repair all three draws of each of the two prelocalized public defects. No success-rate improvement demonstrated; descriptive small-sample timings are not human or population effects.",
+  "scoring_note": "Preserve frozen strict score, which rejects extra valid IR locations and can credit shared IR as observed evidence. Secondary post-hoc audit accepts all provided source IDs and requires actual observed failure/control references."
+}

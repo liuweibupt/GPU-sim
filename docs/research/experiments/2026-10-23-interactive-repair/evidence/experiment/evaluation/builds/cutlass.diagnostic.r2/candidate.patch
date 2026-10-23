@@ -1,0 +1,27 @@
+--- before
++++ candidate
+@@ -813,6 +813,12 @@
+     Tensor tCrSFA = make_tensor_like<ElementBlockScale>(tCsSFA(_, _, _, _0{}));                     // (MMA,MMA_M,MMA_N)
+     Tensor tCrSFB = make_tensor_like<ElementBlockScale>(tCsSFB(_, _, _, _0{}));                     // (MMA,MMA_M,MMA_N)
+ 
++    // An empty reduction has no producer stages to consume.
++    if (k_tile_count == 0) {
++      cute::clear(accum);
++      return;
++    }
++
+     // Prologue GMMAs
+     tiled_mma.accumulate_ = GMMA::ScaleOut::Zero;
+ 
+@@ -1064,6 +1070,11 @@
+   /// Perform a Consumer Epilogue to release all buffers
+   CUTLASS_DEVICE void
+   mma_tail(MainloopPipeline pipeline, PipelineState smem_pipe_release, int k_tile_count) {
++    // An empty reduction consumed no stages and must not release any.
++    if (k_tile_count == 0) {
++      return;
++    }
++
+     // The pipeline is not released in the first iteration
+     smem_pipe_release.advance(k_tile_count - 1);
+     pipeline.consumer_release(smem_pipe_release);

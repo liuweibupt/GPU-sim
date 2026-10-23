@@ -1,0 +1,40 @@
+[
+  {
+    "id": "cutlass",
+    "family": "cutlass",
+    "sourceId": "source-00",
+    "sourceSHA256": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+    "sourceFile": "cutlass.before",
+    "dataFile": "cutlass.data.json",
+    "constraints": "Repair the beta=0 empty-K grouped GEMM behavior on H100/SM90. beta=1 also fails positive controls and is outside this repair objective. Preserve positive-K computation and pipeline semantics.",
+    "locationRegions": [
+      [
+        723,
+        1063
+      ],
+      [
+        1066,
+        1071
+      ]
+    ],
+    "locationMeaning": "A maximum-40-line cited interval hits a predeclared relevant function. This is localization, not semantic grading of explanation.",
+    "referenceRule": "Cite at least one observed failing case/fact and one passing control case/fact. IDs must belong to this family."
+  },
+  {
+    "id": "tmem",
+    "family": "tmem",
+    "sourceId": "source-01",
+    "sourceSHA256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+    "sourceFile": "tmem.before",
+    "dataFile": "tmem.data.json",
+    "constraints": "Repair the selected TMEM descriptor wrong values on B200/SM100 in the compiler. Preserve legal reuse and existing allocation/layout behavior; do not change the runtime test, outputs, or assertions.",
+    "locationRegions": [
+      [
+        120,
+        151
+      ]
+    ],
+    "locationMeaning": "A maximum-40-line cited interval hits a predeclared relevant function. This is localization, not semantic grading of explanation.",
+    "referenceRule": "Cite at least one observed failing case/fact and one passing control case/fact. IDs must belong to this family."
+  }
+]

@@ -1,0 +1,1099 @@
+{
+  "format": "modal-gpu-evidence-job-v1",
+  "status": "completed",
+  "started_utc": "2026-10-23T13:51:41.075109+00:00",
+  "requested_gpu": "B200",
+  "gpu_count": 1,
+  "timeout_seconds": 600,
+  "max_containers": 1,
+  "image_tag": "docker.io/nvidia/cuda:13.1.0-devel-ubuntu24.04",
+  "modal_sdk_version": "1.6.2",
+  "source_sha256": {
+    "hidden_gpu.py": "cda7017a3b2a310946e066e63b8d9e328de0353743f04018e12dde5ccd606b65",
+    "plan.json": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+    "regression_0.py": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+    "regression_1.py": "3346dd5b0fe328aef1aba8008d3583fb9bf8bccddb345fe543094108452167d6",
+    "regression_2.py": "728e5d160d4492fd978a4c5098a3f0773ea0b8baa848721e35d74cd4cbba8ee3"
+  },
+  "source_records": [
+    {
+      "name": "hidden_gpu.py",
+      "sha256": "cda7017a3b2a310946e066e63b8d9e328de0353743f04018e12dde5ccd606b65",
+      "bytes": 6467
+    },
+    {
+      "name": "plan.json",
+      "sha256": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+      "bytes": 18024
+    },
+    {
+      "name": "regression_0.py",
+      "sha256": "ec72a0047bb15cd4d3c10daa9331cf25f0baacb06710556b2f746f6e6e3044df",
+      "bytes": 3697
+    },
+    {
+      "name": "regression_1.py",
+      "sha256": "3346dd5b0fe328aef1aba8008d3583fb9bf8bccddb345fe543094108452167d6",
+      "bytes": 3705
+    },
+    {
+      "name": "regression_2.py",
+      "sha256": "728e5d160d4492fd978a4c5098a3f0773ea0b8baa848721e35d74cd4cbba8ee3",
+      "bytes": 3702
+    }
+  ],
+  "runner_sha256": "e766e606b51d7e2ee8fd2ddf8609fa483c4a500199758a1a508ec24c0884f747",
+  "job_sha256": "d82de60ffcf97e65a2fe203eb6b3be10cade5dd4fff04c5db1815067a2d8ee75",
+  "billing": "No exact bill inferred from command wall times; configured limits bound each job.",
+  "deployment": "Ephemeral App.run with no persistent deployment, volumes, endpoints or minimum containers.",
+  "python_runtime": "3.13",
+  "image_files": [
+    {
+      "local": "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/tmem.raw.r3/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "remote": "/opt/candidates/tmem.raw.r3/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "sha256": "8f046a8e6d7ad0ba4181d87b344470e6c8d670bdd415b0a486b1db9f85680ac6",
+      "bytes": 274633857,
+      "omitted": "explicit dependency file mounted remotely; bytes not copied to result archive"
+    }
+  ],
+  "cpu": 8,
+  "memory_mb": 16384,
+  "prepare_image_only": false,
+  "app_id": "ap-NtmxdUxIDs0YQF9ytUlYWa",
+  "image_id": "im-gDd8nmqGPm6dw6iPm93buz",
+  "execution": {
+    "format": "modal-gpu-evidence-execution-v1",
+    "commands": [
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.029618472000000007,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "gpu_identity.stdout.txt",
+          "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+          "bytes": 41
+        },
+        "stderr": {
+          "path": "gpu_identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "nvcc",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.007688589999999995,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "nvcc_version.stdout.txt",
+          "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+          "bytes": 211
+        },
+        "stderr": {
+          "path": "nvcc_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "compute-sanitizer",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.007880267000000107,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "sanitizer_version.stdout.txt",
+          "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+          "bytes": 125
+        },
+        "stderr": {
+          "path": "sanitizer_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version",
+          "--format=csv,noheader"
+        ],
+        "timeout": 10,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.017417793999999986,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "identity.stdout.txt",
+          "sha256": "55c1858b89d0bdb6c6ca89335fa48f9176ef6052aae3f975f466729245f2c129",
+          "bytes": 29
+        },
+        "stderr": {
+          "path": "identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "install-tmem.raw.r3",
+        "argv": [
+          "/opt/repro/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "--no-deps",
+          "--force-reinstall",
+          "--no-compile",
+          "/opt/candidates/tmem.raw.r3/triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl"
+        ],
+        "timeout": 90,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 3.381575594,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "install-tmem.raw.r3.stdout.txt",
+          "sha256": "1ae3318c5c316170d36f5f9f33818b447acb09702be65ce084d029fc4dcd71fe",
+          "bytes": 331
+        },
+        "stderr": {
+          "path": "install-tmem.raw.r3.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tmem.raw.r3",
+        "argv": [
+          "/opt/repro/bin/python",
+          "hidden_gpu.py",
+          "--family",
+          "tmem",
+          "--plan",
+          "plan.json",
+          "--output",
+          "tmem.raw.r3",
+          "--native-sha256",
+          "cf79bf2f60fd1a03e1145b644b7d908f530ee2fb95ec9bc9bdf6cffb93d25646"
+        ],
+        "timeout": 180,
+        "continue_on_failure": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 6.352959428,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tmem.raw.r3.stdout.txt",
+          "sha256": "21fdef656bf17addcc0829bb1c07799ff34b9d724ad4fc526fb4275861c2b5fc",
+          "bytes": 1728
+        },
+        "stderr": {
+          "path": "tmem.raw.r3.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tmem.raw.r3/case-00.json.gz",
+        "sha256": "17c01b297c2b85b91e261ed6006499a89af3a7eda8763c7feaa5a672ee6ca6af",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.raw.r3/case-01.json.gz",
+        "sha256": "8bd9e2d5fc217773960972b4bf55c47368dee4928482514e5a051732b7e45d93",
+        "bytes": 755
+      },
+      {
+        "path": "tmem.raw.r3/case-02.json.gz",
+        "sha256": "cae9807be03890948e54745b67c3c2f7d8a87e744f78565401fce26a87e2e5fc",
+        "bytes": 671
+      },
+      {
+        "path": "tmem.raw.r3/case-03.json.gz",
+        "sha256": "b0e9454d390b0c508ca21393d636008dc35911955d1233844c7f79c4287345da",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.raw.r3/case-04.json.gz",
+        "sha256": "7958e323e1d1722d82308253669eb99b68b0ba52d9a7356a7d3c6c449dbeefcd",
+        "bytes": 814
+      },
+      {
+        "path": "tmem.raw.r3/case-05.json.gz",
+        "sha256": "f6ea8f408c543b1dbad3c7c3ce34c9427f7192362355b3ccde68dfeeea4ed15e",
+        "bytes": 809
+      },
+      {
+        "path": "tmem.raw.r3/case-06.json.gz",
+        "sha256": "7cf0b37736303048dd2a9574869d9df325309a04509eaf7d01ff6594b53f6d78",
+        "bytes": 814
+      },
+      {
+        "path": "tmem.raw.r3/case-07.json.gz",
+        "sha256": "fa1a47b7eda917311a5876e507b9d63c283f458e57621eff99ea2ea1c08bfaad",
+        "bytes": 818
+      },
+      {
+        "path": "tmem.raw.r3/case-08.json.gz",
+        "sha256": "90044177f577a8784bf846888fce8eaa0eb6c8791270abc68bfb0cd43d40d75b",
+        "bytes": 812
+      },
+      {
+        "path": "tmem.raw.r3/case-09.json.gz",
+        "sha256": "86cbe8565ef5c0fb83fdfb92d646322354cc35b3caf4ec4ae019b88ada77c3a0",
+        "bytes": 756
+      },
+      {
+        "path": "tmem.raw.r3/case-10.json.gz",
+        "sha256": "9ab32efbdc9b48be1a907fb721485a0f1e56f708c1bf4588c34477b741683804",
+        "bytes": 672
+      },
+      {
+        "path": "tmem.raw.r3/case-11.json.gz",
+        "sha256": "6c8c88ba8afa22ff0032cd50b7c8e5648d597bd8fd05302586e6a0ab3975ad96",
+        "bytes": 811
+      },
+      {
+        "path": "tmem.raw.r3/case-12.json.gz",
+        "sha256": "3f14fdfc2c7bab5f211ea625bf71ef3be46f9b5cc5ef70957127f37a7d760f30",
+        "bytes": 813
+      },
+      {
+        "path": "tmem.raw.r3/case-13.json.gz",
+        "sha256": "b9d11983f6406b7f8adc2f67924be63a1096a4afc348dbe78236b5b6adba2ef1",
+        "bytes": 810
+      },
+      {
+        "path": "tmem.raw.r3/case-14.json.gz",
+        "sha256": "e88f4a8231c6bb36dac9ea0fd9ebedb3978a325c42e70175784a7760504d676a",
+        "bytes": 818
+      },
+      {
+        "path": "tmem.raw.r3/case-15.json.gz",
+        "sha256": "5da8522be416d7e624c3c35e3c76104904fcfedede1ae25e750bf4891709c99f",
+        "bytes": 819
+      },
+      {
+        "path": "tmem.raw.r3/case-16.json.gz",
+        "sha256": "b43973ca267417b29e644fb857fac5e340abd4248df9ed7326108eed92177c34",
+        "bytes": 843
+      },
+      {
+        "path": "tmem.raw.r3/case-17.json.gz",
+        "sha256": "5d3f8bd42048dc6911762e55d36b162cac9fedb5b5ed9bc0a25d379820812258",
+        "bytes": 774
+      },
+      {
+        "path": "tmem.raw.r3/case-18.json.gz",
+        "sha256": "7027f68d4c02fe42e70989b963dc8d8ae380356eb03fe4189727e8d9965b281f",
+        "bytes": 680
+      },
+      {
+        "path": "tmem.raw.r3/case-19.json.gz",
+        "sha256": "23cc8a5d29051f4abfa0a7a534eb8a9da0bb27725a38b89f07e799a9efe2c8f0",
+        "bytes": 836
+      },
+      {
+        "path": "tmem.raw.r3/case-20.json.gz",
+        "sha256": "e71558ecc439dba78f08630b096eaeba66f525269918dc4c2ab23b57640e4614",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.raw.r3/case-21.json.gz",
+        "sha256": "e5c32c8e1b79d4b77ccf78fe18d9bbc7730d9dd43e25ef0057471741782d75c0",
+        "bytes": 837
+      },
+      {
+        "path": "tmem.raw.r3/case-22.json.gz",
+        "sha256": "9a942183560564d80d5d4623f8bc5c454449a3873ee36c38f011fe790c87e1cc",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.raw.r3/case-23.json.gz",
+        "sha256": "37d196e8e50ad5ff71176f56b870567f9505b8ce7c3c9f49abbbd0522b3c6d97",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.raw.r3/case-24.json.gz",
+        "sha256": "05bc5ada7375d379d548b60476d5be0e646d9e091aae7ba89f01df5d07e62813",
+        "bytes": 842
+      },
+      {
+        "path": "tmem.raw.r3/case-25.json.gz",
+        "sha256": "07358aff422411a17dcc11b7ac1bcdc08bb071b62c955a0aa3c2f9af6e1af791",
+        "bytes": 773
+      },
+      {
+        "path": "tmem.raw.r3/case-26.json.gz",
+        "sha256": "589bd188c5e0ba56ca149830355349162d6639bb0604581da205083408bd186a",
+        "bytes": 678
+      },
+      {
+        "path": "tmem.raw.r3/case-27.json.gz",
+        "sha256": "a44c62d4746bb5be6ddcf489799ddef8626e65622097096bab328fb44cb07f46",
+        "bytes": 835
+      },
+      {
+        "path": "tmem.raw.r3/case-28.json.gz",
+        "sha256": "b767b5d94c65fae611ce404202c0c9d4f29bd35cce1e5ece364f7c4c951ee653",
+        "bytes": 843
+      },
+      {
+        "path": "tmem.raw.r3/case-29.json.gz",
+        "sha256": "f9daa0daedd7ca1d24883dc7ed490a0af38cf6717e85ea2af25e87b7f4caa093",
+        "bytes": 837
+      },
+      {
+        "path": "tmem.raw.r3/case-30.json.gz",
+        "sha256": "1c206be0235557d87e653203978f5a6e129acae0d95c8ba6230be9429190c903",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.raw.r3/case-31.json.gz",
+        "sha256": "3d29220c12c91c7bd535930d5aeff1651501629dac48503d99b460fd105d665e",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.raw.r3/case-32.json.gz",
+        "sha256": "0416ec739558bf00fd1b364c48ccdf489e655f7320a6153b2a1e8e675a8bf26d",
+        "bytes": 830
+      },
+      {
+        "path": "tmem.raw.r3/case-33.json.gz",
+        "sha256": "3778315d5a5496972417bab204151c6587d59995385f677f09a37804b47bd961",
+        "bytes": 770
+      },
+      {
+        "path": "tmem.raw.r3/case-34.json.gz",
+        "sha256": "fd8fd5ea1a17e810b03f690da40badbe6ee604b3c3574decf68cee4dd58c3299",
+        "bytes": 671
+      },
+      {
+        "path": "tmem.raw.r3/case-35.json.gz",
+        "sha256": "af9cd5dd322dd416e5ebc15f1be2f97441a43e5bd59b1448a82b0cd403c316d5",
+        "bytes": 829
+      },
+      {
+        "path": "tmem.raw.r3/case-36.json.gz",
+        "sha256": "5ed0fda3ebe2ed029e61009095f81510e3258810540a397e31bfeffdca7ef826",
+        "bytes": 846
+      },
+      {
+        "path": "tmem.raw.r3/case-37.json.gz",
+        "sha256": "ef42c58091e2a8b33f7f527f64d91fafa520eb68d069ce8b6bbd43a8929a5074",
+        "bytes": 831
+      },
+      {
+        "path": "tmem.raw.r3/case-38.json.gz",
+        "sha256": "06828102b1e49df1af38f65e2d6306772a7e800d0e6bd437a011d72ec14cc231",
+        "bytes": 841
+      },
+      {
+        "path": "tmem.raw.r3/case-39.json.gz",
+        "sha256": "b009d75068d89b0658b3b3c0f739058d850dbdd6b82199ff3dbf92700b2c758a",
+        "bytes": 835
+      },
+      {
+        "path": "tmem.raw.r3/case-40.json.gz",
+        "sha256": "ae5ddd0860e284a1847766c3ea0804b9ec0789aa0e646170e81f8486f18f059c",
+        "bytes": 840
+      },
+      {
+        "path": "tmem.raw.r3/case-41.json.gz",
+        "sha256": "94478728b32a7061171a5509654791a51b6e1591fb0d5e3aa0a59dc94863c8cb",
+        "bytes": 779
+      },
+      {
+        "path": "tmem.raw.r3/case-42.json.gz",
+        "sha256": "7a2a6e508d93591f9623990bc12895768f129455ed4174e34bba8e34412026c6",
+        "bytes": 685
+      },
+      {
+        "path": "tmem.raw.r3/case-43.json.gz",
+        "sha256": "79f3e3ff3a027de279fd3598ba426abcb5a48e318e65afa1a9ad6e1f47eb57e7",
+        "bytes": 840
+      },
+      {
+        "path": "tmem.raw.r3/case-44.json.gz",
+        "sha256": "37f7ab72cde2149cff90006fc624be64bbca455b32b1b07dcc27f6a727201cae",
+        "bytes": 848
+      },
+      {
+        "path": "tmem.raw.r3/case-45.json.gz",
+        "sha256": "6d96cfee3fc98bfd52a82b3b7ad930640e7e0f16704c5d4277624a28819b508f",
+        "bytes": 832
+      },
+      {
+        "path": "tmem.raw.r3/case-46.json.gz",
+        "sha256": "5823e6c01f3179b15c90586da4d5dc5bd9648eb54b50934efdd58dfdce6c21d1",
+        "bytes": 835
+      },
+      {
+        "path": "tmem.raw.r3/case-47.json.gz",
+        "sha256": "03192f93562dff99b494fe9f5d784173821ccfbadb762e703c288a79bdc4215a",
+        "bytes": 845
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0b4b4cb3c8b1622500879211418c3a840a095dfc55e6ec1add0a72324a9adc5d/kernel.glir",
+        "sha256": "1dda06b8b4ede7f9c996c507e54ab98593d6ce354362d1e3aa4e12bbb4322013",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0b4b4cb3c8b1622500879211418c3a840a095dfc55e6ec1add0a72324a9adc5d/kernel.json",
+        "sha256": "23db0e92c1aa834fdfeea1330ffef8214b8bf0e84b0a41bd0d8c8c1686d4ba3c",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0b4b4cb3c8b1622500879211418c3a840a095dfc55e6ec1add0a72324a9adc5d/kernel.llir",
+        "sha256": "1618efb1c1b65cca41464aca5c03e909f33a0b496f96e9f4fead6a75de9b10d4",
+        "bytes": 16020
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0b4b4cb3c8b1622500879211418c3a840a095dfc55e6ec1add0a72324a9adc5d/kernel.ptx",
+        "sha256": "bf21ac92e4a41870146d5862fe4dad506c810d251a8fa2cb7aac9eb291c1b604",
+        "bytes": 7333
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0b4b4cb3c8b1622500879211418c3a840a095dfc55e6ec1add0a72324a9adc5d/kernel.source",
+        "sha256": "1dda06b8b4ede7f9c996c507e54ab98593d6ce354362d1e3aa4e12bbb4322013",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0b4b4cb3c8b1622500879211418c3a840a095dfc55e6ec1add0a72324a9adc5d/kernel.ttgir",
+        "sha256": "e6a5b3fc8457f350a6bcccc8160e64838d339a1baf5cffd4a3693fd4d622b56f",
+        "bytes": 4442
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0f2476f2e8f8898490649232ee0187d64a724c78de999bfef81dac568cc02fec/kernel.glir",
+        "sha256": "9554b9c2963329692af0868fa5fa699c1adc9902344abed30942747a4b096351",
+        "bytes": 9598
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0f2476f2e8f8898490649232ee0187d64a724c78de999bfef81dac568cc02fec/kernel.json",
+        "sha256": "c608f032236bb02be99a44b21f1ca242e1597f7dd32c4cda9521dbc265b066ef",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0f2476f2e8f8898490649232ee0187d64a724c78de999bfef81dac568cc02fec/kernel.llir",
+        "sha256": "791f4f2841e3ee06a17da398efb72243e7e00fca28e9290331e6bb9c5341c922",
+        "bytes": 46226
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0f2476f2e8f8898490649232ee0187d64a724c78de999bfef81dac568cc02fec/kernel.ptx",
+        "sha256": "ef026f6243b77abd01e95dc71b1cdd58b0fbf862b32252db1093aba62ec1fe0c",
+        "bytes": 11942
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0f2476f2e8f8898490649232ee0187d64a724c78de999bfef81dac568cc02fec/kernel.source",
+        "sha256": "9554b9c2963329692af0868fa5fa699c1adc9902344abed30942747a4b096351",
+        "bytes": 9598
+      },
+      {
+        "path": "tmem.raw.r3/compiler/0f2476f2e8f8898490649232ee0187d64a724c78de999bfef81dac568cc02fec/kernel.ttgir",
+        "sha256": "4be894af8714311fa7948c79ebdef9d3deedb768b613cfdc4f2bc7fd60e4b823",
+        "bytes": 7080
+      },
+      {
+        "path": "tmem.raw.r3/compiler/1659ea6f38b0ab3edc94aba3f6d71120306e80d654a9eb6cbb5bedf937822215/kernel.glir",
+        "sha256": "40784439870aad7088bf4c0b4b9a645aa6f7844f61afa0de175b83901f493295",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.raw.r3/compiler/1659ea6f38b0ab3edc94aba3f6d71120306e80d654a9eb6cbb5bedf937822215/kernel.json",
+        "sha256": "f3473cd2b324ad4d4de4ffe5259fc1f0986e63c51caedcd0417af16dbf1da780",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.raw.r3/compiler/1659ea6f38b0ab3edc94aba3f6d71120306e80d654a9eb6cbb5bedf937822215/kernel.llir",
+        "sha256": "8a2f0204a2619d95c33af283cfb19cba1bf8d817bbf8bd1b280f2554340dc1d8",
+        "bytes": 16020
+      },
+      {
+        "path": "tmem.raw.r3/compiler/1659ea6f38b0ab3edc94aba3f6d71120306e80d654a9eb6cbb5bedf937822215/kernel.ptx",
+        "sha256": "c4f9bc8a48015d9994e55ed84d8d421812bf0b7ebf3801393a2c0ff8095d2304",
+        "bytes": 7333
+      },
+      {
+        "path": "tmem.raw.r3/compiler/1659ea6f38b0ab3edc94aba3f6d71120306e80d654a9eb6cbb5bedf937822215/kernel.source",
+        "sha256": "40784439870aad7088bf4c0b4b9a645aa6f7844f61afa0de175b83901f493295",
+        "bytes": 5830
+      },
+      {
+        "path": "tmem.raw.r3/compiler/1659ea6f38b0ab3edc94aba3f6d71120306e80d654a9eb6cbb5bedf937822215/kernel.ttgir",
+        "sha256": "0e818edcbf1c5c681cc229eb809c4160988f440610f57f29d58b57a332531992",
+        "bytes": 4442
+      },
+      {
+        "path": "tmem.raw.r3/compiler/2d00f30dd79ba746578ea56a84c9a9debcf696eda77bf5b6e30f4c93b2b0d561/kernel.glir",
+        "sha256": "869374ffec3e9ce47a6cac75dbe10f644d49597de9f76c2f1195461a3b0b32d6",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.raw.r3/compiler/2d00f30dd79ba746578ea56a84c9a9debcf696eda77bf5b6e30f4c93b2b0d561/kernel.json",
+        "sha256": "99e73649ebb5aaa711de98b5d458da942c3583ba1b17b2378eefbdd595618084",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/2d00f30dd79ba746578ea56a84c9a9debcf696eda77bf5b6e30f4c93b2b0d561/kernel.llir",
+        "sha256": "62c4db9f06b9deea463dabaeef2bd19a6bf093ae13e0b9b3e2346b077aa2f4fa",
+        "bytes": 45869
+      },
+      {
+        "path": "tmem.raw.r3/compiler/2d00f30dd79ba746578ea56a84c9a9debcf696eda77bf5b6e30f4c93b2b0d561/kernel.ptx",
+        "sha256": "af479372a7cb776bde0d45321baf3244d8b4e022e8721322d1f10243096350f4",
+        "bytes": 11330
+      },
+      {
+        "path": "tmem.raw.r3/compiler/2d00f30dd79ba746578ea56a84c9a9debcf696eda77bf5b6e30f4c93b2b0d561/kernel.source",
+        "sha256": "869374ffec3e9ce47a6cac75dbe10f644d49597de9f76c2f1195461a3b0b32d6",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.raw.r3/compiler/2d00f30dd79ba746578ea56a84c9a9debcf696eda77bf5b6e30f4c93b2b0d561/kernel.ttgir",
+        "sha256": "4a851bc06638a83301a2ecf9a5bf54f13cb5f6f3fc70f95bb1371a2a1a798b9d",
+        "bytes": 6483
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3708f503b2839070658aac5fad125748252c15f1d53312f8414c528c60e517bc/kernel.glir",
+        "sha256": "7e0378a779289d85cbf8c4c0ee4f32863bb827468c4abed6cf3cc3fdcd9fbf20",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3708f503b2839070658aac5fad125748252c15f1d53312f8414c528c60e517bc/kernel.json",
+        "sha256": "e5bd2338b9f0aaeec5cea873f9fa017d61280303b2abf4fdf55297524a1371a8",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3708f503b2839070658aac5fad125748252c15f1d53312f8414c528c60e517bc/kernel.llir",
+        "sha256": "722edd7ea7cf83955182ef9c2dafc02c3cc90fe6d4a7d56185852d1445a6d6e7",
+        "bytes": 26062
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3708f503b2839070658aac5fad125748252c15f1d53312f8414c528c60e517bc/kernel.ptx",
+        "sha256": "ddf85ceb44e3d193ef41b666b476a883f3f9e717a02125f589deccd4e7df690e",
+        "bytes": 9862
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3708f503b2839070658aac5fad125748252c15f1d53312f8414c528c60e517bc/kernel.source",
+        "sha256": "7e0378a779289d85cbf8c4c0ee4f32863bb827468c4abed6cf3cc3fdcd9fbf20",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3708f503b2839070658aac5fad125748252c15f1d53312f8414c528c60e517bc/kernel.ttgir",
+        "sha256": "f207e98f7873c697802d125bef475053789bda3b5d7ee07830d573795acca7bd",
+        "bytes": 5823
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3a5658eeca0ecab7cf6b1b167a9c9714488b9f295690315585de129d654346a1/kernel.glir",
+        "sha256": "8d6bca7165ef3433f7abcaa3d3fbe9fb8c020f79b99008a484a142b6d4e06f19",
+        "bytes": 9392
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3a5658eeca0ecab7cf6b1b167a9c9714488b9f295690315585de129d654346a1/kernel.json",
+        "sha256": "651f2261e9e78ad6771ee910357c3211427d5f6c59f5856fd054ea6f47f3e712",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3a5658eeca0ecab7cf6b1b167a9c9714488b9f295690315585de129d654346a1/kernel.llir",
+        "sha256": "e903ddc953041ed11fe5289773f803682fe1ae9bcf9093a5f003cc7155bc836a",
+        "bytes": 26094
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3a5658eeca0ecab7cf6b1b167a9c9714488b9f295690315585de129d654346a1/kernel.ptx",
+        "sha256": "a596b88f21a8360b5aa663bb532f768612da5a4b2977ae8018b5dba3d75fadcf",
+        "bytes": 9863
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3a5658eeca0ecab7cf6b1b167a9c9714488b9f295690315585de129d654346a1/kernel.source",
+        "sha256": "8d6bca7165ef3433f7abcaa3d3fbe9fb8c020f79b99008a484a142b6d4e06f19",
+        "bytes": 9392
+      },
+      {
+        "path": "tmem.raw.r3/compiler/3a5658eeca0ecab7cf6b1b167a9c9714488b9f295690315585de129d654346a1/kernel.ttgir",
+        "sha256": "92655a9317a046631f9a39e8378b6b9301185322266b43ae62b0defa7da6e4dc",
+        "bytes": 5824
+      },
+      {
+        "path": "tmem.raw.r3/compiler/5a07cdef3cf1509ac56da70d120d20e13f218a1088990ffe25e0224e8355ff55/kernel.glir",
+        "sha256": "5c8c60304cb5b59a7baba941a1ce692eb9ecc14ca157ebeb4304445bc9ed7e43",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.raw.r3/compiler/5a07cdef3cf1509ac56da70d120d20e13f218a1088990ffe25e0224e8355ff55/kernel.json",
+        "sha256": "5b9a35b077d3ac58e01b0650155e73de444b04f59ca96c9e4ca250425d0ca4f6",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/5a07cdef3cf1509ac56da70d120d20e13f218a1088990ffe25e0224e8355ff55/kernel.llir",
+        "sha256": "a5e9a3a0ae87cdb37f3e14c106cc28693e132c703cadfc84f7111477f60ac22f",
+        "bytes": 46576
+      },
+      {
+        "path": "tmem.raw.r3/compiler/5a07cdef3cf1509ac56da70d120d20e13f218a1088990ffe25e0224e8355ff55/kernel.ptx",
+        "sha256": "b473c6851ca930199f9335f45fdae7e9bfcac48e7806ac52df3782d23c67ab15",
+        "bytes": 12375
+      },
+      {
+        "path": "tmem.raw.r3/compiler/5a07cdef3cf1509ac56da70d120d20e13f218a1088990ffe25e0224e8355ff55/kernel.source",
+        "sha256": "5c8c60304cb5b59a7baba941a1ce692eb9ecc14ca157ebeb4304445bc9ed7e43",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.raw.r3/compiler/5a07cdef3cf1509ac56da70d120d20e13f218a1088990ffe25e0224e8355ff55/kernel.ttgir",
+        "sha256": "c51c8392402a6a28127992b18b101aabc590d98e26f6d84872ec168f10246037",
+        "bytes": 7971
+      },
+      {
+        "path": "tmem.raw.r3/compiler/7d64a39c6ca7ad5888b40e47a94d9843eeffe6605879c7fdbaa6cc11248a7246/kernel.glir",
+        "sha256": "7f80fba4c0c13fdc443cc8c938f8e7a4c027d9cde92bcd8eeba08c1789fe4061",
+        "bytes": 9597
+      },
+      {
+        "path": "tmem.raw.r3/compiler/7d64a39c6ca7ad5888b40e47a94d9843eeffe6605879c7fdbaa6cc11248a7246/kernel.json",
+        "sha256": "6d3d496445cbc80d85d3833e6475b94cc95c9fdf213b4486e622e0781e9585fc",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/7d64a39c6ca7ad5888b40e47a94d9843eeffe6605879c7fdbaa6cc11248a7246/kernel.llir",
+        "sha256": "791f4f2841e3ee06a17da398efb72243e7e00fca28e9290331e6bb9c5341c922",
+        "bytes": 46226
+      },
+      {
+        "path": "tmem.raw.r3/compiler/7d64a39c6ca7ad5888b40e47a94d9843eeffe6605879c7fdbaa6cc11248a7246/kernel.ptx",
+        "sha256": "ef026f6243b77abd01e95dc71b1cdd58b0fbf862b32252db1093aba62ec1fe0c",
+        "bytes": 11942
+      },
+      {
+        "path": "tmem.raw.r3/compiler/7d64a39c6ca7ad5888b40e47a94d9843eeffe6605879c7fdbaa6cc11248a7246/kernel.source",
+        "sha256": "7f80fba4c0c13fdc443cc8c938f8e7a4c027d9cde92bcd8eeba08c1789fe4061",
+        "bytes": 9597
+      },
+      {
+        "path": "tmem.raw.r3/compiler/7d64a39c6ca7ad5888b40e47a94d9843eeffe6605879c7fdbaa6cc11248a7246/kernel.ttgir",
+        "sha256": "0483a60bc13fc2c3dbd4907bb212e5b99d94dabc9139301da737def0dc93e44f",
+        "bytes": 7080
+      },
+      {
+        "path": "tmem.raw.r3/compiler/80f41e554297d2ef4157034f8a243a20cffec75d342a4c89a35a71e1ec7f9964/kernel.glir",
+        "sha256": "b787586cee1ce92d1f0f5ff87ad84df18f414f2762c5b83bc36243c86ed31c21",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.raw.r3/compiler/80f41e554297d2ef4157034f8a243a20cffec75d342a4c89a35a71e1ec7f9964/kernel.json",
+        "sha256": "2d8961119794d5be6960552d8990313d7d4638d9f7fb8b1d9d6def56effedfab",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/80f41e554297d2ef4157034f8a243a20cffec75d342a4c89a35a71e1ec7f9964/kernel.llir",
+        "sha256": "69184380430c1b33b75ec1cd9b5e48c656c806d009d400a6d5c60590119b9658",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.raw.r3/compiler/80f41e554297d2ef4157034f8a243a20cffec75d342a4c89a35a71e1ec7f9964/kernel.ptx",
+        "sha256": "4133e12d71c07b58754acce99bc0254027e98176d6167cb4bd0e7f56b46dda17",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.raw.r3/compiler/80f41e554297d2ef4157034f8a243a20cffec75d342a4c89a35a71e1ec7f9964/kernel.source",
+        "sha256": "b787586cee1ce92d1f0f5ff87ad84df18f414f2762c5b83bc36243c86ed31c21",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.raw.r3/compiler/80f41e554297d2ef4157034f8a243a20cffec75d342a4c89a35a71e1ec7f9964/kernel.ttgir",
+        "sha256": "25666ece46db6863b83f651f1c28b8bd41ce746bbe83347c2979cee7474b206f",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.raw.r3/compiler/822f6162d2b36c822db49f1df48d9d6b04468ff2a313a7f13987751d202a1ba5/kernel.glir",
+        "sha256": "6b0b3c7d6415b57ba4fbd51d83816846b2a168c410ec3751d6e9e34871c679d6",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.raw.r3/compiler/822f6162d2b36c822db49f1df48d9d6b04468ff2a313a7f13987751d202a1ba5/kernel.json",
+        "sha256": "fc40fd3cc4cd6c19d0a8b9523d1ae5f8de1282b228254834cbdd8c86b077fd15",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/822f6162d2b36c822db49f1df48d9d6b04468ff2a313a7f13987751d202a1ba5/kernel.llir",
+        "sha256": "0b6fbcb0b393871c62760fda8a9f3b4aedca7693098abf5d0cb96c00e8cceea4",
+        "bytes": 45719
+      },
+      {
+        "path": "tmem.raw.r3/compiler/822f6162d2b36c822db49f1df48d9d6b04468ff2a313a7f13987751d202a1ba5/kernel.ptx",
+        "sha256": "45f5b30eacabdf3b4b23b858d0d6c3893751aec674651624f5b7d49712cde83d",
+        "bytes": 11280
+      },
+      {
+        "path": "tmem.raw.r3/compiler/822f6162d2b36c822db49f1df48d9d6b04468ff2a313a7f13987751d202a1ba5/kernel.source",
+        "sha256": "6b0b3c7d6415b57ba4fbd51d83816846b2a168c410ec3751d6e9e34871c679d6",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.raw.r3/compiler/822f6162d2b36c822db49f1df48d9d6b04468ff2a313a7f13987751d202a1ba5/kernel.ttgir",
+        "sha256": "59762b645b5106511e31fb0ff018273ad9d7c0cdaa8f8f303858df2979714e42",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.raw.r3/compiler/99e4757f82e13d443bfbaec261ecece4bef503851c6800974fa82dfad7eee170/kernel.glir",
+        "sha256": "8fa51e750b2bc76a4833fc38010a022f3b05d24290ea60f1005468ee6810e236",
+        "bytes": 8954
+      },
+      {
+        "path": "tmem.raw.r3/compiler/99e4757f82e13d443bfbaec261ecece4bef503851c6800974fa82dfad7eee170/kernel.json",
+        "sha256": "fe3335568b2ec93defacb24796bcd47d61deb412d5553155db7d3ebe5dd547cd",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/99e4757f82e13d443bfbaec261ecece4bef503851c6800974fa82dfad7eee170/kernel.llir",
+        "sha256": "3293f38dd932e1dbcc3751117f6db7a81f6716a18ec3a79f499c8c18f4b206c7",
+        "bytes": 45901
+      },
+      {
+        "path": "tmem.raw.r3/compiler/99e4757f82e13d443bfbaec261ecece4bef503851c6800974fa82dfad7eee170/kernel.ptx",
+        "sha256": "4e0a377ac048522a0fac63f4fc435f86057ca8933291ff924847e717cac62fce",
+        "bytes": 11331
+      },
+      {
+        "path": "tmem.raw.r3/compiler/99e4757f82e13d443bfbaec261ecece4bef503851c6800974fa82dfad7eee170/kernel.source",
+        "sha256": "8fa51e750b2bc76a4833fc38010a022f3b05d24290ea60f1005468ee6810e236",
+        "bytes": 8954
+      },
+      {
+        "path": "tmem.raw.r3/compiler/99e4757f82e13d443bfbaec261ecece4bef503851c6800974fa82dfad7eee170/kernel.ttgir",
+        "sha256": "a18e19ade910d3b1de71faa3c903cb7bea674038ce36eba309aa0a133f46c778",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.raw.r3/compiler/a7d5b12c2ebc353185540be24559bd51cd3432f6ec5525656a638f2dcf3e26dc/kernel.glir",
+        "sha256": "62983509c2d4461a84f6e1ac5b1acc7a7f2d90f6cdb95b399cf409acd47412d4",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.raw.r3/compiler/a7d5b12c2ebc353185540be24559bd51cd3432f6ec5525656a638f2dcf3e26dc/kernel.json",
+        "sha256": "5262cea0528f9f5a83a347568047ee6fd1cca526fc53a91aa430baabfc969e2a",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/a7d5b12c2ebc353185540be24559bd51cd3432f6ec5525656a638f2dcf3e26dc/kernel.llir",
+        "sha256": "738dba76bcc675212de6a41720133cdb72c66bfadd88b5c810eb89982a6c4716",
+        "bytes": 46576
+      },
+      {
+        "path": "tmem.raw.r3/compiler/a7d5b12c2ebc353185540be24559bd51cd3432f6ec5525656a638f2dcf3e26dc/kernel.ptx",
+        "sha256": "af5b1652585e140e8173022a5aa016f44ea919f95f9790ed9c6b98133e240ba9",
+        "bytes": 12375
+      },
+      {
+        "path": "tmem.raw.r3/compiler/a7d5b12c2ebc353185540be24559bd51cd3432f6ec5525656a638f2dcf3e26dc/kernel.source",
+        "sha256": "62983509c2d4461a84f6e1ac5b1acc7a7f2d90f6cdb95b399cf409acd47412d4",
+        "bytes": 11127
+      },
+      {
+        "path": "tmem.raw.r3/compiler/a7d5b12c2ebc353185540be24559bd51cd3432f6ec5525656a638f2dcf3e26dc/kernel.ttgir",
+        "sha256": "66be25d6d33a00a522020a0ce5e10918b7027f495ac6d1a578a0d19b1316aab4",
+        "bytes": 7971
+      },
+      {
+        "path": "tmem.raw.r3/compiler/b73c59fbbc01e0c042784c9881498a7895cd7e802242c7c24bde1699def4b6ab/kernel.glir",
+        "sha256": "9f52fde8eeb79ec872934a016c9fd33f167087550c564de5a514f7e06ad72f12",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.raw.r3/compiler/b73c59fbbc01e0c042784c9881498a7895cd7e802242c7c24bde1699def4b6ab/kernel.json",
+        "sha256": "0e06d72268c6048e6f19cae3743165ebf1c6fa041b77372950949a1da3407e54",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/b73c59fbbc01e0c042784c9881498a7895cd7e802242c7c24bde1699def4b6ab/kernel.llir",
+        "sha256": "49393fe686bd0f7ae2e0fd57ccd858bf46747ca437076b8ff1d24c408edef37b",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.raw.r3/compiler/b73c59fbbc01e0c042784c9881498a7895cd7e802242c7c24bde1699def4b6ab/kernel.ptx",
+        "sha256": "5fa1eae02ecd932ec9089250b61ddd954cd69b79c21ec088a5ed49533d4209fd",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.raw.r3/compiler/b73c59fbbc01e0c042784c9881498a7895cd7e802242c7c24bde1699def4b6ab/kernel.source",
+        "sha256": "9f52fde8eeb79ec872934a016c9fd33f167087550c564de5a514f7e06ad72f12",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.raw.r3/compiler/b73c59fbbc01e0c042784c9881498a7895cd7e802242c7c24bde1699def4b6ab/kernel.ttgir",
+        "sha256": "21b46dd76957961db18413774b084c99cc1a15ba7a8e54349c4bc0b380fc6118",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c489f5a997f7eab784068d894c60546e80aad1fe803c11eed4248724d4cf1539/kernel.glir",
+        "sha256": "76eeead84df203620603204a286b50beeea1a45ff792c2f649ad8d3778c126cf",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c489f5a997f7eab784068d894c60546e80aad1fe803c11eed4248724d4cf1539/kernel.json",
+        "sha256": "07b522c57e8bff1dcfa794b0784d21fe044f0a8d0dc72a50f8deaf27cd8fd17a",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c489f5a997f7eab784068d894c60546e80aad1fe803c11eed4248724d4cf1539/kernel.llir",
+        "sha256": "6d6a197386dfb4c3630d28fef3514e8fdca211451ad03d98c8a68ff97ae7d041",
+        "bytes": 45719
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c489f5a997f7eab784068d894c60546e80aad1fe803c11eed4248724d4cf1539/kernel.ptx",
+        "sha256": "1c82579b53e054b6aa8baddf77ae9f46d99fa9670b68a1f5950a6d7756a9085f",
+        "bytes": 11280
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c489f5a997f7eab784068d894c60546e80aad1fe803c11eed4248724d4cf1539/kernel.source",
+        "sha256": "76eeead84df203620603204a286b50beeea1a45ff792c2f649ad8d3778c126cf",
+        "bytes": 8953
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c489f5a997f7eab784068d894c60546e80aad1fe803c11eed4248724d4cf1539/kernel.ttgir",
+        "sha256": "8d87a11077e721a9f920fe4f68627a30af3cd4ea5b364c3464c4d9febf7d9f93",
+        "bytes": 6484
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c8cdf871f5156d1f05666ebc5112b421dc6d7e494e80b33c13f2abadb5e02755/kernel.glir",
+        "sha256": "81929c9900009d8161531b47eb2442e5bd548bbb54f74ba7cadeb272755601b8",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c8cdf871f5156d1f05666ebc5112b421dc6d7e494e80b33c13f2abadb5e02755/kernel.json",
+        "sha256": "ae901ffc120bac569e694522160ab4e990456f3e78fe81b68b16c0ffc01ac95b",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c8cdf871f5156d1f05666ebc5112b421dc6d7e494e80b33c13f2abadb5e02755/kernel.llir",
+        "sha256": "21275d09aca30c4112ca14a508aa21c446eb576568e4d56623cf9b6faf7b70b0",
+        "bytes": 45869
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c8cdf871f5156d1f05666ebc5112b421dc6d7e494e80b33c13f2abadb5e02755/kernel.ptx",
+        "sha256": "93e0bdcf4df692fd86b540216e0274f8e3d571fb20258eb75f5f6a82561a246a",
+        "bytes": 11330
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c8cdf871f5156d1f05666ebc5112b421dc6d7e494e80b33c13f2abadb5e02755/kernel.source",
+        "sha256": "81929c9900009d8161531b47eb2442e5bd548bbb54f74ba7cadeb272755601b8",
+        "bytes": 8952
+      },
+      {
+        "path": "tmem.raw.r3/compiler/c8cdf871f5156d1f05666ebc5112b421dc6d7e494e80b33c13f2abadb5e02755/kernel.ttgir",
+        "sha256": "17b8ddd69ade74cd8df0de7d9d2c8742c94a10aacd8a6dff0684f7ce67caf1d5",
+        "bytes": 6483
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ce7a7b5cfe5a6c86c0b1d807512e79a6ee9b61093d429fafacf0753a528e6da0/kernel.glir",
+        "sha256": "3770487564b3c4783a2dd081965fe7bc5159be80ffb0983d027bb907c4c47b14",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ce7a7b5cfe5a6c86c0b1d807512e79a6ee9b61093d429fafacf0753a528e6da0/kernel.json",
+        "sha256": "21c43fa3950c7610251e847914ad6dd9bd3e38c0d52a75b4ddec3b8ca5d88be8",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ce7a7b5cfe5a6c86c0b1d807512e79a6ee9b61093d429fafacf0753a528e6da0/kernel.llir",
+        "sha256": "12f979b7d183873714de37f3ff9067f4726d6a6d4c10e1ef102ab5ba86e8e084",
+        "bytes": 26062
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ce7a7b5cfe5a6c86c0b1d807512e79a6ee9b61093d429fafacf0753a528e6da0/kernel.ptx",
+        "sha256": "9a38835b421bb30bf782f166c6d2e446c82b06313946138460cec4f360c17188",
+        "bytes": 9862
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ce7a7b5cfe5a6c86c0b1d807512e79a6ee9b61093d429fafacf0753a528e6da0/kernel.source",
+        "sha256": "3770487564b3c4783a2dd081965fe7bc5159be80ffb0983d027bb907c4c47b14",
+        "bytes": 9390
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ce7a7b5cfe5a6c86c0b1d807512e79a6ee9b61093d429fafacf0753a528e6da0/kernel.ttgir",
+        "sha256": "425e5d9c2fdaf52d26dd1c5232a11af9cf32397ca656bcf55a9a14d20239f5b7",
+        "bytes": 5823
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ced87fe24c6692bf6c7daededfc16596ad586068616377644c36ebfcc7a60f2d/kernel.glir",
+        "sha256": "80398be060d14458ea6fd6fa7e2c76c9fb94d5c0fefb5d0759ddbafc8afd57f6",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ced87fe24c6692bf6c7daededfc16596ad586068616377644c36ebfcc7a60f2d/kernel.json",
+        "sha256": "5b0537f80c19e380cab8b43459e577bb33b9cdcf0cba3fe1c0f5bc13ffc2d3a2",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ced87fe24c6692bf6c7daededfc16596ad586068616377644c36ebfcc7a60f2d/kernel.llir",
+        "sha256": "69184380430c1b33b75ec1cd9b5e48c656c806d009d400a6d5c60590119b9658",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ced87fe24c6692bf6c7daededfc16596ad586068616377644c36ebfcc7a60f2d/kernel.ptx",
+        "sha256": "4133e12d71c07b58754acce99bc0254027e98176d6167cb4bd0e7f56b46dda17",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ced87fe24c6692bf6c7daededfc16596ad586068616377644c36ebfcc7a60f2d/kernel.source",
+        "sha256": "80398be060d14458ea6fd6fa7e2c76c9fb94d5c0fefb5d0759ddbafc8afd57f6",
+        "bytes": 9595
+      },
+      {
+        "path": "tmem.raw.r3/compiler/ced87fe24c6692bf6c7daededfc16596ad586068616377644c36ebfcc7a60f2d/kernel.ttgir",
+        "sha256": "ef0d24e24d520902a918ec66cd2a5192d087555f851cba707e3c7a01c74902b0",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d61154bec78e0023ed17e56376a99d170e2b1fbd66df8bdb7d1dcc1294074dcc/kernel.glir",
+        "sha256": "a21e15c0466f4b0eba09d67411f06df3a979f97d441238e85cce0fac8767e4d1",
+        "bytes": 8955
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d61154bec78e0023ed17e56376a99d170e2b1fbd66df8bdb7d1dcc1294074dcc/kernel.json",
+        "sha256": "c1d4e15be150b9d0872002970484cb50aa016e53ed445cd4a764d6899b4c26bd",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d61154bec78e0023ed17e56376a99d170e2b1fbd66df8bdb7d1dcc1294074dcc/kernel.llir",
+        "sha256": "01659b7081ec49fd8f33dd8b003a5d33ba026a3a1a3f8469c643b647b9a60468",
+        "bytes": 45751
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d61154bec78e0023ed17e56376a99d170e2b1fbd66df8bdb7d1dcc1294074dcc/kernel.ptx",
+        "sha256": "60c70c57a759039627a886610d1b1d2e50f7a63b9bc6e09651466f22dfc8caa0",
+        "bytes": 11281
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d61154bec78e0023ed17e56376a99d170e2b1fbd66df8bdb7d1dcc1294074dcc/kernel.source",
+        "sha256": "a21e15c0466f4b0eba09d67411f06df3a979f97d441238e85cce0fac8767e4d1",
+        "bytes": 8955
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d61154bec78e0023ed17e56376a99d170e2b1fbd66df8bdb7d1dcc1294074dcc/kernel.ttgir",
+        "sha256": "05b2c57a843bbe2f5f27f4bebc1f859cd5a9b5570654fad645d4746b4592e381",
+        "bytes": 6485
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d6c4ca37d799374f6799e8a112acd30c5002f0a510bc9dac8ccfea6bb86c454b/kernel.glir",
+        "sha256": "7c4233d52a2357f0f88ba3e285c1b32038b813d39238621be2321fac00a86c98",
+        "bytes": 11129
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d6c4ca37d799374f6799e8a112acd30c5002f0a510bc9dac8ccfea6bb86c454b/kernel.json",
+        "sha256": "40b9d51380713223d4c2541ffd677443ee384a2ab97919ff6f39c8b754fe7ee9",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d6c4ca37d799374f6799e8a112acd30c5002f0a510bc9dac8ccfea6bb86c454b/kernel.llir",
+        "sha256": "eb45f529a09cdc1e4904b949dcafa1b215074d6830c589a532b88f6189976c51",
+        "bytes": 46608
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d6c4ca37d799374f6799e8a112acd30c5002f0a510bc9dac8ccfea6bb86c454b/kernel.ptx",
+        "sha256": "fdf97d3a3bccefeae3886667e7e765ec15f7d1a241b13add838cad1f7a9b90db",
+        "bytes": 12376
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d6c4ca37d799374f6799e8a112acd30c5002f0a510bc9dac8ccfea6bb86c454b/kernel.source",
+        "sha256": "7c4233d52a2357f0f88ba3e285c1b32038b813d39238621be2321fac00a86c98",
+        "bytes": 11129
+      },
+      {
+        "path": "tmem.raw.r3/compiler/d6c4ca37d799374f6799e8a112acd30c5002f0a510bc9dac8ccfea6bb86c454b/kernel.ttgir",
+        "sha256": "4696132b94c98c35bb47fb5582c47c51c83d9f3b99b57f5371562b924370ec18",
+        "bytes": 7972
+      },
+      {
+        "path": "tmem.raw.r3/compiler/efd34124b0bd0b15f6a9bdff0169d3dfb82855a3bdbb0cf44cc214655f4cb4d2/kernel.glir",
+        "sha256": "141dbb010107a438e1735dd7f74dc3bcc2c91d686a7b76baed24f9cafe77313e",
+        "bytes": 5832
+      },
+      {
+        "path": "tmem.raw.r3/compiler/efd34124b0bd0b15f6a9bdff0169d3dfb82855a3bdbb0cf44cc214655f4cb4d2/kernel.json",
+        "sha256": "03507a2555477e10676ac72b62f1527d4293419332d977f0e4b67951cd6e06f1",
+        "bytes": 1183
+      },
+      {
+        "path": "tmem.raw.r3/compiler/efd34124b0bd0b15f6a9bdff0169d3dfb82855a3bdbb0cf44cc214655f4cb4d2/kernel.llir",
+        "sha256": "ba9a5952c9869e9d942d69e848a0a34ad078a6c97926cb9eb45f79387eece87e",
+        "bytes": 16052
+      },
+      {
+        "path": "tmem.raw.r3/compiler/efd34124b0bd0b15f6a9bdff0169d3dfb82855a3bdbb0cf44cc214655f4cb4d2/kernel.ptx",
+        "sha256": "47c9244cbf1323015f85cbfd9c708387716f820f2be91e6db5872da3201946dc",
+        "bytes": 7334
+      },
+      {
+        "path": "tmem.raw.r3/compiler/efd34124b0bd0b15f6a9bdff0169d3dfb82855a3bdbb0cf44cc214655f4cb4d2/kernel.source",
+        "sha256": "141dbb010107a438e1735dd7f74dc3bcc2c91d686a7b76baed24f9cafe77313e",
+        "bytes": 5832
+      },
+      {
+        "path": "tmem.raw.r3/compiler/efd34124b0bd0b15f6a9bdff0169d3dfb82855a3bdbb0cf44cc214655f4cb4d2/kernel.ttgir",
+        "sha256": "7b19181989a72b58279a786e429972683f0e15cd5974bd19bd15c1ffd8e99bb9",
+        "bytes": 4443
+      },
+      {
+        "path": "tmem.raw.r3/compiler/f13037419cdc8bba3807fa1287152eab5387e0a941cf93af23f51332e02fb274/kernel.glir",
+        "sha256": "eb462aaf05d390d5fc078fe779fe603d22e973951530dbc147247302d3b4a196",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.raw.r3/compiler/f13037419cdc8bba3807fa1287152eab5387e0a941cf93af23f51332e02fb274/kernel.json",
+        "sha256": "9f5c54fb8189ace7e0ab422bf1b1fee04583c43de0aac0176e5f891a42a88e82",
+        "bytes": 1184
+      },
+      {
+        "path": "tmem.raw.r3/compiler/f13037419cdc8bba3807fa1287152eab5387e0a941cf93af23f51332e02fb274/kernel.llir",
+        "sha256": "49393fe686bd0f7ae2e0fd57ccd858bf46747ca437076b8ff1d24c408edef37b",
+        "bytes": 46194
+      },
+      {
+        "path": "tmem.raw.r3/compiler/f13037419cdc8bba3807fa1287152eab5387e0a941cf93af23f51332e02fb274/kernel.ptx",
+        "sha256": "5fa1eae02ecd932ec9089250b61ddd954cd69b79c21ec088a5ed49533d4209fd",
+        "bytes": 11941
+      },
+      {
+        "path": "tmem.raw.r3/compiler/f13037419cdc8bba3807fa1287152eab5387e0a941cf93af23f51332e02fb274/kernel.source",
+        "sha256": "eb462aaf05d390d5fc078fe779fe603d22e973951530dbc147247302d3b4a196",
+        "bytes": 9596
+      },
+      {
+        "path": "tmem.raw.r3/compiler/f13037419cdc8bba3807fa1287152eab5387e0a941cf93af23f51332e02fb274/kernel.ttgir",
+        "sha256": "2dd9d0380fe241894d69b35dea382c94e19fc0bbe930c424e1794c8fd26ce842",
+        "bytes": 7079
+      },
+      {
+        "path": "tmem.raw.r3/summary.json",
+        "sha256": "843c760baaf4106503f23e31da28ed6a9b0060bcf52889747a63a464abff8b8c",
+        "bytes": 31475
+      }
+    ],
+    "status": "completed",
+    "measurement_claim": "Command stdout/artifacts; no inferred GPU timestamps or benchmark claim.",
+    "remote_wall_seconds": 9.815361024
+  },
+  "finished_utc": "2026-10-23T13:52:40.685886+00:00"
+}

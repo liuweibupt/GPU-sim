@@ -1,0 +1,243 @@
+{
+  "format": "natural-repair-trial-v1",
+  "id": "tmem.raw.r2",
+  "family": "tmem",
+  "condition": "raw",
+  "rep": 2,
+  "startedAt": "2026-10-23T13:43:52.474Z",
+  "calls": [
+    {
+      "round": 1,
+      "startedAt": "2026-10-23T13:43:52.479Z",
+      "finishedAt": "2026-10-23T13:44:02.745Z",
+      "wallSeconds": 10.266451162934302,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/natural-repair-pijZFp/work",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/natural-repair-pijZFp/schema.json",
+        "-o",
+        "/tmp/natural-repair-pijZFp/answer.json",
+        "-"
+      ],
+      "promptSHA256": "643355f9d706bfe7ec72621e3311010f741a46d4d3b0b03f2fa31e2fb15ee17a",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null,
+      "valid": true,
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "source",
+          "id": "source-01",
+          "start": 120,
+          "end": 150,
+          "search": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "evidence_ids": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a16900-f3f4-7392-80b0-3b337d04fa3e"
+      },
+      "usage": [
+        {
+          "input_tokens": 46352,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 59,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "startedAt": "2026-10-23T13:44:02.748Z",
+      "finishedAt": "2026-10-23T13:44:33.893Z",
+      "wallSeconds": 31.145033726930617,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/natural-repair-JMyhR8/work",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/natural-repair-JMyhR8/schema.json",
+        "-o",
+        "/tmp/natural-repair-JMyhR8/answer.json",
+        "-"
+      ],
+      "promptSHA256": "0bbb5efa1f750697397ead42d88cba8087a6717b60ecc54db807d6fd8839b7ca",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "error": null,
+      "valid": true,
+      "finalMatches": true,
+      "answer": {
+        "action": "final",
+        "query": {
+          "op": "none",
+          "id": null,
+          "start": null,
+          "end": null,
+          "search": null,
+          "groupBy": null
+        },
+        "diagnosis": "getLiveIntervals follows MemDescViewTrait users but stops at arith.select, so backing allocations can expire before loads through the selected descriptor. In case-24/25, the 64-column temporary overlaps both candidates and selected outputs become 7 (fact-24/26, fact-25). The 32-column temporary overlaps only the first candidate: case-27 fails while case-26 passes (fact-29/27, fact-28). Passing early-allocation controls place the temporary at column 64 (case-30/31, fact-33/35, fact-34). Case-32 also demonstrates legal reuse of the dead second allocation (fact-36/37). Extend the existing traversal through select results, transitively through mixed views and select chains; deduplicate visited operations to avoid repeated traversal of converging paths. Both possible backing allocations remain live through selected-result uses, while reuse after their last use remains available. First-fit allocation, alignment, row constraints, layout, and size rounding remain unchanged. Static IR and outputs support premature reuse but do not measure GPU write/read timestamps. The proposed repair has not been compiled or tested; no post-repair feedback is available.",
+        "locations": [
+          {
+            "source_id": "source-01",
+            "start_line": 120,
+            "end_line": 135
+          },
+          {
+            "source_id": "source-02",
+            "start_line": 17,
+            "end_line": 26
+          },
+          {
+            "source_id": "source-03",
+            "start_line": 15,
+            "end_line": 24
+          },
+          {
+            "source_id": "source-05",
+            "start_line": 17,
+            "end_line": 26
+          },
+          {
+            "source_id": "source-06",
+            "start_line": 15,
+            "end_line": 21
+          }
+        ],
+        "evidence_ids": [
+          "case-24",
+          "case-25",
+          "fact-24",
+          "fact-26",
+          "fact-25",
+          "case-26",
+          "case-27",
+          "fact-27",
+          "fact-29",
+          "fact-28",
+          "case-30",
+          "case-31",
+          "fact-33",
+          "fact-35",
+          "fact-34",
+          "case-32",
+          "fact-36",
+          "fact-37",
+          "case-36",
+          "fact-42",
+          "fact-43"
+        ],
+        "edits": [
+          {
+            "old": "  // Merge the alloc liverange with the liverange of any subview of the\n  // allocation.\n  SmallVector<Operation *> users(value.getUsers());\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>())\n      continue;\n",
+            "new": "  // Merge the alloc liverange with the liveranges of descriptors derived\n  // transitively through views and selects. Either select operand may back\n  // the result and must remain live through its uses.\n  SmallVector<Operation *> users(value.getUsers());\n  DenseSet<Operation *> seen;\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!seen.insert(user).second)\n      continue;\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>() &&\n        !isa<arith::SelectOp>(user))\n      continue;\n"
+          }
+        ]
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a16901-1c0e-71e3-82a7-f2b9f6a5badc"
+      },
+      "usage": [
+        {
+          "input_tokens": 46853,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 758,
+          "reasoning_output_tokens": 68
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "round": 1,
+      "request": {
+        "op": "source",
+        "id": "source-01",
+        "start": 120,
+        "end": 150,
+        "search": null,
+        "groupBy": null
+      },
+      "response": {
+        "id": "source-01",
+        "path": "TensorMemoryAllocation.cpp",
+        "sha256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+        "text": "static Interval<int> getLiveIntervals(Value value, Liveness &liveness,\n                                      DenseMap<Operation *, int> &operationId) {\n  auto liveOperations = liveness.resolveLiveness(value);\n  // Merge the alloc liverange with the liverange of any subview of the\n  // allocation.\n  SmallVector<Operation *> users(value.getUsers());\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>())\n      continue;\n    auto usersLivness = liveness.resolveLiveness(user->getResult(0));\n    liveOperations.insert(liveOperations.end(), usersLivness.begin(),\n                          usersLivness.end());\n    users.append(user->getResult(0).getUsers().begin(),\n                 user->getResult(0).getUsers().end());\n  }\n  auto minId = std::numeric_limits<int>::max();\n  auto maxId = std::numeric_limits<int>::min();\n  std::for_each(liveOperations.begin(), liveOperations.end(),\n                [&](Operation *liveOp) {\n                  if (operationId[liveOp] < minId) {\n                    minId = operationId[liveOp];\n                  }\n                  if ((operationId[liveOp] + 1) > maxId) {\n                    maxId = operationId[liveOp] + 1;\n                  }\n                });\n  return Interval(minId, maxId);\n}\n\nstatic void updateMap(MemoryBitMap &memoryMap, Interval<int> liveInterval,",
+        "family": "tmem",
+        "version": "input",
+        "start": 120,
+        "end": 150,
+        "matches": []
+      },
+      "wallMilliseconds": 0.21867501735687256,
+      "responseSHA256": "cf2581bbeadcc9f635b957872354de9e52e28a13efe5263f6552236a99d6d2b9"
+    }
+  ],
+  "valid": true,
+  "finishedAt": "2026-10-23T13:44:33.895Z",
+  "scores": {
+    "locationHit": true,
+    "allLocationsValid": false,
+    "referencesValid": true,
+    "failureAndControlCovered": true,
+    "supportedLocalization": false
+  },
+  "modelWallSeconds": 41.41148488986492,
+  "queryMilliseconds": 0.21867501735687256,
+  "usage": {
+    "input_tokens": 93205,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 817,
+    "reasoning_output_tokens": 68
+  }
+}

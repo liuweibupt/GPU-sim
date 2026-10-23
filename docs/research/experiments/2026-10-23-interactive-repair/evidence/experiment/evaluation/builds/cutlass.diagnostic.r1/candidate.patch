@@ -1,0 +1,39 @@
+--- before
++++ candidate
+@@ -728,6 +728,12 @@
+       TensorStorage& shared_tensors,
+       Params const& mainloop_params) {
+     static_assert(is_rmem<FrgTensorC>::value, "C tensor must be rmem resident.");
++
++    // An empty reduction consumes no pipeline stages and contributes zero.
++    if (k_tile_count == 0) {
++      cute::clear(accum);
++      return;
++    }
+     static_assert(rank(SmemLayoutA{}) == 3, "Smem layout must be rank 3.");
+     static_assert(rank(SmemLayoutB{}) == 3, "Smem layout must be rank 3.");
+     static_assert(cute::is_void_v<SmemCopyAtomA>,
+@@ -1064,6 +1070,10 @@
+   /// Perform a Consumer Epilogue to release all buffers
+   CUTLASS_DEVICE void
+   mma_tail(MainloopPipeline pipeline, PipelineState smem_pipe_release, int k_tile_count) {
++    // No stage was consumed for an empty reduction.
++    if (k_tile_count == 0) {
++      return;
++    }
+     // The pipeline is not released in the first iteration
+     smem_pipe_release.advance(k_tile_count - 1);
+     pipeline.consumer_release(smem_pipe_release);
+@@ -1168,6 +1178,12 @@
+       cute::tuple<TensorMapA, TensorMapB> const& input_tensormaps,
+       ProblemShape_MNKL problem_shape_mnkl,
+       int32_t next_batch) {
++    // Empty groups issue no TMA loads; retain the existing valid descriptors.
++    if constexpr (IsGroupedGemmKernel) {
++      if (get<2>(problem_shape_mnkl) == 0) {
++        return;
++      }
++    }
+     if (cute::elect_one_sync()) {
+       // Replacing global_address for the next batch
+       tensormaps_replace_global_address(shared_tensormaps, mainloop_params, next_batch);

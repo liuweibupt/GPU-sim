@@ -1,0 +1,94 @@
+{
+  "schema": "natural-agent-repair-build-v1",
+  "family": "tmem",
+  "started_utc": "2026-10-23T13:51:05.866921+00:00",
+  "status": "built",
+  "answer_sha256": "69047829705ca774bc08d679459a98e3fbff1168e65848b411a0da6aa51776b5",
+  "executor_sha256": "21599231ee9c39f4fc1f4f6b110259dabfc9d0f2763fd5bea132ecfc5e6e0ec5",
+  "commands": [],
+  "artifacts": {
+    "candidate_source": {
+      "path": "candidate.cpp",
+      "sha256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+      "bytes": 16697
+    },
+    "compile": {
+      "path": "TensorMemoryAllocation.cpp.o",
+      "sha256": "c8b7c63f293e12ce759ede856cd4a36367df837052a3aa33c6bfdb52c98ea804",
+      "bytes": 1896200
+    },
+    "link_native": {
+      "path": "libtriton.so",
+      "sha256": "af9d30e9ee90c72762acf6b5dd5ce9af429bcfe599d105f20114c4d94740d211",
+      "bytes": 440951504
+    },
+    "link_opt": {
+      "path": "triton-opt",
+      "sha256": "2ff31520663cea53b8f05ab13953a9ca90f8b12da6872e31c4f97d5e7295537c",
+      "bytes": 493220784
+    },
+    "wheel": {
+      "path": "triton-3.9.0+git08a3cd43-cp312-cp312-linux_x86_64.whl",
+      "sha256": "9808a75bf3260d8c6098d4973120bbfab9ab075ec8026d18462479544f873f35",
+      "bytes": 274633628
+    },
+    "wheel_audit": {
+      "path": "wheel-audit.json",
+      "sha256": "70a1215045af1c1ba370b2fda3da4d99ed48a56f61b3d453d7c833843f90ed8b",
+      "bytes": 84946
+    }
+  },
+  "gpu_executed": false,
+  "before_sha256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+  "candidate_sha256": "7301dce5276e28a68061dc40cf94d72b2bcbd1bd1eee7ef4d3f5dbb2ad8afc0c",
+  "edits": [
+    {
+      "index": 0,
+      "old_sha256": "b33269cdc67d2cd2cb52a1f71426508344edda5d055b589e155e827fc388364c",
+      "new_sha256": "d462dc03229e5a0dfa8189e61cbf99bf9ece1561247929ffa4df4435f4d9e156",
+      "source_line_before_edit": 123,
+      "old_bytes": 584,
+      "new_bytes": 768
+    }
+  ],
+  "no_op": false,
+  "source_path": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/lib/Dialect/TritonNvidiaGPU/Transforms/TensorMemoryAllocation.cpp",
+  "reused": {
+    "result_path": "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/tmem.diagnostic.r2/result.json",
+    "result_sha256": "ff823e5f0be9dede2a5873748209328d9e165c3309e602ddb33482a338ffe896",
+    "reason": "Identical complete candidate source SHA256"
+  },
+  "cpu_validation": {
+    "input_sha256": "02041b69057ce5140fc4dea83dff3dc99805ae5f246132cdffb1465c40dc09a6",
+    "compile_exit_code": 0,
+    "filecheck_exit_code": 0,
+    "passed": true,
+    "scope": "Frozen upstream allocation lit; CPU compiler validation, not GPU execution."
+  },
+  "wheel_audit": {
+    "original_wheel_sha256": "2c6656f868344cddb8f792bb34270a2cb7c8cb6d4da137973fce5ff9f4c9b80c",
+    "candidate_wheel_sha256": "9808a75bf3260d8c6098d4973120bbfab9ab075ec8026d18462479544f873f35",
+    "native_member": "triton/_C/libtriton.so",
+    "native_sha256": "af9d30e9ee90c72762acf6b5dd5ce9af429bcfe599d105f20114c4d94740d211",
+    "record_member": "triton-3.9.0+git08a3cd43.dist-info/RECORD",
+    "member_count": 409,
+    "unchanged_member_count": 407,
+    "scope": "Only native library and RECORD bytes differ; archive compression may differ.",
+    "wall_seconds": 26.71666718099732
+  },
+  "source_dependency_audit": [
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-08a3cd4364d87bf2c281067f7a40e17808f22e7b/lib/Dialect/TritonNvidiaGPU/Transforms/TensorMemoryAllocation.cpp",
+      "sha256_before": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+      "sha256_after": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+      "unchanged": true
+    },
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/tmem/sources/triton-0002b46dadfc6f8fbe7464c285651311c709fdc6/test/TritonNvidiaGPU/test_tensor_memory_allocation.mlir",
+      "sha256_before": "02041b69057ce5140fc4dea83dff3dc99805ae5f246132cdffb1465c40dc09a6",
+      "sha256_after": "02041b69057ce5140fc4dea83dff3dc99805ae5f246132cdffb1465c40dc09a6",
+      "unchanged": true
+    }
+  ],
+  "finished_utc": "2026-10-23T13:51:07.490411+00:00"
+}

@@ -1,0 +1,57 @@
+{
+  "sources": [
+    "tools/research/natural-repair-eval/hidden_gpu.py",
+    "out/research/natural-repair-eval/hidden-v1/plan.json",
+    "out/research/natural-bugs/cutlass/build-v1/before/cutlass_before",
+    "out/research/natural-bugs/cutlass/backport-v1/cutlass_backport"
+  ],
+  "commands": [
+    {
+      "name": "identity",
+      "argv": [
+        "nvidia-smi",
+        "--query-gpu=name,compute_cap,driver_version",
+        "--format=csv,noheader"
+      ],
+      "timeout": 10
+    },
+    {
+      "name": "before",
+      "argv": [
+        "python",
+        "hidden_gpu.py",
+        "--family",
+        "cutlass",
+        "--plan",
+        "plan.json",
+        "--output",
+        "before",
+        "--binary",
+        "cutlass_before"
+      ],
+      "timeout": 300,
+      "continue_on_failure": true
+    },
+    {
+      "name": "gold",
+      "argv": [
+        "python",
+        "hidden_gpu.py",
+        "--family",
+        "cutlass",
+        "--plan",
+        "plan.json",
+        "--output",
+        "gold",
+        "--binary",
+        "cutlass_backport"
+      ],
+      "timeout": 300,
+      "continue_on_failure": true
+    }
+  ],
+  "artifact_patterns": [
+    "before/**/*",
+    "gold/**/*"
+  ]
+}

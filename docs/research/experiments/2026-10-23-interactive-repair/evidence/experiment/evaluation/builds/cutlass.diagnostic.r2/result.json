@@ -1,0 +1,111 @@
+{
+  "schema": "natural-agent-repair-build-v1",
+  "family": "cutlass",
+  "started_utc": "2026-10-23T13:47:31.646435+00:00",
+  "status": "built",
+  "answer_sha256": "c95ba84a8b2311fca183e42089eaf04d650f1da45c8ea83e458c55c6749e5e95",
+  "executor_sha256": "21599231ee9c39f4fc1f4f6b110259dabfc9d0f2763fd5bea132ecfc5e6e0ec5",
+  "commands": [
+    {
+      "name": "compile",
+      "argv": [
+        "/usr/local/cuda-13.1/bin/nvcc",
+        "-std=c++17",
+        "-O2",
+        "-lineinfo",
+        "-gencode",
+        "arch=compute_90a,code=sm_90a",
+        "--expt-relaxed-constexpr",
+        "--expt-extended-lambda",
+        "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2/cutlass_repro.cu",
+        "-I/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2/tree/include",
+        "-I/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2/tree/tools/util/include",
+        "-I/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2/tree/examples/common",
+        "-I/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2/tree/examples/68_hopper_fp8_warp_specialized_grouped_gemm_with_blockwise_scaling",
+        "-lcuda",
+        "-o",
+        "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2/cutlass_candidate"
+      ],
+      "cwd": "/home/liuwei/GPU-sim/out/research/natural-repair-eval/builds/cutlass.diagnostic.r2",
+      "started_utc": "2026-10-23T13:47:31.787315+00:00",
+      "timeout_seconds": 600,
+      "timed_out": false,
+      "exit_code": 0,
+      "wall_seconds": 30.108635128941387,
+      "finished_utc": "2026-10-23T13:48:01.895971+00:00",
+      "stdout": {
+        "path": "compile.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "compile.stderr.txt",
+        "sha256": "6bfdcdce3d935e35832446a50906ac95c5749170a5f900830fd72c7db77499e7",
+        "bytes": 5224
+      }
+    }
+  ],
+  "artifacts": {
+    "candidate_source": {
+      "path": "candidate.hpp",
+      "sha256": "736f65daae8416d1908af4427b0317620c07677cc537253736f69fe545cef9fd",
+      "bytes": 55411
+    },
+    "binary": {
+      "path": "cutlass_candidate",
+      "sha256": "c34c0d361cc4b3e43516f7dc2075308e5fd918ee3f4fbb0bf05cb7076973e203",
+      "bytes": 2957640
+    }
+  },
+  "gpu_executed": false,
+  "before_sha256": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+  "candidate_sha256": "736f65daae8416d1908af4427b0317620c07677cc537253736f69fe545cef9fd",
+  "edits": [
+    {
+      "index": 0,
+      "old_sha256": "ee0d700f514c2e054e93b8e1cccb097236c352e7f30f78394eb8f143756fb283",
+      "new_sha256": "39c2dd73844773e7cc7f26d43b3ecb3066bc8b7cefec3b7b8db460c64c2ad89e",
+      "source_line_before_edit": 816,
+      "old_bytes": 71,
+      "new_bytes": 208
+    },
+    {
+      "index": 1,
+      "old_sha256": "a49a3c3277714c5956ab041d595afa9e0ad4be5d35486c436a73a349b076593b",
+      "new_sha256": "95f98419a40c59b766b90f89d430b46b00115be0d1f9c877ac0b8a57071bde85",
+      "source_line_before_edit": 1072,
+      "old_bytes": 149,
+      "new_bytes": 270
+    }
+  ],
+  "no_op": false,
+  "source_path": "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/tree/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp",
+  "observer_sha256": "a8f54287b2a498646a2798bca073e13534ee5b57147acdc7f60928bbb20e0100",
+  "tree_audit": {
+    "changed_files": [
+      "include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp"
+    ],
+    "host_observer_unchanged": true
+  },
+  "source_dependency_audit": [
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/tree/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_ss_warpspecialized_fp8_blockwise_scaling.hpp",
+      "sha256_before": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+      "sha256_after": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+      "unchanged": true
+    },
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/build.json",
+      "sha256_before": "26aa74f5603c32fcb83bd363a14d084720b6d28fa1fbfd533f09080852775646",
+      "sha256_after": "26aa74f5603c32fcb83bd363a14d084720b6d28fa1fbfd533f09080852775646",
+      "unchanged": true
+    },
+    {
+      "path": "/home/liuwei/GPU-sim/out/research/natural-bugs/cutlass/build-v1/before/cutlass_repro.cu",
+      "sha256_before": "a8f54287b2a498646a2798bca073e13534ee5b57147acdc7f60928bbb20e0100",
+      "sha256_after": "a8f54287b2a498646a2798bca073e13534ee5b57147acdc7f60928bbb20e0100",
+      "unchanged": true
+    }
+  ],
+  "finished_utc": "2026-10-23T13:48:01.960762+00:00"
+}

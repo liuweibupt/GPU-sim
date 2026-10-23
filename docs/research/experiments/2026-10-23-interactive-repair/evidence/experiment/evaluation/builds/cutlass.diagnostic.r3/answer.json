@@ -1,0 +1,54 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "id": null,
+    "start": null,
+    "end": null,
+    "search": null,
+    "groupBy": null
+  },
+  "diagnosis": "For beta=0, positive-K controls case-00/01 pass with 49,152 checked outputs each and zero mismatches; all ten cases containing empty K time out, regardless of host-shape availability or empty-group position. Both producer loops skip zero tiles, but mma unconditionally waits for a prologue tile that was never produced. Its empty path must explicitly clear accum for the epilogue. Independently, mma_tail must not advance by -1 or release a nonexistent tile. These edits make empty-K consumption and release no-ops while supplying the zero reduction; positive-K computation, producer tails, descriptor synchronization, and pipeline advancement remain unchanged. This is a source-based diagnosis: timeouts do not identify the exact stalled instruction, failed runs supply no output, and compilation/runtime validation is unavailable. Beta=1 also fails positive-K controls case-02/03 and remains outside this repair.",
+  "locations": [
+    {
+      "source_id": "source-00",
+      "start_line": 795,
+      "end_line": 825
+    },
+    {
+      "source_id": "source-00",
+      "start_line": 1065,
+      "end_line": 1076
+    }
+  ],
+  "evidence_ids": [
+    "case-00",
+    "case-01",
+    "fact-00",
+    "fact-01",
+    "case-04",
+    "fact-04",
+    "case-08",
+    "fact-08",
+    "case-12",
+    "fact-12",
+    "case-16",
+    "fact-16",
+    "case-20",
+    "fact-20",
+    "case-02",
+    "case-03",
+    "fact-02",
+    "fact-03"
+  ],
+  "edits": [
+    {
+      "old": "    static_assert(is_rmem<FrgTensorC>::value, \"C tensor must be rmem resident.\");\n",
+      "new": "    static_assert(is_rmem<FrgTensorC>::value, \"C tensor must be rmem resident.\");\n\n    // An empty reduction produces zero without consuming a pipeline stage.\n    if (k_tile_count == 0) {\n      cute::clear(accum);\n      return;\n    }\n"
+    },
+    {
+      "old": "  mma_tail(MainloopPipeline pipeline, PipelineState smem_pipe_release, int k_tile_count) {\n    // The pipeline is not released in the first iteration\n",
+      "new": "  mma_tail(MainloopPipeline pipeline, PipelineState smem_pipe_release, int k_tile_count) {\n    // No stage was consumed for an empty reduction.\n    if (k_tile_count == 0) {\n      return;\n    }\n    // The pipeline is not released in the first iteration\n"
+    }
+  ]
+}

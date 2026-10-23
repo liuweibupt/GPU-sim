@@ -1,0 +1,1262 @@
+{
+  "format": "natural-repair-tmem-runtime-v1",
+  "plan_sha256": "4f46841c6bd85a59dff85bdc00f3ac632cb43c66b14af5f94653bc3e0ef16042",
+  "native_sha256": "0760030da6ab8a20c51537533a21ebb84743ecd6426d8496480ab4dd44f13280",
+  "torch": "2.12.0+cu130",
+  "triton": "3.9.0",
+  "gpu": "NVIDIA B200",
+  "capability": [
+    10,
+    0
+  ],
+  "records": [
+    {
+      "id": "case-00",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-00.json.gz",
+        "sha256": "5f3cfb0507321311a1274a33203f4b70464c7dc1b1400e20059d43896528df89",
+        "original_sha256": "40555c489b6c93788269a0467d1af54876baf9023d5f683b839dd7777f0ea21c"
+      }
+    },
+    {
+      "id": "case-01",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 8192,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-01.json.gz",
+        "sha256": "0a0c60e0662de5862bd1a632c7d4aad31b1c95b24d486b336df6d79bcd093be7",
+        "original_sha256": "77f26fdc4a1229528a902f2defbbca35671158dc68f1e79120a45d9bb931bca9"
+      }
+    },
+    {
+      "id": "case-02",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 4096,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-02.json.gz",
+        "sha256": "c6878185f977e0da4a93946a4d706fd3eff9019175fadcc911d3a315220ca193",
+        "original_sha256": "a06932f3f835f934faf9435b9663dab47de229adfe50de6258d0f5a6ec840367"
+      }
+    },
+    {
+      "id": "case-03",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-03.json.gz",
+        "sha256": "370e378fcc7b23a2eeca2334f7468dc02b3eeb50284eae06c14e7e67a585caf6",
+        "original_sha256": "a60464c708cd8d4652113686812d4b9f2b1216042320c28a36aef20981ca79e6"
+      }
+    },
+    {
+      "id": "case-04",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-04.json.gz",
+        "sha256": "fc6995fc3bc37c3cea969af8967ddd939772bded2fd9f51fb6aab6a41407a53e",
+        "original_sha256": "44c10c038560556c496b6ade4f9e8cf950f7cc0a14a12111c1ea56a0156381b5"
+      }
+    },
+    {
+      "id": "case-05",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-05.json.gz",
+        "sha256": "5d2fc44ea0a569d9c46f41fcf902a817c1bf336bf74616f808c60c6db34319f3",
+        "original_sha256": "986c35c435e5ca15631714a1e1d8aef55c85786c7896677ced62faf4676a83a1"
+      }
+    },
+    {
+      "id": "case-06",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-06.json.gz",
+        "sha256": "b19da8a67ef52f4e88ccb117fae3a0c7464eb3fa351171f426c20075c8c34437",
+        "original_sha256": "3b37c814eabde5edf52a03c4a7745cd08410d1272d0191877cb9c116dd4f955b"
+      }
+    },
+    {
+      "id": "case-07",
+      "partition": "known",
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-07.json.gz",
+        "sha256": "1e8802aeabcd82f1171059de6a4abd55b56741cd87a4973b40be5cbc5af2cd4f",
+        "original_sha256": "8f0478e650f5a965da5d5d93bb5a32a1f801e68eac825b0cf3e166254c420d61"
+      }
+    },
+    {
+      "id": "case-08",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-08.json.gz",
+        "sha256": "8480495188a208056e1300ad12098b14e25d8ff67d3920d23a0eb3d76f25baa6",
+        "original_sha256": "662643c54db0fba854e11787c10f781081efcf854644ca1a8a9e0f46de2bb862"
+      }
+    },
+    {
+      "id": "case-09",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 8192,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-09.json.gz",
+        "sha256": "ddeffb3d0b9a1e2afcbcfdf997453448c184835d4e7e848e0ef13b207afc09ee",
+        "original_sha256": "b3def61e7f96d6be7c42126b76c26afd537169960609a92a14bd5a3566879dbc"
+      }
+    },
+    {
+      "id": "case-10",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 4096,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-10.json.gz",
+        "sha256": "980ff635215b3956bf6acabd212ca39de0cef307514299f10c76653c17a4b002",
+        "original_sha256": "b9a1acf7e216ce5879697b731c0e3a7e2b9696fb1af37c8bd044079157569ab5"
+      }
+    },
+    {
+      "id": "case-11",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-11.json.gz",
+        "sha256": "4b6f33c14123283c9f5b4c1f2be5c48f8653b22c02b0a4b53fccce7d505a30b6",
+        "original_sha256": "c73ff296fecdfa96178a152fb9aedbe992d79a7f4ea1e953358f46c88268a7f5"
+      }
+    },
+    {
+      "id": "case-12",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-12.json.gz",
+        "sha256": "acf10a27434df15dd7899f00673981820bae530945d174e88efefa27c8257cd7",
+        "original_sha256": "27bdce761ced94f1b9c3c1a8f11894ca110150524831df923d6b2750a450a848"
+      }
+    },
+    {
+      "id": "case-13",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-13.json.gz",
+        "sha256": "6a5a12b610f931435140f2484ae9c0c4167e5c8c4b53bbfbc76810ff16ece0ae",
+        "original_sha256": "b564dbd90f9e930bdf929a9f94e6b62082f7ed2c3a1ea60b9a2788d2614dc469"
+      }
+    },
+    {
+      "id": "case-14",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-14.json.gz",
+        "sha256": "bb582ef8afd862b3937e643b8dede5fa85518169bcb17e86c6a3f3d82224398b",
+        "original_sha256": "21a56acb2e9c866666cb25e38cbc27f130c2dec4f2b4b048b8f1b3f348700ad3"
+      }
+    },
+    {
+      "id": "case-15",
+      "partition": "known",
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        3,
+        5,
+        7
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-15.json.gz",
+        "sha256": "3e026ed290e1d1eabc61c306ec0fd0f079e214a5692e5e0a79b9aba902ac291e",
+        "original_sha256": "4ebfaf367a086cc59b91bc94b7ee05263ea3244040f0f53e48631de21dfce932"
+      }
+    },
+    {
+      "id": "case-16",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-16.json.gz",
+        "sha256": "b3f0984845aadd9fee843d28f193111f900d7b3895a8bfdd6b8f790d13fb5221",
+        "original_sha256": "aa3cb3e7f3bcc1b4986a4383ad2dfc409d7b12c5668d1323fc5239052df76aa5"
+      }
+    },
+    {
+      "id": "case-17",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 8192,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-17.json.gz",
+        "sha256": "deaa0b1ecab0b01564f3b798c4661b6e23855b0fa70b5756f13e71aadcccf569",
+        "original_sha256": "5d73ff96c784608a026535089f8a95a1d8b0b57c66f7e54ef1a98822b0fae078"
+      }
+    },
+    {
+      "id": "case-18",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 4096,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-18.json.gz",
+        "sha256": "606e42d34caa4b33444636b982765b0fc55a5486b1b123a4b7c112c27a89ed7d",
+        "original_sha256": "69178c29f2083ecdfc2c615d7ba240f051422a907decf6977a583ce422ad9906"
+      }
+    },
+    {
+      "id": "case-19",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-19.json.gz",
+        "sha256": "681e8941ca8bf372defe2c7d48c3613f2d688c021ce73e60eb38e9e149b700f8",
+        "original_sha256": "40e8e4c8c12827098addd8013dacbc49e63b01dbebba0e17c4bec9cc521cc4cb"
+      }
+    },
+    {
+      "id": "case-20",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-20.json.gz",
+        "sha256": "a906bf6f8ae84e039612b3f8d355d19e67e12f4a4bb9f16b155a8d347f53f75e",
+        "original_sha256": "6a7c450e3ee450ab5a1cd7fc2c19d8d86b3a454a99dafb4cfc305c25478020ea"
+      }
+    },
+    {
+      "id": "case-21",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-21.json.gz",
+        "sha256": "811e55c77989fb8eff25c739d3900a09c256b3f0ab381758fc578df0109b1aed",
+        "original_sha256": "4cc15ee4877a87d2df7a8ea1177faa33c1db75a47154c2a9179be204bba1ac94"
+      }
+    },
+    {
+      "id": "case-22",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-22.json.gz",
+        "sha256": "21702abd2471793055465e3a905c0ff6afe09f0aae98dbb1ac607b5dc1ae78db",
+        "original_sha256": "ef7770620f4e6765466780c98ac7dbbd17d365b6fd54772ad825b0b79626e446"
+      }
+    },
+    {
+      "id": "case-23",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-23.json.gz",
+        "sha256": "f44d8417430236d82c43233160d8bda096495db089bd5b2fd5a097794d33dc99",
+        "original_sha256": "ce4150fa178c4f690e55339d5c62d5d695a2a76c154bf2399067ce0fd1e7eb6d"
+      }
+    },
+    {
+      "id": "case-24",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-24.json.gz",
+        "sha256": "4887c0f601896a3d8aa7fb3518b72d403b1c3522f3d91b2dd80f15d58fd07fa5",
+        "original_sha256": "3b299a6f9dfa969bcd93608eafd2aee6bb706f4758bafafe53dd69b87035a4eb"
+      }
+    },
+    {
+      "id": "case-25",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 8192,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-25.json.gz",
+        "sha256": "b7aba0888e4031b052185ff99f36bab48fdce1433f97be7dff2a65badf910636",
+        "original_sha256": "e6e9535cb92c41d08e07aacd0b12a1e986ce43c7ec76154cc983c8db246db1d1"
+      }
+    },
+    {
+      "id": "case-26",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 4096,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-26.json.gz",
+        "sha256": "c4a26d94bbed0fb335d1c27e523613f02a4d4a9fcbe5c571780a09402ab11d30",
+        "original_sha256": "5154c41fd2fa4d2952742806b4e321444cd45bf34277d1a74ad416e6ea8964f7"
+      }
+    },
+    {
+      "id": "case-27",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-27.json.gz",
+        "sha256": "c67d3ef542312e789a0283e65b414d0bfa854c5b72fb4ccaebed7f7d031aed77",
+        "original_sha256": "bcdcfd9ca7e7b0686463fd53097a703dfb696a74f0f14d1827efdb82255cbd3d"
+      }
+    },
+    {
+      "id": "case-28",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-28.json.gz",
+        "sha256": "032f03225943dcfb7e7633aa0de046bded459db9af67de408ed72eba38797e3d",
+        "original_sha256": "cb8424f50002d8d10ad8275e6a0cc53fc5aca69590eff3244d5d6dd6559cfcbe"
+      }
+    },
+    {
+      "id": "case-29",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-29.json.gz",
+        "sha256": "c95dbccc198e893f043936c5bf53b844d1c7a86e5dca65a335bdde91b476cda5",
+        "original_sha256": "23b3f08e337d763c5d3c1354b99e4278b8f2bac955ffc0ade0eff7ae67264f85"
+      }
+    },
+    {
+      "id": "case-30",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-30.json.gz",
+        "sha256": "66ee32cbce17484466def29f6afe7fb7dba7c7b5acfb22c0500385b3e9c11555",
+        "original_sha256": "9718eec81cb4c9508409db4f0023b04d5fa7ed561c435904a8ebb815d95dbfd1"
+      }
+    },
+    {
+      "id": "case-31",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        11,
+        13,
+        17
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-31.json.gz",
+        "sha256": "823f3dc4a0adbd291c0184c6786798f7e89c3422432977ef6041fcd60e801b5d",
+        "original_sha256": "ce36a218c11f16745b1d4c5fb1d83d20a55280eb78ff84f63a5baf5256dce5ae"
+      }
+    },
+    {
+      "id": "case-32",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-32.json.gz",
+        "sha256": "302e1310724fad9639a47aa0b07c6f0a254205dc99bcaf70237b42f9b5f12e1f",
+        "original_sha256": "450c34240aee748e02e57a37c29cc1094322ba73971864cc609ca3006e4c7f31"
+      }
+    },
+    {
+      "id": "case-33",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 8192,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-33.json.gz",
+        "sha256": "e9c97e290880e613ef28953da2b3c696864f93cb8352d7790afcf4da07d054a5",
+        "original_sha256": "d39e588926546025252fcf15ba9a3dbf632cde79363f117c2a886136873b0b8f"
+      }
+    },
+    {
+      "id": "case-34",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 4096,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-34.json.gz",
+        "sha256": "99314c8d6ceb1da75182d7a6abdd72dd45887ab970e299b392693cee490d8173",
+        "original_sha256": "9811a90fbd5a7b5c9c993fc54def6a814f58a4617ade8af0ddc49f1e82e991cc"
+      }
+    },
+    {
+      "id": "case-35",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-35.json.gz",
+        "sha256": "e78afa6c8b6ad2de781c6e9bec8ad12454880aae6ea117b72c394bdbfceb0879",
+        "original_sha256": "04321c39771c3bc2bf265132cdcf5cdf28424aefc92cb164c539be2da500f9b1"
+      }
+    },
+    {
+      "id": "case-36",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-36.json.gz",
+        "sha256": "59064b3a0d79ac6ce24f006a2c71298123d3926833270bf2a02816682c54aaaa",
+        "original_sha256": "119f9bba2c6ddc76b5997fa2f9f8d8379cae773778913d9de09120775af12b58"
+      }
+    },
+    {
+      "id": "case-37",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-37.json.gz",
+        "sha256": "ca28da43b3a3b3513b5bd7efe976ee8479ec7a1c556206df9260ee5220a4e618",
+        "original_sha256": "7ec872130bcbba48adb024f200795234188279a0302f84e37462381e3781e03a"
+      }
+    },
+    {
+      "id": "case-38",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-38.json.gz",
+        "sha256": "628c0e36938f33ff191b0ba60afb8b957d4a7b216157b72ed6553916fa731d69",
+        "original_sha256": "6db890e4bc79b8dc82fcc25e3a7514e3f02ef2069320364d9e53f12719b556d8"
+      }
+    },
+    {
+      "id": "case-39",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 0,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-39.json.gz",
+        "sha256": "d5fefdaef43472e6de141853ea66fa3949c8bbe64834c85699bdc6ac4bbde4e6",
+        "original_sha256": "a7cd1c9dcb14e850c734ad91eabbc6e35d4324354a411e2858a6a047013a982f"
+      }
+    },
+    {
+      "id": "case-40",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-40.json.gz",
+        "sha256": "6a46eedc1393a3140005ac4e1e9191e3063605f925bd44f56c311b15d986125c",
+        "original_sha256": "a21d2a83dedb4feb008cdd4a1eebeab81cfd6561e8196bf3be3f2285428d35e8"
+      }
+    },
+    {
+      "id": "case-41",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 32,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 8192,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-41.json.gz",
+        "sha256": "45cbcbfa9bb9422933e173d4fead44506aeac1f4061e039c99492c02a3b42d1a",
+        "original_sha256": "4a030942433ab52bb600addbe0f733cf037b5c940332b6390d634426ed4fe2b7"
+      }
+    },
+    {
+      "id": "case-42",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 0,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 4096,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-42.json.gz",
+        "sha256": "95ccfe93679c74eda62608113f2cee4f9317ba92235cb234ad65bf24c6f635cb",
+        "original_sha256": "c5a9bb0ae4760f8813da719014b8d0c9cc697eead53fa4c0bede81af1f544016"
+      }
+    },
+    {
+      "id": "case-43",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "select",
+        "columns": 64,
+        "early": true,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-43.json.gz",
+        "sha256": "a3aa078b7643024d031187caed66a29729d2b71a18f31f4297382198bb53aec1",
+        "original_sha256": "5afa9defb6eb61c5d769f502f9d2c75e89e20d6183057436c9f0bcb40133bf23"
+      }
+    },
+    {
+      "id": "case-44",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "first",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-44.json.gz",
+        "sha256": "95df5a91d3ace4df309ce449cb2ec857b9b6dc85019c35f521a3a2862def0779",
+        "original_sha256": "81b3988bf391959da4fcf150aceb1d27610487a08a3aa2ba2750848203f3fa0a"
+      }
+    },
+    {
+      "id": "case-45",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "second",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": true,
+      "call_passed": true,
+      "numeric_passed": true,
+      "elements": 12288,
+      "mismatches": 0,
+      "artifact": {
+        "path": "case-45.json.gz",
+        "sha256": "9b939ce2820c5363d73f3af4e9d0d21c5a13c45c330904c9f32321e67c54f2a9",
+        "original_sha256": "115716d997cba08d1cc2b4df4051fddca5db3f3369ee83aec18ffbd4d7701b18"
+      }
+    },
+    {
+      "id": "case-46",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 0
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-46.json.gz",
+        "sha256": "4b96302045ee5ba100b3403588eb7590ce2dd7fafed6746783d4d04be6e52fef",
+        "original_sha256": "58479e8d95e8c3bcef0e3c281107198d5b5714d90f2adfa9026cc20f2f106f48"
+      }
+    },
+    {
+      "id": "case-47",
+      "partition": "hidden",
+      "parameters": {
+        "choice": 1,
+        "mode": "chain",
+        "columns": 64,
+        "early": false,
+        "outer_choice": 1
+      },
+      "constants": [
+        -2,
+        9,
+        23
+      ],
+      "passed": false,
+      "call_passed": false,
+      "numeric_passed": false,
+      "elements": 12288,
+      "mismatches": 4096,
+      "artifact": {
+        "path": "case-47.json.gz",
+        "sha256": "9abee00db5728457a86a04a12f6d13ead0b50d3503581159bff0d39f1d140dce",
+        "original_sha256": "518c510d24d482bd735423bd93d9f3595d3302494de9d8fb6d6f75ef9c1a85a7"
+      }
+    }
+  ]
+}

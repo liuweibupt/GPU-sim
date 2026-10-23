@@ -1,0 +1,24 @@
+{
+  "round": 2,
+  "request": {
+    "op": "source",
+    "id": "source-00",
+    "start": 1060,
+    "end": 1100,
+    "search": null,
+    "groupBy": null
+  },
+  "response": {
+    "id": "source-00",
+    "path": "collective.hpp",
+    "sha256": "70139072716fbb29e8c3ea7a5a4272731f421989dec110ddbecd72fbaa747945",
+    "text": "    warpgroup_fence_operand(accumulation());\n\n  }\n\n  /// Perform a Consumer Epilogue to release all buffers\n  CUTLASS_DEVICE void\n  mma_tail(MainloopPipeline pipeline, PipelineState smem_pipe_release, int k_tile_count) {\n    // The pipeline is not released in the first iteration\n    smem_pipe_release.advance(k_tile_count - 1);\n    pipeline.consumer_release(smem_pipe_release);\n  }\n\n  //\n  // Methods to perform different parts of TMA/Tensormap modifications\n  //\n\n  CUTLASS_DEVICE auto\n  tensormaps_init(\n      Params const& mainloop_params,\n      TensorMapStorage& shared_tensormaps,\n      int32_t sm_count,\n      int32_t sm_idx) {\n    cute::TmaDescriptor* gmem_tensormap = reinterpret_cast<cute::TmaDescriptor*>(mainloop_params.tensormaps);\n\n    cute::TmaDescriptor* tma_desc_a = &gmem_tensormap[sm_idx];\n    cute::TmaDescriptor* tma_desc_b = &gmem_tensormap[sm_idx + sm_count];\n\n    if (cute::elect_one_sync()) {\n      // Bringing tensormaps from params to smem for modification later\n      Tensor pA_tensormap = make_tensor(mainloop_params.tma_load_a.get_tma_descriptor(), Int<1>{}, Int<1>{});\n      Tensor sA_tensormap = make_tensor(make_smem_ptr(&shared_tensormaps.smem_tensormap_A), Int<1>{}, Int<1>{});\n      Tensor pB_tensormap = make_tensor(mainloop_params.tma_load_b.get_tma_descriptor(), Int<1>{}, Int<1>{});\n      Tensor sB_tensormap = make_tensor(make_smem_ptr(&shared_tensormaps.smem_tensormap_B), Int<1>{}, Int<1>{});\n\n      copy(recast<uint128_t>(pA_tensormap), recast<uint128_t>(sA_tensormap));\n      copy(recast<uint128_t>(pB_tensormap), recast<uint128_t>(sB_tensormap));\n    }\n    __syncwarp();\n\n    return cute::make_tuple(tma_desc_a, tma_desc_b);\n  }",
+    "family": "cutlass",
+    "version": "input",
+    "start": 1060,
+    "end": 1100,
+    "matches": []
+  },
+  "wallMilliseconds": 0.26650500297546387,
+  "responseSHA256": "02d564cc8655f2a0a1cefc4a75abfe0785d6f6f9fe2d569375660aef8d943bbe"
+}

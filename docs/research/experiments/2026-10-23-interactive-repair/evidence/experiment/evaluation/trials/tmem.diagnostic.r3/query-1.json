@@ -1,0 +1,154 @@
+{
+  "round": 1,
+  "request": {
+    "op": "overlap",
+    "id": "case-24",
+    "start": null,
+    "end": null,
+    "search": null,
+    "groupBy": null
+  },
+  "response": {
+    "caseId": "case-24",
+    "supported": true,
+    "sourceId": "source-02",
+    "allocations": [
+      {
+        "ssa": "%selected",
+        "line": 17,
+        "rows": 128,
+        "columns": 32,
+        "interval": [
+          0,
+          32
+        ],
+        "raw": "    %selected = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc36)"
+      },
+      {
+        "ssa": "%selected_4",
+        "line": 18,
+        "rows": 128,
+        "columns": 32,
+        "interval": [
+          32,
+          64
+        ],
+        "raw": "    %selected_4 = ttng.tmem_alloc {tensor_memory_col_offset = 32 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc37)"
+      },
+      {
+        "ssa": "%temp",
+        "line": 24,
+        "rows": 128,
+        "columns": 64,
+        "interval": [
+          0,
+          64
+        ],
+        "raw": "    %temp = ttng.tmem_alloc {tensor_memory_col_offset = 0 : i32, tensor_memory_row_offset = 0 : i32} : () -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc29)"
+      }
+    ],
+    "stores": [
+      {
+        "line": 19,
+        "destination": "%selected",
+        "value": 3,
+        "raw": "    ttng.tmem_store %cst, %selected, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc4)"
+      },
+      {
+        "line": 20,
+        "destination": "%selected_4",
+        "value": 5,
+        "raw": "    ttng.tmem_store %cst_0, %selected_4, %true : tensor<128x32xf32, #linear> -> !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc5)"
+      },
+      {
+        "line": 25,
+        "destination": "%temp",
+        "value": 7,
+        "raw": "    ttng.tmem_store %cst_1, %temp, %true : tensor<128x64xf32, #linear1> -> !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> loc(#loc10)"
+      }
+    ],
+    "loads": [
+      {
+        "line": 26,
+        "source": "%1",
+        "raw": "    %values = ttng.tmem_load %1 : !ttg.memdesc<128x32xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x32xf32, #linear> loc(#loc30)"
+      },
+      {
+        "line": 38,
+        "source": "%temp",
+        "raw": "    %temporary = ttng.tmem_load %temp : !ttg.memdesc<128x64xf32, #tmem, #ttng.tensor_memory, mutable> -> tensor<128x64xf32, #linear1> loc(#loc33)"
+      }
+    ],
+    "selects": {
+      "%1": [
+        "%selected",
+        "%selected_4"
+      ]
+    },
+    "candidates": [
+      {
+        "selectedSource": "%selected",
+        "selectedSourceValue": 3,
+        "overwritingAllocation": "%temp",
+        "overwritingValue": 7,
+        "interval": [
+          0,
+          32
+        ],
+        "storeLine": 25,
+        "loadLine": 26,
+        "rawRefs": [
+          {
+            "id": "source-02",
+            "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b",
+            "lines": [
+              17,
+              19,
+              24,
+              25,
+              26
+            ]
+          }
+        ]
+      },
+      {
+        "selectedSource": "%selected_4",
+        "selectedSourceValue": 5,
+        "overwritingAllocation": "%temp",
+        "overwritingValue": 7,
+        "interval": [
+          32,
+          64
+        ],
+        "storeLine": 25,
+        "loadLine": 26,
+        "rawRefs": [
+          {
+            "id": "source-02",
+            "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b",
+            "lines": [
+              18,
+              20,
+              24,
+              25,
+              26
+            ]
+          }
+        ]
+      }
+    ],
+    "scope": "Possible selected-source overlap in this straight-line 128-row compiler IR. No sampled hardware ordering or generic alias analysis.",
+    "rawRefs": [
+      {
+        "id": "source-02",
+        "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b"
+      },
+      {
+        "id": "raw-024",
+        "sha256": "dbcc856c565906307d6da507733a552f7eabd44e5a048d0aca9b392bbd21990b"
+      }
+    ]
+  },
+  "wallMilliseconds": 0.4974100589752197,
+  "responseSHA256": "18b3d4cb1a25161700040f4350472957657ab3f9d63e4c99126988ae633f20f5"
+}

@@ -1,0 +1,24 @@
+{
+  "round": 1,
+  "request": {
+    "op": "source",
+    "id": "source-01",
+    "start": 120,
+    "end": 150,
+    "search": null,
+    "groupBy": null
+  },
+  "response": {
+    "id": "source-01",
+    "path": "TensorMemoryAllocation.cpp",
+    "sha256": "5476a02752e537a2f9c18318e73100f500c0c759e6696e77f4c882e40fc48f72",
+    "text": "static Interval<int> getLiveIntervals(Value value, Liveness &liveness,\n                                      DenseMap<Operation *, int> &operationId) {\n  auto liveOperations = liveness.resolveLiveness(value);\n  // Merge the alloc liverange with the liverange of any subview of the\n  // allocation.\n  SmallVector<Operation *> users(value.getUsers());\n  while (!users.empty()) {\n    Operation *user = users.pop_back_val();\n    if (!user->hasTrait<OpTrait::MemDescViewTrait>())\n      continue;\n    auto usersLivness = liveness.resolveLiveness(user->getResult(0));\n    liveOperations.insert(liveOperations.end(), usersLivness.begin(),\n                          usersLivness.end());\n    users.append(user->getResult(0).getUsers().begin(),\n                 user->getResult(0).getUsers().end());\n  }\n  auto minId = std::numeric_limits<int>::max();\n  auto maxId = std::numeric_limits<int>::min();\n  std::for_each(liveOperations.begin(), liveOperations.end(),\n                [&](Operation *liveOp) {\n                  if (operationId[liveOp] < minId) {\n                    minId = operationId[liveOp];\n                  }\n                  if ((operationId[liveOp] + 1) > maxId) {\n                    maxId = operationId[liveOp] + 1;\n                  }\n                });\n  return Interval(minId, maxId);\n}\n\nstatic void updateMap(MemoryBitMap &memoryMap, Interval<int> liveInterval,",
+    "family": "tmem",
+    "version": "input",
+    "start": 120,
+    "end": 150,
+    "matches": []
+  },
+  "wallMilliseconds": 0.7263369560241699,
+  "responseSHA256": "cf2581bbeadcc9f635b957872354de9e52e28a13efe5263f6552236a99d6d2b9"
+}

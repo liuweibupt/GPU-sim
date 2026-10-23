@@ -1,0 +1,53 @@
+{
+  "schema": "localization-scoring-readonly-review-v1",
+  "reviewed_utc": "2026-10-23T13:46:18.724736+00:00",
+  "experiment_source_sha256": "86c044f0abe478162dc3a8e74281424fa2758e39a014cbb33e65eba2ecb64da0",
+  "frozen_manifest_sha256": "9c0315b20f55939946d7cd8131bba0ee1149d9860fbb792217d26ebcbab4a17d",
+  "review_scope": "Code and frozen input only. No candidate answers inspected before all generation completes. No frozen code or scores modified.",
+  "finding": "The valid locations predicate requires source_id==editable task.sourceId before computing allLocationsValid, so valid supplied IR source citations are rejected. The prompt limits editing to one source but does not forbid citing other supplied sources.",
+  "supplied_tmem_sources": [
+    {
+      "id": "source-01",
+      "path": "TensorMemoryAllocation.cpp",
+      "lines": 436
+    },
+    {
+      "id": "source-02",
+      "path": "source-02.mlir",
+      "lines": 87
+    },
+    {
+      "id": "source-03",
+      "path": "source-03.mlir",
+      "lines": 74
+    },
+    {
+      "id": "source-04",
+      "path": "source-04.mlir",
+      "lines": 58
+    },
+    {
+      "id": "source-05",
+      "path": "source-05.mlir",
+      "lines": 87
+    },
+    {
+      "id": "source-06",
+      "path": "source-06.mlir",
+      "lines": 77
+    },
+    {
+      "id": "source-07",
+      "path": "source-07.mlir",
+      "lines": 77
+    },
+    {
+      "id": "source-08",
+      "path": "source-08.mlir",
+      "lines": 101
+    }
+  ],
+  "disposition": "Preserve strict frozen supportedLocalization/allLocationsValid, separately report frozen locationHit/referencesValid/failureAndControlCovered. Any validity check against all supplied source IDs is a labeled post-hoc descriptive audit, not the preregistered endpoint.",
+  "repair_endpoint_affected": false,
+  "candidate_audit": "Deferred until completedTrials==12."
+}
