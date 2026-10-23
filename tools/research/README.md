@@ -1,6 +1,6 @@
 # 可复现的有界模型实验
 
-后续工作：[多卡 trace 复用](TRACE_REUSE.md)及[原始证据、三值协议与 SM89 版本错误实验](SEMANTIC_EXPERIMENTS.md)。后者实际执行受控 kernel，证据范围与本页合成模型分开报告。
+后续工作：[多卡 trace 复用](TRACE_REUSE.md)、[原始证据、三值协议与 SM89 版本错误实验](SEMANTIC_EXPERIMENTS.md)、[Modal B200/H100 实机](modal/README.md)及[盲测 agent 先导](agent-eval/README.md)。后者实际执行受控 kernel，证据范围与本页合成模型分开报告。
 
 本页说明论文规划中 E1（逻辑工作对应）、E2（已有诊断见证保留）及 E7（CPU 分析开销）的一轮开发先导。这里的模型输入均标记 `synthetic-model`：**这些模型结果没有执行真实 GPU kernel，没有真实 AI 候选或人类参与者，不能据此声称 GPU 性能提升、发现真实错误或提高人的理解。** 独立的 SM89 实机实验见 [CUDA 实验说明](cuda/README.md)，两类结果不能混合归因。
 

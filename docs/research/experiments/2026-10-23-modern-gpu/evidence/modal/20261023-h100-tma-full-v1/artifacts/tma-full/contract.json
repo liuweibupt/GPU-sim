@@ -1,0 +1,60 @@
+{
+  "mechanism": "cuTensorMapEncodeTiled rank-2 int32 + cp.async.bulk.tensor.2d global-to-shared",
+  "input_layout": "Each logical element is [int32 payload,int32 generation tag]; columns padded to multiple of four; both fields copied by TMA.",
+  "logical_tail_scope": "Consumer logical tails and padded rows; does not test tensor-map out-of-bounds fill.",
+  "output_layout": "generation-major [generations,rows,cols]; every valid element saved and checked exactly",
+  "initial_generation": -1,
+  "slots": 2,
+  "threads": 64,
+  "mbarrier_arrivals_per_phase": 1,
+  "initialization": "Two TMA copies to initialize both slots, each with successful acquire wait before the first consumer.",
+  "correct_slot": "g % 2",
+  "fault_slot": "(g % 2) ^ 1; completed generation g-1, initial -1 at g=0",
+  "repair": "Controlled source selector repair to g % 2; not an AI-generated or naturally occurring fault.",
+  "full_generation": "Integer tag is actual transported data; barrier phase is only modulo-2 auxiliary state.",
+  "wait_observation": "Event recorded after mbarrier.try_wait.parity.acquire returned true; representative value/tag loaded after return.",
+  "ordering": [
+    "Barrier init + async proxy fence + CTA barrier precede TMA issue.",
+    "TMA issue precedes arrive.expect_tx.release with exact padded tile bytes; only thread0 arrives/waits.",
+    "Successful acquire wait and its log precede consumer loads through TMA visibility CTA barrier.",
+    "All consumer generic reads precede per-thread async proxy fence and reader-completion CTA barrier; next TMA overwrite follows that barrier.",
+    "consumer_sample is a thread32 observation before reader-completion CTA barrier; reuse_ready is thread0 after it.",
+    "Event array index is fixed storage, not a timestamp. HB comes from bound source contracts and per-thread program order."
+  ],
+  "source_sites": {
+    "CONTRACT_PROXY_FENCE": 29,
+    "CONTRACT_MBARRIER_INIT": 32,
+    "CONTRACT_TENSOR_TMA_ISSUE": 37,
+    "CONTRACT_EXPECT_TX": 41,
+    "CONTRACT_ACQUIRE_WAIT": 48,
+    "CONTRACT_INITIALIZATION_BARRIER": 74,
+    "EVENT_TMA_ISSUED": 87,
+    "EVENT_WAIT_RETURNED_TRUE": 103,
+    "CONTRACT_TMA_VISIBILITY_BARRIER": 107,
+    "CONTROLLED_FAULT_WRONG_COMPLETED_SLOT": 113,
+    "CONTROLLED_REPAIR_SELECT_EXPECTED_SLOT": 114,
+    "CONTRACT_CONSUMER_LOAD": 119,
+    "EVENT_CONSUMER_SAMPLE": 124,
+    "CONTRACT_READER_COMPLETION_BARRIER": 129,
+    "EVENT_REUSE_READY": 133
+  },
+  "limitations": [
+    "One CTA; no overlapping transfer/compute performance claim.",
+    "No tcgen05, TMEM, multicast, or descriptor mutation is exercised.",
+    "Finite bounded suite does not prove arbitrary GPU kernels correct.",
+    "No SM89 run is valid for this program; execution requires TMA-capable hardware and compatible compiled target."
+  ],
+  "references": [
+    "https://docs.nvidia.com/cuda/archive/13.0.0/cuda-c-programming-guide/index.html#using-tma-to-transfer-multi-dimensional-arrays",
+    "https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-mbarrier-test-wait-mbarrier-try-wait",
+    "https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-cp-async-bulk-tensor"
+  ],
+  "kernelwiki_consulted": {
+    "pages": [
+      "hw-tma",
+      "hw-mbarrier"
+    ],
+    "confidence": "source-reported",
+    "resolution": "Official NVIDIA ordering/transaction-accounting semantics take precedence over abbreviated wiki pseudocode."
+  }
+}

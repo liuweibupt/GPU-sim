@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "sat",
+        "violated",
+        "unknown"
+      ]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "consumer-record",
+          "before-record",
+          "after-record",
+          "expected-token-identity",
+          "observed-token-identity",
+          "required-token-identity",
+          "completion-token-identity",
+          "matching-completion-token",
+          "relative-hb-order"
+        ]
+      }
+    },
+    "reason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "evidence_ids",
+    "missing_evidence",
+    "reason"
+  ]
+}

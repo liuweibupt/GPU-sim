@@ -1,0 +1,254 @@
+{
+  "format": "modal-gpu-evidence-job-v1",
+  "status": "completed",
+  "started_utc": "2026-10-23T11:18:59.958469+00:00",
+  "requested_gpu": "B200",
+  "gpu_count": 1,
+  "timeout_seconds": 300,
+  "max_containers": 1,
+  "image_tag": "docker.io/nvidia/cuda:13.1.0-devel-ubuntu24.04",
+  "modal_sdk_version": "1.6.2",
+  "source_sha256": {
+    "tcgen05_probe.cu": "76a8b4f7c11d1e5c20540ce01414d131bf17a72171256f9ef1b0a11f6ef072a8"
+  },
+  "runner_sha256": "d13a0703eabde07815fc609febac6611f05094b33ec780e611abe012baa2aec0",
+  "job_sha256": "3e722d3e19e21b325f732a8d8a7facc9b27540f98de460311bae45e23caebc05",
+  "billing": "No exact bill inferred from command wall times; configured limits bound each job.",
+  "deployment": "Ephemeral App.run with no persistent deployment, volumes, endpoints or minimum containers.",
+  "python_runtime": "3.13",
+  "app_id": "ap-ZIDoZSjxTt7oygX9OsVCuL",
+  "image_id": "im-Ukls3IIy3RdC7U6Eez367l",
+  "execution": {
+    "format": "modal-gpu-evidence-execution-v1",
+    "commands": [
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.04156347300000007,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "gpu_identity.stdout.txt",
+          "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+          "bytes": 41
+        },
+        "stderr": {
+          "path": "gpu_identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "nvcc",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.019230236999999928,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "nvcc_version.stdout.txt",
+          "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+          "bytes": 211
+        },
+        "stderr": {
+          "path": "nvcc_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "compute-sanitizer",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.017523048000000152,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "sanitizer_version.stdout.txt",
+          "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+          "bytes": 125
+        },
+        "stderr": {
+          "path": "sanitizer_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "guardrail_compile",
+        "argv": [
+          "nvcc",
+          "-std=c++17",
+          "-O3",
+          "-lineinfo",
+          "-gencode",
+          "arch=compute_100a,code=sm_100a",
+          "-Xptxas=-g-tmem-access-check",
+          "tcgen05_probe.cu",
+          "-o",
+          "tcgen05_guard"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 3.2370533870000004,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "guardrail_compile.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "stderr": {
+          "path": "guardrail_compile.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "guardrail_sass",
+        "argv": [
+          "cuobjdump",
+          "--dump-sass",
+          "tcgen05_guard"
+        ],
+        "timeout": 20,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.7301655670000002,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "guardrail_sass.stdout.txt",
+          "sha256": "63b0a5d0ca574d99497d12bb8a8cd886ed0d1a4baf2bf41f9c7337a6a733bf9e",
+          "bytes": 1173236
+        },
+        "stderr": {
+          "path": "guardrail_sass.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "guardrail_correct",
+        "argv": [
+          "compute-sanitizer",
+          "--tool",
+          "memcheck",
+          "--error-exitcode",
+          "99",
+          "./tcgen05_guard",
+          "5",
+          "7",
+          "correct"
+        ],
+        "timeout": 60,
+        "allowed_exit_codes": [
+          0
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.8011238139999994,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "guardrail_correct.stdout.txt",
+          "sha256": "a17c4b6cbc353134f8c792c7f8e0ea17441cb56e95ff15fc4c144da734f18c71",
+          "bytes": 194328
+        },
+        "stderr": {
+          "path": "guardrail_correct.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "guardrail_wrong-version",
+        "argv": [
+          "compute-sanitizer",
+          "--tool",
+          "memcheck",
+          "--error-exitcode",
+          "99",
+          "./tcgen05_guard",
+          "5",
+          "7",
+          "wrong-version"
+        ],
+        "timeout": 60,
+        "allowed_exit_codes": [
+          2
+        ],
+        "exit_code": 2,
+        "timed_out": false,
+        "wall_seconds": 0.8192104060000007,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "guardrail_wrong-version.stdout.txt",
+          "sha256": "b15eb7031a8d7a87e8b82b31bb3a311462cb7ad49075981e5f627ad76ba968dd",
+          "bytes": 191680
+        },
+        "stderr": {
+          "path": "guardrail_wrong-version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "guardrail_fixed",
+        "argv": [
+          "compute-sanitizer",
+          "--tool",
+          "memcheck",
+          "--error-exitcode",
+          "99",
+          "./tcgen05_guard",
+          "5",
+          "7",
+          "fixed"
+        ],
+        "timeout": 60,
+        "allowed_exit_codes": [
+          0
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.8676708580000003,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "guardrail_fixed.stdout.txt",
+          "sha256": "a26549c489dd650fcbe1571a76acbdd41b4529723ba693b44170b909c27260e0",
+          "bytes": 194271
+        },
+        "stderr": {
+          "path": "guardrail_fixed.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tcgen05_guard",
+        "sha256": "48cc53b993f7df46e20d854fe5bdb0343ad2146566a5f90d128795696fd4b051",
+        "bytes": 1193240,
+        "omitted": "compiled executable; binary hash retained"
+      }
+    ],
+    "status": "completed",
+    "measurement_claim": "Command stdout/artifacts; no inferred GPU timestamps or benchmark claim.",
+    "remote_wall_seconds": 6.535653661
+  },
+  "finished_utc": "2026-10-23T11:19:19.754711+00:00"
+}

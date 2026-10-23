@@ -1,0 +1,46 @@
+{
+  "id": "tcgen05-probe-v1",
+  "shape_mnk": [
+    128,
+    32,
+    16
+  ],
+  "dtype": "f16xf16-f32",
+  "cta_count": 1,
+  "threads": 128,
+  "tmem_columns": 32,
+  "input_layout": "GMEM A[input,row,k] and B[column,k] packed into FP16 K-major interleaved SMEM; LBO128B/SBO256B, no swizzle.",
+  "operation": "One tcgen05.mma.cta_group::1.kind::f16 per iteration, input-D disabled, exact small-integer operands.",
+  "full_generation": "uint64 tag actually loaded from selected input_tags on device; decimal strings in JSON preserve >2^53. Source-bound metadata associated with selected A, not hardware generation state or transported MMA payload.",
+  "barrier_generation": "Software loop ordinal, independent from input value generation; barrier parity = ordinal mod 2. Not decoded from opaque mbarrier state.",
+  "fault": "Controlled source selector chooses expected_input-2, so parity matches while full generation differs. Legal memory/synchronization; not a race or natural AI-generated defect.",
+  "repair": "Same old candidate; compare its full loaded tag with required generation, then select current input when unequal.",
+  "ordering": [
+    "Barrier init and fence.mbarrier_init.release.cluster before CTA publication.",
+    "Every SMEM writer executes async proxy fence; CTA barrier and tcgen05 fence-after precede MMA issue.",
+    "Issuing thread performs full tcgen05.commit; no sync_restrict shared-read-only completion.",
+    "Every thread loops on mbarrier.try_wait.parity.acquire until true, then tcgen05 fence-after. Four warp leaders log post-success observations.",
+    "Every warp collectively loads its 32 TMEM rows, with tcgen05.wait::ld after each column load. Leaders log actual first-column register value.",
+    "tcgen05 fence-before and CTA reader barrier precede reuse_ready, next MMA and deallocation.",
+    "No HB is inferred merely from event array offsets, clocks, opcode adjacency or missing records."
+  ],
+  "completion_domains": [
+    "commit_issued",
+    "producer_result_ready",
+    "reader_done",
+    "reuse_ready"
+  ],
+  "watchdog": "2e9 device clock cycles inside wait; 120s outer command timeout. No performance interpretation.",
+  "references": [
+    "https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#tcgen05-instructions",
+    "https://github.com/NVIDIA/cutlass/blob/91843b71d90737e0a9b86f7d9df213cff5a3526f/examples/cute/tutorial/blackwell/01_mma_sm100.cu",
+    "https://github.com/NVIDIA/cutlass/blob/91843b71d90737e0a9b86f7d9df213cff5a3526f/include/cute/arch/mma_sm100_desc.hpp"
+  ],
+  "limitations": [
+    "Fixed tiny GEMM; no arbitrary shapes or throughput claim.",
+    "One CTA and SM100a only; no TMA, cluster multicast, concurrent producer/consumer overlap, or partial shared-read commit.",
+    "Instrumented authored experiment, not generic trace reconstruction or independent ISA semantic verification.",
+    "Full generations originate in source-bound software metadata; sanitizers do not prove all hardware protocol properties.",
+    "No AI provenance, natural bug-discovery, or human-understanding study claim."
+  ]
+}

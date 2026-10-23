@@ -1,0 +1,90 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t11.structured.r2",
+  "task": "t11",
+  "condition": "structured",
+  "repetition": 2,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:08:00.592Z",
+  "finishedAt": "2026-10-23T11:08:09.378Z",
+  "wallSeconds": 8.786446745991707,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-84bqSw/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-84bqSw/schema.json",
+    "-o",
+    "/tmp/finite-agent-84bqSw/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-84bqSw/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "30da73a6412b16a1b609ca7902d907803f7b2cfc6318aea68eae135d80a531e4",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16872-4123-7d80-91b7-1e3916f0b6d6"
+  },
+  "usage": [
+    {
+      "input_tokens": 17388,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 83,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "unknown",
+    "evidence_ids": [
+      "f01",
+      "f04",
+      "f05",
+      "f14",
+      "f12"
+    ],
+    "missing_evidence": [
+      "matching-completion-token"
+    ],
+    "reason": "The before-event token has generation \"2\", but the required token has generation \"4\". This known completion-token mismatch makes the order target unknown despite the verified HB edge."
+  },
+  "goldStatus": "unknown",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t10.flat.r1",
+  "task": "t10",
+  "condition": "flat",
+  "repetition": 1,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:07:25.735Z",
+  "finishedAt": "2026-10-23T11:07:34.165Z",
+  "wallSeconds": 8.42959238398075,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-38OPEX/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-38OPEX/schema.json",
+    "-o",
+    "/tmp/finite-agent-38OPEX/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-38OPEX/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "7e6282a4884eaa9f530338c5ab56e09a9a8ac3310556403f3db20fbbdfe1f5c2",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16871-b8fa-7933-894a-c2c0e89f0d5f"
+  },
+  "usage": [
+    {
+      "input_tokens": 17410,
+      "cached_input_tokens": 14592,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 72,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "sat",
+    "evidence_ids": [
+      "f01",
+      "f06",
+      "f07",
+      "f14",
+      "f13",
+      "f09"
+    ],
+    "missing_evidence": [],
+    "reason": "The required and actual completion tokens match exactly, and verified edge h01 establishes n03 before n04 in every consistent total order."
+  },
+  "goldStatus": "sat",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

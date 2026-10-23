@@ -1,0 +1,90 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t01.structured.r2",
+  "task": "t01",
+  "condition": "structured",
+  "repetition": 2,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:09:32.227Z",
+  "finishedAt": "2026-10-23T11:09:44.874Z",
+  "wallSeconds": 12.646868999958038,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-8zQovA/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-8zQovA/schema.json",
+    "-o",
+    "/tmp/finite-agent-8zQovA/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-8zQovA/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "319d7a3456187616e7debf4a07a8baf11cc5ab8ec2fe1e87d539750681093b5b",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16873-a715-75e3-b649-5510d77845c9"
+  },
+  "usage": [
+    {
+      "input_tokens": 17344,
+      "cached_input_tokens": 14592,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 73,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "unknown",
+    "evidence_ids": [
+      "f01",
+      "f04",
+      "f05",
+      "f14",
+      "f12"
+    ],
+    "missing_evidence": [
+      "relative-hb-order"
+    ],
+    "reason": "Both endpoints are present and the completion token matches exactly, but no HB edges establish their relative order; either order is possible."
+  },
+  "goldStatus": "unknown",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

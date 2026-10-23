@@ -1,0 +1,90 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t11.flat.r2",
+  "task": "t11",
+  "condition": "flat",
+  "repetition": 2,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:08:00.589Z",
+  "finishedAt": "2026-10-23T11:08:08.879Z",
+  "wallSeconds": 8.28943342101574,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-KBdZxg/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-KBdZxg/schema.json",
+    "-o",
+    "/tmp/finite-agent-KBdZxg/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-KBdZxg/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "6589f37068e845612283806c26850d6f84082de2eaaa344a956f27fff24c397c",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16872-4121-7fd1-8a09-230e791cf7ab"
+  },
+  "usage": [
+    {
+      "input_tokens": 17414,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 81,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "unknown",
+    "evidence_ids": [
+      "f01",
+      "f04",
+      "f05",
+      "f14",
+      "f12"
+    ],
+    "missing_evidence": [
+      "matching-completion-token"
+    ],
+    "reason": "The before-event token has generation \"2\", but the required token has generation \"4\". This known mismatch makes the order target unknown despite the verified HB edge."
+  },
+  "goldStatus": "unknown",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

@@ -2,7 +2,13 @@
 
 制定及修订日期：2026-10-23。文档类型：研究规划与证据设计，不是已完成论文或实验报告。修订基线：`2d3c7b7`。本次将 AI 辅助编程中的人类理解纳入主问题，负载覆盖 AI、通用计算与图形，不再以图形应用数量限定范围。以下样本量、案例数、时间预算均为计划值。
 
-执行记录：[模型与 SM89 实机先导](experiments/2026-10-23-pilot/report.md)、[多卡 trace 复用实验](experiments/2026-10-23-multigpu/report.md)、[逻辑版本与协议证据实验](experiments/2026-10-23-semantics/report.md)。已完成对应/切片开发验证、真实 CUDA 数值与性能测量，以及用户指定 `/home/liuwei/GPU-simulator` 中四卡 457 份 trace 的来源核验；另纳入五卡 launch 级记录。本轮进一步恢复 13 个完整已记录 CTA，建立有限三值检查器，并将 SM89 受控错读版本的实际输出/tag 接到检查、切片与可视界面。现代卡历史 trace 的完成/版本义务仍保留 unknown；尚无真实现代异步 bug/fix、AI 解释或开发者评价，不能将本规划全部标记完成。下一步优先语义采集，资源与验收条件见[执行清单](semantic-next-stage.md)。
+截至上一轮的执行记录：[模型与 SM89 实机先导](experiments/2026-10-23-pilot/report.md)、[多卡 trace 复用实验](experiments/2026-10-23-multigpu/report.md)、[逻辑版本与协议证据实验](experiments/2026-10-23-semantics/report.md)。已完成对应/切片开发验证、真实 CUDA 数值与性能测量，以及用户指定 `/home/liuwei/GPU-simulator` 中四卡 457 份 trace 的来源核验；另纳入五卡 launch 级记录。上一轮进一步恢复 13 个完整已记录 CTA，建立有限三值检查器，并将 SM89 受控错读版本的实际输出/tag 接到检查、切片与可视界面。现代卡历史 trace 的完成/版本义务仍保留 unknown；后续新采集并不能追认历史缺失字段。下述本轮修订新增现代实机及 agent 证据；真实自然 bug/fix 与人类理解评价仍未完成。资源与验收条件见[执行清单](semantic-next-stage.md)。
+
+## 本轮执行修订：先完成可核验的技术主张
+
+2026-10-23 新增[Modal 现代 GPU 与 agent 实验](experiments/2026-10-23-modern-gpu/report.md)。B200/H100 访问已解决；已执行真正的 tensor TMA 和 B200 tcgen05/TMEM 数值探针，不再把它们列为只能等待外部硬件的计划。受控错版本与修复不等于自然 AI 故障。
+
+根据用户提出的 agent 替代评价路线，当前近期主张收束为 **“逻辑版本、完成义务与可回查执行证据，支持 GPU 候选实现的核验”**。技术路线工作标题可用 *Evidence-Grounded Validation of GPU Kernels through Versions and Completion Obligations*。原先关于人类理解、信任校准与迁移的假设仍保留，但只有获得真实的人类结果后才作为已验证贡献。投稿与实验的相应调整见[agent 评价边界](agent-evaluation-scope.md)。下文人类实验数量均为条件性规划；agent 调用数量不能替换其中的参与者人数。
 
 ## 1. 研究定位与投稿选择
 

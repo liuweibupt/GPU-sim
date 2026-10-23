@@ -1,0 +1,87 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t09.structured.r1",
+  "task": "t09",
+  "condition": "structured",
+  "repetition": 1,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:07:17.251Z",
+  "finishedAt": "2026-10-23T11:07:25.398Z",
+  "wallSeconds": 8.146010879993439,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-avX7Xs/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-avX7Xs/schema.json",
+    "-o",
+    "/tmp/finite-agent-avX7Xs/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-avX7Xs/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "1132d4febb6a9d4c01523dc63157b1f5595cc4a7d9d140a81af2cea014b80530",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16871-97d4-79d2-89bc-57b8527734da"
+  },
+  "usage": [
+    {
+      "input_tokens": 17475,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 65,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "violated",
+    "evidence_ids": [
+      "f01",
+      "f05",
+      "f15",
+      "f13"
+    ],
+    "missing_evidence": [],
+    "reason": "Consumer n02 has generation \"2\", but the expected token has generation \"4\"; the known token identities mismatch."
+  },
+  "goldStatus": "violated",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

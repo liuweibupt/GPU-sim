@@ -1,0 +1,183 @@
+Diagnose exactly the supplied target using only this prompt. Do not use any tools, shell, browsing, files, external knowledge, or code execution. This is a finite synthetic observation problem, not full GPU/PTX semantics. Return only the required JSON object, with a short reason.
+
+Rules:
+1. A token identity is the exact tuple (scopeId, resourceId, generation, domain). Generation is an arbitrary-length decimal STRING, never parity or a floating-point number. Known tokens match iff all four fields agree. An unknown token never matches or mismatches conclusively.
+2. For target kind value-generation: compare request.expected with the token attached to the event request.consumerId. If the consumer is absent or either token is unknown, return unknown. Otherwise return sat for an exact match and violated for a mismatch. request.observed is only a mirror and cannot replace a missing consumer record.
+3. For target kind completion-token: compare request.requiredToken with the token attached to request.beforeId. If the event is absent or either token is unknown, return unknown. Otherwise return sat for an exact match and violated for a mismatch. All domains are distinct, including producer_result_ready, smem_read_complete, reader_done, and value.
+4. For target kind order: both endpoint events must be present and the completion-token comparison in rule 3 must be sat. If either condition fails, return unknown (even if the completion token itself is a known mismatch). Otherwise consider EVERY total order consistent with all verified hb edges: sat if beforeId precedes afterId in every such order; violated if afterId precedes beforeId in every such order; unknown if both orders are possible. Transitive edges count. Array order and record/file order supply NO ordering evidence. No edge means uncertainty, not a violation. Inputs are valid DAGs.
+5. Return evidence_ids containing only IDs in facts. Cite the requirementRef, relevant endpoint recordRef(s), known token evidenceRef(s), and every HB evidenceRef needed for an ordering proof. For value-generation use the consumer record and expected/observed token facts; for completion-token use only the before-event record and required/actual token facts; for order use both endpoint records and required/actual token facts that are present. For unknown relative order, cite the relevant identity and endpoint facts; absent HB edges cannot be cited. There is no requirement to cite irrelevant records.
+6. missing_evidence must be empty for sat/violated. For unknown, use applicable codes from: consumer-record, before-record, after-record, expected-token-identity, observed-token-identity, required-token-identity, completion-token-identity, matching-completion-token, relative-hb-order. Missing before-event entails both before-record and completion-token-identity. A known mismatching completion token uses matching-completion-token. Only use relative-hb-order when endpoints and matching completion identity are established but neither relative order is established. Do not claim that missing evidence proves a GPU defect.
+
+The data below contains the entire problem. The target has no supplied verdict.
+
+Data as structured relationship JSON:
+{
+  "scopeId": "s01",
+  "resources": [
+    {
+      "id": "r01",
+      "scopeId": "s01"
+    },
+    {
+      "id": "r02",
+      "scopeId": "s01"
+    }
+  ],
+  "facts": [
+    {
+      "id": "f01",
+      "kind": "synthetic-specification"
+    },
+    {
+      "id": "f02",
+      "kind": "synthetic-specification"
+    },
+    {
+      "id": "f03",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f04",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f05",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f06",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f07",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f08",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f09",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f10",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f11",
+      "kind": "synthetic-explicit-record"
+    },
+    {
+      "id": "f12",
+      "kind": "synthetic-token-observation",
+      "scopeId": "s01",
+      "resourceId": "r01",
+      "generation": "4",
+      "domain": "producer_result_ready"
+    },
+    {
+      "id": "f13",
+      "kind": "synthetic-token-observation",
+      "scopeId": "s01",
+      "resourceId": "r01",
+      "generation": "4",
+      "domain": "reader_done"
+    },
+    {
+      "id": "f14",
+      "kind": "synthetic-token-expectation",
+      "scopeId": "s01",
+      "resourceId": "r01",
+      "generation": "4",
+      "domain": "producer_result_ready"
+    }
+  ],
+  "events": [
+    {
+      "id": "n01",
+      "scopeId": "s01",
+      "role": "producer-completion",
+      "recordRef": "f04",
+      "token": {
+        "status": "known",
+        "scopeId": "s01",
+        "resourceId": "r01",
+        "generation": "4",
+        "evidenceRef": "f12",
+        "domain": "producer_result_ready"
+      }
+    },
+    {
+      "id": "n02",
+      "scopeId": "s01",
+      "role": "consumer",
+      "recordRef": "f05",
+      "token": {
+        "status": "unknown",
+        "reason": "not-observed"
+      }
+    },
+    {
+      "id": "n03",
+      "scopeId": "s01",
+      "role": "reader-completion",
+      "recordRef": "f06",
+      "token": {
+        "status": "known",
+        "scopeId": "s01",
+        "resourceId": "r01",
+        "generation": "4",
+        "evidenceRef": "f13",
+        "domain": "reader_done"
+      }
+    },
+    {
+      "id": "n04",
+      "scopeId": "s01",
+      "role": "n04",
+      "recordRef": "f07",
+      "token": {
+        "status": "unknown",
+        "reason": "not-observed"
+      }
+    },
+    {
+      "id": "n05",
+      "scopeId": "s01",
+      "role": "n05",
+      "recordRef": "f08",
+      "token": {
+        "status": "unknown",
+        "reason": "not-observed"
+      }
+    }
+  ],
+  "hb": [
+    {
+      "id": "h01",
+      "from": "n01",
+      "to": "n02",
+      "verified": true,
+      "evidenceRef": "f09"
+    }
+  ],
+  "request": {
+    "id": "q01",
+    "kind": "completion-before-consume",
+    "beforeId": "n01",
+    "afterId": "n02",
+    "requirementRef": "f01",
+    "requiredToken": {
+      "status": "known",
+      "scopeId": "s01",
+      "resourceId": "r01",
+      "generation": "4",
+      "evidenceRef": "f14",
+      "domain": "producer_result_ready"
+    }
+  },
+  "target": {
+    "kind": "completion-token"
+  }
+}

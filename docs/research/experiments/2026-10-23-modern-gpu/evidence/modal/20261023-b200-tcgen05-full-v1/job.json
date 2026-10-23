@@ -1,0 +1,24 @@
+{
+  "sources": [
+    "tools/research/cuda/tcgen05_probe.cu",
+    "tools/research/cuda/tcgen05_validate.py",
+    "tools/research/cuda/tcgen05_run_probe.py"
+  ],
+  "commands": [
+    {
+      "name": "tcgen05_full",
+      "argv": [
+        "python3",
+        "tcgen05_run_probe.py",
+        "--output",
+        "tcgen05-suite",
+        "--cuda-root",
+        "/usr/local/cuda"
+      ],
+      "timeout": 300
+    }
+  ],
+  "artifact_patterns": [
+    "tcgen05-suite/*"
+  ]
+}

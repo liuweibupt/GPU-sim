@@ -1,0 +1,305 @@
+{
+  "format": "modal-gpu-evidence-job-v1",
+  "status": "completed",
+  "started_utc": "2026-10-23T11:03:32.792438+00:00",
+  "requested_gpu": "B200",
+  "gpu_count": 1,
+  "timeout_seconds": 240,
+  "max_containers": 1,
+  "image_tag": "docker.io/nvidia/cuda:13.1.0-devel-ubuntu24.04",
+  "modal_sdk_version": "1.6.2",
+  "source_sha256": {
+    "tma_version_probe.cu": "f0ec084c034c73f073e96f1230ddb96df9bd4d51c9e254f2860a67898bd4bc4f",
+    "tma_run_probe.py": "a5352785d2274f206d52340d9e093621f8ba5dbdcaeec1ea02e4d2ef453ce508",
+    "tcgen05_probe.cu": "76a8b4f7c11d1e5c20540ce01414d131bf17a72171256f9ef1b0a11f6ef072a8"
+  },
+  "runner_sha256": "d13a0703eabde07815fc609febac6611f05094b33ec780e611abe012baa2aec0",
+  "job_sha256": "cb831748286429c3d6af803b60ec794ef657a5dfc9e45b8666600d57f803c0df",
+  "billing": "No exact bill inferred from command wall times; configured limits bound each job.",
+  "deployment": "Ephemeral App.run with no persistent deployment, volumes, endpoints or minimum containers.",
+  "python_runtime": "3.13",
+  "app_id": "ap-ysRHkTkmOmvlM1QWxi9S4L",
+  "image_id": "im-Ukls3IIy3RdC7U6Eez367l",
+  "execution": {
+    "format": "modal-gpu-evidence-execution-v1",
+    "commands": [
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.02137422,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "gpu_identity.stdout.txt",
+          "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+          "bytes": 41
+        },
+        "stderr": {
+          "path": "gpu_identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "nvcc",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.00932300499999994,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "nvcc_version.stdout.txt",
+          "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+          "bytes": 211
+        },
+        "stderr": {
+          "path": "nvcc_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "compute-sanitizer",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.009694141999999961,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "sanitizer_version.stdout.txt",
+          "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+          "bytes": 125
+        },
+        "stderr": {
+          "path": "sanitizer_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tma_smoke",
+        "argv": [
+          "python3",
+          "tma_run_probe.py",
+          "--output",
+          "tma-smoke",
+          "--cuda-root",
+          "/usr/local/cuda",
+          "--arch",
+          "sm_100a",
+          "--smoke",
+          "--skip-sanitizers"
+        ],
+        "timeout": 90,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 4.167133857,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tma_smoke.stdout.txt",
+          "sha256": "9bc8bee3565324ddc976854d91da1d816a68da17baca7504e0635e6a88b254c8",
+          "bytes": 68
+        },
+        "stderr": {
+          "path": "tma_smoke.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tc_compile",
+        "argv": [
+          "nvcc",
+          "-std=c++17",
+          "-O3",
+          "-lineinfo",
+          "-arch=sm_100a",
+          "tcgen05_probe.cu",
+          "-o",
+          "tcgen05_probe"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 2.236393303,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tc_compile.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "stderr": {
+          "path": "tc_compile.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tc_smoke",
+        "argv": [
+          "./tcgen05_probe",
+          "1",
+          "7",
+          "correct"
+        ],
+        "timeout": 35,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.7556088910000005,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tc_smoke.stdout.txt",
+          "sha256": "e826600fbd28946bba279aa57a1f9f1b2e3926a1c141c7b68e82184918c58d8c",
+          "bytes": 39385
+        },
+        "stderr": {
+          "path": "tc_smoke.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tcgen05_probe",
+        "sha256": "191241d9cf12c8ba36378b39168d1a2a356b0ad9ca04d78da8505460439dfb09",
+        "bytes": 1131808,
+        "omitted": "compiled executable; binary hash retained"
+      },
+      {
+        "path": "tma-smoke/compile-ptx.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/compile-ptx.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/compile.stderr.txt",
+        "sha256": "31e4da7c790f4b682e94a57556f86352388e63cc5e042258bbde1d397c24e8c2",
+        "bytes": 451
+      },
+      {
+        "path": "tma-smoke/compile.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/contract.json",
+        "sha256": "389608694adfc227eb014b932210f5c0b2d4a48d38b0a453dd7c3ddd5b669fe4",
+        "bytes": 3508
+      },
+      {
+        "path": "tma-smoke/disassemble.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/disassemble.stdout.txt",
+        "sha256": "b4967e15605049ee23726860c342bab3822c317ad84a1abe6e49ed6a14a26d70",
+        "bytes": 105919
+      },
+      {
+        "path": "tma-smoke/gpu-identity.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/gpu-identity.stdout.txt",
+        "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+        "bytes": 41
+      },
+      {
+        "path": "tma-smoke/nvcc-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/nvcc-version.stdout.txt",
+        "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+        "bytes": 211
+      },
+      {
+        "path": "tma-smoke/summary.json",
+        "sha256": "6dee9ab3accd6894b09f7abd41cd43e8d16f49630fa6c497cbec892cf04394c2",
+        "bytes": 170280
+      },
+      {
+        "path": "tma-smoke/tma_run_probe.py",
+        "sha256": "a5352785d2274f206d52340d9e093621f8ba5dbdcaeec1ea02e4d2ef453ce508",
+        "bytes": 18781
+      },
+      {
+        "path": "tma-smoke/tma_version_probe",
+        "sha256": "451399e6e8bb1bdcf5bd489cd054baafebf363ab1da83e8059f4a230f08e76c5",
+        "bytes": 1109096,
+        "omitted": "compiled executable; binary hash retained"
+      },
+      {
+        "path": "tma-smoke/tma_version_probe.cu",
+        "sha256": "f0ec084c034c73f073e96f1230ddb96df9bd4d51c9e254f2860a67898bd4bc4f",
+        "bytes": 14782
+      },
+      {
+        "path": "tma-smoke/tma_version_probe.ptx",
+        "sha256": "4519ba720211b3e279163afb3a0b0f229748f9e76d83161f9c31e346ac35d095",
+        "bytes": 17764
+      },
+      {
+        "path": "tma-smoke/tma_version_probe.sass",
+        "sha256": "b4967e15605049ee23726860c342bab3822c317ad84a1abe6e49ed6a14a26d70",
+        "bytes": 105919
+      },
+      {
+        "path": "tma-smoke/verify_r3_c33_g5_s20261023_correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/verify_r3_c33_g5_s20261023_correct.stdout.txt",
+        "sha256": "0efb1c148dcad8d23503a623f813fdf7e6b30019bed66a609f0c9f9d9cdb2f51",
+        "bytes": 19216
+      },
+      {
+        "path": "tma-smoke/verify_r3_c33_g5_s20261023_repaired.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/verify_r3_c33_g5_s20261023_repaired.stdout.txt",
+        "sha256": "38d7abc500c35f2dfca1df6ed66162385535dabeee21642ae623b946f40e0856",
+        "bytes": 19217
+      },
+      {
+        "path": "tma-smoke/verify_r3_c33_g5_s20261023_wrong-slot.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tma-smoke/verify_r3_c33_g5_s20261023_wrong-slot.stdout.txt",
+        "sha256": "32b5c1db7e0508faa7aad2d5cf6afe5bac5a8d03d8be868741fa4bae5b799967",
+        "bytes": 19440
+      }
+    ],
+    "status": "completed",
+    "measurement_claim": "Command stdout/artifacts; no inferred GPU timestamps or benchmark claim.",
+    "remote_wall_seconds": 7.2037644489999995
+  },
+  "finished_utc": "2026-10-23T11:03:47.789459+00:00"
+}

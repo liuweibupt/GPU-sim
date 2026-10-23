@@ -1,0 +1,90 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t01.structured.r1",
+  "task": "t01",
+  "condition": "structured",
+  "repetition": 1,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:06:09.288Z",
+  "finishedAt": "2026-10-23T11:06:17.070Z",
+  "wallSeconds": 7.7790200970172885,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-i3IBhz/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-i3IBhz/schema.json",
+    "-o",
+    "/tmp/finite-agent-i3IBhz/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-i3IBhz/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "319d7a3456187616e7debf4a07a8baf11cc5ab8ec2fe1e87d539750681093b5b",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16870-8e60-7ed0-9a1d-303446af0fa5"
+  },
+  "usage": [
+    {
+      "input_tokens": 17340,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 71,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "unknown",
+    "evidence_ids": [
+      "f01",
+      "f04",
+      "f05",
+      "f14",
+      "f12"
+    ],
+    "missing_evidence": [
+      "relative-hb-order"
+    ],
+    "reason": "Both endpoints are present and the completion token exactly matches the required token, but no HB edges establish their relative order."
+  },
+  "goldStatus": "unknown",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

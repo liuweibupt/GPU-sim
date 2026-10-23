@@ -1,0 +1,90 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t11.structured.r1",
+  "task": "t11",
+  "condition": "structured",
+  "repetition": 1,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:07:34.523Z",
+  "finishedAt": "2026-10-23T11:07:42.041Z",
+  "wallSeconds": 7.51742414700985,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-CyymZa/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-CyymZa/schema.json",
+    "-o",
+    "/tmp/finite-agent-CyymZa/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-CyymZa/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "30da73a6412b16a1b609ca7902d907803f7b2cfc6318aea68eae135d80a531e4",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16871-db52-7653-93d1-82fe3de0e8d5"
+  },
+  "usage": [
+    {
+      "input_tokens": 17386,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 80,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "unknown",
+    "evidence_ids": [
+      "f01",
+      "f04",
+      "f05",
+      "f14",
+      "f12"
+    ],
+    "missing_evidence": [
+      "matching-completion-token"
+    ],
+    "reason": "The before-event token has generation \"2\", but the required token has generation \"4\". This mismatch makes the order target unknown despite the verified HB edge."
+  },
+  "goldStatus": "unknown",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

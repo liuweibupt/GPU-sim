@@ -1,0 +1,89 @@
+{
+  "sources": [
+    "tools/research/cuda/tcgen05_probe.cu"
+  ],
+  "commands": [
+    {
+      "name": "guardrail_compile",
+      "argv": [
+        "nvcc",
+        "-std=c++17",
+        "-O3",
+        "-lineinfo",
+        "-gencode",
+        "arch=compute_100a,code=sm_100a",
+        "-Xptxas=-g-tmem-access-check",
+        "tcgen05_probe.cu",
+        "-o",
+        "tcgen05_guard"
+      ],
+      "timeout": 60
+    },
+    {
+      "name": "guardrail_sass",
+      "argv": [
+        "cuobjdump",
+        "--dump-sass",
+        "tcgen05_guard"
+      ],
+      "timeout": 20
+    },
+    {
+      "name": "guardrail_correct",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "./tcgen05_guard",
+        "5",
+        "7",
+        "correct"
+      ],
+      "timeout": 60,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "guardrail_wrong-version",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "./tcgen05_guard",
+        "5",
+        "7",
+        "wrong-version"
+      ],
+      "timeout": 60,
+      "allowed_exit_codes": [
+        2
+      ]
+    },
+    {
+      "name": "guardrail_fixed",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "./tcgen05_guard",
+        "5",
+        "7",
+        "fixed"
+      ],
+      "timeout": 60,
+      "allowed_exit_codes": [
+        0
+      ]
+    }
+  ],
+  "artifact_patterns": [
+    "tcgen05_guard"
+  ]
+}

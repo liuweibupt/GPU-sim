@@ -1,0 +1,143 @@
+{
+  "format": "tmem-guardrail-supplement-v1",
+  "status": "verified",
+  "job_summary_sha256": "19d92db0c833a6dc992452029286ffed129cbaf9fa0bb10c90b11219f34d4dd8",
+  "source_sha256": "76a8b4f7c11d1e5c20540ce01414d131bf17a72171256f9ef1b0a11f6ef072a8",
+  "validator_sha256": "b81ff55503f24c588e8bf80de976113572f8f60dfa7baaf1d9cb38c6244b416b",
+  "checker_sha256": "b0c26950b792f74880d26cc544af665d7b9c1430ff9ce48302aac9d11d5c28af",
+  "compile_argv": [
+    "nvcc",
+    "-std=c++17",
+    "-O3",
+    "-lineinfo",
+    "-gencode",
+    "arch=compute_100a,code=sm_100a",
+    "-Xptxas=-g-tmem-access-check",
+    "tcgen05_probe.cu",
+    "-o",
+    "tcgen05_guard"
+  ],
+  "static_trap_instructions": 10,
+  "rows": [
+    {
+      "variant": "correct",
+      "raw_stdout": {
+        "path": "guardrail_correct.stdout.txt",
+        "sha256": "a17c4b6cbc353134f8c792c7f8e0ea17441cb56e95ff15fc4c144da734f18c71",
+        "bytes": 194328
+      },
+      "json_line": 2,
+      "exit_code": 0,
+      "memcheck_errors": 0,
+      "validation": {
+        "variant": "correct",
+        "iterations": 5,
+        "seed": 7,
+        "generation_base": "9007199254740992",
+        "source_contract_checked": true,
+        "selected_inputs": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "events": 55,
+        "successful_wait_records": 20,
+        "reader_done_records": 20,
+        "same_parity_wrong_generation_iterations": 0,
+        "correctness": {
+          "elements": 20480,
+          "expected_value_mismatches": 0,
+          "selected_source_mismatches": 0,
+          "version_mismatches": 0,
+          "max_abs_error": 0,
+          "passed": true,
+          "exact_integer_reference": true
+        }
+      }
+    },
+    {
+      "variant": "wrong-version",
+      "raw_stdout": {
+        "path": "guardrail_wrong-version.stdout.txt",
+        "sha256": "b15eb7031a8d7a87e8b82b31bb3a311462cb7ad49075981e5f627ad76ba968dd",
+        "bytes": 191680
+      },
+      "json_line": 2,
+      "exit_code": 2,
+      "memcheck_errors": 0,
+      "validation": {
+        "variant": "wrong-version",
+        "iterations": 5,
+        "seed": 7,
+        "generation_base": "9007199254740992",
+        "source_contract_checked": true,
+        "selected_inputs": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "events": 55,
+        "successful_wait_records": 20,
+        "reader_done_records": 20,
+        "same_parity_wrong_generation_iterations": 5,
+        "correctness": {
+          "elements": 20480,
+          "expected_value_mismatches": 20480,
+          "selected_source_mismatches": 0,
+          "version_mismatches": 5,
+          "max_abs_error": 200,
+          "passed": false,
+          "exact_integer_reference": true
+        }
+      }
+    },
+    {
+      "variant": "fixed",
+      "raw_stdout": {
+        "path": "guardrail_fixed.stdout.txt",
+        "sha256": "a26549c489dd650fcbe1571a76acbdd41b4529723ba693b44170b909c27260e0",
+        "bytes": 194271
+      },
+      "json_line": 2,
+      "exit_code": 0,
+      "memcheck_errors": 0,
+      "validation": {
+        "variant": "fixed",
+        "iterations": 5,
+        "seed": 7,
+        "generation_base": "9007199254740992",
+        "source_contract_checked": true,
+        "selected_inputs": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "events": 55,
+        "successful_wait_records": 20,
+        "reader_done_records": 20,
+        "same_parity_wrong_generation_iterations": 0,
+        "correctness": {
+          "elements": 20480,
+          "expected_value_mismatches": 0,
+          "selected_source_mismatches": 0,
+          "version_mismatches": 0,
+          "max_abs_error": 0,
+          "passed": true,
+          "exact_integer_reference": true
+        }
+      }
+    }
+  ],
+  "claim": "Guardrail-enabled memcheck on three representative legal-access variants; all numerical outputs independently checked.",
+  "limits": [
+    "Separate instrumented build, excluded from the 36-run normal suite.",
+    "No intentionally invalid TMEM access was injected to estimate guardrail detection sensitivity.",
+    "Guardrail coverage is access/allocation diagnostics, not logical generation correctness or full PTX synchronization proof."
+  ]
+}

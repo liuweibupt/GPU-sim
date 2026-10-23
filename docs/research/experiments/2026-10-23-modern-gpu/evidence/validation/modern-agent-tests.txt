@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: predeclared pilot has 12 unique sources and balanced oracle targets
+ok 1 - predeclared pilot has 12 unique sources and balanced oracle targets
+  ---
+  duration_ms: 0.79451
+  ...
+# Subtest: flat facts encode exactly the same leaves as structured JSON with no diagnostic labels
+ok 2 - flat facts encode exactly the same leaves as structured JSON with no diagnostic labels
+  ---
+  duration_ms: 11.634353
+  ...
+# Subtest: domain mismatch target is violated while known old-token ordering target is unknown
+ok 3 - domain mismatch target is violated while known old-token ordering target is unknown
+  ---
+  duration_ms: 0.136032
+  ...
+# Subtest: transitive/reverse order proof requires each attested edge
+ok 4 - transitive/reverse order proof requires each attested edge
+  ---
+  duration_ms: 0.121972
+  ...
+# Subtest: JSONL auditing rejects tool/unknown items and malformed output
+ok 5 - JSONL auditing rejects tool/unknown items and malformed output
+  ---
+  duration_ms: 0.548107
+  ...
+# Subtest: deterministic scoring penalizes wrong labels, invented refs, missing proofs and invalid calls
+ok 6 - deterministic scoring penalizes wrong labels, invented refs, missing proofs and invalid calls
+  ---
+  duration_ms: 0.691528
+  ...
+# Subtest: summary averages repetitions within task and does not call them participants
+ok 7 - summary averages repetitions within task and does not call them participants
+  ---
+  duration_ms: 0.575707
+  ...
+# {"callId":"t01.flat.r1","phase":"test","valid":false,"seconds":0.07,"failures":["tool-contamination"]}
+# {"callId":"t01.flat.r2","phase":"test","valid":false,"seconds":0.06,"failures":["timeout","nonzero-exit","missing-turn-completed","missing-answer-file","invalid-answer-schema"]}
+# Subtest: CLI runner preserves contaminated output and enforces per-call timeout
+ok 8 - CLI runner preserves contaminated output and enforces per-call timeout
+  ---
+  duration_ms: 143.691578
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 273.715647

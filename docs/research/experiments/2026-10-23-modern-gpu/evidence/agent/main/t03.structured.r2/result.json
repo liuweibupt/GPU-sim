@@ -1,0 +1,87 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t03.structured.r2",
+  "task": "t03",
+  "condition": "structured",
+  "repetition": 2,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:09:12.056Z",
+  "finishedAt": "2026-10-23T11:09:19.779Z",
+  "wallSeconds": 7.72238584792614,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-trVg2H/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-trVg2H/schema.json",
+    "-o",
+    "/tmp/finite-agent-trVg2H/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-trVg2H/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "23b5f52f1e5c7d6e91cf357a8ae5411043ecf7ae7164ab420f4286113fc9a811",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16873-584c-7433-ba6e-030eb5fff460"
+  },
+  "usage": [
+    {
+      "input_tokens": 17477,
+      "cached_input_tokens": 14592,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 66,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "violated",
+    "evidence_ids": [
+      "f01",
+      "f05",
+      "f15",
+      "f13"
+    ],
+    "missing_evidence": [],
+    "reason": "Consumer n02 has resourceId r02, but the expected token has resourceId r01; the known token identities mismatch."
+  },
+  "goldStatus": "violated",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

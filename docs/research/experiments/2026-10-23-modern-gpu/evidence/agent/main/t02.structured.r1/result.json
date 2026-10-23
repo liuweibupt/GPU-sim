@@ -1,0 +1,90 @@
+{
+  "schema": "finite-agent-call-v1",
+  "callId": "t02.structured.r1",
+  "task": "t02",
+  "condition": "structured",
+  "repetition": 1,
+  "phase": "main",
+  "modelRequested": "gpt-6-astra",
+  "resolvedModelSnapshot": null,
+  "resolvedModelNote": "Codex CLI JSONL does not expose a resolved model snapshot in this run.",
+  "reasoningEffort": "low",
+  "startedAt": "2026-10-23T11:06:17.696Z",
+  "finishedAt": "2026-10-23T11:06:25.812Z",
+  "wallSeconds": 8.115753880023956,
+  "timeoutMs": 90000,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/finite-agent-JqD3H7/work",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/finite-agent-JqD3H7/schema.json",
+    "-o",
+    "/tmp/finite-agent-JqD3H7/answer.json",
+    "-"
+  ],
+  "freshCwd": "/tmp/finite-agent-JqD3H7/work",
+  "cwdInitialState": "empty",
+  "promptSHA256": "3120bd096a27b57a012318f5e074c2eccae01c03173d2fa0addddc006c265b61",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "failureReasons": [],
+  "audit": {
+    "parseErrors": [],
+    "forbidden": [],
+    "turnComplete": true,
+    "errors": [],
+    "threadId": "01a16870-af33-7480-9d10-67607ab26a1b"
+  },
+  "usage": [
+    {
+      "input_tokens": 17434,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 84,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "answer": {
+    "status": "sat",
+    "evidence_ids": [
+      "f01",
+      "f04",
+      "f05",
+      "f14",
+      "f12",
+      "f09",
+      "f10"
+    ],
+    "missing_evidence": [],
+    "reason": "The completion token exactly matches the required token. Verified HB edges establish n01 → n05 → n02, so n01 precedes n02 in every consistent total order."
+  },
+  "goldStatus": "sat",
+  "scores": {
+    "statusCorrect": true,
+    "referencesValid": true,
+    "evidenceCovered": true,
+    "missingEvidenceExact": true,
+    "fullySupported": true,
+    "invalidReferences": [],
+    "requiredReferencesMissing": []
+  }
+}

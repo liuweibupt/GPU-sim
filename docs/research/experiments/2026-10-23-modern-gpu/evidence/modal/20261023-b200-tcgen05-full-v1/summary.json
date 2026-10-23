@@ -1,0 +1,773 @@
+{
+  "format": "modal-gpu-evidence-job-v1",
+  "status": "completed",
+  "started_utc": "2026-10-23T11:07:01.237570+00:00",
+  "requested_gpu": "B200",
+  "gpu_count": 1,
+  "timeout_seconds": 360,
+  "max_containers": 1,
+  "image_tag": "docker.io/nvidia/cuda:13.1.0-devel-ubuntu24.04",
+  "modal_sdk_version": "1.6.2",
+  "source_sha256": {
+    "tcgen05_probe.cu": "76a8b4f7c11d1e5c20540ce01414d131bf17a72171256f9ef1b0a11f6ef072a8",
+    "tcgen05_validate.py": "b81ff55503f24c588e8bf80de976113572f8f60dfa7baaf1d9cb38c6244b416b",
+    "tcgen05_run_probe.py": "c358a66d80c6ffc09625d05838677a3bc0e87237e8f38d8706135cd4e3d10399"
+  },
+  "runner_sha256": "d13a0703eabde07815fc609febac6611f05094b33ec780e611abe012baa2aec0",
+  "job_sha256": "7a8cdf18a925a77ca8c42df4d26b9e561cc950de48b6e55e6f1d2646f278b8be",
+  "billing": "No exact bill inferred from command wall times; configured limits bound each job.",
+  "deployment": "Ephemeral App.run with no persistent deployment, volumes, endpoints or minimum containers.",
+  "python_runtime": "3.13",
+  "app_id": "ap-bGLnZ31E2xBmNjJcQvor0Y",
+  "image_id": "im-Ukls3IIy3RdC7U6Eez367l",
+  "execution": {
+    "format": "modal-gpu-evidence-execution-v1",
+    "commands": [
+      {
+        "name": "gpu_identity",
+        "argv": [
+          "nvidia-smi",
+          "--query-gpu=name,compute_cap,driver_version,memory.total",
+          "--format=csv,noheader"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.02078618599999993,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "gpu_identity.stdout.txt",
+          "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+          "bytes": 41
+        },
+        "stderr": {
+          "path": "gpu_identity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "nvcc_version",
+        "argv": [
+          "nvcc",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.008799904999999941,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "nvcc_version.stdout.txt",
+          "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+          "bytes": 211
+        },
+        "stderr": {
+          "path": "nvcc_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "sanitizer_version",
+        "argv": [
+          "compute-sanitizer",
+          "--version"
+        ],
+        "timeout": 15,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 0.009482185999999948,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "sanitizer_version.stdout.txt",
+          "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+          "bytes": 125
+        },
+        "stderr": {
+          "path": "sanitizer_version.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      {
+        "name": "tcgen05_full",
+        "argv": [
+          "python3",
+          "tcgen05_run_probe.py",
+          "--output",
+          "tcgen05-suite",
+          "--cuda-root",
+          "/usr/local/cuda"
+        ],
+        "timeout": 300,
+        "exit_code": 0,
+        "timed_out": false,
+        "wall_seconds": 33.117793961,
+        "accepted_exit": true,
+        "stdout": {
+          "path": "tcgen05_full.stdout.txt",
+          "sha256": "5bdc76f6799e3ecd5f7d3f0e086d95a960bed55a563a2f8c4207ff98f5c77b07",
+          "bytes": 279
+        },
+        "stderr": {
+          "path": "tcgen05_full.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tcgen05-suite/compile-ptx.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/compile-ptx.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/compile.stderr.txt",
+        "sha256": "4b38511d421580d0c594d20e3b0dbcea095a1b1df2d0d9479ab1019e43bcf022",
+        "bytes": 416
+      },
+      {
+        "path": "tcgen05-suite/compile.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/contract.json",
+        "sha256": "c0e12e80651de1ca7552d1c846534998e97ee67da50144d3cdf318430eeeb594",
+        "bytes": 3086
+      },
+      {
+        "path": "tcgen05-suite/disassemble.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/disassemble.stdout.txt",
+        "sha256": "07509a0cab4f74adb9bba11e3abf6b01f02cc94ccd21e16a25ed93efa2b9c78f",
+        "bytes": 161069
+      },
+      {
+        "path": "tcgen05-suite/gpu-identity.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/gpu-identity.stdout.txt",
+        "sha256": "c7da39f3849e15879c6c44dce02ea42039291d0d221d17e0a08c45232fe5bc6c",
+        "bytes": 41
+      },
+      {
+        "path": "tcgen05-suite/i1-s0-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s0-correct.stdout.txt",
+        "sha256": "fac4781c1c7c853e99dcfc38e7f47860db64fed0dbbe7cc605e551e4d700d5f3",
+        "bytes": 39051
+      },
+      {
+        "path": "tcgen05-suite/i1-s0-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s0-fixed.stdout.txt",
+        "sha256": "d7b6f7996a76f73c73952dbbfd65608250741153fec6c9f31846145167409834",
+        "bytes": 39038
+      },
+      {
+        "path": "tcgen05-suite/i1-s0-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s0-wrong-version.stdout.txt",
+        "sha256": "d52c70206862e74654aacfa896e0a71a2b77cd84f44e31c2a7a26d43fbdebf18",
+        "bytes": 36319
+      },
+      {
+        "path": "tcgen05-suite/i1-s65535-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s65535-correct.stdout.txt",
+        "sha256": "8af4104cb46485883171d408227bac6c1575126cea71c42c1718be4748d6db0d",
+        "bytes": 39492
+      },
+      {
+        "path": "tcgen05-suite/i1-s65535-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s65535-fixed.stdout.txt",
+        "sha256": "f330f055f06f9e4bc1048806f1971c36d58940489e0d7bfbf225919511218ba1",
+        "bytes": 39479
+      },
+      {
+        "path": "tcgen05-suite/i1-s65535-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s65535-wrong-version.stdout.txt",
+        "sha256": "9565208f9d49a5a14c17cfcb74e654d652c292ab2087081dd8204d80d163c929",
+        "bytes": 36779
+      },
+      {
+        "path": "tcgen05-suite/i1-s7-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s7-correct.stdout.txt",
+        "sha256": "1c949767a0619683a1fb2c4b9e9db4aad294d7c519757b1ffc3863640d8cee2c",
+        "bytes": 39396
+      },
+      {
+        "path": "tcgen05-suite/i1-s7-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s7-fixed.stdout.txt",
+        "sha256": "b026d2685439e5617b241ead05251fe56bcd84e1088227da4afa587fdda5b293",
+        "bytes": 39383
+      },
+      {
+        "path": "tcgen05-suite/i1-s7-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i1-s7-wrong-version.stdout.txt",
+        "sha256": "e4b2e2d01e1b28c2d08696afa87fa2b8470a8bd3f62cf018614203afce13aade",
+        "bytes": 36700
+      },
+      {
+        "path": "tcgen05-suite/i17-s0-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s0-correct.stdout.txt",
+        "sha256": "a82846baf23963bbc8021c842a0100c05385679bde07b4a69002809c4cf6591f",
+        "bytes": 728568
+      },
+      {
+        "path": "tcgen05-suite/i17-s0-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s0-fixed.stdout.txt",
+        "sha256": "ca22c83ae07def38831882c1d417d9cd1649646071fb45a36148873ae43acba9",
+        "bytes": 728357
+      },
+      {
+        "path": "tcgen05-suite/i17-s0-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s0-wrong-version.stdout.txt",
+        "sha256": "557c8e40a6717d46cab0f47fdba57d95b83dec8400b98ff574217da217b6201a",
+        "bytes": 717570
+      },
+      {
+        "path": "tcgen05-suite/i17-s65535-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s65535-correct.stdout.txt",
+        "sha256": "5dfb3ff7d6059fd7367a75a4f6dde749ce60ce690ef4512726d8b3b82acf5065",
+        "bytes": 735522
+      },
+      {
+        "path": "tcgen05-suite/i17-s65535-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s65535-fixed.stdout.txt",
+        "sha256": "9aa69bc3cb0f0236441efee35857f8fc8932f6157538e641ad3a2beb8db4ab6b",
+        "bytes": 735311
+      },
+      {
+        "path": "tcgen05-suite/i17-s65535-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s65535-wrong-version.stdout.txt",
+        "sha256": "63d995737e1818a2f4a08b8e82625d62eef8068abfe506095a5e9e361b916dd0",
+        "bytes": 724565
+      },
+      {
+        "path": "tcgen05-suite/i17-s7-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s7-correct.stdout.txt",
+        "sha256": "5d1c1b39486e0a9821e8fb1c5b47856fc60e01f231e4452d91c40a35bc0df956",
+        "bytes": 734031
+      },
+      {
+        "path": "tcgen05-suite/i17-s7-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s7-fixed.stdout.txt",
+        "sha256": "80adf63b721d9bae54ec344723de2e9b04e7b52d2f3425bc2810d1d9ce07978d",
+        "bytes": 733820
+      },
+      {
+        "path": "tcgen05-suite/i17-s7-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i17-s7-wrong-version.stdout.txt",
+        "sha256": "ee77fea5d61e6924d50b55281da386a36b274f9867ace652a29404644583ae5a",
+        "bytes": 723091
+      },
+      {
+        "path": "tcgen05-suite/i2-s0-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s0-correct.stdout.txt",
+        "sha256": "3fc03a31669bd9853e7ee5ef44012c3de17551fba70c06170689f4b991c8ca77",
+        "bytes": 77452
+      },
+      {
+        "path": "tcgen05-suite/i2-s0-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s0-fixed.stdout.txt",
+        "sha256": "3d50e16c40d9300c91baee7a52d41a9e758e90c63cbd943683f976b1efa658e7",
+        "bytes": 77428
+      },
+      {
+        "path": "tcgen05-suite/i2-s0-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s0-wrong-version.stdout.txt",
+        "sha256": "1c1a938f7d1c791e78cd2e8349de153d12f4324e5aaa73f54bf3a631bf659a0e",
+        "bytes": 74720
+      },
+      {
+        "path": "tcgen05-suite/i2-s65535-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s65535-correct.stdout.txt",
+        "sha256": "4880de68c4870d19e158cc82bfc15153e151f168019485ef9db6d9a26967791c",
+        "bytes": 78311
+      },
+      {
+        "path": "tcgen05-suite/i2-s65535-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s65535-fixed.stdout.txt",
+        "sha256": "fee4b34c3f7a1765294916723fba9f54a176c13226e38864b71564d4adf6e592",
+        "bytes": 78287
+      },
+      {
+        "path": "tcgen05-suite/i2-s65535-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s65535-wrong-version.stdout.txt",
+        "sha256": "db49c6a22e2ee652b90d44ae86d9389bb6d0910201d93c0a85d77e4e725685b5",
+        "bytes": 75598
+      },
+      {
+        "path": "tcgen05-suite/i2-s7-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s7-correct.stdout.txt",
+        "sha256": "b1f7bd63e6cd617ba64b67a7ce342f1e00852c1e5acdae8dcd1e76042d05cc1a",
+        "bytes": 78127
+      },
+      {
+        "path": "tcgen05-suite/i2-s7-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s7-fixed.stdout.txt",
+        "sha256": "a4a53d2a35b0c99c8294a031f6b2413ca8db37d152667f7005c9520f775457c1",
+        "bytes": 78103
+      },
+      {
+        "path": "tcgen05-suite/i2-s7-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i2-s7-wrong-version.stdout.txt",
+        "sha256": "99f365e7d4cc8868364303f52a88b1b9fad55ecdfe0a7af8b5c25c4b6fd17654",
+        "bytes": 75431
+      },
+      {
+        "path": "tcgen05-suite/i5-s0-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s0-correct.stdout.txt",
+        "sha256": "a171a9c1635f1c878e72e5a811f6e725e2af9b970c13bea54c6f02e9becdac0f",
+        "bytes": 192656
+      },
+      {
+        "path": "tcgen05-suite/i5-s0-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s0-fixed.stdout.txt",
+        "sha256": "787bc480bac0c6d68f8d9ae3ba496739717b033ec3238399446b4bf4bdc3390b",
+        "bytes": 192599
+      },
+      {
+        "path": "tcgen05-suite/i5-s0-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s0-wrong-version.stdout.txt",
+        "sha256": "8e51939efa2e899dc6b098c43c3185ca36e7344aee752e644526d0d3f8e30fbe",
+        "bytes": 189925
+      },
+      {
+        "path": "tcgen05-suite/i5-s65535-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s65535-correct.stdout.txt",
+        "sha256": "d95e3339260318cde144f0fb3b726d83d9b4057e086b1f1c4f66273d4c10b8c2",
+        "bytes": 194769
+      },
+      {
+        "path": "tcgen05-suite/i5-s65535-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s65535-fixed.stdout.txt",
+        "sha256": "18275b409f5d5ea08305aa2d754ed8ef371bce43add649bd03d9540908f5b91e",
+        "bytes": 194712
+      },
+      {
+        "path": "tcgen05-suite/i5-s65535-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s65535-wrong-version.stdout.txt",
+        "sha256": "a6275a92f9bc41734387d26c902dcb9b9325e0f3a2752a0fc83dd8f8ecae4e7e",
+        "bytes": 192057
+      },
+      {
+        "path": "tcgen05-suite/i5-s7-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s7-correct.stdout.txt",
+        "sha256": "d25a53f08471487bbccefe4bb5817ce5468df1217ea96ab2092b325b2a78808f",
+        "bytes": 194321
+      },
+      {
+        "path": "tcgen05-suite/i5-s7-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s7-fixed.stdout.txt",
+        "sha256": "62825ea41539a055cc80de118e8b9d00af44837472b559c5bf21b6e9affddcad",
+        "bytes": 194264
+      },
+      {
+        "path": "tcgen05-suite/i5-s7-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/i5-s7-wrong-version.stdout.txt",
+        "sha256": "18b6669f7acee70cfa1af52861bc699c8b5312c3efc004146021c30307de96e9",
+        "bytes": 191626
+      },
+      {
+        "path": "tcgen05-suite/nvcc-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/nvcc-version.stdout.txt",
+        "sha256": "a7bca21f5732da15565e7ca2fc8401669ff3c306f02da37672a50a5355cb0b5c",
+        "bytes": 211
+      },
+      {
+        "path": "tcgen05-suite/runs.csv",
+        "sha256": "22230bb0deaa15be57608ec28b5955e98e741d0d237ead301fa76341ee16c187",
+        "bytes": 4719
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-correct.log",
+        "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",
+        "bytes": 62
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-correct.stdout.txt",
+        "sha256": "0b1877ba3cb130bae80bea256ebf782be250f93c1c1c3232932304f4585196d1",
+        "bytes": 116859
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-fixed.log",
+        "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",
+        "bytes": 62
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-fixed.stdout.txt",
+        "sha256": "bc5bf907f4529e35293f54ed04dc23a9c06b01541739169c311b7065443969a6",
+        "bytes": 116824
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-wrong-version.log",
+        "sha256": "e4997030beeba60c3daafcdec4550e3274570f4ef4cc222409f66c31d39cca81",
+        "bytes": 109
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-initcheck-wrong-version.stdout.txt",
+        "sha256": "dc600bbd0182e501811ae2931c551b7b6cfd640173ac909b475fe32be35130fd",
+        "bytes": 114164
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-correct.log",
+        "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",
+        "bytes": 62
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-correct.stdout.txt",
+        "sha256": "7b2896cdc914d2f30c7f4795bef480b5f13ade4fd9d7de9b7604e7dd9d458462",
+        "bytes": 116859
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-fixed.log",
+        "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",
+        "bytes": 62
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-fixed.stdout.txt",
+        "sha256": "5cd40ffa8bb91b54ba0176098de8a864cd2db1a896380302621608d8365f5c5f",
+        "bytes": 116824
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-wrong-version.log",
+        "sha256": "e4997030beeba60c3daafcdec4550e3274570f4ef4cc222409f66c31d39cca81",
+        "bytes": 109
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-memcheck-wrong-version.stdout.txt",
+        "sha256": "298723f91ec739d1ac02e33642140d2eaf7ab77da53242a97be96cfaae8f527b",
+        "bytes": 114164
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-correct.log",
+        "sha256": "91dbb142f8feb8786cd6fde6ac035e816b67db14e4b7b400a01386ec106b75c4",
+        "bytes": 100
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-correct.stdout.txt",
+        "sha256": "5f26d8fe073571ce23569f292392deb41d6ab4d2a55afd884c4f452866a558aa",
+        "bytes": 116863
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-fixed.log",
+        "sha256": "91dbb142f8feb8786cd6fde6ac035e816b67db14e4b7b400a01386ec106b75c4",
+        "bytes": 100
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-fixed.stdout.txt",
+        "sha256": "c9b1730eea1fddcd9c72044110803950e880efb5a174c17a5f6a588b7ae81484",
+        "bytes": 116832
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-wrong-version.log",
+        "sha256": "1b85f3dc026cf78a006497c3b74bcba86715bacff8d3c868cbb810a297066581",
+        "bytes": 147
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-racecheck-wrong-version.stdout.txt",
+        "sha256": "df60aa347cc3307c867754f7d4b58e98e346060ec65f8b49aafe0de0a368645c",
+        "bytes": 114166
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-correct.log",
+        "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",
+        "bytes": 62
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-correct.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-correct.stdout.txt",
+        "sha256": "e8c2edbf8cf5d5b6446a275d3d13b45589b981711fe86b770e0d6457eb2c7a2d",
+        "bytes": 116859
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-fixed.log",
+        "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",
+        "bytes": 62
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-fixed.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-fixed.stdout.txt",
+        "sha256": "c43952a9584e57a39f7d977bfad63e1545d9e7e84c66c68ba00fcfb6cb5dd291",
+        "bytes": 116824
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-wrong-version.log",
+        "sha256": "e4997030beeba60c3daafcdec4550e3274570f4ef4cc222409f66c31d39cca81",
+        "bytes": 109
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-wrong-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-synccheck-wrong-version.stdout.txt",
+        "sha256": "6442426d50ca4113cb398bfb0456a0e21b6091b761d60be66ca727c6da76abe7",
+        "bytes": 114164
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-version.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "tcgen05-suite/sanitizer-version.stdout.txt",
+        "sha256": "604dba574ba430ed4f7d06ff09764dd95afbdf4b79f83470fc403764e15955a3",
+        "bytes": 125
+      },
+      {
+        "path": "tcgen05-suite/summary.json",
+        "sha256": "0ed629843cdb861d018ddfbefd8ecc3e4071351bd0d9c5e2469700c393f3762d",
+        "bytes": 114858
+      },
+      {
+        "path": "tcgen05-suite/tcgen05_probe",
+        "sha256": "a7ac0ebfb52e45465a69dd536f6ccb6456f7fa71718dc50191a8795308fef51f",
+        "bytes": 1131808,
+        "omitted": "compiled executable; binary hash retained"
+      },
+      {
+        "path": "tcgen05-suite/tcgen05_probe.cu",
+        "sha256": "76a8b4f7c11d1e5c20540ce01414d131bf17a72171256f9ef1b0a11f6ef072a8",
+        "bytes": 18209
+      },
+      {
+        "path": "tcgen05-suite/tcgen05_probe.ptx",
+        "sha256": "ba7588bcdfebed771735783e93c91b3791acc7d77bf22c47b6b7a513b7dffda3",
+        "bytes": 47054
+      },
+      {
+        "path": "tcgen05-suite/tcgen05_probe.sass",
+        "sha256": "07509a0cab4f74adb9bba11e3abf6b01f02cc94ccd21e16a25ed93efa2b9c78f",
+        "bytes": 161069
+      },
+      {
+        "path": "tcgen05-suite/tcgen05_run_probe.py",
+        "sha256": "c358a66d80c6ffc09625d05838677a3bc0e87237e8f38d8706135cd4e3d10399",
+        "bytes": 13165
+      },
+      {
+        "path": "tcgen05-suite/tcgen05_validate.py",
+        "sha256": "b81ff55503f24c588e8bf80de976113572f8f60dfa7baaf1d9cb38c6244b416b",
+        "bytes": 10603
+      }
+    ],
+    "status": "completed",
+    "measurement_claim": "Command stdout/artifacts; no inferred GPU timestamps or benchmark claim.",
+    "remote_wall_seconds": 33.192541833
+  },
+  "finished_utc": "2026-10-23T11:16:54.345377+00:00"
+}
