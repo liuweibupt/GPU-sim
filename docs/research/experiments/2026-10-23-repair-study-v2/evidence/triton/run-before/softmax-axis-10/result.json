@@ -1,0 +1,105 @@
+{
+  "case": {
+    "id": "softmax-axis-10",
+    "family": "softmax-axis",
+    "split": "hidden",
+    "shape": [
+      2,
+      2
+    ],
+    "dim": 1,
+    "pattern": "extreme"
+  },
+  "status": "wrong-result",
+  "input_values": [
+    -50.0,
+    50.0,
+    49.0,
+    -49.0
+  ],
+  "observed": [
+    1.401298464324817e-44,
+    7.3890557289123535,
+    0.1353352963924408,
+    7.468920814851275e-43
+  ],
+  "reference": [
+    3.783505853677006e-44,
+    1.0,
+    1.0,
+    2.7465449900766415e-43
+  ],
+  "observed_bytes": [
+    10,
+    0,
+    0,
+    0,
+    37,
+    115,
+    236,
+    64,
+    86,
+    149,
+    10,
+    62,
+    21,
+    2,
+    0,
+    0
+  ],
+  "reference_bytes": [
+    27,
+    0,
+    0,
+    0,
+    0,
+    0,
+    128,
+    63,
+    0,
+    0,
+    128,
+    63,
+    196,
+    0,
+    0,
+    0
+  ],
+  "elements": 4,
+  "output_dtype": "torch.float32",
+  "maximum_absolute_error": 6.3890557289123535,
+  "wrong_elements": 2,
+  "assembly": {
+    "source": {
+      "sha256": "8d6c5c14c5e399f7f57b57454312bcf6c693d97d18bc6bd546bc0588ba480c13",
+      "file": "kernel.source",
+      "bytes": 7622
+    },
+    "ttir": {
+      "sha256": "b2fa551d2a6ede9e20adef916a4577a2d3c58d0ef60ffe5c3b79f05906ee5a71",
+      "file": "kernel.ttir",
+      "bytes": 4447
+    },
+    "ttgir": {
+      "sha256": "f52b46c36b52a506512ee7d1941d1cfe6c4fb37759ce706f9fe3ecc5cf8f0c74",
+      "file": "kernel.ttgir",
+      "bytes": 5540
+    },
+    "llir": {
+      "sha256": "e25f1d8814914933dcf76ad31de4e061c2dfc74c7e6d440e1b1aa4be8d157c1f",
+      "file": "kernel.llir",
+      "bytes": 6482
+    },
+    "ptx": {
+      "sha256": "cb827f43e75f80b6731bc681ed0ff62d7fccf1f11674899a86b3b170697a47d4",
+      "file": "kernel.ptx",
+      "bytes": 12996
+    },
+    "cubin": {
+      "sha256": "0d154528012a89304d6d0e1f27a04f1995aa67d9095e56ec88c2924e85af8102",
+      "bytes": 6440,
+      "omitted": "binary artifact represented by hash"
+    }
+  },
+  "execution_wall_seconds": 0.007598587078973651
+}

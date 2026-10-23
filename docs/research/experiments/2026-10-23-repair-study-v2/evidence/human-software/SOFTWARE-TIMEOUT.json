@@ -1,0 +1,169 @@
+{
+  "format": "gpu-human-diagnostic-study-v2",
+  "mode": "dry-run",
+  "participantId": "SOFTWARE-TIMEOUT",
+  "allocationSlot": 0,
+  "manifestSha256": "a898228cb397d8db4e7eb5e187183c10b710fd040b74f1ad98157b33ac2a26fe",
+  "dataSha256": "0102b3c2a7657d2bbc7bd0f7a1d708308c225b43f5897d41903fd88dbc9d40a8",
+  "catalogSha256": "ba32ae71891d2c5e84953332d1afd39121e199f84ed4ebf6ea92f979409481d5",
+  "protocolVersion": "simple-six-root-immediate-v2",
+  "experience": "none",
+  "consentScope": "software-rehearsal-only",
+  "status": "withdrawn",
+  "taskOrder": [
+    {
+      "id": "practice-cutlass",
+      "rootCauseId": "old-development-cutlass",
+      "stage": "practice",
+      "condition": "practice-both"
+    },
+    {
+      "id": "practice-tmem",
+      "rootCauseId": "old-development-tmem",
+      "stage": "practice",
+      "condition": "practice-both"
+    },
+    {
+      "id": "triton-softmax-axis",
+      "rootCauseId": "main-root-01",
+      "stage": "main",
+      "condition": "raw"
+    },
+    {
+      "id": "triton-negative-zero",
+      "rootCauseId": "main-root-02",
+      "stage": "main",
+      "condition": "diagnostic"
+    },
+    {
+      "id": "triton-constexpr-filter",
+      "rootCauseId": "main-root-03",
+      "stage": "main",
+      "condition": "raw"
+    },
+    {
+      "id": "liger-poly",
+      "rootCauseId": "main-root-04",
+      "stage": "main",
+      "condition": "diagnostic"
+    }
+  ],
+  "responses": [
+    {
+      "taskId": "practice-cutlass",
+      "rootCauseId": "old-development-cutlass",
+      "stage": "practice",
+      "condition": "practice-both",
+      "synthetic": false,
+      "developmentCase": true,
+      "reason": "timeout",
+      "elapsedMs": 300000,
+      "timeLimitSeconds": 300,
+      "answer": {
+        "diagnosis": "",
+        "locations": "",
+        "evidenceIds": [],
+        "repair": "",
+        "edits": [],
+        "confidence": 50,
+        "evidenceBasis": "",
+        "priorFamiliarity": false
+      },
+      "validationErrors": [
+        "请填写解释或明确写“未定位”。",
+        "请选择证据解释。"
+      ]
+    },
+    {
+      "taskId": "practice-tmem",
+      "rootCauseId": "old-development-tmem",
+      "stage": "practice",
+      "condition": "practice-both",
+      "synthetic": false,
+      "developmentCase": true,
+      "reason": "withdrawn",
+      "elapsedMs": 0,
+      "timeLimitSeconds": 300,
+      "answer": {
+        "diagnosis": "",
+        "locations": "",
+        "evidenceIds": [],
+        "repair": "",
+        "edits": [],
+        "confidence": 50,
+        "evidenceBasis": "",
+        "priorFamiliarity": false
+      },
+      "validationErrors": [
+        "请填写解释或明确写“未定位”。",
+        "请选择证据解释。"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "sequence": 0,
+      "elapsedMs": 0,
+      "taskId": null,
+      "action": "session-start",
+      "slot": 0,
+      "mode": "dry-run"
+    },
+    {
+      "sequence": 1,
+      "elapsedMs": 0,
+      "taskId": "practice-cutlass",
+      "action": "open-record",
+      "kind": "cases",
+      "id": "case-00"
+    },
+    {
+      "sequence": 2,
+      "elapsedMs": 0,
+      "taskId": "practice-cutlass",
+      "action": "task-start",
+      "stage": "practice",
+      "condition": "practice-both",
+      "rootCauseId": "old-development-cutlass"
+    },
+    {
+      "sequence": 3,
+      "elapsedMs": 300000,
+      "taskId": "practice-cutlass",
+      "action": "task-end",
+      "reason": "timeout"
+    },
+    {
+      "sequence": 4,
+      "elapsedMs": 0,
+      "taskId": "practice-tmem",
+      "action": "open-record",
+      "kind": "cases",
+      "id": "case-24"
+    },
+    {
+      "sequence": 5,
+      "elapsedMs": 0,
+      "taskId": "practice-tmem",
+      "action": "task-start",
+      "stage": "practice",
+      "condition": "practice-both",
+      "rootCauseId": "old-development-tmem"
+    },
+    {
+      "sequence": 6,
+      "elapsedMs": 0,
+      "taskId": "practice-tmem",
+      "action": "task-end",
+      "reason": "withdrawn"
+    },
+    {
+      "sequence": 7,
+      "elapsedMs": 0,
+      "taskId": "practice-tmem",
+      "action": "session-end",
+      "status": "withdrawn"
+    }
+  ],
+  "finishedElapsedMs": 0
+}

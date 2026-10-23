@@ -1,0 +1,107 @@
+{
+  "round": 4,
+  "request": {
+    "op": "derived",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": "observed",
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "observations": [
+      {
+        "caseId": "constexpr-filter-00",
+        "status": "wrong_value",
+        "parameters": {
+          "values": [
+            10,
+            20,
+            30,
+            40
+          ],
+          "cutoff": 30,
+          "even": false
+        },
+        "evidenceId": "observation-constexpr-filter-00",
+        "kind": "device-output",
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 5 / 5 elements differ. Floating-point signed zero uses byte equality where required.",
+        "rawRefs": [
+          {
+            "id": "raw-constexpr-filter-00",
+            "sha256": "0ce518a6b51bbbddcdf55d38fef36157cd383f87042f788c5d2eaa430a67542f"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "ac92f5244c13658b5f76f9309e92209157ac22fd7d701351fd7bf5bbc41d9c0a"
+          }
+        ]
+      },
+      {
+        "caseId": "constexpr-filter-01",
+        "status": "passed",
+        "parameters": {
+          "values": [
+            10,
+            20,
+            30,
+            40
+          ],
+          "cutoff": 0,
+          "even": false
+        },
+        "evidenceId": "observation-constexpr-filter-01",
+        "kind": "device-output",
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 5 elements differ. Floating-point signed zero uses byte equality where required.",
+        "rawRefs": [
+          {
+            "id": "raw-constexpr-filter-01",
+            "sha256": "02fb39584e82ce036a96c4400d5959b9972e71348445147f5511c7502eaa1a6c"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "ac92f5244c13658b5f76f9309e92209157ac22fd7d701351fd7bf5bbc41d9c0a"
+          }
+        ]
+      },
+      {
+        "caseId": "constexpr-filter-02",
+        "status": "wrong_value",
+        "parameters": {
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cutoff": 2,
+          "even": true
+        },
+        "evidenceId": "observation-constexpr-filter-02",
+        "kind": "device-output",
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 7 / 7 elements differ. Floating-point signed zero uses byte equality where required.",
+        "rawRefs": [
+          {
+            "id": "raw-constexpr-filter-02",
+            "sha256": "ae80f0b64caff5619384ab7f98973ddf1c189936ec16a2caec1488d47c3ed6f8"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "ac92f5244c13658b5f76f9309e92209157ac22fd7d701351fd7bf5bbc41d9c0a"
+          }
+        ]
+      }
+    ],
+    "scope": "Observed facts only; payload values remain available through read/case in both conditions."
+  },
+  "responseCharacters": 1857,
+  "responseSHA256": "7b1fa0457a7ba21088f1f0d013ba866256d48df4201782c774ed7ded625049b9",
+  "wallMilliseconds": 0.6732379198074341
+}

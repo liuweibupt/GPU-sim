@@ -1,0 +1,191 @@
+{
+  "format": "human-task-rubric-draft-v2",
+  "status": "DRAFT — expert review and independent rater calibration pending",
+  "taskId": "liger-grpo",
+  "rootCauseId": "linkedin/Liger-Kernel#1461",
+  "title": "input_ids 与 mask 地址步长假设错误",
+  "mechanismForFullCredit": "kernel 假设 ids 的列 stride 为 1，并将 ids 行 stride 用于 mask；非连续、不同 prefix 或 broadcast view 使读取错误。应分别传 ids/mask 两维 strides，已有 storage offset 由张量指针携带。",
+  "allowedEquivalentExplanationsAndRepairs": [
+    "分别使用 ids.stride(0/1) 与 mask.stride(0/1) 计算地址",
+    "保持值、mask、dtype 契约的显式 contiguous 规范化；性能开销另测"
+  ],
+  "counterfactualPredictions": [
+    "固定逻辑数组，改变 ids 或 mask 的 storage layout，结果应相同",
+    "分别构造 strided_ids/strided_mask/broadcast_views 以区分两个地址错误"
+  ],
+  "insufficientOrWrongAnswers": [
+    "仅改 ids 列 stride，仍复用 mask 的错误 stride",
+    "对所有输出取消 mask",
+    "把传入指针的 storage offset 再重复加一次"
+  ],
+  "localizationTargets": [
+    {
+      "source_id": "source-18",
+      "start_line": 27,
+      "end_line": 84,
+      "path": "src/liger_kernel/ops/grpo_loss.py",
+      "sourceSha256": "6d4c0ec16d9db2ea8ae1b3072222b8f3371cc1c89fdf46d19e79ed4b907c10ec"
+    }
+  ],
+  "failureEvidence": [
+    {
+      "caseId": "grpo-01",
+      "evidenceIds": [
+        "observation-grpo-01"
+      ],
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "different_prefixes",
+        "temperature": 1,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    },
+    {
+      "caseId": "grpo-02",
+      "evidenceIds": [
+        "observation-grpo-02"
+      ],
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "strided_ids",
+        "temperature": 1,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    },
+    {
+      "caseId": "grpo-03",
+      "evidenceIds": [
+        "observation-grpo-03"
+      ],
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "strided_mask",
+        "temperature": 1,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    },
+    {
+      "caseId": "grpo-04",
+      "evidenceIds": [
+        "observation-grpo-04"
+      ],
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "broadcast_ids",
+        "temperature": 1,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    },
+    {
+      "caseId": "grpo-05",
+      "evidenceIds": [
+        "observation-grpo-05"
+      ],
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "broadcast_mask",
+        "temperature": 1,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    }
+  ],
+  "passingControls": [
+    {
+      "caseId": "grpo-00",
+      "evidenceIds": [
+        "observation-grpo-00"
+      ],
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "dense",
+        "temperature": 1,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    }
+  ],
+  "scoring": "Four 0/1/2 dimensions: mechanism, localization, evidence, counterfactual. Correct alternatives need not match gold text; unsupported causal certainty loses mechanism/evidence credit. Exact line targets are guides, not an automatic semantic correctness oracle.",
+  "repairExecutor": {
+    "taskId": "liger-grpo",
+    "baseDirectory": "out/research/liger-faults",
+    "executor": "tools/research/liger-faults/evaluate_candidate.py",
+    "executorSha256": "0333c30fd71c396980a55488c21361feab941dc757dc4a2cddb2cd8e4aceee27",
+    "verifier": "tools/research/liger-faults/verify.py",
+    "verifierSha256": "c0d8a0cbf695550f03f33edfc6005ad8f0b21b9813bd5eaeb96a392e78424ac1",
+    "runner": "tools/research/liger-faults/run.py",
+    "runnerSha256": "5d6dba630ebd8255994eea2e7a84e30f2e2b4ee9320c0c55f83310fa65c5dd8c",
+    "hiddenPlan": "out/research/liger-faults/plan.json",
+    "hiddenSpecSHA256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+    "hiddenCaseIds": [
+      "grpo-06",
+      "grpo-07",
+      "grpo-08",
+      "grpo-09",
+      "grpo-10",
+      "grpo-11",
+      "grpo-12",
+      "grpo-13",
+      "grpo-14",
+      "grpo-15",
+      "grpo-16",
+      "grpo-17",
+      "grpo-18",
+      "grpo-19",
+      "grpo-20"
+    ],
+    "visibleCaseIds": [
+      "grpo-00",
+      "grpo-01",
+      "grpo-02",
+      "grpo-03",
+      "grpo-04",
+      "grpo-05"
+    ],
+    "command": [
+      "python3",
+      "tools/research/liger-faults/evaluate_candidate.py",
+      "--candidate",
+      "CANDIDATE_JSON",
+      "--output",
+      "NEW_OUTPUT_DIRECTORY",
+      "--base",
+      "out/research/liger-faults"
+    ],
+    "scope": "Existing actual-GPU executor. Not run on any human candidate; no human participant exists yet."
+  }
+}

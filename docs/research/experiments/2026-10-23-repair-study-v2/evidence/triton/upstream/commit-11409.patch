@@ -1,0 +1,235 @@
+From 31b1bf9aed2714af9a816d023b405499e8b27883 Mon Sep 17 00:00:00 2001
+From: Ali Harbaji <ali.harbaji@intel.com>
+Date: Mon, 24 Aug 2026 02:47:03 +0300
+Subject: [PATCH] [FRONTEND] Fix tl.softmax normalizing along the wrong axis
+ (#11406) (#11409)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes #11406.
+
+`tl.softmax` forwarded the caller's `keep_dims` into its own `max` and
+`sum` reductions. With `keep_dims=False` (the default) those reductions
+drop the reduced axis, and a rank-reduced result left-pads to a *row* —
+so both the max subtraction and the sum division were applied along the
+wrong axis. `tl.softmax(x, dim=1)` on a 2x2 tile returned rows summing
+to `[0.398, 5.449]`; non-square tiles raised a shape error instead.
+
+`keep_dims` is meaningless on softmax: softmax is not a reduction, its
+output always has the input's shape, so there is no output shape for the
+flag to select. Its only effect was to corrupt an internal invariant.
+
+### How the parameter got here
+
+| PR | |
+|---|---|
+| pre-#6538 | `softmax(x, ieee_rounding=False)`, axis hard-coded to 0,
+no `keep_dims`. Reductions omit the flag (`False`) — correct, because
+axis 0 is the one axis where a rank-reduced result left-pads onto the
+right dimension. |
+| #6538 | Adds `dim` and `keep_dims=True` to both reductions, so any
+axis works. Motivated by one call site, `_topk_forward`'s `dim=1`,
+replacing a helper that restored the rank by hand with `[:, None]`. Also
+defaults `dim` to `x.shape[-1]` — a *size* used as an axis, which broke
+`tl.softmax(x)` outright. |
+| #6555 | Introduces `_dim` to fix the `constexpr` reassignment. Keeps
+`keep_dims=True`. |
+| #6563 | Fixes #6538's BC break by restoring the default axis to 0 —
+and, reverting faithfully, also restores `keep_dims=False`, exposed as a
+user-facing parameter forwarded into the reductions. This is the bug:
+`keep_dims=False` was only ever safe *because* the axis was pinned to 0,
+and decoupling the two silently un-fixed every axis except the default.
+|
+| #7040 | Adds `keep_dims=True` at `_topk_forward`'s `dim=1` call site —
+working around the fallout rather than fixing softmax. That workaround
+is why this survived another 14 months. |
+
+### Fix
+
+Hard-code `keep_dims=True` in both reductions and drop the parameter
+from the signature.
+
+This is a small BC break for anyone passing `keep_dims` explicitly.
+Passing `True` was a no-op, and passing `False` was the bug, so no
+correct caller loses behavior — but a caller that passes either now gets
+a `TypeError` instead. A code search over public repositories turns up
+three call sites that pass it, all of them copies of the same
+`_topk_forward` workaround; this PR removes the in-tree one. Every other
+caller found uses `dim=0` or the default, which is also why the bug went
+unnoticed for 16 months. Deprecating instead of removing is an option if
+maintainers prefer, but it would mean keeping a parameter whose only
+valid value is the one the implementation now hard-codes.
+
+One residual sharp edge: `ieee_rounding` moves up to become the third
+positional parameter, so an existing `softmax(x, 1, True)` that meant
+`keep_dims=True` would now silently mean `ieee_rounding=True` rather
+than failing. Making `ieee_rounding` keyword-only would close that hole,
+but `@jit` does not currently support keyword-only parameters, on either
+path: `visit_arguments` in `compiler/code_generator.py` walks
+`node.args`, `node.vararg` and `node.kwarg`
+but not `node.kwonlyargs`, and since `visit_FunctionDef` `zip`s those
+names against the argument values, the parameter is silently dropped and
+the body dies with a bare `NameError`; the interpreter separately
+filters launch kwargs against
+`argspec.args`, which also omits them. (The `*` in `tl.load`/`tl.store`
+works only because those are `@builtin`, run under ordinary Python call
+semantics instead of being traced.) Both are small, self-contained
+fixes, but they belong in a frontend PR of their own rather than here.
+No public caller passes three positional arguments, so this is left
+as-is for now.
+
+Also replaces the `_add_math_1arg_docstr` decorator — an
+element-wise-unary template that documented only `x`, leaving `dim` and
+`ieee_rounding` undocumented despite `tl.softmax` being in the published
+API reference — with a real docstring noting that the default axis is 0,
+*not* the last axis as in `torch.softmax`. The `dim` default is
+unchanged; changing it would silently alter results for existing
+callers.
+
+### Tests
+
+`tl.softmax` had no direct coverage before this. `test_softmax` in
+`test_standard.py` takes one case per distinct failure mode: the
+reported square tile `(2,2)/dim=1` (silently wrong values),
+`(8,64)/dim=-1` (a negative axis, which goes through `_wrap_axis`, and a
+non-square shape, which raised a shape error rather than returning wrong
+numbers), and `(128,)/dim=0` (rank 1, where the reduction yields a
+rank-0 result that `keep_dims=True` splats — the path that keeps
+`_topk_backward` working, and the one case that checks the fix is *safe*
+rather than that it is *necessary*). It also static-asserts that the
+result keeps the input's shape.
+
+Two of the three cases fail before this change: one returns wrong
+values, one raises a shape error. `test_standard.py` is already in the
+interpreter suite, so these run on both the compiled and interpreted
+paths — the two paths reported in the issue. Mutating the fix confirms
+the cases pull their weight: reverting either reduction on its own, or
+pointing either at the wrong axis, is caught.
+
+# New contributor declaration
+- [x] I am not making a trivial change, such as fixing a typo in a
+comment.
+
+- [x] I have written a PR description following these
+  [rules](https://cbea.ms/git-commit/#why-not-how).
+
+- [x] I have run `pre-commit run --from-ref origin/main --to-ref HEAD`.
+
+- Select one of the following.
+  - [x] I have added tests.
+    - `/test` for `lit` tests
+    - `/unittest` for C++ tests
+    - `/python/test` for end-to-end tests
+
+- Select one of the following.
+  - [x] I have not added any `lit` tests.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-authored-by: Claude Opus 5 <noreply@anthropic.com>
+---
+ python/test/unit/language/test_standard.py    | 27 +++++++++++++++++++
+ python/triton/language/core.py                |  2 +-
+ python/triton/language/standard.py            | 18 ++++++++++---
+ .../topk_details/_topk_forward.py             |  2 +-
+ 4 files changed, 43 insertions(+), 6 deletions(-)
+
+diff --git a/python/test/unit/language/test_standard.py b/python/test/unit/language/test_standard.py
+index 30f887d70617..54aceb98286f 100644
+--- a/python/test/unit/language/test_standard.py
++++ b/python/test/unit/language/test_standard.py
+@@ -146,6 +146,33 @@ def swizzle2d_kernel(output, size_i, size_j, size_g):
+     assert (output == expected_order).all(), (output, expected_order)
+ 
+ 
++# ---------------
++# test softmax
++# ---------------
++
++
++@pytest.mark.interpreter
++@pytest.mark.parametrize("shape, dim", [((2, 2), 1), ((8, 64), -1), ((128, ), 0)])
++def test_softmax(shape, dim, device):
++    # Reproducer for https://github.com/triton-lang/triton/issues/11406, where
++    # softmax normalized along the wrong axis for every dim but the default.
++
++    @triton.jit
++    def softmax_kernel(X, Z, numel: tl.constexpr, shape: tl.constexpr, dim: tl.constexpr):
++        # X is contiguous, so its row-major flat offsets are just an arange.
++        offs = tl.arange(0, numel).reshape(shape)
++        x = tl.load(X + offs)
++        z = tl.softmax(x, dim=dim)
++        tl.static_assert(z.shape == x.shape, "softmax must preserve the input shape")
++        tl.store(Z + offs, z)
++
++    x = numpy_random(shape, dtype_str='float32')
++    x = torch.from_numpy(x).to(device)
++    z = torch.empty_like(x)
++    softmax_kernel[(1, )](x, z, x.numel(), shape, dim)
++    torch.testing.assert_close(z, torch.softmax(x, dim=dim), rtol=1e-5, atol=1e-6)
++
++
+ @pytest.mark.interpreter
+ @pytest.mark.parametrize("shape, dim", [((1, 2, 4), 0), ((2, 1, 4), 1), ((2, 4, 1), 2)])
+ def test_squeeze(shape, dim, device):
+diff --git a/python/triton/language/core.py b/python/triton/language/core.py
+index 143100930c96..e9450b22b832 100644
+--- a/python/triton/language/core.py
++++ b/python/triton/language/core.py
+@@ -1261,7 +1261,7 @@ def cdiv(self, div) -> tensor:
+     def sigmoid(self) -> tensor:
+         ...
+ 
+-    def softmax(self, dim=None, keep_dims=False, ieee_rounding=False) -> tensor:
++    def softmax(self, dim=None, ieee_rounding=False) -> tensor:
+         ...
+ 
+     def ravel(self) -> tensor:
+diff --git a/python/triton/language/standard.py b/python/triton/language/standard.py
+index 0feb7a1e4300..bf142137caba 100644
+--- a/python/triton/language/standard.py
++++ b/python/triton/language/standard.py
+@@ -52,15 +52,25 @@ def sigmoid(x):
+ 
+ @core._tensor_member_fn
+ @jit
+-@math._add_math_1arg_docstr("softmax")
+-def softmax(x, dim=None, keep_dims=False, ieee_rounding=False):
++def softmax(x, dim=None, ieee_rounding=False):
++    """
++    Computes the softmax of :code:`x` along the given axis.
++
++    :param x: the input values
++    :type x: Block
++    :param dim: the axis along which to normalize. Defaults to 0 -- note that
++        this is *not* the last axis, unlike :code:`torch.softmax`.
++    :type dim: int | None
++    :param ieee_rounding: whether the final division uses IEEE-compliant rounding
++    :type ieee_rounding: bool
++    """
+     if dim is None:
+         _dim: core.constexpr = 0
+     else:
+         _dim: core.constexpr = dim
+-    z = x - max(x, _dim, keep_dims=keep_dims)
++    z = x - max(x, _dim, keep_dims=True)
+     num = math.exp(z)
+-    den = sum(num, _dim, keep_dims=keep_dims)
++    den = sum(num, _dim, keep_dims=True)
+     return math.fdiv(num, den, ieee_rounding)
+ 
+ 
+diff --git a/python/triton_kernels/triton_kernels/topk_details/_topk_forward.py b/python/triton_kernels/triton_kernels/topk_details/_topk_forward.py
+index 2f9e8f56ba78..cc3c6f7d31c4 100644
+--- a/python/triton_kernels/triton_kernels/topk_details/_topk_forward.py
++++ b/python/triton_kernels/triton_kernels/topk_details/_topk_forward.py
+@@ -126,7 +126,7 @@ def _topk_forward(X, stride_xm,  # inputs
+ 
+     # normalize selected values
+     if APPLY_SOFTMAX:
+-        y_values = tl.softmax(y_values.to(tl.float32), dim=1, keep_dims=True).to(x_dtype)
++        y_values = tl.softmax(y_values.to(tl.float32), dim=1).to(x_dtype)
+ 
+     # write back
+     for rank in tl.static_range(N_PEERS):

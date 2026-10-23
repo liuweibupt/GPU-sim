@@ -1,0 +1,105 @@
+{
+  "case": {
+    "id": "softmax-axis-00",
+    "family": "softmax-axis",
+    "split": "visible",
+    "shape": [
+      2,
+      2
+    ],
+    "dim": 1,
+    "pattern": "linear"
+  },
+  "status": "pass",
+  "input_values": [
+    -2.25,
+    -0.5,
+    1.25,
+    -1.75
+  ],
+  "observed": [
+    0.14804719388484955,
+    0.851952850818634,
+    0.9525741338729858,
+    0.047425877302885056
+  ],
+  "reference": [
+    0.14804719388484955,
+    0.8519527912139893,
+    0.9525741338729858,
+    0.04742587357759476
+  ],
+  "observed_bytes": [
+    175,
+    153,
+    23,
+    62,
+    149,
+    25,
+    90,
+    63,
+    230,
+    219,
+    115,
+    63,
+    163,
+    65,
+    66,
+    61
+  ],
+  "reference_bytes": [
+    175,
+    153,
+    23,
+    62,
+    148,
+    25,
+    90,
+    63,
+    230,
+    219,
+    115,
+    63,
+    162,
+    65,
+    66,
+    61
+  ],
+  "elements": 4,
+  "output_dtype": "torch.float32",
+  "maximum_absolute_error": 5.960464477539063e-08,
+  "wrong_elements": 0,
+  "assembly": {
+    "source": {
+      "sha256": "2feaba49acac56ed1315c37cf025b85ddb11ae2b39c2494403f415ca97d360e5",
+      "file": "kernel.source",
+      "bytes": 8095
+    },
+    "ttir": {
+      "sha256": "4a07d06722e062271fc3d5f5dd2ae8c849d528191e0a42405efb2ab830e33096",
+      "file": "kernel.ttir",
+      "bytes": 5054
+    },
+    "ttgir": {
+      "sha256": "cdf9845d7eaa05b68ae04f5318c8ee793d435d23ea765b139a3bd76ed92e9aab",
+      "file": "kernel.ttgir",
+      "bytes": 5807
+    },
+    "llir": {
+      "sha256": "031174fb3b452a815cc0ad3161dbfd09ce2480f017084d713d5a6a1809aac8a6",
+      "file": "kernel.llir",
+      "bytes": 5516
+    },
+    "ptx": {
+      "sha256": "9b4453f1fe9fcbdc853a3d0cf261b4ff8c18d6a424d50d47e97252c6a64f7d2d",
+      "file": "kernel.ptx",
+      "bytes": 12678
+    },
+    "cubin": {
+      "sha256": "37acbab2aa12a94756b667128214bfe6ebae6797040bed6f3138538c313b56d5",
+      "bytes": 5928,
+      "omitted": "binary artifact represented by hash"
+    }
+  },
+  "execution_wall_seconds": 0.9632288020802662
+}

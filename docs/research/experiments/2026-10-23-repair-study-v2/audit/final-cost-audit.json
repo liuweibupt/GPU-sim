@@ -1,0 +1,109 @@
+{
+  "format": "repair-v2-independent-final-cost-audit-v1",
+  "status": "verified",
+  "modelCalls": 0,
+  "gpuCalls": 0,
+  "analysisSHA256": "cd3b30aa87789107ffa0df39b956dcaf0ed331204998c5de31b501f6470efe5f",
+  "auditedRawJSONLCalls": 212,
+  "auditedSavedQueryRecords": 178,
+  "groups": [
+    {
+      "condition": "raw",
+      "plannedTrials": 18,
+      "completedTrials": 17,
+      "retainedCalls": 112,
+      "callsWithMissingReturnedUsage": 0,
+      "retainedInputTokens": 2212001,
+      "retainedCachedInputTokens": 1265920,
+      "retainedOutputTokens": 20413,
+      "retainedQueries": 95,
+      "derivedRequests": 0,
+      "acceptedDerivedRequests": 0,
+      "successfulDerivedRequests": 0,
+      "effectiveToolUptakeTrials": 0,
+      "effectiveDerivedOperations": {},
+      "completedTrialModelWallSeconds": {
+        "n": 17,
+        "total": 1469.536694210887,
+        "mean": 86.44333495358158,
+        "median": 77.56976888287068,
+        "min": 65.75963098883628,
+        "max": 136.93656355500224
+      },
+      "completedTrialWallSeconds": {
+        "n": 17,
+        "total": 1469.981518480897,
+        "mean": 86.46950108711158,
+        "median": 77.63757202196122,
+        "min": 65.7799497050047,
+        "max": 136.9623134920597
+      },
+      "completedTrialsWithoutDerivedUse": [
+        "triton-softmax-axis.raw.r1",
+        "triton-negative-zero.raw.r1",
+        "triton-constexpr-filter.raw.r1",
+        "liger-poly.raw.r1",
+        "liger-sparse.raw.r1",
+        "liger-grpo.raw.r1",
+        "liger-grpo.raw.r2",
+        "liger-sparse.raw.r2",
+        "liger-poly.raw.r2",
+        "triton-constexpr-filter.raw.r2",
+        "triton-negative-zero.raw.r2",
+        "triton-softmax-axis.raw.r2",
+        "triton-softmax-axis.raw.r3",
+        "triton-negative-zero.raw.r3",
+        "triton-constexpr-filter.raw.r3",
+        "liger-sparse.raw.r3",
+        "liger-grpo.raw.r3"
+      ],
+      "possiblyUnrecordedCalls": true
+    },
+    {
+      "condition": "diagnostic",
+      "plannedTrials": 18,
+      "completedTrials": 17,
+      "retainedCalls": 100,
+      "callsWithMissingReturnedUsage": 0,
+      "retainedInputTokens": 1983390,
+      "retainedCachedInputTokens": 1089280,
+      "retainedOutputTokens": 20137,
+      "retainedQueries": 83,
+      "derivedRequests": 15,
+      "acceptedDerivedRequests": 15,
+      "successfulDerivedRequests": 15,
+      "effectiveToolUptakeTrials": 15,
+      "effectiveDerivedOperations": {
+        "observed": 15
+      },
+      "completedTrialModelWallSeconds": {
+        "n": 17,
+        "total": 1424.9596751440763,
+        "mean": 83.82115736141625,
+        "median": 79.83965922999381,
+        "min": 49.335769335031515,
+        "max": 160.89627556824684
+      },
+      "completedTrialWallSeconds": {
+        "n": 17,
+        "total": 1425.3893669691086,
+        "mean": 83.84643335112403,
+        "median": 79.87313924205303,
+        "min": 49.35268654406071,
+        "max": 160.9166454319954
+      },
+      "completedTrialsWithoutDerivedUse": [
+        "triton-softmax-axis.diagnostic.r1",
+        "triton-negative-zero.diagnostic.r1"
+      ],
+      "possiblyUnrecordedCalls": true
+    }
+  ],
+  "limits": [
+    "Saved calls/tokens/model wall sums are retained lower bounds due to two potentially unsaved in-flight calls despite complete usage on all saved calls.",
+    "Cached input tokens are included in input tokens; no invoice cost is inferred.",
+    "Administrative interruption observation is excluded from completed-trial latency summaries.",
+    "GPU timing requires separate runtime provenance audit and excludes an incomplete attempt.",
+    "Usage uptake does not establish efficacy; raw/diagnostic means and medians must both be reported."
+  ]
+}

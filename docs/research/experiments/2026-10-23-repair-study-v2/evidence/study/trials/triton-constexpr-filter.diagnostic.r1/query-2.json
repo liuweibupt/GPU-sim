@@ -1,0 +1,473 @@
+{
+  "round": 2,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-01",
+    "text": null,
+    "start": 470,
+    "end": 580,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-01",
+    "path": "triton/compiler/code_generator.py",
+    "sha256": "e7b75e513fb868674fd2adc660c6527e4ad9e74f01120d8e2b1ad243329a0c92",
+    "start": 470,
+    "end": 580,
+    "totalLines": 1708,
+    "lines": [
+      {
+        "line": 470,
+        "text": "        self.scf_stack.append(node)"
+      },
+      {
+        "line": 471,
+        "text": "        self.visit_compound_statement(node.body)"
+      },
+      {
+        "line": 472,
+        "text": "        self.scf_stack.pop()"
+      },
+      {
+        "line": 473,
+        "text": "        block.erase()"
+      },
+      {
+        "line": 474,
+        "text": ""
+      },
+      {
+        "line": 475,
+        "text": "        # If a variable (name) has changed value within the loop, then it's"
+      },
+      {
+        "line": 476,
+        "text": "        # a loop-carried variable. (The new and old value must be of the"
+      },
+      {
+        "line": 477,
+        "text": "        # same type)"
+      },
+      {
+        "line": 478,
+        "text": "        init_tys = []"
+      },
+      {
+        "line": 479,
+        "text": "        init_handles = []"
+      },
+      {
+        "line": 480,
+        "text": "        names = []"
+      },
+      {
+        "line": 481,
+        "text": ""
+      },
+      {
+        "line": 482,
+        "text": "        for name, live_val in liveins.items():"
+      },
+      {
+        "line": 483,
+        "text": "            if name in ignore:"
+      },
+      {
+        "line": 484,
+        "text": "                continue"
+      },
+      {
+        "line": 485,
+        "text": ""
+      },
+      {
+        "line": 486,
+        "text": "            if _is_triton_value(live_val):"
+      },
+      {
+        "line": 487,
+        "text": "                loop_val = self.lscope[name]"
+      },
+      {
+        "line": 488,
+        "text": "                self._verify_loop_carried_variable(name, loop_val, live_val)"
+      },
+      {
+        "line": 489,
+        "text": ""
+      },
+      {
+        "line": 490,
+        "text": "                live_handles = flatten_values_to_ir([live_val])"
+      },
+      {
+        "line": 491,
+        "text": "                loop_handles = flatten_values_to_ir([loop_val])"
+      },
+      {
+        "line": 492,
+        "text": "                if live_handles != loop_handles:"
+      },
+      {
+        "line": 493,
+        "text": "                    names.append(name)"
+      },
+      {
+        "line": 494,
+        "text": "                    init_tys.append(live_val.type)"
+      },
+      {
+        "line": 495,
+        "text": "                    init_handles.extend(live_handles)"
+      },
+      {
+        "line": 496,
+        "text": "            else:"
+      },
+      {
+        "line": 497,
+        "text": "                assert name not in self.local_defs, f'Loop carried variable {name} is not a triton value'"
+      },
+      {
+        "line": 498,
+        "text": ""
+      },
+      {
+        "line": 499,
+        "text": "        # reset local scope to not pick up local defs from the dry run."
+      },
+      {
+        "line": 500,
+        "text": "        self.lscope = liveins.copy()"
+      },
+      {
+        "line": 501,
+        "text": "        self.local_defs = {}"
+      },
+      {
+        "line": 502,
+        "text": ""
+      },
+      {
+        "line": 503,
+        "text": "        return names, init_handles, init_tys"
+      },
+      {
+        "line": 504,
+        "text": ""
+      },
+      {
+        "line": 505,
+        "text": "    #"
+      },
+      {
+        "line": 506,
+        "text": "    # AST visitor"
+      },
+      {
+        "line": 507,
+        "text": "    #"
+      },
+      {
+        "line": 508,
+        "text": "    def visit_compound_statement(self, stmts):"
+      },
+      {
+        "line": 509,
+        "text": "        # Ensure that stmts is iterable"
+      },
+      {
+        "line": 510,
+        "text": "        if not _is_list_like(stmts):"
+      },
+      {
+        "line": 511,
+        "text": "            stmts = [stmts]"
+      },
+      {
+        "line": 512,
+        "text": "        for stmt in stmts:"
+      },
+      {
+        "line": 513,
+        "text": "            self.visit(stmt)"
+      },
+      {
+        "line": 514,
+        "text": "            # Stop parsing as soon as we hit a `return` statement; everything"
+      },
+      {
+        "line": 515,
+        "text": "            # after this is dead code."
+      },
+      {
+        "line": 516,
+        "text": "            if isinstance(stmt, ast.Return):"
+      },
+      {
+        "line": 517,
+        "text": "                break"
+      },
+      {
+        "line": 518,
+        "text": ""
+      },
+      {
+        "line": 519,
+        "text": "    def visit_Module(self, node):"
+      },
+      {
+        "line": 520,
+        "text": "        ast.NodeVisitor.generic_visit(self, node)"
+      },
+      {
+        "line": 521,
+        "text": ""
+      },
+      {
+        "line": 522,
+        "text": "    def visit_List(self, node):"
+      },
+      {
+        "line": 523,
+        "text": "        ctx = self.visit(node.ctx)"
+      },
+      {
+        "line": 524,
+        "text": "        assert ctx is None"
+      },
+      {
+        "line": 525,
+        "text": "        elts = language.tuple([self.visit(elt) for elt in node.elts])"
+      },
+      {
+        "line": 526,
+        "text": "        return elts"
+      },
+      {
+        "line": 527,
+        "text": ""
+      },
+      {
+        "line": 528,
+        "text": "    def visit_ListComp(self, node: ast.ListComp):"
+      },
+      {
+        "line": 529,
+        "text": "        if len(node.generators) != 1:"
+      },
+      {
+        "line": 530,
+        "text": "            raise ValueError(\"nested comprehensions are not supported\")"
+      },
+      {
+        "line": 531,
+        "text": ""
+      },
+      {
+        "line": 532,
+        "text": "        comp = node.generators[0]"
+      },
+      {
+        "line": 533,
+        "text": "        iter = self.visit(comp.iter)"
+      },
+      {
+        "line": 534,
+        "text": "        if not isinstance(iter, tl_tuple):"
+      },
+      {
+        "line": 535,
+        "text": "            raise NotImplementedError(\"only tuple comprehensions are supported\")"
+      },
+      {
+        "line": 536,
+        "text": ""
+      },
+      {
+        "line": 537,
+        "text": "        results = []"
+      },
+      {
+        "line": 538,
+        "text": "        for item in iter:"
+      },
+      {
+        "line": 539,
+        "text": "            self.set_value(comp.target.id, item)"
+      },
+      {
+        "line": 540,
+        "text": "            results.append(self.visit(node.elt))"
+      },
+      {
+        "line": 541,
+        "text": "        return tl_tuple(results)"
+      },
+      {
+        "line": 542,
+        "text": ""
+      },
+      {
+        "line": 543,
+        "text": "    # By design, only non-kernel functions can return"
+      },
+      {
+        "line": 544,
+        "text": "    def visit_Return(self, node):"
+      },
+      {
+        "line": 545,
+        "text": "        ret_value = self.visit(node.value)"
+      },
+      {
+        "line": 546,
+        "text": "        if ret_value is None:"
+      },
+      {
+        "line": 547,
+        "text": "            ret_value = language.constexpr(None)"
+      },
+      {
+        "line": 548,
+        "text": "        self.return_vals.append(ret_value)"
+      },
+      {
+        "line": 549,
+        "text": "        self.return_ips.append(self._get_insertion_point_and_loc())"
+      },
+      {
+        "line": 550,
+        "text": ""
+      },
+      {
+        "line": 551,
+        "text": "        # A return op must always terminate the basic block, so we create a dead"
+      },
+      {
+        "line": 552,
+        "text": "        # basic block in case there are any ops after the return."
+      },
+      {
+        "line": 553,
+        "text": "        post_ret_block = self.builder.create_block()"
+      },
+      {
+        "line": 554,
+        "text": "        self.builder.set_insertion_point_to_end(post_ret_block)"
+      },
+      {
+        "line": 555,
+        "text": ""
+      },
+      {
+        "line": 556,
+        "text": "    def decide_return_type(self):"
+      },
+      {
+        "line": 557,
+        "text": "        assert len(self.return_vals) == len(self.return_ips)"
+      },
+      {
+        "line": 558,
+        "text": "        if not self.return_vals:"
+      },
+      {
+        "line": 559,
+        "text": "            return language.constexpr_type(None)"
+      },
+      {
+        "line": 560,
+        "text": ""
+      },
+      {
+        "line": 561,
+        "text": "        tl = language.core"
+      },
+      {
+        "line": 562,
+        "text": ""
+      },
+      {
+        "line": 563,
+        "text": "        def error_msg(a, b):"
+      },
+      {
+        "line": 564,
+        "text": "            err = f\"Return type mismatch: {a} and {b}. \""
+      },
+      {
+        "line": 565,
+        "text": "            err += f\"Note all return types were: {return_types}\""
+      },
+      {
+        "line": 566,
+        "text": "            return err"
+      },
+      {
+        "line": 567,
+        "text": ""
+      },
+      {
+        "line": 568,
+        "text": "        def common_type(a, b):"
+      },
+      {
+        "line": 569,
+        "text": "            if isinstance(a, tl.tuple_type):"
+      },
+      {
+        "line": 570,
+        "text": "                _check(isinstance(b, tl.tuple_type), lambda: error_msg(a, b))"
+      },
+      {
+        "line": 571,
+        "text": "                _check(a.fields == b.fields, lambda: error_msg(a, b))"
+      },
+      {
+        "line": 572,
+        "text": "                return tl.tuple_type([common_type(ai, bi) for ai, bi in zip(a, b)], fields=a.fields)"
+      },
+      {
+        "line": 573,
+        "text": "            if isinstance(a, tl.constexpr_type):"
+      },
+      {
+        "line": 574,
+        "text": "                if a == b:"
+      },
+      {
+        "line": 575,
+        "text": "                    return a"
+      },
+      {
+        "line": 576,
+        "text": "                a = self.semantic.to_tensor_type(a)"
+      },
+      {
+        "line": 577,
+        "text": "                b = self.semantic.to_tensor_type(b)"
+      },
+      {
+        "line": 578,
+        "text": "            elif isinstance(b, tl.constexpr_type):"
+      },
+      {
+        "line": 579,
+        "text": "                a = self.semantic.to_tensor_type(a)"
+      },
+      {
+        "line": 580,
+        "text": "                b = self.semantic.to_tensor_type(b)"
+      }
+    ]
+  },
+  "responseCharacters": 6799,
+  "responseSHA256": "9af8500b485444b1502bf65811f5ac470c95898e6d676156f21c0ab47acc46b7",
+  "wallMilliseconds": 0.16273093223571777
+}

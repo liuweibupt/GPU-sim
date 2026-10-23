@@ -1,0 +1,42 @@
+{
+  "format": "repair-study-external-interruption-v1",
+  "observedAt": "2026-10-23T15:13:33.681Z",
+  "observedShellExitCode": 143,
+  "cause": "Unknown external SIGTERM of the long-running orchestration shell; no claim about its origin.",
+  "decision": "Keep completed trials. Terminally mark already-started incomplete trials as infrastructure interruptions without new sampling. Execute only never-started schedule entries with the unchanged frozen runTrial.",
+  "interrupted": [
+    {
+      "id": "liger-poly.raw.r3",
+      "retainedCalls": 2,
+      "retainedQueries": 2
+    },
+    {
+      "id": "liger-poly.diagnostic.r3",
+      "retainedCalls": 1,
+      "retainedQueries": 1
+    }
+  ],
+  "continued": [
+    {
+      "id": "liger-sparse.raw.r3",
+      "valid": true,
+      "failure": null
+    },
+    {
+      "id": "liger-sparse.diagnostic.r3",
+      "valid": true,
+      "failure": null
+    },
+    {
+      "id": "liger-grpo.diagnostic.r3",
+      "valid": true,
+      "failure": null
+    },
+    {
+      "id": "liger-grpo.raw.r3",
+      "valid": true,
+      "failure": null
+    }
+  ],
+  "continuationFinishedAt": "2026-10-23T15:16:24.697Z"
+}

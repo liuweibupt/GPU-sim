@@ -1,0 +1,349 @@
+{
+  "taskId": "liger-sparse",
+  "objective": "Repair sparsemax forward, the Euclidean projection of each last-axis input row onto the probability simplex. Preserve input tensors, output shape/dtype and the operation for finite fp16/bf16/fp32 values. Public entry point: LigerSparsemaxFunction.apply(x,-1). Case observations include tolerance and complete-output comparison counts. Do not change the test contract.",
+  "files": [
+    {
+      "id": "source-00",
+      "path": "src/liger_kernel/functional.py",
+      "role": "implementation",
+      "lines": 763
+    },
+    {
+      "id": "source-01",
+      "path": "src/liger_kernel/ops/__init__.py",
+      "role": "implementation",
+      "lines": 206
+    },
+    {
+      "id": "source-02",
+      "path": "src/liger_kernel/ops/_nvidia_shared.py",
+      "role": "implementation",
+      "lines": 129
+    },
+    {
+      "id": "source-03",
+      "path": "src/liger_kernel/ops/attn_res.py",
+      "role": "implementation",
+      "lines": 350
+    },
+    {
+      "id": "source-04",
+      "path": "src/liger_kernel/ops/configure.py",
+      "role": "implementation",
+      "lines": 106
+    },
+    {
+      "id": "source-05",
+      "path": "src/liger_kernel/ops/cross_entropy.py",
+      "role": "implementation",
+      "lines": 608
+    },
+    {
+      "id": "source-06",
+      "path": "src/liger_kernel/ops/dyt.py",
+      "role": "implementation",
+      "lines": 165
+    },
+    {
+      "id": "source-07",
+      "path": "src/liger_kernel/ops/fused_add_rms_norm.py",
+      "role": "implementation",
+      "lines": 433
+    },
+    {
+      "id": "source-08",
+      "path": "src/liger_kernel/ops/fused_ce_tvd.py",
+      "role": "implementation",
+      "lines": 358
+    },
+    {
+      "id": "source-09",
+      "path": "src/liger_kernel/ops/fused_linear_cross_entropy.py",
+      "role": "implementation",
+      "lines": 635
+    },
+    {
+      "id": "source-10",
+      "path": "src/liger_kernel/ops/fused_linear_jsd.py",
+      "role": "implementation",
+      "lines": 384
+    },
+    {
+      "id": "source-11",
+      "path": "src/liger_kernel/ops/fused_linear_kl_div.py",
+      "role": "implementation",
+      "lines": 389
+    },
+    {
+      "id": "source-12",
+      "path": "src/liger_kernel/ops/fused_linear_scaled_cross_entropy.py",
+      "role": "implementation",
+      "lines": 498
+    },
+    {
+      "id": "source-13",
+      "path": "src/liger_kernel/ops/fused_linear_score_centering.py",
+      "role": "implementation",
+      "lines": 479
+    },
+    {
+      "id": "source-14",
+      "path": "src/liger_kernel/ops/fused_moe.py",
+      "role": "implementation",
+      "lines": 435
+    },
+    {
+      "id": "source-15",
+      "path": "src/liger_kernel/ops/fused_moe_kernels.py",
+      "role": "implementation",
+      "lines": 970
+    },
+    {
+      "id": "source-16",
+      "path": "src/liger_kernel/ops/fused_neighborhood_attention.py",
+      "role": "implementation",
+      "lines": 1023
+    },
+    {
+      "id": "source-17",
+      "path": "src/liger_kernel/ops/geglu.py",
+      "role": "implementation",
+      "lines": 147
+    },
+    {
+      "id": "source-18",
+      "path": "src/liger_kernel/ops/group_norm.py",
+      "role": "implementation",
+      "lines": 314
+    },
+    {
+      "id": "source-19",
+      "path": "src/liger_kernel/ops/grpo_loss.py",
+      "role": "implementation",
+      "lines": 1039
+    },
+    {
+      "id": "source-20",
+      "path": "src/liger_kernel/ops/jsd.py",
+      "role": "implementation",
+      "lines": 214
+    },
+    {
+      "id": "source-21",
+      "path": "src/liger_kernel/ops/kl_div.py",
+      "role": "implementation",
+      "lines": 268
+    },
+    {
+      "id": "source-22",
+      "path": "src/liger_kernel/ops/layer_norm.py",
+      "role": "implementation",
+      "lines": 338
+    },
+    {
+      "id": "source-23",
+      "path": "src/liger_kernel/ops/llama4_rope.py",
+      "role": "implementation",
+      "lines": 181
+    },
+    {
+      "id": "source-24",
+      "path": "src/liger_kernel/ops/mhc.py",
+      "role": "implementation",
+      "lines": 1675
+    },
+    {
+      "id": "source-25",
+      "path": "src/liger_kernel/ops/mlp.py",
+      "role": "implementation",
+      "lines": 703
+    },
+    {
+      "id": "source-26",
+      "path": "src/liger_kernel/ops/modulated_rms_norm.py",
+      "role": "implementation",
+      "lines": 513
+    },
+    {
+      "id": "source-27",
+      "path": "src/liger_kernel/ops/multi_token_attention.py",
+      "role": "implementation",
+      "lines": 208
+    },
+    {
+      "id": "source-28",
+      "path": "src/liger_kernel/ops/poly_norm.py",
+      "role": "implementation",
+      "lines": 388
+    },
+    {
+      "id": "source-29",
+      "path": "src/liger_kernel/ops/qwen2vl_mrope.py",
+      "role": "implementation",
+      "lines": 223
+    },
+    {
+      "id": "source-30",
+      "path": "src/liger_kernel/ops/relu_squared.py",
+      "role": "implementation",
+      "lines": 121
+    },
+    {
+      "id": "source-31",
+      "path": "src/liger_kernel/ops/rms_norm.py",
+      "role": "implementation",
+      "lines": 713
+    },
+    {
+      "id": "source-32",
+      "path": "src/liger_kernel/ops/rope.py",
+      "role": "implementation",
+      "lines": 305
+    },
+    {
+      "id": "source-33",
+      "path": "src/liger_kernel/ops/softmax.py",
+      "role": "implementation",
+      "lines": 202
+    },
+    {
+      "id": "source-34",
+      "path": "src/liger_kernel/ops/sparsemax.py",
+      "role": "implementation",
+      "lines": 178
+    },
+    {
+      "id": "source-35",
+      "path": "src/liger_kernel/ops/swiglu.py",
+      "role": "implementation",
+      "lines": 452
+    },
+    {
+      "id": "source-36",
+      "path": "src/liger_kernel/ops/tiled_mlp.py",
+      "role": "implementation",
+      "lines": 137
+    },
+    {
+      "id": "source-37",
+      "path": "src/liger_kernel/ops/tvd.py",
+      "role": "implementation",
+      "lines": 228
+    },
+    {
+      "id": "source-38",
+      "path": "src/liger_kernel/ops/utils.py",
+      "role": "implementation",
+      "lines": 169
+    },
+    {
+      "id": "source-39",
+      "path": "src/liger_kernel/ops/vocab_parallel_cross_entropy.py",
+      "role": "implementation",
+      "lines": 364
+    },
+    {
+      "id": "source-40",
+      "path": "src/liger_kernel/transformers/sparsemax.py",
+      "role": "implementation",
+      "lines": 17
+    },
+    {
+      "id": "source-41",
+      "path": "src/liger_kernel/utils.py",
+      "role": "implementation",
+      "lines": 212
+    }
+  ],
+  "cases": [
+    {
+      "id": "sparse-00",
+      "status": "passed",
+      "parameters": {
+        "rows": 2,
+        "width": 16,
+        "seed": 0,
+        "dtype": "float32",
+        "offset": 0,
+        "distribution": "normal",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "id": "sparse-01",
+      "status": "passed",
+      "parameters": {
+        "rows": 2,
+        "width": 16,
+        "seed": 0,
+        "dtype": "float16",
+        "offset": -65504,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "id": "sparse-02",
+      "status": "wrong_value",
+      "parameters": {
+        "rows": 2,
+        "width": 16,
+        "seed": 0,
+        "dtype": "bfloat16",
+        "offset": 94370000,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "id": "sparse-03",
+      "status": "passed",
+      "parameters": {
+        "rows": 2,
+        "width": 256,
+        "seed": 0,
+        "dtype": "float32",
+        "offset": 0,
+        "distribution": "normal",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "id": "sparse-04",
+      "status": "wrong_value",
+      "parameters": {
+        "rows": 2,
+        "width": 256,
+        "seed": 0,
+        "dtype": "float16",
+        "offset": -65504,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "id": "sparse-05",
+      "status": "wrong_value",
+      "parameters": {
+        "rows": 2,
+        "width": 256,
+        "seed": 0,
+        "dtype": "bfloat16",
+        "offset": 94370000,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    }
+  ],
+  "limits": [
+    "All supplied implementation files may be searched and edited; this is a real subsystem package, not the entire upstream repository.",
+    "These public sources are new to this project tool evaluation, not claimed absent from model training.",
+    "Generic diagnostic queries were not specialized to this bug. Runtime numerical evidence is not a hardware event timeline."
+  ]
+}

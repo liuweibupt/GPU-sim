@@ -1,0 +1,2644 @@
+{
+  "format": "liger-natural-runtime-v1",
+  "family": "grpo",
+  "started_at": "2026-10-23T15:18:43.242227+00:00",
+  "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+  "runner_sha256": "5d6dba630ebd8255994eea2e7a84e30f2e2b4ee9320c0c55f83310fa65c5dd8c",
+  "source_root": "/home/liuwei/GPU-sim/out/research/liger-faults/candidate-evaluations/liger-grpo.raw.r3/source",
+  "torch": "2.7.1+cu126",
+  "triton": "3.8.0",
+  "python": "3.10.20 (main, Jun 11 2026, 15:17:37) [GCC 14.3.0]",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "capability": [
+    8,
+    9
+  ],
+  "identity": "NVIDIA GeForce RTX 4090, 8.9, 610.57.04, 49140 MiB",
+  "records": [
+    {
+      "id": "grpo-00",
+      "family": "grpo",
+      "partition": "visible",
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "dense",
+        "temperature": 1.0,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          7,
+          1
+        ],
+        "mask": [
+          7,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "1ee10347c6a3f8262fe77efba31921141cb75ccb20e743c87031d7d64e883cdd"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "324fd3a96b8a3beee9b8542bf2109922dbd8428860cd9a8ff5b3f3fdc9777bfe"
+        }
+      ],
+      "passed": true,
+      "outputs": 21,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.2441425190654627e-07,
+      "artifact": {
+        "path": "grpo-00.npz",
+        "sha256": "1d51c7305fd54f4e7b06b4f30efb772cb45323951c79922365299a1f36832ca0",
+        "bytes": 7219
+      },
+      "wall_seconds": 1.0134455679217353
+    },
+    {
+      "id": "grpo-01",
+      "family": "grpo",
+      "partition": "visible",
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "different_prefixes",
+        "temperature": 1.0,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          10,
+          1
+        ],
+        "mask": [
+          16,
+          1
+        ],
+        "ids_offset": 3,
+        "mask_offset": 9
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "1ee10347c6a3f8262fe77efba31921141cb75ccb20e743c87031d7d64e883cdd"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "324fd3a96b8a3beee9b8542bf2109922dbd8428860cd9a8ff5b3f3fdc9777bfe"
+        }
+      ],
+      "passed": true,
+      "outputs": 21,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.2441425190654627e-07,
+      "artifact": {
+        "path": "grpo-01.npz",
+        "sha256": "df1e3a801d3352c07be2b79663d9a4c75a6016509fc55b1bc1d9259016449033",
+        "bytes": 7239
+      },
+      "wall_seconds": 0.14129995997063816
+    },
+    {
+      "id": "grpo-02",
+      "family": "grpo",
+      "partition": "visible",
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "strided_ids",
+        "temperature": 1.0,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          14,
+          2
+        ],
+        "mask": [
+          17,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 10
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "1ee10347c6a3f8262fe77efba31921141cb75ccb20e743c87031d7d64e883cdd"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "324fd3a96b8a3beee9b8542bf2109922dbd8428860cd9a8ff5b3f3fdc9777bfe"
+        }
+      ],
+      "passed": true,
+      "outputs": 21,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.2441425190654627e-07,
+      "artifact": {
+        "path": "grpo-02.npz",
+        "sha256": "e64a08c656b9cfbe8ba522bb37ff2dd8a4092dbb6417f58761e909376fa55cd9",
+        "bytes": 7231
+      },
+      "wall_seconds": 0.13671018893364817
+    },
+    {
+      "id": "grpo-03",
+      "family": "grpo",
+      "partition": "visible",
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "strided_mask",
+        "temperature": 1.0,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          7,
+          1
+        ],
+        "mask": [
+          14,
+          2
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "1ee10347c6a3f8262fe77efba31921141cb75ccb20e743c87031d7d64e883cdd"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "324fd3a96b8a3beee9b8542bf2109922dbd8428860cd9a8ff5b3f3fdc9777bfe"
+        }
+      ],
+      "passed": true,
+      "outputs": 21,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.2441425190654627e-07,
+      "artifact": {
+        "path": "grpo-03.npz",
+        "sha256": "1d51c7305fd54f4e7b06b4f30efb772cb45323951c79922365299a1f36832ca0",
+        "bytes": 7219
+      },
+      "wall_seconds": 0.14060668309684843
+    },
+    {
+      "id": "grpo-04",
+      "family": "grpo",
+      "partition": "visible",
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "broadcast_ids",
+        "temperature": 1.0,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          0,
+          1
+        ],
+        "mask": [
+          7,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "72b93c1000097c34d7f3344035267df20827fab28b4fe07844cb6b11236bd1d4"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "324fd3a96b8a3beee9b8542bf2109922dbd8428860cd9a8ff5b3f3fdc9777bfe"
+        }
+      ],
+      "passed": true,
+      "outputs": 21,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 1.874928030609624e-07,
+      "artifact": {
+        "path": "grpo-04.npz",
+        "sha256": "9cac1ea3a7f403f67b00d69f07db1e49928cc2ef8154ee933ff7946d349d9dac",
+        "bytes": 7155
+      },
+      "wall_seconds": 0.17066948197316378
+    },
+    {
+      "id": "grpo-05",
+      "family": "grpo",
+      "partition": "visible",
+      "parameters": {
+        "batch": 3,
+        "length": 7,
+        "vocab": 17,
+        "seed": 83,
+        "dtype": "float32",
+        "layout": "broadcast_mask",
+        "temperature": 1.0,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          7,
+          1
+        ],
+        "mask": [
+          0,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "1ee10347c6a3f8262fe77efba31921141cb75ccb20e743c87031d7d64e883cdd"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "d88c01a569951562c751c83d8cd43c1fce1f62167591668f37dbf930b9a3da9f"
+        }
+      ],
+      "passed": true,
+      "outputs": 21,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.2441425190654627e-07,
+      "artifact": {
+        "path": "grpo-05.npz",
+        "sha256": "c2c88815f27c7fe7f05ba81e6839685252690cbc93c10eb85e6c1f970a8603a4",
+        "bytes": 7233
+      },
+      "wall_seconds": 0.17623239301610738
+    },
+    {
+      "id": "grpo-06",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 2,
+        "length": 5,
+        "vocab": 37,
+        "seed": 97,
+        "dtype": "float32",
+        "layout": "dense",
+        "temperature": 0.7,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          5,
+          1
+        ],
+        "mask": [
+          5,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        2,
+        5
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "int64",
+          "sha256": "9f1332ec222903cf6df407b04268c98a5a0e4f5d550b936a2be4b71e77de8da3"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            2,
+            6,
+            37
+          ],
+          "dtype": "float32",
+          "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "bool",
+          "sha256": "089914723539f904d7e589a28b907427ed7b3832cde7f3d907748837024cb632"
+        }
+      ],
+      "passed": true,
+      "outputs": 10,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.575410746885609e-07,
+      "artifact": {
+        "path": "grpo-06.npz",
+        "sha256": "4acdc61212940ea7fabe0165d97d26d333bc50aa0e67308435ac8c115b537dcb",
+        "bytes": 7486
+      },
+      "wall_seconds": 0.16568542597815394
+    },
+    {
+      "id": "grpo-07",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 2,
+        "length": 5,
+        "vocab": 37,
+        "seed": 97,
+        "dtype": "float32",
+        "layout": "different_prefixes",
+        "temperature": 0.7,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          8,
+          1
+        ],
+        "mask": [
+          14,
+          1
+        ],
+        "ids_offset": 3,
+        "mask_offset": 9
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        2,
+        5
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "int64",
+          "sha256": "9f1332ec222903cf6df407b04268c98a5a0e4f5d550b936a2be4b71e77de8da3"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            2,
+            6,
+            37
+          ],
+          "dtype": "float32",
+          "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "bool",
+          "sha256": "089914723539f904d7e589a28b907427ed7b3832cde7f3d907748837024cb632"
+        }
+      ],
+      "passed": true,
+      "outputs": 10,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.575410746885609e-07,
+      "artifact": {
+        "path": "grpo-07.npz",
+        "sha256": "4097ec0ecde3e6073624077f6a756c87017121d1459adb8b9f0ae51604d51617",
+        "bytes": 7494
+      },
+      "wall_seconds": 0.18006530706770718
+    },
+    {
+      "id": "grpo-08",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 2,
+        "length": 5,
+        "vocab": 37,
+        "seed": 97,
+        "dtype": "float32",
+        "layout": "strided_ids",
+        "temperature": 0.7,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          10,
+          2
+        ],
+        "mask": [
+          13,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 8
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        2,
+        5
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "int64",
+          "sha256": "9f1332ec222903cf6df407b04268c98a5a0e4f5d550b936a2be4b71e77de8da3"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            2,
+            6,
+            37
+          ],
+          "dtype": "float32",
+          "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "bool",
+          "sha256": "089914723539f904d7e589a28b907427ed7b3832cde7f3d907748837024cb632"
+        }
+      ],
+      "passed": true,
+      "outputs": 10,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.575410746885609e-07,
+      "artifact": {
+        "path": "grpo-08.npz",
+        "sha256": "add14a7be72605479ece420c30b8f62d31722a0c22ff597049b1250e003ae253",
+        "bytes": 7492
+      },
+      "wall_seconds": 0.15258882800117135
+    },
+    {
+      "id": "grpo-09",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 2,
+        "length": 5,
+        "vocab": 37,
+        "seed": 97,
+        "dtype": "float32",
+        "layout": "strided_mask",
+        "temperature": 0.7,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          5,
+          1
+        ],
+        "mask": [
+          10,
+          2
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        2,
+        5
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "int64",
+          "sha256": "9f1332ec222903cf6df407b04268c98a5a0e4f5d550b936a2be4b71e77de8da3"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            2,
+            6,
+            37
+          ],
+          "dtype": "float32",
+          "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "bool",
+          "sha256": "089914723539f904d7e589a28b907427ed7b3832cde7f3d907748837024cb632"
+        }
+      ],
+      "passed": true,
+      "outputs": 10,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.575410746885609e-07,
+      "artifact": {
+        "path": "grpo-09.npz",
+        "sha256": "4acdc61212940ea7fabe0165d97d26d333bc50aa0e67308435ac8c115b537dcb",
+        "bytes": 7486
+      },
+      "wall_seconds": 0.16737198398914188
+    },
+    {
+      "id": "grpo-10",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 2,
+        "length": 5,
+        "vocab": 37,
+        "seed": 97,
+        "dtype": "float32",
+        "layout": "broadcast_ids",
+        "temperature": 0.7,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          0,
+          1
+        ],
+        "mask": [
+          5,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        2,
+        5
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "int64",
+          "sha256": "bfe25265a795b6d5bef7d5d91768b31695e50200a3b092fa666cffdd28099c3b"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            2,
+            6,
+            37
+          ],
+          "dtype": "float32",
+          "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "bool",
+          "sha256": "089914723539f904d7e589a28b907427ed7b3832cde7f3d907748837024cb632"
+        }
+      ],
+      "passed": true,
+      "outputs": 10,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.575410746885609e-07,
+      "artifact": {
+        "path": "grpo-10.npz",
+        "sha256": "5289e4abb9d950de5c0a6da2edfd673f1e9cf80f7d7e06cc7ca6ed5405da3d6f",
+        "bytes": 7452
+      },
+      "wall_seconds": 0.19927286310121417
+    },
+    {
+      "id": "grpo-11",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 2,
+        "length": 5,
+        "vocab": 37,
+        "seed": 97,
+        "dtype": "float32",
+        "layout": "broadcast_mask",
+        "temperature": 0.7,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          5,
+          1
+        ],
+        "mask": [
+          0,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        2,
+        5
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "int64",
+          "sha256": "9f1332ec222903cf6df407b04268c98a5a0e4f5d550b936a2be4b71e77de8da3"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            2,
+            6,
+            37
+          ],
+          "dtype": "float32",
+          "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            2,
+            5
+          ],
+          "dtype": "bool",
+          "sha256": "1003a1e7baf64f9845b9d783b2eb85bb3e2128f95f1dc33fa951beece2ebf165"
+        }
+      ],
+      "passed": true,
+      "outputs": 10,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.575410746885609e-07,
+      "artifact": {
+        "path": "grpo-11.npz",
+        "sha256": "01913e256416a5b6b319dc86d772515a9927e01ae8804bf44ef36f8e39fc83ae",
+        "bytes": 7504
+      },
+      "wall_seconds": 0.20495330705307424
+    },
+    {
+      "id": "grpo-12",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 4,
+        "length": 9,
+        "vocab": 2053,
+        "seed": 101,
+        "dtype": "float32",
+        "layout": "dense",
+        "temperature": 1.3,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          9,
+          1
+        ],
+        "mask": [
+          9,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        9
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "int64",
+          "sha256": "3540c0e702d15ef1d9ff442d031050e59aa547427403a91ef7f717fc67040d74"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            4,
+            10,
+            2053
+          ],
+          "dtype": "float32",
+          "sha256": "dc252581705158a80519cb3a15574b0933e9764c68ef25ce3eb0741f481aaa7a"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "bool",
+          "sha256": "4778c0a8a4b1af9c7a6a71e1b6b2dae05be348a7183d6c97efe7314b89d56217"
+        }
+      ],
+      "passed": true,
+      "outputs": 36,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 8.116535834545857e-07,
+      "artifact": {
+        "path": "grpo-12.npz",
+        "sha256": "a25f8a8373a1dac2aa07690514c2c96080cdfe5ef8e1166a0d8f551493be537b",
+        "bytes": 915767
+      },
+      "wall_seconds": 0.254399084020406
+    },
+    {
+      "id": "grpo-13",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 4,
+        "length": 9,
+        "vocab": 2053,
+        "seed": 101,
+        "dtype": "float32",
+        "layout": "different_prefixes",
+        "temperature": 1.3,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          12,
+          1
+        ],
+        "mask": [
+          18,
+          1
+        ],
+        "ids_offset": 3,
+        "mask_offset": 9
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        9
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "int64",
+          "sha256": "3540c0e702d15ef1d9ff442d031050e59aa547427403a91ef7f717fc67040d74"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            4,
+            10,
+            2053
+          ],
+          "dtype": "float32",
+          "sha256": "dc252581705158a80519cb3a15574b0933e9764c68ef25ce3eb0741f481aaa7a"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "bool",
+          "sha256": "4778c0a8a4b1af9c7a6a71e1b6b2dae05be348a7183d6c97efe7314b89d56217"
+        }
+      ],
+      "passed": true,
+      "outputs": 36,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 8.116535834545857e-07,
+      "artifact": {
+        "path": "grpo-13.npz",
+        "sha256": "8b6c31a8bce0bbb2c97ada83363825351acc25eba16c225b9729a8959b3c5506",
+        "bytes": 915785
+      },
+      "wall_seconds": 0.22954553400631994
+    },
+    {
+      "id": "grpo-14",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 4,
+        "length": 9,
+        "vocab": 2053,
+        "seed": 101,
+        "dtype": "float32",
+        "layout": "strided_ids",
+        "temperature": 1.3,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          18,
+          2
+        ],
+        "mask": [
+          21,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 12
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        9
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "int64",
+          "sha256": "3540c0e702d15ef1d9ff442d031050e59aa547427403a91ef7f717fc67040d74"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            4,
+            10,
+            2053
+          ],
+          "dtype": "float32",
+          "sha256": "dc252581705158a80519cb3a15574b0933e9764c68ef25ce3eb0741f481aaa7a"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "bool",
+          "sha256": "4778c0a8a4b1af9c7a6a71e1b6b2dae05be348a7183d6c97efe7314b89d56217"
+        }
+      ],
+      "passed": true,
+      "outputs": 36,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 8.116535834545857e-07,
+      "artifact": {
+        "path": "grpo-14.npz",
+        "sha256": "144c13d05e2e324e081053bdbf3ef64be85d6ecb91cc3ad28c43b84d0abc3931",
+        "bytes": 915771
+      },
+      "wall_seconds": 0.2500424840254709
+    },
+    {
+      "id": "grpo-15",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 4,
+        "length": 9,
+        "vocab": 2053,
+        "seed": 101,
+        "dtype": "float32",
+        "layout": "strided_mask",
+        "temperature": 1.3,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          9,
+          1
+        ],
+        "mask": [
+          18,
+          2
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        9
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "int64",
+          "sha256": "3540c0e702d15ef1d9ff442d031050e59aa547427403a91ef7f717fc67040d74"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            4,
+            10,
+            2053
+          ],
+          "dtype": "float32",
+          "sha256": "dc252581705158a80519cb3a15574b0933e9764c68ef25ce3eb0741f481aaa7a"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "bool",
+          "sha256": "4778c0a8a4b1af9c7a6a71e1b6b2dae05be348a7183d6c97efe7314b89d56217"
+        }
+      ],
+      "passed": true,
+      "outputs": 36,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 8.116535834545857e-07,
+      "artifact": {
+        "path": "grpo-15.npz",
+        "sha256": "a25f8a8373a1dac2aa07690514c2c96080cdfe5ef8e1166a0d8f551493be537b",
+        "bytes": 915767
+      },
+      "wall_seconds": 0.3131562150083482
+    },
+    {
+      "id": "grpo-16",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 4,
+        "length": 9,
+        "vocab": 2053,
+        "seed": 101,
+        "dtype": "float32",
+        "layout": "broadcast_ids",
+        "temperature": 1.3,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          0,
+          1
+        ],
+        "mask": [
+          9,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        9
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "int64",
+          "sha256": "c39b63dddd8556b0a6ec14fc861939f99a5dcb6040cd2f457c6732592ee043c5"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            4,
+            10,
+            2053
+          ],
+          "dtype": "float32",
+          "sha256": "dc252581705158a80519cb3a15574b0933e9764c68ef25ce3eb0741f481aaa7a"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "bool",
+          "sha256": "4778c0a8a4b1af9c7a6a71e1b6b2dae05be348a7183d6c97efe7314b89d56217"
+        }
+      ],
+      "passed": true,
+      "outputs": 36,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 7.30619705180402e-07,
+      "artifact": {
+        "path": "grpo-16.npz",
+        "sha256": "ac6e9fa233aa572093839275dffee8b9673d34669d48c97862448d082db9b360",
+        "bytes": 915534
+      },
+      "wall_seconds": 0.29603670292999595
+    },
+    {
+      "id": "grpo-17",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 4,
+        "length": 9,
+        "vocab": 2053,
+        "seed": 101,
+        "dtype": "float32",
+        "layout": "broadcast_mask",
+        "temperature": 1.3,
+        "masked": true,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          9,
+          1
+        ],
+        "mask": [
+          0,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        9
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "int64",
+          "sha256": "3540c0e702d15ef1d9ff442d031050e59aa547427403a91ef7f717fc67040d74"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            4,
+            10,
+            2053
+          ],
+          "dtype": "float32",
+          "sha256": "dc252581705158a80519cb3a15574b0933e9764c68ef25ce3eb0741f481aaa7a"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            4,
+            9
+          ],
+          "dtype": "bool",
+          "sha256": "4778c0a8a4b1af9c7a6a71e1b6b2dae05be348a7183d6c97efe7314b89d56217"
+        }
+      ],
+      "passed": true,
+      "outputs": 36,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 8.116535834545857e-07,
+      "artifact": {
+        "path": "grpo-17.npz",
+        "sha256": "a25f8a8373a1dac2aa07690514c2c96080cdfe5ef8e1166a0d8f551493be537b",
+        "bytes": 915767
+      },
+      "wall_seconds": 0.24950958893168718
+    },
+    {
+      "id": "grpo-18",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 3,
+        "length": 11,
+        "vocab": 67,
+        "seed": 113,
+        "dtype": "float16",
+        "layout": "strided_ids",
+        "temperature": 0.9,
+        "masked": false,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          22,
+          2
+        ],
+        "mask": [
+          25,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 14
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        11
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            11
+          ],
+          "dtype": "int64",
+          "sha256": "1a098a857abfa5b2fb79b86064e2efdfe5a3bb7a858e0f6611cfe027bc3c8a42"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            12,
+            67
+          ],
+          "dtype": "float32",
+          "sha256": "c0a7c9bb26706170126b94413974a2a1e14d18e633512c4913fdfbdefaf4b47d"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            11
+          ],
+          "dtype": "bool",
+          "sha256": "ce041765675ad4d93378e20bd3a7d0d97ddcf3385fb6341581b21d4bc9e3e69e"
+        }
+      ],
+      "passed": true,
+      "outputs": 33,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 5.066852022395096e-07,
+      "artifact": {
+        "path": "grpo-18.npz",
+        "sha256": "14d1e3fee6b5cb47888b3104cd1043fe6c4681a3b03a43d536907f0216651b32",
+        "bytes": 21222
+      },
+      "wall_seconds": 0.16392745508346707
+    },
+    {
+      "id": "grpo-19",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 3,
+        "length": 11,
+        "vocab": 67,
+        "seed": 113,
+        "dtype": "bfloat16",
+        "layout": "broadcast_ids",
+        "temperature": 0.9,
+        "masked": false,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          0,
+          1
+        ],
+        "mask": [
+          11,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        11
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            11
+          ],
+          "dtype": "int64",
+          "sha256": "6b462f03eddcdc911488e4b16643bf6d3c5e01035be5c9745c19096743b34031"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            12,
+            67
+          ],
+          "dtype": "float32",
+          "sha256": "ed1eb4227e203feb6e21ae8e48f1fa5a0cb3270c3f1a663163781fcafdb06ab5"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            11
+          ],
+          "dtype": "bool",
+          "sha256": "ce041765675ad4d93378e20bd3a7d0d97ddcf3385fb6341581b21d4bc9e3e69e"
+        }
+      ],
+      "passed": true,
+      "outputs": 33,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 6.35579510799289e-07,
+      "artifact": {
+        "path": "grpo-19.npz",
+        "sha256": "a420bacc1b47fa682a27288a0a9a915c914f3657a02046825db776d49d17cc5e",
+        "bytes": 17663
+      },
+      "wall_seconds": 0.1611761850072071
+    },
+    {
+      "id": "grpo-20",
+      "family": "grpo",
+      "partition": "hidden",
+      "parameters": {
+        "batch": 3,
+        "length": 11,
+        "vocab": 67,
+        "seed": 113,
+        "dtype": "float32",
+        "layout": "dense",
+        "temperature": 0.9,
+        "masked": false,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "input_strides": {
+        "ids": [
+          11,
+          1
+        ],
+        "mask": [
+          11,
+          1
+        ],
+        "ids_offset": 0,
+        "mask_offset": 0
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        11
+      ],
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            11
+          ],
+          "dtype": "int64",
+          "sha256": "1a098a857abfa5b2fb79b86064e2efdfe5a3bb7a858e0f6611cfe027bc3c8a42"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            12,
+            67
+          ],
+          "dtype": "float32",
+          "sha256": "9521ba9f957053668cb6b969c3d437e98de37b8f56d2a641df8ce07245d2a39b"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            11
+          ],
+          "dtype": "bool",
+          "sha256": "ce041765675ad4d93378e20bd3a7d0d97ddcf3385fb6341581b21d4bc9e3e69e"
+        }
+      ],
+      "passed": true,
+      "outputs": 33,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 5.207226942971488e-07,
+      "artifact": {
+        "path": "grpo-20.npz",
+        "sha256": "8f31f71f1e5e83c0001b39f2a88cb9faa027fed717ee7f147dc97e7fcb311f06",
+        "bytes": 29734
+      },
+      "wall_seconds": 0.15930838405620307
+    }
+  ],
+  "timing_scope": "Host correctness execution including imports/JIT/CPU oracle/copy/serialization; not an operator benchmark.",
+  "module_sha256": "4ecea145ca8b60e68af03cc6533b241b758842293fe348adcc19f0db9944232c",
+  "imported_source_files": [
+    {
+      "module": "liger_kernel",
+      "path": "src/liger_kernel/__init__.py",
+      "sha256": "6d0d073d4f0b576a6da516d6b5e709b81965b575fe295ff9837fc34593875954"
+    },
+    {
+      "module": "liger_kernel.backends",
+      "path": "src/liger_kernel/backends/__init__.py",
+      "sha256": "16f07e3d4d49479657e4ad9623cdcb0f5a63454b3c458fe4f93b052306079900"
+    },
+    {
+      "module": "liger_kernel.backends.capability",
+      "path": "src/liger_kernel/backends/capability.py",
+      "sha256": "1394f4c232d4d3d4f01a262d9ba6179dbe78fb18f75eb20877c64042cd31a0ad"
+    },
+    {
+      "module": "liger_kernel.backends.dispatch",
+      "path": "src/liger_kernel/backends/dispatch.py",
+      "sha256": "be88760901e7e709da2c5c286728260edacffd4e8d0bc74c627b7285995f359d"
+    },
+    {
+      "module": "liger_kernel.backends.registry",
+      "path": "src/liger_kernel/backends/registry.py",
+      "sha256": "34c0ff4dd70aac989cd949bb75f5d487310a26fba37722f8944addc9477a6f89"
+    },
+    {
+      "module": "liger_kernel.functional",
+      "path": "src/liger_kernel/functional.py",
+      "sha256": "6bd2cc02d1b3724d75711b5e16b1b5af58466685255e332372724fdc8bb3fa41"
+    },
+    {
+      "module": "liger_kernel.ops",
+      "path": "src/liger_kernel/ops/__init__.py",
+      "sha256": "747e7279d8f3223a2f06d5bb2f10b76699142ed82ff50e50cc29f4ed4b9c470c"
+    },
+    {
+      "module": "liger_kernel.ops.attn_res",
+      "path": "src/liger_kernel/ops/attn_res.py",
+      "sha256": "ad7a4bcc718de2021b8d9341766c76e68732854a9c3b2fac0211bffa977a27a0"
+    },
+    {
+      "module": "liger_kernel.ops.backends",
+      "path": "src/liger_kernel/ops/backends/__init__.py",
+      "sha256": "057bf47d218517b018f45455b5de3f05211878e51b93f5533c5483455c6f7551"
+    },
+    {
+      "module": "liger_kernel.ops.backends._ascend",
+      "path": "src/liger_kernel/ops/backends/_ascend/__init__.py",
+      "sha256": "cb54b9dac0ad6e16a83fb62d7b816aed92b25abd7c4ec72153e0a49eeac5958a"
+    },
+    {
+      "module": "liger_kernel.ops.backends._cutedsl",
+      "path": "src/liger_kernel/ops/backends/_cutedsl/__init__.py",
+      "sha256": "ce9aa23d98e1c10a25b4ecbae79ecebb598db9c916953dcf34a71aa4336a0578"
+    },
+    {
+      "module": "liger_kernel.ops.backends._cutile",
+      "path": "src/liger_kernel/ops/backends/_cutile/__init__.py",
+      "sha256": "2e1a3f8d360380fbcc970975bccbc08187d69989d9770f36c16fa19ba71f35c6"
+    },
+    {
+      "module": "liger_kernel.ops.backends._triton",
+      "path": "src/liger_kernel/ops/backends/_triton/__init__.py",
+      "sha256": "8bd547dd895d4d149d4ea02d0a4c14a141395b7c74b464f5da0b40892878ac19"
+    },
+    {
+      "module": "liger_kernel.ops.backends.registry",
+      "path": "src/liger_kernel/ops/backends/registry.py",
+      "sha256": "84d66e578e158fe39aefca05726400f3826a29a80d02d9b465cc158201d6f79f"
+    },
+    {
+      "module": "liger_kernel.ops.cross_entropy",
+      "path": "src/liger_kernel/ops/cross_entropy.py",
+      "sha256": "961f41ca7c06dab49be8182de1fed53165eb28ed87efaeed24afad1ecb0b78e8"
+    },
+    {
+      "module": "liger_kernel.ops.cute",
+      "path": "src/liger_kernel/ops/cute/__init__.py",
+      "sha256": "a03b375d96a59eb2317ed4fd952d9a8284b5820b9578bc4cbedeb3016943e250"
+    },
+    {
+      "module": "liger_kernel.ops.cutedsl",
+      "path": "src/liger_kernel/ops/cutedsl/__init__.py",
+      "sha256": "1bc500d18520b8062f7df8d0e6b3b622576c2da394aaa6f43091b6b614521a93"
+    },
+    {
+      "module": "liger_kernel.ops.cutile",
+      "path": "src/liger_kernel/ops/cutile/__init__.py",
+      "sha256": "acf1919023248ae4311519baacb615e104f77a4ecfffc799723c45afe10e7819"
+    },
+    {
+      "module": "liger_kernel.ops.dyt",
+      "path": "src/liger_kernel/ops/dyt.py",
+      "sha256": "a09245c0f6e5a8ab17d76b7b5ff8d3b0d55d008beec9ce8154df1f16b3e0d2ad"
+    },
+    {
+      "module": "liger_kernel.ops.experimental.embedding",
+      "path": "src/liger_kernel/ops/experimental/embedding.py",
+      "sha256": "b68963ded22d933a526f7d335aa0cddbfc97e1e72d7e5690f073322b214841cf"
+    },
+    {
+      "module": "liger_kernel.ops.fused_add_rms_norm",
+      "path": "src/liger_kernel/ops/fused_add_rms_norm.py",
+      "sha256": "d2373b9cef430132948757fc79fcd51681bb4300212b19600b1acfb8d98accbb"
+    },
+    {
+      "module": "liger_kernel.ops.fused_ce_tvd",
+      "path": "src/liger_kernel/ops/fused_ce_tvd.py",
+      "sha256": "11e3e3539e485c300e4efca64ff58335b932a18617bcd653e128f84e3cff1d09"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_cross_entropy",
+      "path": "src/liger_kernel/ops/fused_linear_cross_entropy.py",
+      "sha256": "70609e37dc7f966f4b4f6effd881411d1852c0fb77dee657dc5fe756f534c29d"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_jsd",
+      "path": "src/liger_kernel/ops/fused_linear_jsd.py",
+      "sha256": "83f03211db89ddef1f4b3a1eb70217a38aea8995bdddb3005ea88d95b087da33"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_kl_div",
+      "path": "src/liger_kernel/ops/fused_linear_kl_div.py",
+      "sha256": "1103d8fd7b4244c0ca8d182466d81c5712b2b84970634bc2573ce5692e2a3160"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_scaled_cross_entropy",
+      "path": "src/liger_kernel/ops/fused_linear_scaled_cross_entropy.py",
+      "sha256": "56a7d8bb5c35c9b9ce490023fc4c9eab2eed91d1abbd3bdb6a7302da625e2ec9"
+    },
+    {
+      "module": "liger_kernel.ops.fused_moe",
+      "path": "src/liger_kernel/ops/fused_moe.py",
+      "sha256": "87cda5a21049a79da8e744020c5da2bd3e30e65298ac185e565291a0f3f6e9db"
+    },
+    {
+      "module": "liger_kernel.ops.fused_moe_kernels",
+      "path": "src/liger_kernel/ops/fused_moe_kernels.py",
+      "sha256": "5b57a97a0322018edf5595a601cb99f490215ddd0369a2e422d3717aa62f8f0c"
+    },
+    {
+      "module": "liger_kernel.ops.fused_neighborhood_attention",
+      "path": "src/liger_kernel/ops/fused_neighborhood_attention.py",
+      "sha256": "bcf8b9c5b9e1eb0c7265e85aaa8e93ba296aa367cde5218388e3639cd9882aab"
+    },
+    {
+      "module": "liger_kernel.ops.geglu",
+      "path": "src/liger_kernel/ops/geglu.py",
+      "sha256": "c868f150d58fe1ff2913872b500fd76764075f73f6ea655217bdc2e0a72fc097"
+    },
+    {
+      "module": "liger_kernel.ops.group_norm",
+      "path": "src/liger_kernel/ops/group_norm.py",
+      "sha256": "2a1901b6fadcd3834102154482285eeba334955651ca2c9358fe03836f923c3b"
+    },
+    {
+      "module": "liger_kernel.ops.grpo_loss",
+      "path": "src/liger_kernel/ops/grpo_loss.py",
+      "sha256": "4ecea145ca8b60e68af03cc6533b241b758842293fe348adcc19f0db9944232c"
+    },
+    {
+      "module": "liger_kernel.ops.jsd",
+      "path": "src/liger_kernel/ops/jsd.py",
+      "sha256": "6e74fa29e7c616ad267b3a8913c1ea582aaeda06d06e6cfa27e44be54fb70f6f"
+    },
+    {
+      "module": "liger_kernel.ops.kl_div",
+      "path": "src/liger_kernel/ops/kl_div.py",
+      "sha256": "bf12f99d65b48f47dc242fbb482421db92d982b8298dc9dca09e6d5f586c48e5"
+    },
+    {
+      "module": "liger_kernel.ops.layer_norm",
+      "path": "src/liger_kernel/ops/layer_norm.py",
+      "sha256": "b4b8ee6f672344b90f79e0cc462ca141be07fa54604fd8126b60e3a0dbc22bb6"
+    },
+    {
+      "module": "liger_kernel.ops.llama4_rope",
+      "path": "src/liger_kernel/ops/llama4_rope.py",
+      "sha256": "263576853c98d5f164faba2bb22a45f69721ee2102a9338f677a548fab1ced5b"
+    },
+    {
+      "module": "liger_kernel.ops.mhc",
+      "path": "src/liger_kernel/ops/mhc.py",
+      "sha256": "98b34464fd83b6bffc159040644acee333aa6a9230c2cc2c64c03cf32a3972cf"
+    },
+    {
+      "module": "liger_kernel.ops.mlp",
+      "path": "src/liger_kernel/ops/mlp.py",
+      "sha256": "a84c5bb6494d4778fb26ae72310ffb6363376a6973951cd4c035ad1dcf8c9402"
+    },
+    {
+      "module": "liger_kernel.ops.modulated_rms_norm",
+      "path": "src/liger_kernel/ops/modulated_rms_norm.py",
+      "sha256": "776868785aba3f9b2fc798bd3030045526f62eab15f94f4809a2a43c773e4acf"
+    },
+    {
+      "module": "liger_kernel.ops.multi_token_attention",
+      "path": "src/liger_kernel/ops/multi_token_attention.py",
+      "sha256": "3b3fd15c3a7e3924bf47f1ee1a66844c774027b4e875affbd0e7c4ed35cc5256"
+    },
+    {
+      "module": "liger_kernel.ops.poly_norm",
+      "path": "src/liger_kernel/ops/poly_norm.py",
+      "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2"
+    },
+    {
+      "module": "liger_kernel.ops.qwen2vl_mrope",
+      "path": "src/liger_kernel/ops/qwen2vl_mrope.py",
+      "sha256": "5901fdeca8ad4e5b4836cb4a918226203a9fe7be8c309290c4d02d4be16154d3"
+    },
+    {
+      "module": "liger_kernel.ops.relu_squared",
+      "path": "src/liger_kernel/ops/relu_squared.py",
+      "sha256": "374884177edbaf58711721d613d7f1949c6fefd55e55b45374b09e70c6d66c5d"
+    },
+    {
+      "module": "liger_kernel.ops.rms_norm",
+      "path": "src/liger_kernel/ops/rms_norm.py",
+      "sha256": "5f725509cafc9273ea1db1655a21ef958ef6b02affb0e8f9d25f4de1efb3dcd4"
+    },
+    {
+      "module": "liger_kernel.ops.rope",
+      "path": "src/liger_kernel/ops/rope.py",
+      "sha256": "364771e96c8dfbb00db015add75c74bc5bb53454543051a23e09af68bd33014a"
+    },
+    {
+      "module": "liger_kernel.ops.softmax",
+      "path": "src/liger_kernel/ops/softmax.py",
+      "sha256": "244839b2f900329f3a67b5771faae9b4ef7514d1c6fb83766ba0da0d26ba7bf9"
+    },
+    {
+      "module": "liger_kernel.ops.sparsemax",
+      "path": "src/liger_kernel/ops/sparsemax.py",
+      "sha256": "4851488a4247bb843eec2c4587d791a382e94a27a38b6f4fc42b3611f3dc4c73"
+    },
+    {
+      "module": "liger_kernel.ops.swiglu",
+      "path": "src/liger_kernel/ops/swiglu.py",
+      "sha256": "7397029e8fefac0de42e5eeafcbbac147644a91c357bd30b9ba019fa5df3ce0a"
+    },
+    {
+      "module": "liger_kernel.ops.tiled_mlp",
+      "path": "src/liger_kernel/ops/tiled_mlp.py",
+      "sha256": "7b2305b051601dc87c6bfe91e886111b6e3f8ea2a0e4617f05052842e006f126"
+    },
+    {
+      "module": "liger_kernel.ops.tvd",
+      "path": "src/liger_kernel/ops/tvd.py",
+      "sha256": "6754c7a80335eb9dc1fc6623b4734c50df3d5a49fff749cec34e91a829a934a9"
+    },
+    {
+      "module": "liger_kernel.ops.utils",
+      "path": "src/liger_kernel/ops/utils.py",
+      "sha256": "b32e7097ca832549b7ae1fd6ea0139e1291dd6c1b0f0a124c90b3878349ae89d"
+    },
+    {
+      "module": "liger_kernel.ops.vocab_parallel_cross_entropy",
+      "path": "src/liger_kernel/ops/vocab_parallel_cross_entropy.py",
+      "sha256": "3cbae7d996343f2c994b89d9e656bdffb362b50378e0abc2e759f683c4795813"
+    },
+    {
+      "module": "liger_kernel.utils",
+      "path": "src/liger_kernel/utils.py",
+      "sha256": "3757f7531ac7868db662b41f471cb21f107ea493317aacca2041d3b0954e8b25"
+    }
+  ],
+  "compiler_artifacts": [
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/__grp___selective_log_softmax_kernel.json",
+      "sha256": "b7749ee4342a38a2b04409d65095c65d12c1c06bc2fa61f3b8168655fae3a80e",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/_selective_log_softmax_kernel.cubin",
+      "sha256": "68248f62a1fb9699612a735c63c6d9449462d3a495b84a5d0c4d3cd5fd44e93b",
+      "bytes": 28848,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/_selective_log_softmax_kernel.json",
+      "sha256": "af0e0d08972d271c71a74eaac2459db4a806e223f3414904f93515d2d9483a9f",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/_selective_log_softmax_kernel.llir",
+      "sha256": "7b40969e7a7eacb59b2b379681f178f316b1be79bc726623813808668a836449",
+      "bytes": 63724
+    },
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/_selective_log_softmax_kernel.ptx",
+      "sha256": "c63f2ed1241894f7cf35ef79b4f8a6138771cf395afc3de81fe5b85969a5748b",
+      "bytes": 42459
+    },
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/_selective_log_softmax_kernel.ttgir",
+      "sha256": "3e6eb5777c88b76ab3ee72514188edf3826a46af7e30c0efc07fc3fc60fecaa2",
+      "bytes": 12400
+    },
+    {
+      "path": "compiler/3BEMHZJ52UI7IZYSAMQNGFSYCHNATBMBK7U7B6Y56ZPPVSSEDWCA/_selective_log_softmax_kernel.ttir",
+      "sha256": "9a931c993887352acbb31296bbe93c49d272cedeb3bdbcf2e66ef38da2c64975",
+      "bytes": 12027
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/__grp___selective_log_softmax_kernel.json",
+      "sha256": "24496c3d972c8b5d84252d6f5c1c2d24fed4561da1cf6f9fcd0d50c9f3a8d056",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/_selective_log_softmax_kernel.cubin",
+      "sha256": "27a2215438c6d5ca8264cc59fa2a37edfa2b09ea237d475f4e84d95893baeff9",
+      "bytes": 31664,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/_selective_log_softmax_kernel.json",
+      "sha256": "b83455e4c86fe44d5d7af671349e51d1543e6d85aacde215a41559e33fbcfbee",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/_selective_log_softmax_kernel.llir",
+      "sha256": "d852903264de57ac8d6d37c7ab5053f52bd2899831766923fd65275ef4b8c2fa",
+      "bytes": 64197
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/_selective_log_softmax_kernel.ptx",
+      "sha256": "1e5f9f725693c640388d0c9c41e9b75f58f73610484b1cb3779a6c144fb7c69f",
+      "bytes": 45094
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/_selective_log_softmax_kernel.ttgir",
+      "sha256": "8321b6a2733950f833749c1996e8965771f0e4a0ba798450569b8800c6939a28",
+      "bytes": 13071
+    },
+    {
+      "path": "compiler/4ELXQS63UDIHHRDMO5XVEDUJNHQ3JYCF7G2TB3GJ7IBBCKEVTX2Q/_selective_log_softmax_kernel.ttir",
+      "sha256": "7365a397b76a67459f6a83f4b11ff53898a92594fd20451989de9654abc570ea",
+      "bytes": 12679
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/__grp___selective_log_softmax_kernel.json",
+      "sha256": "bcc701cdba0a4196a9d33e39f7c1d8ff6278ca6fb68a2e7c2be2fa7dbb6cd799",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/_selective_log_softmax_kernel.cubin",
+      "sha256": "0b23ce8cd53d5d6cee3df5ef98b3825d8a77327c3b4673642620ff35abf6f6e6",
+      "bytes": 54960,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/_selective_log_softmax_kernel.json",
+      "sha256": "6cc02c19d970c78e3a75c432b82b2360a4c836409cc16eef80179e63f9ff6035",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/_selective_log_softmax_kernel.llir",
+      "sha256": "d9d5d1fdce03b60996a70ec3da3a82711ea2db1f82f5ec6656067d45b94acfb9",
+      "bytes": 70100
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/_selective_log_softmax_kernel.ptx",
+      "sha256": "e2fea787490562ca739fda65626eb5841f21a65315b3a3708ed5296d4ebb024d",
+      "bytes": 49216
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/_selective_log_softmax_kernel.ttgir",
+      "sha256": "4da467f4b36ef97179df20afd23ac3f3f5b164396a8367bae09beb35acdee978",
+      "bytes": 13543
+    },
+    {
+      "path": "compiler/5BB6IG37IJDYEKAJSWUPQHFLS5AEVLVWPELXFBWXVEXNMVFQQV7Q/_selective_log_softmax_kernel.ttir",
+      "sha256": "dd438fe01703c257674757d94a41c9d5ae5e0c8ce6675cbddcdfc86ee3e87ad3",
+      "bytes": 13129
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "629011c262376eaa90bb98b5e3248fb9311cb0975b213553968eb64ad1190cac",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "c6034598a89527b4d3d8f8389840d1175026159420db8e99973eddd0be232cce",
+      "bytes": 28976,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/_selective_log_softmax_kernel.json",
+      "sha256": "9a1711ee0dac7138f130ba5df470f9128b6103a5e6c552b6371682097b8e2145",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/_selective_log_softmax_kernel.llir",
+      "sha256": "91d24f76246831ed4018fe62797e98d5d7c01addeed16f41806361fb80c9988b",
+      "bytes": 63872
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "aa293e14e829ed1b49683587149fe494b99f2d4ec49905a86659bfde687b7a1b",
+      "bytes": 42584
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "4ea3cde6284bdcb3c6eee3665f5713b635f8a5a6676c26ed065e8e850afdc04d",
+      "bytes": 12764
+    },
+    {
+      "path": "compiler/5U32VMV2DJH3JFRV4RRGZ53QMV6KH744EV7T7ERGSPV5242KWPPQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "047e3bae0c718e699cae80c2cc5972dc15435b2525f90b2fefa6ddb7202266f0",
+      "bytes": 12391
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/__grp___selective_log_softmax_kernel.json",
+      "sha256": "bc5d84a9ced9e806af60bbc8ed647503295b2609fde96ca098d539ba8f96e3aa",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/_selective_log_softmax_kernel.cubin",
+      "sha256": "ee55df6b04020dc062ff289880c53ab6b422bbfb2fe25b7c2488a6ab084a367a",
+      "bytes": 34992,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/_selective_log_softmax_kernel.json",
+      "sha256": "af43cb3a934cdaa66f08f930dbd72cdfa95ab359c33e3f57797b617cddd9b870",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/_selective_log_softmax_kernel.llir",
+      "sha256": "0cb6801e7a96a8ffe7d3626b83b4c7ef5e50619946f3c0394ba6a137e8328959",
+      "bytes": 68157
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/_selective_log_softmax_kernel.ptx",
+      "sha256": "a34c1c5ff4c04218c964bbd6a56cd7459aef45498d67053b8357b49631f1a4f5",
+      "bytes": 48402
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/_selective_log_softmax_kernel.ttgir",
+      "sha256": "e9e5e17ef83e3453020de40a5a0657f65f7ff359ba93c235ce85d2c365635f1f",
+      "bytes": 11276
+    },
+    {
+      "path": "compiler/6GDOJXTEMVSN7NALSN3IRKMLB365VDL4JTAQLEG3TDAPGSIZRH3A/_selective_log_softmax_kernel.ttir",
+      "sha256": "c76493f08576b41f18ae1afceca134cdd4ea44cd520afc855d3a89223a929f6b",
+      "bytes": 11033
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/__grp___selective_log_softmax_kernel.json",
+      "sha256": "c9d12af63fc79222696a3f0eb357b2e8307cb98137a4e6fec4b069e2bc493b3a",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/_selective_log_softmax_kernel.cubin",
+      "sha256": "45d623923dfbae1e8726ab38e9fd79fa53a42e31047c070963cc4822e50418c6",
+      "bytes": 31408,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/_selective_log_softmax_kernel.json",
+      "sha256": "c91ff52c9d17b89a31ff0a057cc90418f004a2f1cb5f478bb3369811d31f2685",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/_selective_log_softmax_kernel.llir",
+      "sha256": "bb801168d1a1b93649abf4805001f32d9c1360746ac741ba95473a9c6ae67721",
+      "bytes": 64049
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/_selective_log_softmax_kernel.ptx",
+      "sha256": "50b4383a8c3bcc42a6609beef30647b6f9f45e03e9e4055c0c8bb57deb20a13c",
+      "bytes": 44855
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/_selective_log_softmax_kernel.ttgir",
+      "sha256": "488eb4009072d3994dc5fc7baa823bfad742eab2e05f6a18c0aa42826435d35c",
+      "bytes": 12662
+    },
+    {
+      "path": "compiler/7O4AVUNK4XG3AZHDV4BXJJZJZYIK6XY7O2UHV6PZSLWQXWLCJE4Q/_selective_log_softmax_kernel.ttir",
+      "sha256": "9b4b0d28e33caac79d1f25691b9798f7aecfba8bea62773cbd26f1feec857ad3",
+      "bytes": 12270
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/__grp___selective_log_softmax_kernel.json",
+      "sha256": "5c00a6ebd522e658546d4c8a686d6cc4e9a188b15537d60bd30b1ca2d679b7f1",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/_selective_log_softmax_kernel.cubin",
+      "sha256": "68248f62a1fb9699612a735c63c6d9449462d3a495b84a5d0c4d3cd5fd44e93b",
+      "bytes": 28848,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/_selective_log_softmax_kernel.json",
+      "sha256": "18842962a432f9d6918eef19d9577ea7d354ca6cb05cee5966329ba56b4c1bfd",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/_selective_log_softmax_kernel.llir",
+      "sha256": "7b40969e7a7eacb59b2b379681f178f316b1be79bc726623813808668a836449",
+      "bytes": 63724
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/_selective_log_softmax_kernel.ptx",
+      "sha256": "c63f2ed1241894f7cf35ef79b4f8a6138771cf395afc3de81fe5b85969a5748b",
+      "bytes": 42459
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/_selective_log_softmax_kernel.ttgir",
+      "sha256": "7a67e03a22fb24c457a3f195e0ee0eba3fd4a1a13c4e365ca02a8e58ba6025b9",
+      "bytes": 12400
+    },
+    {
+      "path": "compiler/ALZLJX7LZJGSQJGNLKSGHMPXOZFKXO7NEUHR7RBADYTVUELO636A/_selective_log_softmax_kernel.ttir",
+      "sha256": "935ee5d901234c73406ab3db5e39657b2b1934bcd8c6c7c2b29d5301db79b415",
+      "bytes": 12027
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "c9e8664fb26c8e74c8502578ee6268730c4bfffb7c01b9522a04ed9702d5da5b",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "45d623923dfbae1e8726ab38e9fd79fa53a42e31047c070963cc4822e50418c6",
+      "bytes": 31408,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/_selective_log_softmax_kernel.json",
+      "sha256": "bd1e2d5406cc1261b5ebfa28e2ea53dd9d8145d97240963c65ea4e84c8a2d3e7",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/_selective_log_softmax_kernel.llir",
+      "sha256": "bb801168d1a1b93649abf4805001f32d9c1360746ac741ba95473a9c6ae67721",
+      "bytes": 64049
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "50b4383a8c3bcc42a6609beef30647b6f9f45e03e9e4055c0c8bb57deb20a13c",
+      "bytes": 44855
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "2dd0201689a05d09c408e825e2371ff1d9d075755f2bbaef13adbe06ce930e9d",
+      "bytes": 12691
+    },
+    {
+      "path": "compiler/B6PRKOOVD7MXZQX4AEP3Z4RH5XFKPPQ3NO75IMQTZIQ4XE3XNBVQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "03c1cfc41cd4db7f73e78d675b7f33444d03efc1ee03ef53fd0b618e6306d306",
+      "bytes": 12299
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/__grp___selective_log_softmax_kernel.json",
+      "sha256": "de48ba56281c5b101415596addfef532710d9276043ece9ff362bbfb2b3abbfb",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/_selective_log_softmax_kernel.cubin",
+      "sha256": "45d623923dfbae1e8726ab38e9fd79fa53a42e31047c070963cc4822e50418c6",
+      "bytes": 31408,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/_selective_log_softmax_kernel.json",
+      "sha256": "de59e1ac0fa63d8a42c385036d15302a8c6479934c33de41ed8914265208a437",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/_selective_log_softmax_kernel.llir",
+      "sha256": "bb801168d1a1b93649abf4805001f32d9c1360746ac741ba95473a9c6ae67721",
+      "bytes": 64049
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/_selective_log_softmax_kernel.ptx",
+      "sha256": "50b4383a8c3bcc42a6609beef30647b6f9f45e03e9e4055c0c8bb57deb20a13c",
+      "bytes": 44855
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/_selective_log_softmax_kernel.ttgir",
+      "sha256": "c38b5ae18d40ac7a3f0b48eecdca54fa3f18a1475576033627aa9139b182f9eb",
+      "bytes": 12691
+    },
+    {
+      "path": "compiler/DJIRQ6KP7FH5KFEYOEU5HMAJOGBI7IGYGD4QQGDUVPEXW6QY6RXA/_selective_log_softmax_kernel.ttir",
+      "sha256": "311d62e15da18d89508b232f0fe67cbb5ba30e088bbce9e0c2c70a12d3a9ff3b",
+      "bytes": 12299
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "affad40f2a0c434c1c05b048af96b079b802cb58c61c466b62f4fdb510290c45",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "9fb6ca8b879cbfec8f02835a9824c2c0f36f523963b2effdd87a4a8be5961d4f",
+      "bytes": 35376,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/_selective_log_softmax_kernel.json",
+      "sha256": "8ad2682f5a55af48dafad1cb7df00fe58b5369a900952bf9be5215f024d51d2a",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/_selective_log_softmax_kernel.llir",
+      "sha256": "5d5a1b148731666948ac1a56f44bdd2d44f20920631798a46b6d721701b29d59",
+      "bytes": 68541
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "99dc45bb1126a4eb3d3aa3b5cfa5e662193dad454f0c660584a12bf1c87ffa8d",
+      "bytes": 48634
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "249a302a9f37dcda782ac345dbde56112ce195ed05bf442273b25ac73a3c1190",
+      "bytes": 11674
+    },
+    {
+      "path": "compiler/EA2YESOFUKOBRKFLXWK3YOA5RFTVWEUNE3BP4MHS7W27E5KC5GNQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "57f239654f8725dbc4a7fc759a9adbf8842f40949bd6f32c4cb7ab36c639abf1",
+      "bytes": 11431
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "3f0d6492a5faf83fe4bf6dabd5f1dc1c228bf8c63e25b67b0cbf49593fbbec74",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "68248f62a1fb9699612a735c63c6d9449462d3a495b84a5d0c4d3cd5fd44e93b",
+      "bytes": 28848,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/_selective_log_softmax_kernel.json",
+      "sha256": "e40c8d85dade6813358f8adea6702ed4f582c5094951b95b3a054c9fa758bc89",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/_selective_log_softmax_kernel.llir",
+      "sha256": "7b40969e7a7eacb59b2b379681f178f316b1be79bc726623813808668a836449",
+      "bytes": 63724
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "c63f2ed1241894f7cf35ef79b4f8a6138771cf395afc3de81fe5b85969a5748b",
+      "bytes": 42459
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "fe4890bfcf51446ac7364ad1a570703e7736dfc777edd82be3546c86481a7e3f",
+      "bytes": 12342
+    },
+    {
+      "path": "compiler/FCBMDPXMJY7WNNIBGCYD65BIYXUJXU74ILXFY7WWZIJNC2A3M2DQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "5978d3e1a6d42de89af1492e622ab2e3e092cf350c2943430bbd501946b05ffd",
+      "bytes": 11969
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/__grp___selective_log_softmax_kernel.json",
+      "sha256": "bfe5c134b65e13f1f5112b8224453eff10cc859cd9ad7fa6913da9a564df67bd",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/_selective_log_softmax_kernel.cubin",
+      "sha256": "0b23ce8cd53d5d6cee3df5ef98b3825d8a77327c3b4673642620ff35abf6f6e6",
+      "bytes": 54960,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/_selective_log_softmax_kernel.json",
+      "sha256": "d7fb9954828ed1c1c2d8170949866593371ec86170ec97e2c9d1cda2880e3fd0",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/_selective_log_softmax_kernel.llir",
+      "sha256": "d9d5d1fdce03b60996a70ec3da3a82711ea2db1f82f5ec6656067d45b94acfb9",
+      "bytes": 70100
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/_selective_log_softmax_kernel.ptx",
+      "sha256": "e2fea787490562ca739fda65626eb5841f21a65315b3a3708ed5296d4ebb024d",
+      "bytes": 49216
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/_selective_log_softmax_kernel.ttgir",
+      "sha256": "b4de0b08056bf0d6ce6b347aed9bdf672e70e5e460e43015f0be2593a88cd159",
+      "bytes": 13601
+    },
+    {
+      "path": "compiler/H6FIOBE42NPB3BRV7G76XKPZ6HGOV6KQD557RWD2AWNBXQ5FWD2Q/_selective_log_softmax_kernel.ttir",
+      "sha256": "ed437ae4bce5614a6709b14988a5c175c86df50ab249dbc36376ec3bf2181ba2",
+      "bytes": 13187
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/__grp___selective_log_softmax_kernel.json",
+      "sha256": "79f0cdf7d4b41eba27a9692c64c861bb13ac354ac009253e92c8ee745f13ed03",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/_selective_log_softmax_kernel.cubin",
+      "sha256": "ba8f73005d900d20defe9911acdb53b877f91d697712884a05c3cb4fe27924e4",
+      "bytes": 29104,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/_selective_log_softmax_kernel.json",
+      "sha256": "ea721e7e4be7649cb59af33f352d3fcc8e3bb76b6d8b630b9aafab4af61d5ab7",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/_selective_log_softmax_kernel.llir",
+      "sha256": "b6c43b115d0a8b4cb3d43da30037811d96930fd3dab3094af32f1d0bcce5e6cd",
+      "bytes": 63872
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/_selective_log_softmax_kernel.ptx",
+      "sha256": "ad1fd0128d88e28e63f99fbabd3d8ff2d0359ab5f467a16a6a728d2308a98ca1",
+      "bytes": 42698
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/_selective_log_softmax_kernel.ttgir",
+      "sha256": "619bf9ab08f3ecae6ceebbafc87f5b7f2191adca23c25516002529d82bba4e01",
+      "bytes": 12780
+    },
+    {
+      "path": "compiler/OLQ45NR5QXVH2AKYG3F6O2MEZV6GNLWMLZPN7G5KSZRIOIPC3QJA/_selective_log_softmax_kernel.ttir",
+      "sha256": "ce24108031603ab35d4949dba37f94c8861aa886ca99d33ceff5d30e0e1e0aa4",
+      "bytes": 12407
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/__grp___selective_log_softmax_kernel.json",
+      "sha256": "a2e2ee0fc16f8567b2f3971c7cd6d34d0cf3b9da0c46778c8c3af144421db6aa",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/_selective_log_softmax_kernel.cubin",
+      "sha256": "1641343ea24c1f1a0a9db8b351c178a9394b07d789cc65ea7b0b9bcfacb134e7",
+      "bytes": 31536,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/_selective_log_softmax_kernel.json",
+      "sha256": "2571f42ce9595c669f0c58d32a1551d0ae41c60a2002581e41834e477633f2e0",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/_selective_log_softmax_kernel.llir",
+      "sha256": "ee73eca7beb6f2e678c477e150e0f77b31245e5990cbf4feedbc6ad81598526b",
+      "bytes": 64197
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/_selective_log_softmax_kernel.ptx",
+      "sha256": "f97de7aad1cd0d11dbc81d4f29624e7ea1329085fefb762a84c3651d3f196088",
+      "bytes": 44980
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/_selective_log_softmax_kernel.ttgir",
+      "sha256": "c94a654ea5a5a42f741c5851d545b033a2e5e487f8f1b88d6f3dfd813422c0f4",
+      "bytes": 13055
+    },
+    {
+      "path": "compiler/OYDUKEEOK52P7FNFU24DQWV3GDLAVNIFMLLVUKCMY6UK2P7H42PA/_selective_log_softmax_kernel.ttir",
+      "sha256": "669daf0609444ef2183896ad297ae219cccd80d143dab2143fccb653c952953c",
+      "bytes": 12663
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "26340cedcafaaf5eeacf13b3a318ffb9ace009c23b4e0c451b100fa061d1ffd2",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "68248f62a1fb9699612a735c63c6d9449462d3a495b84a5d0c4d3cd5fd44e93b",
+      "bytes": 28848,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/_selective_log_softmax_kernel.json",
+      "sha256": "adf5facafd2d3de90846ffd79c1e6079e419042feb44e8eb472df94edd8fe8c3",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/_selective_log_softmax_kernel.llir",
+      "sha256": "7b40969e7a7eacb59b2b379681f178f316b1be79bc726623813808668a836449",
+      "bytes": 63724
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "c63f2ed1241894f7cf35ef79b4f8a6138771cf395afc3de81fe5b85969a5748b",
+      "bytes": 42459
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "b62fed63b8edd2f6b0a3cbb6deda4ce0a60e0560999d143ff4453407de5353f5",
+      "bytes": 12371
+    },
+    {
+      "path": "compiler/PWEYLTSPZOAPJCHQWLHAZTEL5UW4G732SEX6FQO22EUIZ7RTSXPQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "354b9e2c193ba2f93c6bd7129d1210dc959d00629f5ac57554e2c486aa3679a0",
+      "bytes": 11998
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "03690ed28052f57e2e00c62fc88b61edd6fe3bfcd2b6f431fa4162da5490b3e5",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "0b23ce8cd53d5d6cee3df5ef98b3825d8a77327c3b4673642620ff35abf6f6e6",
+      "bytes": 54960,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/_selective_log_softmax_kernel.json",
+      "sha256": "062a398a3471838d44a75024c8ef02891d053d30c2de23b5abb75bc4d44e7f4b",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/_selective_log_softmax_kernel.llir",
+      "sha256": "d9d5d1fdce03b60996a70ec3da3a82711ea2db1f82f5ec6656067d45b94acfb9",
+      "bytes": 70100
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "e2fea787490562ca739fda65626eb5841f21a65315b3a3708ed5296d4ebb024d",
+      "bytes": 49216
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "91ee5cf4e2dc54611dc69210358f048cf559bdc71fa174ac08b1cfa600c523b1",
+      "bytes": 13630
+    },
+    {
+      "path": "compiler/PXOL2QHB7D4EP5YILAUISZIJ6SNGFINORIEOUREFZS5MQ74LF2FQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "640b6d2bc15468a1f99178a6d47fcdb01db6d7999b31ac714977f1cacb3a4149",
+      "bytes": 13216
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "867f82871705d7b866a5204ab98156162ed9afdd50503846808437acf88e262d",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "45d623923dfbae1e8726ab38e9fd79fa53a42e31047c070963cc4822e50418c6",
+      "bytes": 31408,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/_selective_log_softmax_kernel.json",
+      "sha256": "f6b7617cf25d4df6fce714b726b9d97133603dd21c8fe8acfe82e6cc9e0f00b1",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/_selective_log_softmax_kernel.llir",
+      "sha256": "bb801168d1a1b93649abf4805001f32d9c1360746ac741ba95473a9c6ae67721",
+      "bytes": 64049
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "50b4383a8c3bcc42a6609beef30647b6f9f45e03e9e4055c0c8bb57deb20a13c",
+      "bytes": 44855
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "ebcc02019a9d25ffb2652ab93a4b5ac882bdfd997d07fb397e00f5c69414e4bc",
+      "bytes": 12604
+    },
+    {
+      "path": "compiler/U5SOLIM7AVKCCKTAHJE44FRET6PAM3HEHRIVJDFR32FREGJW74UQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "a561ec162e66c5fa23e22eff8da2e95d2d1caec34070c086796598dbb5420d1a",
+      "bytes": 12212
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "b2955809ea5f218e390838f89608900a8e8a134456e70cf756f1a7ad526e2380",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "0b23ce8cd53d5d6cee3df5ef98b3825d8a77327c3b4673642620ff35abf6f6e6",
+      "bytes": 54960,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/_selective_log_softmax_kernel.json",
+      "sha256": "f8e6d24664fca9bd7afc806d5ec62a60cda1d3730e501a2c11b767a92267ab7f",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/_selective_log_softmax_kernel.llir",
+      "sha256": "d9d5d1fdce03b60996a70ec3da3a82711ea2db1f82f5ec6656067d45b94acfb9",
+      "bytes": 70100
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "e2fea787490562ca739fda65626eb5841f21a65315b3a3708ed5296d4ebb024d",
+      "bytes": 49216
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "f638e2e9cb481b26b84ad9934e1ff8b34c12f006b9b7499e988b841ded0ff3c4",
+      "bytes": 13630
+    },
+    {
+      "path": "compiler/UHONWRSZF5UW3CZRZFAROUIUC7IK45JOYA76PQGFI3S6FYJ6YSJQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "f72b754e5f1d98bebd448a8225f4fe3fad741b563e430ab367a20c6d88604f36",
+      "bytes": 13216
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/__grp___selective_log_softmax_kernel.json",
+      "sha256": "84e3aaf8e5a3709af3942c7b3dc04a84ae55dc4325daad5d4dd790ae317b0a66",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/_selective_log_softmax_kernel.cubin",
+      "sha256": "99e553abe1435b4e6afb6c02cb41d73d276e1913cf6560bac7299037752a4c70",
+      "bytes": 55216,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/_selective_log_softmax_kernel.json",
+      "sha256": "3c0c9acf8e855ff9cfdee279d5cfbee68129b461c679f078ded0650b1e1bbc4d",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/_selective_log_softmax_kernel.llir",
+      "sha256": "b10285441c03857e63ad42e1aea57d1664d6dca0752ee95682ace7e037ce27af",
+      "bytes": 70251
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/_selective_log_softmax_kernel.ptx",
+      "sha256": "49a9272196d5e65e66a8c1ca640ceb517f133792763c54b88019af19959e36d8",
+      "bytes": 49391
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/_selective_log_softmax_kernel.ttgir",
+      "sha256": "bc54892b0cf9db12fa17abfa97a56cb8b2320df33b31bfbb3b787daaf359e362",
+      "bytes": 14010
+    },
+    {
+      "path": "compiler/WLAOKK3XPWWBZ4ZOLW5KZ5XZ6WKKRBM23KKUIFGPHNFSFEXTXXQA/_selective_log_softmax_kernel.ttir",
+      "sha256": "4d7df7154128804b6b13b19724b91294432819df179bf93e03433482913c0ed8",
+      "bytes": 13596
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/__grp___selective_log_softmax_kernel.json",
+      "sha256": "1e1e016250253c34354a41af1bced84237cbd03dc87de773cb48dc87d874a07e",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/_selective_log_softmax_kernel.cubin",
+      "sha256": "5dfe3ec5b8fd2bcbcbc746ea62f6bc06fdef85eeafe14e23c214c50edf9eeace",
+      "bytes": 55088,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/_selective_log_softmax_kernel.json",
+      "sha256": "e3f3969cd212a320d75bd7342ffe57b15c969198800a328916086773df904a47",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/_selective_log_softmax_kernel.llir",
+      "sha256": "5f1df7978169e36f1ea071882ed8c03033e175479c398fbebe87ae8199a135d3",
+      "bytes": 70251
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/_selective_log_softmax_kernel.ptx",
+      "sha256": "eece531017e53fce9fa52f0020f4631c5e8df70e303db2c78f4c8ae9e17dbcf8",
+      "bytes": 49343
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/_selective_log_softmax_kernel.ttgir",
+      "sha256": "d5226a176c7ef40fa3f37f03a26bf54567491549d1e7a74fac331bc8efef1787",
+      "bytes": 13994
+    },
+    {
+      "path": "compiler/YRTPAOWB33A4BBBDTRTML7EJXN43FTKLOP26MENA65K6TJOI6YYQ/_selective_log_softmax_kernel.ttir",
+      "sha256": "2b855ecf8d8bde763c49f4b5bd64317f2150e0b10c22a810512d2d04fb283876",
+      "bytes": 13580
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/__grp___selective_log_softmax_kernel.json",
+      "sha256": "6694140573513dc3b2943d5be7aec6530149be8c157d6c97efd0ce6df17a2724",
+      "bytes": 1563
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/_selective_log_softmax_kernel.cubin",
+      "sha256": "4192f89ad083331c4cb19521a0ab9a4a75384a0fa1d9cb46673815e82a7dd383",
+      "bytes": 30896,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/_selective_log_softmax_kernel.json",
+      "sha256": "c7556e7aa5f7e67b5f061890a8c1b00b9d7c87458e95f9e39c3fb7d31ad52266",
+      "bytes": 1134
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/_selective_log_softmax_kernel.llir",
+      "sha256": "0f9d8f0562414fe9b6928977178aa53d5f5d3079fcc5baab6fff7d9bfd00df61",
+      "bytes": 63026
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/_selective_log_softmax_kernel.ptx",
+      "sha256": "eb42cc8bbf6824475f45839766e2b65bc1cac0877b091ff44f24720e036ce7a7",
+      "bytes": 44145
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/_selective_log_softmax_kernel.ttgir",
+      "sha256": "25d7f4075f14703adfb3f0a41fa2011cabbd4784f521888996ecb7e173e65f1a",
+      "bytes": 11076
+    },
+    {
+      "path": "compiler/ZDHX7XFA6BCYB5M74D27DFH7TBL3KYSNB2L23GZ7A375KKRMLGZA/_selective_log_softmax_kernel.ttir",
+      "sha256": "5e518970c73d640b582299a8efbcec808074945bd044d3144fc059d052225def",
+      "bytes": 10847
+    }
+  ],
+  "native_compiler_sha256": "c3306b024133cf76abba389ac00c6dc9cb9127be6a0796aef2acf2134e5f082f",
+  "wall_seconds": 6.4246371780755
+}

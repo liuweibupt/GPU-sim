@@ -1,0 +1,493 @@
+{
+  "format": "repair-v2-independent-interruption-review-v1",
+  "status": "verified-recovery-final-analysis-and-retained-runtime",
+  "reviewedAt": "2026-10-23T15:29:15.200993+00:00",
+  "noNewModelOrGPUCalls": true,
+  "reportedShellExitCode": 143,
+  "causeAssessment": "Root reported external orchestration termination with code 143. The reviewer did not independently reconstruct process termination cause; no attribution to model quality or a particular service is established.",
+  "plannedTrials": 36,
+  "terminalTrials": 36,
+  "validCandidates": 34,
+  "originalCompletedTrialsUnchangedAgainstRetainedSummary": 30,
+  "interrupted": [
+    {
+      "id": "liger-poly.raw.r3",
+      "calls": [
+        {
+          "round": 1,
+          "startedAt": "2026-10-23T15:10:20.925Z",
+          "finishedAt": "2026-10-23T15:10:31.046Z",
+          "wallSeconds": 10.121002705931664,
+          "valid": true
+        },
+        {
+          "round": 2,
+          "startedAt": "2026-10-23T15:10:31.052Z",
+          "finishedAt": "2026-10-23T15:10:39.442Z",
+          "wallSeconds": 8.390945927977562,
+          "valid": true
+        }
+      ],
+      "retainedCallCount": 2,
+      "retainedModelWallSeconds": 18.511948633909228,
+      "administrativeObservationWallSeconds": 192.756,
+      "noFinalOrCandidate": true,
+      "noResampling": true
+    },
+    {
+      "id": "liger-poly.diagnostic.r3",
+      "calls": [
+        {
+          "round": 1,
+          "startedAt": "2026-10-23T15:10:20.930Z",
+          "finishedAt": "2026-10-23T15:10:32.840Z",
+          "wallSeconds": 11.90913116800785,
+          "valid": true
+        }
+      ],
+      "retainedCallCount": 1,
+      "retainedModelWallSeconds": 11.90913116800785,
+      "administrativeObservationWallSeconds": 192.751,
+      "noFinalOrCandidate": true,
+      "noResampling": true
+    }
+  ],
+  "continuedOnlyNeverStarted": [
+    "liger-sparse.raw.r3",
+    "liger-sparse.diagnostic.r3",
+    "liger-grpo.diagnostic.r3",
+    "liger-grpo.raw.r3"
+  ],
+  "allGenerationTerminalAt": "2026-10-23T15:16:24.696Z",
+  "replay": {
+    "format": "repair-study-replay-v2",
+    "auditedAt": "2026-10-23T15:28:46.531Z",
+    "plannedTrials": 36,
+    "verifiedTrials": 36,
+    "audits": [
+      {
+        "id": "triton-softmax-axis.raw.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-softmax-axis.diagnostic.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-negative-zero.raw.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-negative-zero.diagnostic.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-constexpr-filter.raw.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-constexpr-filter.diagnostic.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-poly.raw.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-poly.diagnostic.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-sparse.raw.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-sparse.diagnostic.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-grpo.raw.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-grpo.diagnostic.r1",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-grpo.diagnostic.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-grpo.raw.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-sparse.diagnostic.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-sparse.raw.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-poly.diagnostic.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-poly.raw.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-constexpr-filter.diagnostic.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-constexpr-filter.raw.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-negative-zero.diagnostic.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-negative-zero.raw.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-softmax-axis.diagnostic.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-softmax-axis.raw.r2",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-softmax-axis.raw.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-softmax-axis.diagnostic.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-negative-zero.raw.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-negative-zero.diagnostic.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-constexpr-filter.raw.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "triton-constexpr-filter.diagnostic.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-poly.raw.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-poly.diagnostic.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-sparse.raw.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-sparse.diagnostic.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-grpo.raw.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      },
+      {
+        "id": "liger-grpo.diagnostic.r3",
+        "status": "verified",
+        "valid": true,
+        "failures": []
+      }
+    ],
+    "statement": "Recomputed API responses, exact model patch application and fixed localization scores. Replaying bytes is not rerunning kernels or validating a new runtime claim."
+  },
+  "runtimeFrozenFilesUnchanged": 21,
+  "analysisExists": true,
+  "limits": [
+    "Two interrupted trials stay in the 36-trial intention-to-treat denominator but are infrastructure failures, not observed incorrect model repairs.",
+    "Their retained query/call/token/model-time counts are lower bounds; unrecorded in-flight work can exist even when every retained call has complete usage.",
+    "Their trial wall duration includes time until administrative observation and cannot be interpreted as completed-task latency.",
+    "Completed-candidate-only sensitivity analysis must be labeled secondary and must not replace the 36-trial primary denominator.",
+    "The incomplete GPU validation overlay is preserved with 469 file hashes and zero verified complete device cases. Retry uses the exact retained candidate and native compiler; unobserved interrupted GPU/JIT cost remains unknown.",
+    "All 34 valid candidates pass both endpoints; both groups have 17/18 success under the fixed 36-trial denominator. Every one of six root-specific differences is zero. This is not evidence of repair-success improvement or equivalence.",
+    "Diagnostic uptake is 15/18 planned trials (15/17 complete candidates), with all 15 effective calls to observed and none to contrast/source_links; effectiveness of unused operations is not established.",
+    "Completed-trial model time means are raw 86.44 seconds and diagnostic 83.82 seconds, but medians are raw 77.57 seconds and diagnostic 79.84 seconds. These descriptive scoped values do not establish faster debugging.",
+    "Archive extraction and publication transfer are separately validated by root; this receipt independently recomputes the working-tree retained full arrays and identities, not a new GPU execution."
+  ],
+  "earlierRecoveryReviewAt": "2026-10-23T15:19:16.453777+00:00",
+  "analysisSHA256": "cd3b30aa87789107ffa0df39b956dcaf0ed331204998c5de31b501f6470efe5f",
+  "reportingSourceSHA256": "f74cc3decd0f14a79dde15f994caed7758e98a27a467ba1d7679020838a334ba",
+  "frozenToolFilesUnchanged": 7,
+  "finalGroups": [
+    {
+      "condition": "raw",
+      "fixedDenominator": 18,
+      "validCandidates": 17,
+      "hiddenSuccess": 17,
+      "allCaseSuccess": 17,
+      "infrastructureIncomplete": 1
+    },
+    {
+      "condition": "diagnostic",
+      "fixedDenominator": 18,
+      "validCandidates": 17,
+      "hiddenSuccess": 17,
+      "allCaseSuccess": 17,
+      "infrastructureIncomplete": 1
+    }
+  ],
+  "independentRootEffects": [
+    {
+      "taskId": "triton-softmax-axis",
+      "raw": 3,
+      "diagnostic": 3,
+      "conditionDenominator": 3,
+      "diagnosticMinusRaw": 0.0
+    },
+    {
+      "taskId": "triton-negative-zero",
+      "raw": 3,
+      "diagnostic": 3,
+      "conditionDenominator": 3,
+      "diagnosticMinusRaw": 0.0
+    },
+    {
+      "taskId": "triton-constexpr-filter",
+      "raw": 3,
+      "diagnostic": 3,
+      "conditionDenominator": 3,
+      "diagnosticMinusRaw": 0.0
+    },
+    {
+      "taskId": "liger-poly",
+      "raw": 2,
+      "diagnostic": 2,
+      "conditionDenominator": 3,
+      "diagnosticMinusRaw": 0.0
+    },
+    {
+      "taskId": "liger-sparse",
+      "raw": 3,
+      "diagnostic": 3,
+      "conditionDenominator": 3,
+      "diagnosticMinusRaw": 0.0
+    },
+    {
+      "taskId": "liger-grpo",
+      "raw": 3,
+      "diagnostic": 3,
+      "conditionDenominator": 3,
+      "diagnosticMinusRaw": 0.0
+    }
+  ],
+  "completeRuntimeTrials": 34,
+  "completeCasesRecomputed": 498,
+  "completeOutputElementsRecomputed": 1305868,
+  "gpuInterruption": {
+    "trialId": "triton-softmax-axis.raw.r2",
+    "preservedManifestFiles": 469,
+    "preservedOverlayImplementationFiles": 10,
+    "candidateBytesUnchanged": true,
+    "nativeCompilerUnchanged": true,
+    "verifiedCompletedCases": 0,
+    "unrecordedCost": "unknown; excluded from retained validation wall sums",
+    "sameCandidateRetry": true,
+    "cause": "reported external exit 143, underlying cause not independently established"
+  },
+  "costAudit": {
+    "format": "repair-v2-independent-final-cost-audit-v1",
+    "status": "verified",
+    "modelCalls": 0,
+    "gpuCalls": 0,
+    "analysisSHA256": "cd3b30aa87789107ffa0df39b956dcaf0ed331204998c5de31b501f6470efe5f",
+    "auditedRawJSONLCalls": 212,
+    "auditedSavedQueryRecords": 178,
+    "groups": [
+      {
+        "condition": "raw",
+        "plannedTrials": 18,
+        "completedTrials": 17,
+        "retainedCalls": 112,
+        "callsWithMissingReturnedUsage": 0,
+        "retainedInputTokens": 2212001,
+        "retainedCachedInputTokens": 1265920,
+        "retainedOutputTokens": 20413,
+        "retainedQueries": 95,
+        "derivedRequests": 0,
+        "acceptedDerivedRequests": 0,
+        "successfulDerivedRequests": 0,
+        "effectiveToolUptakeTrials": 0,
+        "effectiveDerivedOperations": {},
+        "completedTrialModelWallSeconds": {
+          "n": 17,
+          "total": 1469.536694210887,
+          "mean": 86.44333495358158,
+          "median": 77.56976888287068,
+          "min": 65.75963098883628,
+          "max": 136.93656355500224
+        },
+        "completedTrialWallSeconds": {
+          "n": 17,
+          "total": 1469.981518480897,
+          "mean": 86.46950108711158,
+          "median": 77.63757202196122,
+          "min": 65.7799497050047,
+          "max": 136.9623134920597
+        },
+        "completedTrialsWithoutDerivedUse": [
+          "triton-softmax-axis.raw.r1",
+          "triton-negative-zero.raw.r1",
+          "triton-constexpr-filter.raw.r1",
+          "liger-poly.raw.r1",
+          "liger-sparse.raw.r1",
+          "liger-grpo.raw.r1",
+          "liger-grpo.raw.r2",
+          "liger-sparse.raw.r2",
+          "liger-poly.raw.r2",
+          "triton-constexpr-filter.raw.r2",
+          "triton-negative-zero.raw.r2",
+          "triton-softmax-axis.raw.r2",
+          "triton-softmax-axis.raw.r3",
+          "triton-negative-zero.raw.r3",
+          "triton-constexpr-filter.raw.r3",
+          "liger-sparse.raw.r3",
+          "liger-grpo.raw.r3"
+        ],
+        "possiblyUnrecordedCalls": true
+      },
+      {
+        "condition": "diagnostic",
+        "plannedTrials": 18,
+        "completedTrials": 17,
+        "retainedCalls": 100,
+        "callsWithMissingReturnedUsage": 0,
+        "retainedInputTokens": 1983390,
+        "retainedCachedInputTokens": 1089280,
+        "retainedOutputTokens": 20137,
+        "retainedQueries": 83,
+        "derivedRequests": 15,
+        "acceptedDerivedRequests": 15,
+        "successfulDerivedRequests": 15,
+        "effectiveToolUptakeTrials": 15,
+        "effectiveDerivedOperations": {
+          "observed": 15
+        },
+        "completedTrialModelWallSeconds": {
+          "n": 17,
+          "total": 1424.9596751440763,
+          "mean": 83.82115736141625,
+          "median": 79.83965922999381,
+          "min": 49.335769335031515,
+          "max": 160.89627556824684
+        },
+        "completedTrialWallSeconds": {
+          "n": 17,
+          "total": 1425.3893669691086,
+          "mean": 83.84643335112403,
+          "median": 79.87313924205303,
+          "min": 49.35268654406071,
+          "max": 160.9166454319954
+        },
+        "completedTrialsWithoutDerivedUse": [
+          "triton-softmax-axis.diagnostic.r1",
+          "triton-negative-zero.diagnostic.r1"
+        ],
+        "possiblyUnrecordedCalls": true
+      }
+    ]
+  },
+  "currentScopeLabels": {
+    "timingScope": "Model/API wall clock includes service/network and repeated prompt serialization. Interrupted trials may have unrecorded in-flight calls, so their model wall/call totals are lower bounds; their trial wall includes an administrative observation gap and is not a completed latency. Completed-trial summaries exclude those two administrative records. GPU validation wall time covers only retained complete evaluator attempts, omitting the unmeasured externally interrupted attempt and source overlay preparation, so summed validation cost is also a retained lower bound. It includes process/import/JIT/CPU oracle/filesystem work, may overlap other correctness jobs, and is not kernel latency. Query time is local JS processing. These are scoped measurements, not full end-to-end speed.",
+    "usageScope": "Provider-reported input_tokens includes cached_input_tokens; cached tokens are a subset, not an extra total. Missing usage OR infrastructure interruption with a possibly unrecorded in-flight call makes total recorded calls/tokens a lower bound, even when every retained call has usage. No invoice/USD amount is estimated."
+  },
+  "auditArtifacts": {
+    "out/research/repair-v2-audit/final_runtime_audit.py": "1b13d18f50fcb33007c5eae3f8fb0027a47342cc04a48c67e3b33f545e8ddc16",
+    "out/research/repair-v2-audit/final-runtime-audit.json": "5a43d7e4bb495e50100fc167add7e5361363e2d3f8e1ca77de2d007a7a9badec",
+    "out/research/repair-v2-audit/final_cost_audit.py": "5671feff272dea6ddfd00f22ad76a35dcf016f995a0936b11f011dcf804077a9",
+    "out/research/repair-v2-audit/final-cost-audit.json": "58a496022ec597d74455e12ff7dea4c9b582fb3692f06216cbcdd171c6ab5316",
+    "out/research/repair-v2-audit/reporting-synthetic-test.json": "faf83c51b9cbc40f3ffe24ada1a5c4789bd4df1d6ab5cf42a09681e9cf729fc5"
+  }
+}

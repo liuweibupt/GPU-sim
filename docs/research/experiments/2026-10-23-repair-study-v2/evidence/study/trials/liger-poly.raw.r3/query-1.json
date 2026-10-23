@@ -1,0 +1,509 @@
+{
+  "round": 1,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-28",
+    "text": null,
+    "start": 1,
+    "end": 120,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-28",
+    "path": "src/liger_kernel/ops/poly_norm.py",
+    "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+    "start": 1,
+    "end": 120,
+    "totalLines": 388,
+    "lines": [
+      {
+        "line": 1,
+        "text": "import operator"
+      },
+      {
+        "line": 2,
+        "text": ""
+      },
+      {
+        "line": 3,
+        "text": "import torch"
+      },
+      {
+        "line": 4,
+        "text": "import triton"
+      },
+      {
+        "line": 5,
+        "text": "import triton.language as tl"
+      },
+      {
+        "line": 6,
+        "text": ""
+      },
+      {
+        "line": 7,
+        "text": "from liger_kernel.ops.utils import calculate_settings"
+      },
+      {
+        "line": 8,
+        "text": "from liger_kernel.ops.utils import compare_version"
+      },
+      {
+        "line": 9,
+        "text": "from liger_kernel.ops.utils import ensure_contiguous"
+      },
+      {
+        "line": 10,
+        "text": "from liger_kernel.ops.utils import get_npu_core_count"
+      },
+      {
+        "line": 11,
+        "text": "from liger_kernel.ops.utils import set_large_grf_mode"
+      },
+      {
+        "line": 12,
+        "text": "from liger_kernel.utils import is_npu_available"
+      },
+      {
+        "line": 13,
+        "text": ""
+      },
+      {
+        "line": 14,
+        "text": "if compare_version(\"triton\", operator.ge, \"3.0.0\") and not is_npu_available():"
+      },
+      {
+        "line": 15,
+        "text": "    try:"
+      },
+      {
+        "line": 16,
+        "text": "        from triton.language.extra.libdevice import rsqrt"
+      },
+      {
+        "line": 17,
+        "text": "    except ModuleNotFoundError:"
+      },
+      {
+        "line": 18,
+        "text": "        from triton.language.extra.cuda.libdevice import rsqrt"
+      },
+      {
+        "line": 19,
+        "text": "else:"
+      },
+      {
+        "line": 20,
+        "text": "    from triton.language.math import rsqrt"
+      },
+      {
+        "line": 21,
+        "text": ""
+      },
+      {
+        "line": 22,
+        "text": ""
+      },
+      {
+        "line": 23,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 24,
+        "text": "def _poly_norm_forward_kernel("
+      },
+      {
+        "line": 25,
+        "text": "    Y_ptr,"
+      },
+      {
+        "line": 26,
+        "text": "    Y_row_stride,"
+      },
+      {
+        "line": 27,
+        "text": "    X_ptr,"
+      },
+      {
+        "line": 28,
+        "text": "    X_row_stride,"
+      },
+      {
+        "line": 29,
+        "text": "    W_ptr,  # weight: [3] for [w0, w1, w2]"
+      },
+      {
+        "line": 30,
+        "text": "    B_ptr,  # bias: scalar"
+      },
+      {
+        "line": 31,
+        "text": "    RSTD_ptr,  # cache rstd for backward: shape (n_rows, 3)"
+      },
+      {
+        "line": 32,
+        "text": "    RSTD_row_stride,"
+      },
+      {
+        "line": 33,
+        "text": "    n_cols,"
+      },
+      {
+        "line": 34,
+        "text": "    eps,"
+      },
+      {
+        "line": 35,
+        "text": "    BLOCK_SIZE: tl.constexpr,"
+      },
+      {
+        "line": 36,
+        "text": "):"
+      },
+      {
+        "line": 37,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 38,
+        "text": "    PolyNorm formula:"
+      },
+      {
+        "line": 39,
+        "text": "        y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+      },
+      {
+        "line": 40,
+        "text": "        where norm(u) = u / sqrt(mean(u²) + ε)"
+      },
+      {
+        "line": 41,
+        "text": ""
+      },
+      {
+        "line": 42,
+        "text": "    Reference:"
+      },
+      {
+        "line": 43,
+        "text": "    1. https://github.com/BryceZhuo/PolyCom/"
+      },
+      {
+        "line": 44,
+        "text": "    2. https://arxiv.org/pdf/2411.03884"
+      },
+      {
+        "line": 45,
+        "text": ""
+      },
+      {
+        "line": 46,
+        "text": "    Cache rstd values for backward pass"
+      },
+      {
+        "line": 47,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 48,
+        "text": "    row_idx = tl.program_id(0).to(tl.int64)"
+      },
+      {
+        "line": 49,
+        "text": "    col_offsets = tl.arange(0, BLOCK_SIZE)"
+      },
+      {
+        "line": 50,
+        "text": "    mask = col_offsets < n_cols"
+      },
+      {
+        "line": 51,
+        "text": ""
+      },
+      {
+        "line": 52,
+        "text": "    # Load pointers"
+      },
+      {
+        "line": 53,
+        "text": "    Y_ptr += row_idx * Y_row_stride"
+      },
+      {
+        "line": 54,
+        "text": "    X_ptr += row_idx * X_row_stride"
+      },
+      {
+        "line": 55,
+        "text": "    RSTD_ptr += row_idx * RSTD_row_stride"
+      },
+      {
+        "line": 56,
+        "text": ""
+      },
+      {
+        "line": 57,
+        "text": "    # Load input row"
+      },
+      {
+        "line": 58,
+        "text": "    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0)"
+      },
+      {
+        "line": 59,
+        "text": ""
+      },
+      {
+        "line": 60,
+        "text": "    # Load weights and bias"
+      },
+      {
+        "line": 61,
+        "text": "    w0 = tl.load(W_ptr + 0)"
+      },
+      {
+        "line": 62,
+        "text": "    w1 = tl.load(W_ptr + 1)"
+      },
+      {
+        "line": 63,
+        "text": "    w2 = tl.load(W_ptr + 2)"
+      },
+      {
+        "line": 64,
+        "text": "    b = tl.load(B_ptr)"
+      },
+      {
+        "line": 65,
+        "text": ""
+      },
+      {
+        "line": 66,
+        "text": "    # Compute x³, x², x"
+      },
+      {
+        "line": 67,
+        "text": "    X_pow3 = X_row * X_row * X_row"
+      },
+      {
+        "line": 68,
+        "text": "    X_pow2 = X_row * X_row"
+      },
+      {
+        "line": 69,
+        "text": "    X_pow1 = X_row"
+      },
+      {
+        "line": 70,
+        "text": ""
+      },
+      {
+        "line": 71,
+        "text": "    # Compute norm(x³): norm(u) = u * rsqrt(mean(u²) + eps)"
+      },
+      {
+        "line": 72,
+        "text": "    # Force fp32 eps: Inductor may use fp64 under torch.compile and tank throughput."
+      },
+      {
+        "line": 73,
+        "text": "    eps = eps.to(tl.float32)"
+      },
+      {
+        "line": 74,
+        "text": ""
+      },
+      {
+        "line": 75,
+        "text": "    mean_square_3 = tl.sum(X_pow3 * X_pow3, axis=0) / n_cols"
+      },
+      {
+        "line": 76,
+        "text": "    rstd_3 = rsqrt(mean_square_3 + eps)"
+      },
+      {
+        "line": 77,
+        "text": "    norm_x3 = X_pow3 * rstd_3"
+      },
+      {
+        "line": 78,
+        "text": ""
+      },
+      {
+        "line": 79,
+        "text": "    # Compute norm(x²)"
+      },
+      {
+        "line": 80,
+        "text": "    mean_square_2 = tl.sum(X_pow2 * X_pow2, axis=0) / n_cols"
+      },
+      {
+        "line": 81,
+        "text": "    rstd_2 = rsqrt(mean_square_2 + eps)"
+      },
+      {
+        "line": 82,
+        "text": "    norm_x2 = X_pow2 * rstd_2"
+      },
+      {
+        "line": 83,
+        "text": ""
+      },
+      {
+        "line": 84,
+        "text": "    # Compute norm(x)"
+      },
+      {
+        "line": 85,
+        "text": "    mean_square_1 = tl.sum(X_pow1 * X_pow1, axis=0) / n_cols"
+      },
+      {
+        "line": 86,
+        "text": "    rstd_1 = rsqrt(mean_square_1 + eps)"
+      },
+      {
+        "line": 87,
+        "text": "    norm_x1 = X_pow1 * rstd_1"
+      },
+      {
+        "line": 88,
+        "text": ""
+      },
+      {
+        "line": 89,
+        "text": "    # Cache rstd values for backward"
+      },
+      {
+        "line": 90,
+        "text": "    tl.store(RSTD_ptr + 0, rstd_3)"
+      },
+      {
+        "line": 91,
+        "text": "    tl.store(RSTD_ptr + 1, rstd_2)"
+      },
+      {
+        "line": 92,
+        "text": "    tl.store(RSTD_ptr + 2, rstd_1)"
+      },
+      {
+        "line": 93,
+        "text": ""
+      },
+      {
+        "line": 94,
+        "text": "    # Compute output: y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+      },
+      {
+        "line": 95,
+        "text": "    Y_row = w0 * norm_x3 + w1 * norm_x2 + w2 * norm_x1 + b"
+      },
+      {
+        "line": 96,
+        "text": ""
+      },
+      {
+        "line": 97,
+        "text": "    # Store output"
+      },
+      {
+        "line": 98,
+        "text": "    tl.store(Y_ptr + col_offsets, Y_row, mask=mask)"
+      },
+      {
+        "line": 99,
+        "text": ""
+      },
+      {
+        "line": 100,
+        "text": ""
+      },
+      {
+        "line": 101,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 102,
+        "text": "def _poly_norm_backward_kernel("
+      },
+      {
+        "line": 103,
+        "text": "    dY_ptr,"
+      },
+      {
+        "line": 104,
+        "text": "    dY_row_stride,"
+      },
+      {
+        "line": 105,
+        "text": "    dX_ptr,"
+      },
+      {
+        "line": 106,
+        "text": "    dX_row_stride,"
+      },
+      {
+        "line": 107,
+        "text": "    X_ptr,"
+      },
+      {
+        "line": 108,
+        "text": "    X_row_stride,"
+      },
+      {
+        "line": 109,
+        "text": "    W_ptr,"
+      },
+      {
+        "line": 110,
+        "text": "    RSTD_ptr,"
+      },
+      {
+        "line": 111,
+        "text": "    RSTD_row_stride,"
+      },
+      {
+        "line": 112,
+        "text": "    dW_ptr,  # shape: (n_programs, 3)"
+      },
+      {
+        "line": 113,
+        "text": "    dW_row_stride,"
+      },
+      {
+        "line": 114,
+        "text": "    dB_ptr,  # shape: (n_programs,)"
+      },
+      {
+        "line": 115,
+        "text": "    n_rows,"
+      },
+      {
+        "line": 116,
+        "text": "    n_cols,"
+      },
+      {
+        "line": 117,
+        "text": "    rows_per_program: tl.constexpr,"
+      },
+      {
+        "line": 118,
+        "text": "    BLOCK_SIZE: tl.constexpr,"
+      },
+      {
+        "line": 119,
+        "text": "):"
+      },
+      {
+        "line": 120,
+        "text": "    \"\"\""
+      }
+    ]
+  },
+  "responseCharacters": 5916,
+  "responseSHA256": "c28dadf648c070f66961dfb69c4661fab574d477b3ecf477a42bcf9726e63b94",
+  "wallMilliseconds": 0.44893503189086914
+}

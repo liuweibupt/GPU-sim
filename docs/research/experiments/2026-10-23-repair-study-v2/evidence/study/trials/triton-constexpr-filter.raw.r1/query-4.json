@@ -1,0 +1,116 @@
+{
+  "round": 4,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "observation-constexpr-filter-00",
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "observation-constexpr-filter-00",
+    "kind": "device-output",
+    "caseIds": [
+      "constexpr-filter-00"
+    ],
+    "observed": true,
+    "text": "Complete actual RTX 4090 output compared against independent declared reference: 5 / 5 elements differ. Floating-point signed zero uses byte equality where required.",
+    "payload": {
+      "case": {
+        "id": "constexpr-filter-00",
+        "family": "constexpr-filter",
+        "split": "visible",
+        "values": [
+          10,
+          20,
+          30,
+          40
+        ],
+        "cutoff": 30,
+        "even": false
+      },
+      "status": "wrong-result",
+      "observed": [
+        4,
+        10,
+        20,
+        30,
+        40
+      ],
+      "reference": [
+        2,
+        30,
+        40,
+        -777,
+        -777
+      ],
+      "observed_bytes": [
+        4,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0,
+        0,
+        20,
+        0,
+        0,
+        0,
+        30,
+        0,
+        0,
+        0,
+        40,
+        0,
+        0,
+        0
+      ],
+      "reference_bytes": [
+        2,
+        0,
+        0,
+        0,
+        30,
+        0,
+        0,
+        0,
+        40,
+        0,
+        0,
+        0,
+        247,
+        252,
+        255,
+        255,
+        247,
+        252,
+        255,
+        255
+      ],
+      "elements": 5,
+      "output_dtype": "torch.int32",
+      "wrong_elements": 5
+    },
+    "sourceId": "test-kernel",
+    "rawRefs": [
+      {
+        "id": "raw-constexpr-filter-00",
+        "sha256": "0ce518a6b51bbbddcdf55d38fef36157cd383f87042f788c5d2eaa430a67542f"
+      },
+      {
+        "id": "test-kernel",
+        "sha256": "ac92f5244c13658b5f76f9309e92209157ac22fd7d701351fd7bf5bbc41d9c0a"
+      }
+    ]
+  },
+  "responseCharacters": 958,
+  "responseSHA256": "f4bd6f653f88e8b781a9cc361a4f6b77da939c37cd26201d30591ea050727aaf",
+  "wallMilliseconds": 0.2007300853729248
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "signed-zero-model-packet-representation-audit-v1",
+  "frozen_catalog_sha256": "ba32ae71891d2c5e84953332d1afd39121e199f84ed4ebf6ea92f979409481d5",
+  "rows": [
+    {
+      "case_id": "negative-zero-00",
+      "original_parameter_negative_zero": true,
+      "frozen_parameter_negative_zero": false,
+      "parameter_sign_lost": true,
+      "observed_bytes_identical": true,
+      "reference_bytes_identical": true
+    },
+    {
+      "case_id": "negative-zero-01",
+      "original_parameter_negative_zero": false,
+      "frozen_parameter_negative_zero": false,
+      "parameter_sign_lost": false,
+      "observed_bytes_identical": true,
+      "reference_bytes_identical": true
+    },
+    {
+      "case_id": "negative-zero-02",
+      "original_parameter_negative_zero": false,
+      "frozen_parameter_negative_zero": false,
+      "parameter_sign_lost": false,
+      "observed_bytes_identical": true,
+      "reference_bytes_identical": true
+    }
+  ],
+  "meaning": "JSON.stringify canonicalizes -0 to 0 in numeric fields. Full byte patterns remain identical in both conditions and retain the exact IEEE contract. Python GPU plan/harness do not undergo this conversion. Current frozen trial is unchanged; no model receives a corrective prompt. Numeric value grouping cannot distinguish signed zero."
+}

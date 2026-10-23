@@ -1,0 +1,293 @@
+{
+  "schema": "natural-fault-expansion-run-v1",
+  "variant": "before",
+  "started_utc": "2026-10-23T14:28:15.211630+00:00",
+  "python": "3.10.20 (main, Jun 11 2026, 15:17:37) [GCC 14.3.0]",
+  "torch": "2.7.1+cu126",
+  "triton": "3.8.0",
+  "triton_path": "/home/liuwei/GPU-sim/out/research/natural-fault-expansion/runtime-before/triton/__init__.py",
+  "native_compiler_sha256": "c3306b024133cf76abba389ac00c6dc9cb9127be6a0796aef2acf2134e5f082f",
+  "harness_sha256": "085bb656e534163698d8bb3f2fd9712c27e803c7658e8539129365fc6e830408",
+  "plan_sha256": "a3215870aaaf47801a448c7b4da727ca80da29b65a0c852d999d564827e38d85",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "capability": [
+    8,
+    9
+  ],
+  "driver": "610.57.04",
+  "source_sha256": {
+    "language/standard.py": "113296c74fb8b8dcf67a1b82f71926842eb66d0c77fe2c4f8d0f315715a38fd4",
+    "language/semantic.py": "0d99c1f30bdb86bd718c98bf026ced2a84a878f79630fa9b3fe099ce46e86ebd",
+    "compiler/code_generator.py": "e7b75e513fb868674fd2adc660c6527e4ad9e74f01120d8e2b1ad243329a0c92",
+    "language/core.py": "b4966729f21f0db6f20fa4cb9b2b5402c5735e1424ffba05dbd8f480dedee790",
+    "runtime/interpreter.py": "a17550ad6c58a2d903b64cc2eb8b89aeedc02f3b3f263b0a5a7bab43ef3d2435"
+  },
+  "timing_scope": "Correctness only; shared local GPU may execute unrelated small kernels concurrently. No performance inference.",
+  "cases": [
+    {
+      "id": "softmax-axis-00",
+      "family": "softmax-axis",
+      "split": "visible",
+      "status": "wrong-result",
+      "wrong_elements": 4,
+      "result_sha256": "72fc33b8cd62252e56454781faceab3beabc8a1bec24db44f8088a1bf74c35d3"
+    },
+    {
+      "id": "softmax-axis-01",
+      "family": "softmax-axis",
+      "split": "visible",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "f5442620b54db47f23d2fab9f08e99341a9ac5d55e1558db0254bee776967dee"
+    },
+    {
+      "id": "softmax-axis-02",
+      "family": "softmax-axis",
+      "split": "visible",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "27d96a630019d0add299ca2dfb08c7e170f0eb85113208dc734a2bfbc72ffacd"
+    },
+    {
+      "id": "softmax-axis-03",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 16,
+      "result_sha256": "a95b3ff5ec014908852554ba19873cb6bb35a8fe5806926c89c02f043090d9cc"
+    },
+    {
+      "id": "softmax-axis-04",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 64,
+      "result_sha256": "bfe2a9cc6a2d6ee000b6f75cc513365cf095721a607b18a6574c73b6f860dadb"
+    },
+    {
+      "id": "softmax-axis-05",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 256,
+      "result_sha256": "76e49807386c37a52968a6f29215a470c7697286a3f7701f36417dddb2d0ca2f"
+    },
+    {
+      "id": "softmax-axis-06",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "97c21cfb8a8c86c7306ebc79180edb2fd217afb30260d70802d398cd1c61f76b"
+    },
+    {
+      "id": "softmax-axis-07",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 64,
+      "result_sha256": "89c980ae20a42ff1b316b4e0c8afea58d2d42e4c4a1aca7d34898f54a040ec04"
+    },
+    {
+      "id": "softmax-axis-08",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "c3101849d94fca467c83202bb67f1b52e19d2a800fcebc6ae44d70c975aa0c28"
+    },
+    {
+      "id": "softmax-axis-09",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "8698fe169ca739e6442fa4c43fc9b04fbdec2fd28f4c95f1a32fb5cb1cfbe01d"
+    },
+    {
+      "id": "softmax-axis-10",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 2,
+      "result_sha256": "d6a771a0a97980017ebcdbfc54115e92f10b7acd11bbfe41a19cc5a236a6100f"
+    },
+    {
+      "id": "negative-zero-00",
+      "family": "negative-zero",
+      "split": "visible",
+      "status": "wrong-result",
+      "wrong_elements": 32,
+      "result_sha256": "e69d5d7c5e4e9be2dbd4bb7b0573bb3c1a689a9bff3d227e075a60c1d28fafda"
+    },
+    {
+      "id": "negative-zero-01",
+      "family": "negative-zero",
+      "split": "visible",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "776772357c48c7469f7c27704c919c0e3dc3919c7f57f96a5e9d9871d128b36e"
+    },
+    {
+      "id": "negative-zero-02",
+      "family": "negative-zero",
+      "split": "visible",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "467c20ece1bc30315b034f7adf0bce1d13f1e9af1928294ef16744d1be1c393c"
+    },
+    {
+      "id": "negative-zero-03",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 64,
+      "result_sha256": "e6238415067156a3acd7643be84eec6b0dc1b6289a5823176a02507bfa67ca06"
+    },
+    {
+      "id": "negative-zero-04",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "2ff43630176ae6475dee6cc9cc9f279f22c5c97396d437502179aa7968762ab8"
+    },
+    {
+      "id": "negative-zero-05",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 128,
+      "result_sha256": "f8205c9178a399117a944d5ff9fff8a1389a722f970799ca547bc06248b194d8"
+    },
+    {
+      "id": "negative-zero-06",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "0956cc537768f1f2927a5ed4e2b751d65f6bba53306e0a988b48b4742a9a1ce3"
+    },
+    {
+      "id": "negative-zero-07",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 32,
+      "result_sha256": "9526de393468abe1237ea0ec8dd351da3c2048987e8aeda39d512b684093f5a7"
+    },
+    {
+      "id": "negative-zero-08",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "e18f38cdd0bae261b3153a3bcd72e417e9be043fedb0b0432cec69f49fd211c5"
+    },
+    {
+      "id": "negative-zero-09",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 256,
+      "result_sha256": "0b28a356d7756459235fb70e4e5adf6140ae61fdc21e9752ca77dc08d82a1909"
+    },
+    {
+      "id": "negative-zero-10",
+      "family": "negative-zero",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "4d3db0f8ef7ec526c3921538cf8ea978354cabd16bc7c3d195544603316f640a"
+    },
+    {
+      "id": "constexpr-filter-00",
+      "family": "constexpr-filter",
+      "split": "visible",
+      "status": "wrong-result",
+      "wrong_elements": 5,
+      "result_sha256": "0ce518a6b51bbbddcdf55d38fef36157cd383f87042f788c5d2eaa430a67542f"
+    },
+    {
+      "id": "constexpr-filter-01",
+      "family": "constexpr-filter",
+      "split": "visible",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "02fb39584e82ce036a96c4400d5959b9972e71348445147f5511c7502eaa1a6c"
+    },
+    {
+      "id": "constexpr-filter-02",
+      "family": "constexpr-filter",
+      "split": "visible",
+      "status": "wrong-result",
+      "wrong_elements": 7,
+      "result_sha256": "ae80f0b64caff5619384ab7f98973ddf1c189936ec16a2caec1488d47c3ed6f8"
+    },
+    {
+      "id": "constexpr-filter-03",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 7,
+      "result_sha256": "e929f02707d7a1a73e553929a3d3e4254bef055b200a70bb15626272795a80cf"
+    },
+    {
+      "id": "constexpr-filter-04",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 7,
+      "result_sha256": "60c2186a02f656807a90c9234c45a13cf303870dc7167be8989eb532a717e454"
+    },
+    {
+      "id": "constexpr-filter-05",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 4,
+      "result_sha256": "a7066f2e22d11fc8c6ac4809e5376b08e46e38ca3ca2cfc1244f997be2b33571"
+    },
+    {
+      "id": "constexpr-filter-06",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "2db5d84597d31e820e68c0f125d0436566332a19ce92376c9cfed0cb7836a931"
+    },
+    {
+      "id": "constexpr-filter-07",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 9,
+      "result_sha256": "38347f402fa60098c3aadf7b2b0da7e61e553a59f07fc56a015f904724832bb9"
+    },
+    {
+      "id": "constexpr-filter-08",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "pass",
+      "wrong_elements": 0,
+      "result_sha256": "4e365a98312909698c2f7c70bbe8aab16af0d91f91205ecd64eeb46429827536"
+    },
+    {
+      "id": "constexpr-filter-09",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 5,
+      "result_sha256": "44c28e0acf326841477a23adadcecdbafe9b677910b06424758c78430d26cfe8"
+    },
+    {
+      "id": "constexpr-filter-10",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "status": "wrong-result",
+      "wrong_elements": 5,
+      "result_sha256": "53311e5d4e44383f6fd7078ee89dcd9116ee601b57c19d7e8616ce2632314354"
+    }
+  ],
+  "completed_utc": "2026-10-23T14:28:17.780543+00:00"
+}

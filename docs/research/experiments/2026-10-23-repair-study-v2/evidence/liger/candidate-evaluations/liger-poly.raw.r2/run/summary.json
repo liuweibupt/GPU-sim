@@ -1,0 +1,1827 @@
+{
+  "format": "liger-natural-runtime-v1",
+  "family": "poly",
+  "started_at": "2026-10-23T15:18:13.539936+00:00",
+  "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+  "runner_sha256": "5d6dba630ebd8255994eea2e7a84e30f2e2b4ee9320c0c55f83310fa65c5dd8c",
+  "source_root": "/home/liuwei/GPU-sim/out/research/liger-faults/candidate-evaluations/liger-poly.raw.r2/source",
+  "torch": "2.7.1+cu126",
+  "triton": "3.8.0",
+  "python": "3.10.20 (main, Jun 11 2026, 15:17:37) [GCC 14.3.0]",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "capability": [
+    8,
+    9
+  ],
+  "identity": "NVIDIA GeForce RTX 4090, 8.9, 610.57.04, 49140 MiB",
+  "records": [
+    {
+      "id": "poly-00",
+      "family": "poly",
+      "partition": "visible",
+      "parameters": {
+        "rows": 4,
+        "width": 128,
+        "seed": 0,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        128
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            128
+          ],
+          "dtype": "float32",
+          "sha256": "2ab76ae720eda07d7e30eb75893239b1f9187dcca549bc6fc080489506eb8de4"
+        }
+      ],
+      "passed": true,
+      "outputs": 512,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.0033285843021033656,
+      "artifact": {
+        "path": "poly-00.npz",
+        "sha256": "dcb32a4d4ff50c9318c8df4313a6c58564ea600044d094cd65ae0688ddb42531",
+        "bytes": 11412
+      },
+      "wall_seconds": 0.9250941689824685
+    },
+    {
+      "id": "poly-01",
+      "family": "poly",
+      "partition": "visible",
+      "parameters": {
+        "rows": 4,
+        "width": 128,
+        "seed": 0,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        128
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            128
+          ],
+          "dtype": "float32",
+          "sha256": "be6c6e802815e1a4ac95cdbe2148abbccc0800435418db517647db901e76911e"
+        }
+      ],
+      "passed": true,
+      "outputs": 512,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 4.1756347179955355e-07,
+      "artifact": {
+        "path": "poly-01.npz",
+        "sha256": "a72f887e274ff216591d40a2407bebd973fb2fc3bc35b4aa6d7d6041b2b085f9",
+        "bytes": 13773
+      },
+      "wall_seconds": 0.09985250304453075
+    },
+    {
+      "id": "poly-02",
+      "family": "poly",
+      "partition": "visible",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 0,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        8192
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            8192
+          ],
+          "dtype": "float32",
+          "sha256": "fef2d3b0b9a939a842baa35288174bb3c7b1b5759beffe2b2e5907586ed82f56"
+        }
+      ],
+      "passed": true,
+      "outputs": 32768,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.0031210474752043638,
+      "artifact": {
+        "path": "poly-02.npz",
+        "sha256": "c8685d0d911632d4168a405fa25aec80dceda32d837bdf0450e00aa45701d7de",
+        "bytes": 506403
+      },
+      "wall_seconds": 0.21572268498130143
+    },
+    {
+      "id": "poly-03",
+      "family": "poly",
+      "partition": "visible",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 0,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        8192
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            8192
+          ],
+          "dtype": "float32",
+          "sha256": "314e575b52e5779b8478bcbf344af70f0453ca8d19810daefef634a731ee32ed"
+        }
+      ],
+      "passed": true,
+      "outputs": 32768,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.7916100836810074e-07,
+      "artifact": {
+        "path": "poly-03.npz",
+        "sha256": "8f0e6c049b14ba05f76a9f013b99b92d4f5d039d87bb8a8a40d971d165f8f0cd",
+        "bytes": 728758
+      },
+      "wall_seconds": 0.16668010398279876
+    },
+    {
+      "id": "poly-04",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 257,
+        "seed": 71,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        257
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            257
+          ],
+          "dtype": "float32",
+          "sha256": "671e43d701ed019581264d31ee461301fa093ccc8bf820399cc7bcc862672d2d"
+        }
+      ],
+      "passed": true,
+      "outputs": 1028,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.0019229233360569253,
+      "artifact": {
+        "path": "poly-04.npz",
+        "sha256": "e74d788f6a972c880511ded3bc9daed4a8c289b52db528d27f2c7f37ebf7dba5",
+        "bytes": 20230
+      },
+      "wall_seconds": 0.10691413190215826
+    },
+    {
+      "id": "poly-05",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 257,
+        "seed": 71,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        257
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            257
+          ],
+          "dtype": "float32",
+          "sha256": "2c2b4e50fce610dae1ab2e58446bbb226d4dcf489dd40b27dabe8d823a81595b"
+        }
+      ],
+      "passed": true,
+      "outputs": 1028,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.239635179535071e-07,
+      "artifact": {
+        "path": "poly-05.npz",
+        "sha256": "2952ded840056f9d9f7d24c0e6eb1d887701d0f1169683f505e95516b74ec0d8",
+        "bytes": 25178
+      },
+      "wall_seconds": 0.12130179395899177
+    },
+    {
+      "id": "poly-06",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 257,
+        "seed": 93,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        257
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            257
+          ],
+          "dtype": "float32",
+          "sha256": "5db1fc8d536f4bc976f34972ba62a58859e3772693f341d69a2c08be24377085"
+        }
+      ],
+      "passed": true,
+      "outputs": 1028,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.001941853460841969,
+      "artifact": {
+        "path": "poly-06.npz",
+        "sha256": "6b1d902755a934b3a38ef9d9ee40760888cf3eac608676d07044b5ccd7fb0cf6",
+        "bytes": 20254
+      },
+      "wall_seconds": 0.003209937014617026
+    },
+    {
+      "id": "poly-07",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 257,
+        "seed": 93,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        257
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            257
+          ],
+          "dtype": "float32",
+          "sha256": "784bc3fa8e40c72ee8027cd61504ecaa6f9653df237e387683cc5f3e4ad473ac"
+        }
+      ],
+      "passed": true,
+      "outputs": 1028,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 2.2461113680094513e-07,
+      "artifact": {
+        "path": "poly-07.npz",
+        "sha256": "ca8d67dd9f09075b776f62ee11cee7e570ca2bae8c19023af253ccdefb3ee3a6",
+        "bytes": 25167
+      },
+      "wall_seconds": 0.002360975951887667
+    },
+    {
+      "id": "poly-08",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 4096,
+        "seed": 71,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        4096
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            4096
+          ],
+          "dtype": "float32",
+          "sha256": "187d314e23518d147de47410ec8f93070a182a78e91a2a2424f313561629546e"
+        }
+      ],
+      "passed": true,
+      "outputs": 16384,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.003687366778589052,
+      "artifact": {
+        "path": "poly-08.npz",
+        "sha256": "98fba04474534ea8b682482aec117a4297a8eafe5b07199fc976a8ee164bb0cb",
+        "bytes": 263509
+      },
+      "wall_seconds": 0.21391323499847203
+    },
+    {
+      "id": "poly-09",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 4096,
+        "seed": 71,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        4096
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            4096
+          ],
+          "dtype": "float32",
+          "sha256": "39637fa3385fe3ec52cbca5d0fbe70c5b0489b6e0d2cbe45e625159b66eb2ce8"
+        }
+      ],
+      "passed": true,
+      "outputs": 16384,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 3.636962180308956e-07,
+      "artifact": {
+        "path": "poly-09.npz",
+        "sha256": "1e4c217bc00fdb887748a5bd87193f48e242ff7d768da7995ed80ef02f625f7e",
+        "bytes": 365693
+      },
+      "wall_seconds": 0.19777534308377653
+    },
+    {
+      "id": "poly-10",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 4096,
+        "seed": 93,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        4096
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            4096
+          ],
+          "dtype": "float32",
+          "sha256": "281e850a1a649059e01c1be23978ae2a3c583dc9e7cdb9c1558a9cb7255bbbd8"
+        }
+      ],
+      "passed": true,
+      "outputs": 16384,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.002111169866186202,
+      "artifact": {
+        "path": "poly-10.npz",
+        "sha256": "261e0a5d7d9254c781565c2580467f4e301db793138f1c9bbcf14fa26d1d35a1",
+        "bytes": 262909
+      },
+      "wall_seconds": 0.039297861978411674
+    },
+    {
+      "id": "poly-11",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 4096,
+        "seed": 93,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        4096
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            4096
+          ],
+          "dtype": "float32",
+          "sha256": "c289a3d393c6740c950800e3ef1e7a4ba3a7d5700bb87a4bc7cba587128cf422"
+        }
+      ],
+      "passed": true,
+      "outputs": 16384,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 4.4203535409792494e-07,
+      "artifact": {
+        "path": "poly-11.npz",
+        "sha256": "4f645f35912c16694c81908b74b8449046028074c470dd9a704834a4e23db9c6",
+        "bytes": 365479
+      },
+      "wall_seconds": 0.015657996060326695
+    },
+    {
+      "id": "poly-12",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 71,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        8192
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            8192
+          ],
+          "dtype": "float32",
+          "sha256": "19b69687951bbb458df6b4f669a5a614241d1aefa7dc8d3690e036999da6f413"
+        }
+      ],
+      "passed": true,
+      "outputs": 32768,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.0038300079466146997,
+      "artifact": {
+        "path": "poly-12.npz",
+        "sha256": "db29c17691a8e1cdf1a9e2e0c5a061c571ac750df7142bad9a859cef4f462a13",
+        "bytes": 507026
+      },
+      "wall_seconds": 0.08042244403623044
+    },
+    {
+      "id": "poly-13",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 71,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        8192
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            8192
+          ],
+          "dtype": "float32",
+          "sha256": "ada1dcfbd8d6f06a68a2fe8c06eb5fdf042a3b570d3154c07c1888d302b5ffc9"
+        }
+      ],
+      "passed": true,
+      "outputs": 32768,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 4.1477061074601806e-07,
+      "artifact": {
+        "path": "poly-13.npz",
+        "sha256": "70d9898e402d89a4260904c0879188fd43f2c7e8ec567af58258152e4c5b9498",
+        "bytes": 728866
+      },
+      "wall_seconds": 0.03062158403918147
+    },
+    {
+      "id": "poly-14",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 93,
+        "dtype": "float16",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        4,
+        8192
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            8192
+          ],
+          "dtype": "float32",
+          "sha256": "a4ef6e55b92fb8371b124794772099cacda7c70281c55192053578a1686148f1"
+        }
+      ],
+      "passed": true,
+      "outputs": 32768,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.003654310577463349,
+      "artifact": {
+        "path": "poly-14.npz",
+        "sha256": "002ed98088d982178b6f9491315922aa7c487d01c7c1a368ad2345c95e03ae70",
+        "bytes": 506139
+      },
+      "wall_seconds": 0.07728189905174077
+    },
+    {
+      "id": "poly-15",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 93,
+        "dtype": "float32",
+        "scale": 1.0,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1.0,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      },
+      "actual_dtype": "float32",
+      "actual_shape": [
+        4,
+        8192
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+        },
+        {
+          "name": "x",
+          "shape": [
+            4,
+            8192
+          ],
+          "dtype": "float32",
+          "sha256": "b688f551d32bf4932e279e2c6f16378d64e181dc0dd7d4e2dba12f9c2eb774ce"
+        }
+      ],
+      "passed": true,
+      "outputs": 32768,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 4.663069272936582e-07,
+      "artifact": {
+        "path": "poly-15.npz",
+        "sha256": "a17a1d29cb014b04cfc6c214affee9fc808bfc36f32c59d600c28dd05e1804e5",
+        "bytes": 728671
+      },
+      "wall_seconds": 0.0291117369197309
+    },
+    {
+      "id": "poly-16",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 3,
+        "width": 1023,
+        "seed": 107,
+        "dtype": "float16",
+        "scale": 2.0,
+        "eps": 1e-05,
+        "weights": [
+          0.6,
+          -0.2,
+          0.3
+        ],
+        "bias": -0.25,
+        "atol": 0.002,
+        "rtol": 0.002
+      },
+      "actual_dtype": "float16",
+      "actual_shape": [
+        3,
+        1023
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "db175157bba7783d412368a69a8d3af289db3ec392f722a57223e09d1a73684d"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "7bd36515eb42cf429be7fa8af3a4f16870255041e15222419cb023ce981a7b3d"
+        },
+        {
+          "name": "x",
+          "shape": [
+            3,
+            1023
+          ],
+          "dtype": "float32",
+          "sha256": "7f73acfffad12f4119b9f540d04cb3abdadc290792f475e9546fbb6a04506b8c"
+        }
+      ],
+      "passed": true,
+      "outputs": 3069,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.002771241338439978,
+      "artifact": {
+        "path": "poly-16.npz",
+        "sha256": "495b91c8eb19fdef582217ca3c4f566e8a6e1967a4f6727115373e8bf8a09d1f",
+        "bytes": 55729
+      },
+      "wall_seconds": 0.1179880959680304
+    },
+    {
+      "id": "poly-17",
+      "family": "poly",
+      "partition": "hidden",
+      "parameters": {
+        "rows": 3,
+        "width": 1023,
+        "seed": 107,
+        "dtype": "bfloat16",
+        "scale": 1.0,
+        "eps": 1e-05,
+        "weights": [
+          0.6,
+          -0.2,
+          0.3
+        ],
+        "bias": -0.25,
+        "atol": 0.03,
+        "rtol": 0.03
+      },
+      "actual_dtype": "bfloat16",
+      "actual_shape": [
+        3,
+        1023
+      ],
+      "input_array_identities": [
+        {
+          "name": "bias",
+          "shape": [
+            1
+          ],
+          "dtype": "float32",
+          "sha256": "db175157bba7783d412368a69a8d3af289db3ec392f722a57223e09d1a73684d"
+        },
+        {
+          "name": "weights",
+          "shape": [
+            3
+          ],
+          "dtype": "float32",
+          "sha256": "1e3995e12a47fe21dda38f666af7376bbba59b907a0316d21b12078f9e1c49ef"
+        },
+        {
+          "name": "x",
+          "shape": [
+            3,
+            1023
+          ],
+          "dtype": "float32",
+          "sha256": "5e9ab52bf67fc31b9bc854f5f68f308386b167414ed07d453211dc4a68f664cf"
+        }
+      ],
+      "passed": true,
+      "outputs": 3069,
+      "mismatches": 0,
+      "nonfinite": 0,
+      "inputs_unchanged": true,
+      "max_abs_error": 0.014114049907433035,
+      "artifact": {
+        "path": "poly-17.npz",
+        "sha256": "2eff8bc687766b6db83fae37fbbf719d624004aa1076aa1f4953cd9ca64fa61d",
+        "bytes": 45351
+      },
+      "wall_seconds": 0.12769251596182585
+    }
+  ],
+  "timing_scope": "Host correctness execution including imports/JIT/CPU oracle/copy/serialization; not an operator benchmark.",
+  "module_sha256": "fc93c92ed85aa19c7192eff5dd2140d75872883ae6b45c1c779dff5a17ea7128",
+  "imported_source_files": [
+    {
+      "module": "liger_kernel",
+      "path": "src/liger_kernel/__init__.py",
+      "sha256": "6d0d073d4f0b576a6da516d6b5e709b81965b575fe295ff9837fc34593875954"
+    },
+    {
+      "module": "liger_kernel.backends",
+      "path": "src/liger_kernel/backends/__init__.py",
+      "sha256": "16f07e3d4d49479657e4ad9623cdcb0f5a63454b3c458fe4f93b052306079900"
+    },
+    {
+      "module": "liger_kernel.backends.capability",
+      "path": "src/liger_kernel/backends/capability.py",
+      "sha256": "1394f4c232d4d3d4f01a262d9ba6179dbe78fb18f75eb20877c64042cd31a0ad"
+    },
+    {
+      "module": "liger_kernel.backends.dispatch",
+      "path": "src/liger_kernel/backends/dispatch.py",
+      "sha256": "be88760901e7e709da2c5c286728260edacffd4e8d0bc74c627b7285995f359d"
+    },
+    {
+      "module": "liger_kernel.backends.registry",
+      "path": "src/liger_kernel/backends/registry.py",
+      "sha256": "34c0ff4dd70aac989cd949bb75f5d487310a26fba37722f8944addc9477a6f89"
+    },
+    {
+      "module": "liger_kernel.functional",
+      "path": "src/liger_kernel/functional.py",
+      "sha256": "6bd2cc02d1b3724d75711b5e16b1b5af58466685255e332372724fdc8bb3fa41"
+    },
+    {
+      "module": "liger_kernel.ops",
+      "path": "src/liger_kernel/ops/__init__.py",
+      "sha256": "585b9fa5731675bc6967de57bb49cef58a8d5ba01df26cc2fcf50cec65b20ab9"
+    },
+    {
+      "module": "liger_kernel.ops.attn_res",
+      "path": "src/liger_kernel/ops/attn_res.py",
+      "sha256": "ad7a4bcc718de2021b8d9341766c76e68732854a9c3b2fac0211bffa977a27a0"
+    },
+    {
+      "module": "liger_kernel.ops.backends",
+      "path": "src/liger_kernel/ops/backends/__init__.py",
+      "sha256": "057bf47d218517b018f45455b5de3f05211878e51b93f5533c5483455c6f7551"
+    },
+    {
+      "module": "liger_kernel.ops.backends._ascend",
+      "path": "src/liger_kernel/ops/backends/_ascend/__init__.py",
+      "sha256": "cb54b9dac0ad6e16a83fb62d7b816aed92b25abd7c4ec72153e0a49eeac5958a"
+    },
+    {
+      "module": "liger_kernel.ops.backends._cutedsl",
+      "path": "src/liger_kernel/ops/backends/_cutedsl/__init__.py",
+      "sha256": "ce9aa23d98e1c10a25b4ecbae79ecebb598db9c916953dcf34a71aa4336a0578"
+    },
+    {
+      "module": "liger_kernel.ops.backends._cutile",
+      "path": "src/liger_kernel/ops/backends/_cutile/__init__.py",
+      "sha256": "2e1a3f8d360380fbcc970975bccbc08187d69989d9770f36c16fa19ba71f35c6"
+    },
+    {
+      "module": "liger_kernel.ops.backends._triton",
+      "path": "src/liger_kernel/ops/backends/_triton/__init__.py",
+      "sha256": "8bd547dd895d4d149d4ea02d0a4c14a141395b7c74b464f5da0b40892878ac19"
+    },
+    {
+      "module": "liger_kernel.ops.backends.registry",
+      "path": "src/liger_kernel/ops/backends/registry.py",
+      "sha256": "84d66e578e158fe39aefca05726400f3826a29a80d02d9b465cc158201d6f79f"
+    },
+    {
+      "module": "liger_kernel.ops.cross_entropy",
+      "path": "src/liger_kernel/ops/cross_entropy.py",
+      "sha256": "961f41ca7c06dab49be8182de1fed53165eb28ed87efaeed24afad1ecb0b78e8"
+    },
+    {
+      "module": "liger_kernel.ops.cute",
+      "path": "src/liger_kernel/ops/cute/__init__.py",
+      "sha256": "a03b375d96a59eb2317ed4fd952d9a8284b5820b9578bc4cbedeb3016943e250"
+    },
+    {
+      "module": "liger_kernel.ops.cutedsl",
+      "path": "src/liger_kernel/ops/cutedsl/__init__.py",
+      "sha256": "1bc500d18520b8062f7df8d0e6b3b622576c2da394aaa6f43091b6b614521a93"
+    },
+    {
+      "module": "liger_kernel.ops.cutile",
+      "path": "src/liger_kernel/ops/cutile/__init__.py",
+      "sha256": "acf1919023248ae4311519baacb615e104f77a4ecfffc799723c45afe10e7819"
+    },
+    {
+      "module": "liger_kernel.ops.dyt",
+      "path": "src/liger_kernel/ops/dyt.py",
+      "sha256": "a09245c0f6e5a8ab17d76b7b5ff8d3b0d55d008beec9ce8154df1f16b3e0d2ad"
+    },
+    {
+      "module": "liger_kernel.ops.experimental.embedding",
+      "path": "src/liger_kernel/ops/experimental/embedding.py",
+      "sha256": "b68963ded22d933a526f7d335aa0cddbfc97e1e72d7e5690f073322b214841cf"
+    },
+    {
+      "module": "liger_kernel.ops.fused_add_rms_norm",
+      "path": "src/liger_kernel/ops/fused_add_rms_norm.py",
+      "sha256": "7faa12a91145a9c951ab5d23e04b827c59c49e09e795b0923e141e21733e0d56"
+    },
+    {
+      "module": "liger_kernel.ops.fused_ce_tvd",
+      "path": "src/liger_kernel/ops/fused_ce_tvd.py",
+      "sha256": "11e3e3539e485c300e4efca64ff58335b932a18617bcd653e128f84e3cff1d09"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_cross_entropy",
+      "path": "src/liger_kernel/ops/fused_linear_cross_entropy.py",
+      "sha256": "70609e37dc7f966f4b4f6effd881411d1852c0fb77dee657dc5fe756f534c29d"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_jsd",
+      "path": "src/liger_kernel/ops/fused_linear_jsd.py",
+      "sha256": "83f03211db89ddef1f4b3a1eb70217a38aea8995bdddb3005ea88d95b087da33"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_kl_div",
+      "path": "src/liger_kernel/ops/fused_linear_kl_div.py",
+      "sha256": "1103d8fd7b4244c0ca8d182466d81c5712b2b84970634bc2573ce5692e2a3160"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_scaled_cross_entropy",
+      "path": "src/liger_kernel/ops/fused_linear_scaled_cross_entropy.py",
+      "sha256": "ce69ad089ff7bc684535c9de30f38b2b6e4b084cb3f404031329eb8a0bc4f171"
+    },
+    {
+      "module": "liger_kernel.ops.fused_linear_score_centering",
+      "path": "src/liger_kernel/ops/fused_linear_score_centering.py",
+      "sha256": "9a935866d590e3baaf01b86d507c9fd5b3b9667e49793328e30991aba7e2e65a"
+    },
+    {
+      "module": "liger_kernel.ops.fused_moe",
+      "path": "src/liger_kernel/ops/fused_moe.py",
+      "sha256": "87cda5a21049a79da8e744020c5da2bd3e30e65298ac185e565291a0f3f6e9db"
+    },
+    {
+      "module": "liger_kernel.ops.fused_moe_kernels",
+      "path": "src/liger_kernel/ops/fused_moe_kernels.py",
+      "sha256": "5b57a97a0322018edf5595a601cb99f490215ddd0369a2e422d3717aa62f8f0c"
+    },
+    {
+      "module": "liger_kernel.ops.fused_neighborhood_attention",
+      "path": "src/liger_kernel/ops/fused_neighborhood_attention.py",
+      "sha256": "bcf8b9c5b9e1eb0c7265e85aaa8e93ba296aa367cde5218388e3639cd9882aab"
+    },
+    {
+      "module": "liger_kernel.ops.geglu",
+      "path": "src/liger_kernel/ops/geglu.py",
+      "sha256": "c868f150d58fe1ff2913872b500fd76764075f73f6ea655217bdc2e0a72fc097"
+    },
+    {
+      "module": "liger_kernel.ops.group_norm",
+      "path": "src/liger_kernel/ops/group_norm.py",
+      "sha256": "2a1901b6fadcd3834102154482285eeba334955651ca2c9358fe03836f923c3b"
+    },
+    {
+      "module": "liger_kernel.ops.grpo_loss",
+      "path": "src/liger_kernel/ops/grpo_loss.py",
+      "sha256": "ddcdd76dd758c3179791465161bfe9080b649f2d82e61f01fee53de07300b945"
+    },
+    {
+      "module": "liger_kernel.ops.jsd",
+      "path": "src/liger_kernel/ops/jsd.py",
+      "sha256": "6e74fa29e7c616ad267b3a8913c1ea582aaeda06d06e6cfa27e44be54fb70f6f"
+    },
+    {
+      "module": "liger_kernel.ops.kl_div",
+      "path": "src/liger_kernel/ops/kl_div.py",
+      "sha256": "bf12f99d65b48f47dc242fbb482421db92d982b8298dc9dca09e6d5f586c48e5"
+    },
+    {
+      "module": "liger_kernel.ops.layer_norm",
+      "path": "src/liger_kernel/ops/layer_norm.py",
+      "sha256": "301dc0f0cda6afc987a19cf0af1fd1d129b0d5074ab646b1000a681b987afa2c"
+    },
+    {
+      "module": "liger_kernel.ops.llama4_rope",
+      "path": "src/liger_kernel/ops/llama4_rope.py",
+      "sha256": "263576853c98d5f164faba2bb22a45f69721ee2102a9338f677a548fab1ced5b"
+    },
+    {
+      "module": "liger_kernel.ops.mhc",
+      "path": "src/liger_kernel/ops/mhc.py",
+      "sha256": "98b34464fd83b6bffc159040644acee333aa6a9230c2cc2c64c03cf32a3972cf"
+    },
+    {
+      "module": "liger_kernel.ops.mlp",
+      "path": "src/liger_kernel/ops/mlp.py",
+      "sha256": "a84c5bb6494d4778fb26ae72310ffb6363376a6973951cd4c035ad1dcf8c9402"
+    },
+    {
+      "module": "liger_kernel.ops.modulated_rms_norm",
+      "path": "src/liger_kernel/ops/modulated_rms_norm.py",
+      "sha256": "776868785aba3f9b2fc798bd3030045526f62eab15f94f4809a2a43c773e4acf"
+    },
+    {
+      "module": "liger_kernel.ops.multi_token_attention",
+      "path": "src/liger_kernel/ops/multi_token_attention.py",
+      "sha256": "3b3fd15c3a7e3924bf47f1ee1a66844c774027b4e875affbd0e7c4ed35cc5256"
+    },
+    {
+      "module": "liger_kernel.ops.poly_norm",
+      "path": "src/liger_kernel/ops/poly_norm.py",
+      "sha256": "fc93c92ed85aa19c7192eff5dd2140d75872883ae6b45c1c779dff5a17ea7128"
+    },
+    {
+      "module": "liger_kernel.ops.qwen2vl_mrope",
+      "path": "src/liger_kernel/ops/qwen2vl_mrope.py",
+      "sha256": "5901fdeca8ad4e5b4836cb4a918226203a9fe7be8c309290c4d02d4be16154d3"
+    },
+    {
+      "module": "liger_kernel.ops.relu_squared",
+      "path": "src/liger_kernel/ops/relu_squared.py",
+      "sha256": "374884177edbaf58711721d613d7f1949c6fefd55e55b45374b09e70c6d66c5d"
+    },
+    {
+      "module": "liger_kernel.ops.rms_norm",
+      "path": "src/liger_kernel/ops/rms_norm.py",
+      "sha256": "d14c5b2269f2596ebd7ca0b16e6a41ac6390f207135314164b36df130b7accd9"
+    },
+    {
+      "module": "liger_kernel.ops.rope",
+      "path": "src/liger_kernel/ops/rope.py",
+      "sha256": "3a1bb8c0dacbc5909b5315c6e139190a1cca9fdaa70d2aa871eef4d0cae74301"
+    },
+    {
+      "module": "liger_kernel.ops.softmax",
+      "path": "src/liger_kernel/ops/softmax.py",
+      "sha256": "244839b2f900329f3a67b5771faae9b4ef7514d1c6fb83766ba0da0d26ba7bf9"
+    },
+    {
+      "module": "liger_kernel.ops.sparsemax",
+      "path": "src/liger_kernel/ops/sparsemax.py",
+      "sha256": "7c552b0b6bd702a69248302dfa53c96c7c570a1806c877ce25d54f29a4aaef15"
+    },
+    {
+      "module": "liger_kernel.ops.swiglu",
+      "path": "src/liger_kernel/ops/swiglu.py",
+      "sha256": "7397029e8fefac0de42e5eeafcbbac147644a91c357bd30b9ba019fa5df3ce0a"
+    },
+    {
+      "module": "liger_kernel.ops.tiled_mlp",
+      "path": "src/liger_kernel/ops/tiled_mlp.py",
+      "sha256": "9adfc896ee88a4a1fdd6d8eb329cb9562a5e678e39da53478bb699b89879f242"
+    },
+    {
+      "module": "liger_kernel.ops.tvd",
+      "path": "src/liger_kernel/ops/tvd.py",
+      "sha256": "6754c7a80335eb9dc1fc6623b4734c50df3d5a49fff749cec34e91a829a934a9"
+    },
+    {
+      "module": "liger_kernel.ops.utils",
+      "path": "src/liger_kernel/ops/utils.py",
+      "sha256": "b32e7097ca832549b7ae1fd6ea0139e1291dd6c1b0f0a124c90b3878349ae89d"
+    },
+    {
+      "module": "liger_kernel.ops.vocab_parallel_cross_entropy",
+      "path": "src/liger_kernel/ops/vocab_parallel_cross_entropy.py",
+      "sha256": "4a68cf7e8478764854d27eb140efe12d3afd110cad78f43647b8a7ec06e9bfb8"
+    },
+    {
+      "module": "liger_kernel.utils",
+      "path": "src/liger_kernel/utils.py",
+      "sha256": "b0f0f16daa0d9a5c3c903d6e3eddd311ec3f0a3b26d1d46fd9a9d6debaa3d027"
+    }
+  ],
+  "compiler_artifacts": [
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/__grp___poly_norm_forward_kernel.json",
+      "sha256": "9898a53a552a6ec84cc2d5c7f31174feef020a64204873e31fe38e8ebc722c9b",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/_poly_norm_forward_kernel.cubin",
+      "sha256": "12c1487b4a3ec65bfc238f5285525dfda6a77fee72629dda31507bcacde05ab2",
+      "bytes": 41120,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/_poly_norm_forward_kernel.json",
+      "sha256": "20c499473c04f2ea380bf8464a2c78f09754f4f38fcf034cd33b96fd0f37479c",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/_poly_norm_forward_kernel.llir",
+      "sha256": "bb2532d0652bc19fefa89fe94b13a0869ec38102fdc671cd8f5816e123818b49",
+      "bytes": 44887
+    },
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/_poly_norm_forward_kernel.ptx",
+      "sha256": "ea7630cc443d8d49d8ae807c1d9f56f0050b305c8e5c90261e4d449c6ed50a4f",
+      "bytes": 41031
+    },
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/_poly_norm_forward_kernel.ttgir",
+      "sha256": "00293e50f0b348ace7fafea88a9f07acb1307d9f9cb9233499c60394cc096392",
+      "bytes": 16993
+    },
+    {
+      "path": "compiler/GMVM3A2L3XTASH3TJYPUP6DJZNFX32O6JQRTUL2XLOJHEAZESRSQ/_poly_norm_forward_kernel.ttir",
+      "sha256": "6198c8ab8afbba044f5b32b05f342394eb37149b7fdec822d744a53c74ef6f9d",
+      "bytes": 16368
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/__grp___poly_norm_forward_kernel.json",
+      "sha256": "6c26239712bb50ad607671a36ec7891f1acbe7b7a4f98276afb4692f99aec009",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/_poly_norm_forward_kernel.cubin",
+      "sha256": "f7e4a8fe5d91267d2424289aa135ec450727ebfe3a8fe7f17ffe097d81d743f2",
+      "bytes": 39328,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/_poly_norm_forward_kernel.json",
+      "sha256": "7978b4b33efaf3ec5ef2772f58d9a290204465f0c2256ab22c448a885f148b22",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/_poly_norm_forward_kernel.llir",
+      "sha256": "7b032904e5091909b0316e0bbad30125213be5d126ccbd4e7744d081a4600216",
+      "bytes": 37166
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/_poly_norm_forward_kernel.ptx",
+      "sha256": "a830c10ad258d30b2b7196b53eed96b874053e12ead2948ba49d5d7c6a23c10d",
+      "bytes": 39833
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/_poly_norm_forward_kernel.ttgir",
+      "sha256": "c5a6d4f1ca6d8d3015d8ada32887d2a0b87c8e62432dd27375e2eda98d719185",
+      "bytes": 16933
+    },
+    {
+      "path": "compiler/GVB5LIGYDT2B2PF3UBRZHA5HVNMQQLL2JU2PQ2G4VAVP7EGAPWQA/_poly_norm_forward_kernel.ttir",
+      "sha256": "d30efd9872c9c842700d642a8b24db5e124d8e0bfd0e7dc661715578d541da2a",
+      "bytes": 16308
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/__grp___poly_norm_forward_kernel.json",
+      "sha256": "f85e5911aaf5bc41aa3eb0ae6b5aedba2844275a8314356bf942a0d40ca81bdd",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/_poly_norm_forward_kernel.cubin",
+      "sha256": "10998449baae0047ba7f633e9164145a4cc208e21f94be1bc66b2444dfacb361",
+      "bytes": 41632,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/_poly_norm_forward_kernel.json",
+      "sha256": "7ddd1afff35dda098f69b15abd908570db5eec174b97986adebd3de32a461417",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/_poly_norm_forward_kernel.llir",
+      "sha256": "4fc685ec0f4ae285cd593993f83791b3a2627848fe9cc416edcce2acde74bdc1",
+      "bytes": 49146
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/_poly_norm_forward_kernel.ptx",
+      "sha256": "46bbb5650ab1926e644a23acec5cb177dd220fc91d15cce5a8aa36114c35e062",
+      "bytes": 41601
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/_poly_norm_forward_kernel.ttgir",
+      "sha256": "270001292e8cd1f88b8371bf4c98e96aac828a32ec3ad8eacd48605ace256832",
+      "bytes": 16663
+    },
+    {
+      "path": "compiler/IZDB65QUZRKYOC6ME6ZYNUPNYPJKPZUGJMDJ7KP2ZVAJQENE7INQ/_poly_norm_forward_kernel.ttir",
+      "sha256": "ac525b4213ceba7904ab38c7ffce9744f58f348d0e4d8b931ed7dd0413ca0e46",
+      "bytes": 16058
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/__grp___poly_norm_forward_kernel.json",
+      "sha256": "8b1d7372ae1373243a3128727426989be93297beec9d6e1ff6d7f380dab5bfe3",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/_poly_norm_forward_kernel.cubin",
+      "sha256": "810f766fa386b178dc9276d0c8db7d62096f7f94aa1b28aca63ab2a21cc8d2b8",
+      "bytes": 28320,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/_poly_norm_forward_kernel.json",
+      "sha256": "f1544a7ba83757511adcc95f1e9e565039cd9249e2b286c018f8a9281af9ceda",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/_poly_norm_forward_kernel.llir",
+      "sha256": "1ebc11898a23c19daf22e15925fee1f1b9d3527cf6816eaccdabd7ab41d6ca0b",
+      "bytes": 29055
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/_poly_norm_forward_kernel.ptx",
+      "sha256": "04313769b32ec0c903ee0d0c6aec75c13d9a6f77a6a32d00f3c05ccdf2900ee9",
+      "bytes": 32331
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/_poly_norm_forward_kernel.ttgir",
+      "sha256": "45eb95652d2dcc9e7cfdeb1cd8a25cdcc00a2b15952b0f9dcc6b6fff3b8f6692",
+      "bytes": 16536
+    },
+    {
+      "path": "compiler/LUPIQTYXKUFEP5RZDCMNDXIHLG2UTGJ4UJKXX5QCROWEDORFDJGQ/_poly_norm_forward_kernel.ttir",
+      "sha256": "b0a5ba15813cb5cda0668bca518eabb083c7b64874b04d7141054cd32041d7ae",
+      "bytes": 15931
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/__grp___poly_norm_forward_kernel.json",
+      "sha256": "7568c626c8a4c7a45388e67aaefe44df73915ea4ec73420125527d9b354e1913",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/_poly_norm_forward_kernel.cubin",
+      "sha256": "8f6ee211efbbac236bfbcb0fd550769cba0b73f58280e3832fbcf813838cf02c",
+      "bytes": 28448,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/_poly_norm_forward_kernel.json",
+      "sha256": "4dea387337e3d18e729bdee44df44962918e0958eaaab165205b524ede133a32",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/_poly_norm_forward_kernel.llir",
+      "sha256": "045beacff671a0da2932be30274eb14402b959290babe8aa69040fd485c12c81",
+      "bytes": 29217
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/_poly_norm_forward_kernel.ptx",
+      "sha256": "0e498a4efd83c650c1eeb783c78ef1617cd77843780454483d7641c7ef71b1c9",
+      "bytes": 32464
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/_poly_norm_forward_kernel.ttgir",
+      "sha256": "9c654ff0c517b5fd07cdb7815df9a237e947cc103724f6d46fdcc6823de03840",
+      "bytes": 16864
+    },
+    {
+      "path": "compiler/LXFWKO7NPEEESFAITOPJAJ32JRZIMHIVZCFJBUFYQQB2BCCBJQ5Q/_poly_norm_forward_kernel.ttir",
+      "sha256": "c47465980acd883d6c6d3dfbbd3efb838de0a6eb16067e738eb608b0a71d1871",
+      "bytes": 16239
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/__grp___poly_norm_forward_kernel.json",
+      "sha256": "a388b9f4cc7a1d2fe8913dd57e8c9914a10d7be8b8b453dab1f326ed02b21703",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/_poly_norm_forward_kernel.cubin",
+      "sha256": "a01c4734142a238cc8ef2243f436bfeaf2677746492e3e777974cfbc2a326fb9",
+      "bytes": 34464,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/_poly_norm_forward_kernel.json",
+      "sha256": "d6507dbc3fcad26491084f57635f476c78928f5978257b8dde47112af0070ab8",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/_poly_norm_forward_kernel.llir",
+      "sha256": "d8dba3dd40b7d14a4fe9d000bf6d57e676744e0852fea641948f1595e5cd13cd",
+      "bytes": 37294
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/_poly_norm_forward_kernel.ptx",
+      "sha256": "216ef8a30be4b0b3f6a5e24fa542a86920c930818bb1ea23880b92025c797b62",
+      "bytes": 36437
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/_poly_norm_forward_kernel.ttgir",
+      "sha256": "811e7776fce9877ca06eaee13d65600ecf7f9b5de6d57e77bc29bba8e6f0f8ac",
+      "bytes": 16906
+    },
+    {
+      "path": "compiler/RUTDLF7TMA5UAL3S5353DZ777VJBHGTXGZCQFBLJELW4GYUV5MXA/_poly_norm_forward_kernel.ttir",
+      "sha256": "0725e520225dcacc201d80cdaed1675c2caeab6407dcd2b838f8fe90fb066d10",
+      "bytes": 16281
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/__grp___poly_norm_forward_kernel.json",
+      "sha256": "700372b2b1259558523ef6bab35ae365b92513d522613c6a3b1b047ef435fd45",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/_poly_norm_forward_kernel.cubin",
+      "sha256": "aa3320a391d22fd80d6cf276cecc53628f16fb45e637b1d8db1d6bc7a067915f",
+      "bytes": 42400,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/_poly_norm_forward_kernel.json",
+      "sha256": "5f51fcdefbc7545616da017d62ad7c8410fa799175f9589bdb341a5489bca4c7",
+      "bytes": 1133
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/_poly_norm_forward_kernel.llir",
+      "sha256": "f1f3d5a0f158a3d4e3f625b5b530206fd2dafc7ac93fa8d2addc216ea5c6e856",
+      "bytes": 46635
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/_poly_norm_forward_kernel.ptx",
+      "sha256": "dab8fa4c8eb96633c4ae9a3acf2f65f6043356de72826c6272461596a793ebeb",
+      "bytes": 42590
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/_poly_norm_forward_kernel.ttgir",
+      "sha256": "0d42f572566b641cf5f4d322cbe96688e514a5449182e2fd9583296e19d68cec",
+      "bytes": 16995
+    },
+    {
+      "path": "compiler/TAIQ2OJMDLNCKVH5Y6JBFJWKY3QCNMXW5ECUGOUZSCZRPGE7ZQYA/_poly_norm_forward_kernel.ttir",
+      "sha256": "2580be966a8d2e42cf1b6bd7b32db7730b150f2a23e790e8332a94660e384421",
+      "bytes": 16368
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/__grp___poly_norm_forward_kernel.json",
+      "sha256": "d925947d2f099dba0de138caded6c616426b8d64927f3e6a3603b335b98d090c",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/_poly_norm_forward_kernel.cubin",
+      "sha256": "698792c34f1d7a4a88fb46e33dda41fd798471792f7d8f028b197c27692d89e0",
+      "bytes": 24608,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/_poly_norm_forward_kernel.json",
+      "sha256": "f15ef687506e92621984bb0a4cb74db0dd798a0e1eb90e0b1db51ec6175d0c24",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/_poly_norm_forward_kernel.llir",
+      "sha256": "a43c026f72c0b1a86094ea505a8549f422a53daa6033d200d393513d5e36c117",
+      "bytes": 24430
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/_poly_norm_forward_kernel.ptx",
+      "sha256": "d530dff3654ec014f4cbdeec155bb78804df1002256030ac1c0da5c8aab887c5",
+      "bytes": 29007
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/_poly_norm_forward_kernel.ttgir",
+      "sha256": "e52481fe1d6dae8eb175b3a0840e800af726bce15cc66ece4ebd9709f6f6d066",
+      "bytes": 16623
+    },
+    {
+      "path": "compiler/UDX63LIZBW3GC2OPV6SLXJVGCN46VQOW2ORG3KTARONYJ3OET4RQ/_poly_norm_forward_kernel.ttir",
+      "sha256": "316d633a2a753480cd06475a4ff2cb0683b920a963eab79a4837c645243fb446",
+      "bytes": 16018
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/__grp___poly_norm_forward_kernel.json",
+      "sha256": "edf61d7b69771039f19ad4bdc317910e8caca4417afc2fdafc2d0bf63112a2f0",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/_poly_norm_forward_kernel.cubin",
+      "sha256": "1fbc64c939d977fbcf7086ead511be87acbaa2ada394d5c87dc724daeeb8d13e",
+      "bytes": 24608,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/_poly_norm_forward_kernel.json",
+      "sha256": "b3a36b70f3fe6270a7e1db0a3174aca40471800ae77f37ee510d74468f972129",
+      "bytes": 1131
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/_poly_norm_forward_kernel.llir",
+      "sha256": "3564660bab59e7481a7af48a0c70fa49ac2298d5a4b603cd6fda9a1fabff4793",
+      "bytes": 24598
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/_poly_norm_forward_kernel.ptx",
+      "sha256": "3ca332d9700d9d81cb5234dbf955f48fbe2fbb5182c8366695a2f52e042a79e7",
+      "bytes": 29013
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/_poly_norm_forward_kernel.ttgir",
+      "sha256": "ffb42396edde10abd86a1c67d4eecb83ce03d79a5228ad0e6ee6236fbbd9f728",
+      "bytes": 16951
+    },
+    {
+      "path": "compiler/VBWK4FPXS4XT4HZM5S6YAEO244OO5DMYQ2CJ7T7FBQG6IEIQ5DUA/_poly_norm_forward_kernel.ttir",
+      "sha256": "58aa7528c4e69be1b2dbbf289d3dbeb68539e074a057d87e2649832d44697ea6",
+      "bytes": 16326
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/__grp___poly_norm_forward_kernel.json",
+      "sha256": "0a573167273ba00e8b4fec01d338d5b3311a7037d54db20b528e26368b7e9f8c",
+      "bytes": 1507
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/_poly_norm_forward_kernel.cubin",
+      "sha256": "cc4a3aff74da2f8de51810004b4994b715807be1c4cd6b7658f7bf600d8ade53",
+      "bytes": 42528,
+      "omitted": "compiled device binary; exact hash retained"
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/_poly_norm_forward_kernel.json",
+      "sha256": "e2cba31d8c76e676f193e16745a0a616c4c5ffedef43c23c2b0f61ea3ce9a567",
+      "bytes": 1133
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/_poly_norm_forward_kernel.llir",
+      "sha256": "51a4846566b79a006e5953a28c0fbf440d12ef6a3f3b3290d7280d05fad0f3b4",
+      "bytes": 50894
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/_poly_norm_forward_kernel.ptx",
+      "sha256": "b9359d0eddf60baa2be83573fee65ca3d5225e7df38188f73b7be06076dfae4e",
+      "bytes": 43162
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/_poly_norm_forward_kernel.ttgir",
+      "sha256": "2b0cfd937ff927f377d3cdb4ff95f832b86f869ef785f8d997eefcb7d5f191cc",
+      "bytes": 16665
+    },
+    {
+      "path": "compiler/ZLCQU57FJIXT35RK3VAMJDIK6EF23O5YEHJT46XJ2NMZ4FTRDAQQ/_poly_norm_forward_kernel.ttir",
+      "sha256": "8936189aa4fb43421d96201d6a4fa67522b7d4450fe40ffcabed00698b30d510",
+      "bytes": 16058
+    }
+  ],
+  "native_compiler_sha256": "c3306b024133cf76abba389ac00c6dc9cb9127be6a0796aef2acf2134e5f082f",
+  "wall_seconds": 4.178045282955281
+}

@@ -1,0 +1,69 @@
+{
+  "round": 1,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "test-kernel",
+    "text": null,
+    "start": 1,
+    "end": 10,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "test-kernel",
+    "path": "tests/visible_kernel.py",
+    "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8",
+    "start": 1,
+    "end": 10,
+    "totalLines": 10,
+    "lines": [
+      {
+        "line": 1,
+        "text": "import triton"
+      },
+      {
+        "line": 2,
+        "text": "import triton.language as tl"
+      },
+      {
+        "line": 3,
+        "text": ""
+      },
+      {
+        "line": 4,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 5,
+        "text": "def softmax_kernel(X,Y,N:tl.constexpr,SHAPE:tl.constexpr,DIM:tl.constexpr):"
+      },
+      {
+        "line": 6,
+        "text": "    offs=tl.arange(0,N).reshape(SHAPE)"
+      },
+      {
+        "line": 7,
+        "text": "    x=tl.load(X+offs)"
+      },
+      {
+        "line": 8,
+        "text": "    y=tl.softmax(x,dim=DIM)"
+      },
+      {
+        "line": 9,
+        "text": "    tl.store(Y+offs,y)"
+      },
+      {
+        "line": 10,
+        "text": ""
+      }
+    ]
+  },
+  "responseCharacters": 620,
+  "responseSHA256": "10149dd1cdddbd25fdedf76c985e2286018440c9a3d1e5b0f9c15c9173c1114a",
+  "wallMilliseconds": 0.47313690185546875
+}

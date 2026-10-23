@@ -1,0 +1,186 @@
+{
+  "round": 2,
+  "request": {
+    "op": "derived",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": "observed",
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "observations": [
+      {
+        "caseId": "sparse-00",
+        "status": "passed",
+        "parameters": {
+          "rows": 2,
+          "width": 16,
+          "seed": 0,
+          "dtype": "float32",
+          "offset": 0,
+          "distribution": "normal",
+          "atol": 0.002,
+          "rtol": 0.002
+        },
+        "evidenceId": "observation-sparse-00",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: passed; 0 mismatches among 32 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-sparse-00",
+            "sha256": "0601e280eaf3d46d2c54eb10b0be6304176054c1742d840914b1c8aeb4314193"
+          },
+          {
+            "id": "arrays-sparse-00",
+            "sha256": "198b57ab5560ee5b338dd7c241ea43ac10b6777c708a4a6eab4c799a88c4f266"
+          }
+        ]
+      },
+      {
+        "caseId": "sparse-01",
+        "status": "passed",
+        "parameters": {
+          "rows": 2,
+          "width": 16,
+          "seed": 0,
+          "dtype": "float16",
+          "offset": -65504,
+          "distribution": "constant",
+          "atol": 0.002,
+          "rtol": 0.002
+        },
+        "evidenceId": "observation-sparse-01",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: passed; 0 mismatches among 32 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-sparse-01",
+            "sha256": "13e0a62ddaf0bc0064f088cad73d5a243b07dd28a60ad036a13b7256206d96b9"
+          },
+          {
+            "id": "arrays-sparse-01",
+            "sha256": "ab84ced5f5ac6b9002fc1f9d8a8b1a6261523b426f332a7b2bf23969a80d75cc"
+          }
+        ]
+      },
+      {
+        "caseId": "sparse-02",
+        "status": "wrong_value",
+        "parameters": {
+          "rows": 2,
+          "width": 16,
+          "seed": 0,
+          "dtype": "bfloat16",
+          "offset": 94370000,
+          "distribution": "constant",
+          "atol": 0.002,
+          "rtol": 0.002
+        },
+        "evidenceId": "observation-sparse-02",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 32 mismatches among 32 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-sparse-02",
+            "sha256": "c074cccba7d80c27d30dcabbe71e94cdd7c5cea11bd2c962f129aea1599c63c8"
+          },
+          {
+            "id": "arrays-sparse-02",
+            "sha256": "7c2f7377ecd2be0cc4b73a7f0f4df7159b3571e945c3c02fadac7b9e698e3f8a"
+          }
+        ]
+      },
+      {
+        "caseId": "sparse-03",
+        "status": "passed",
+        "parameters": {
+          "rows": 2,
+          "width": 256,
+          "seed": 0,
+          "dtype": "float32",
+          "offset": 0,
+          "distribution": "normal",
+          "atol": 0.002,
+          "rtol": 0.002
+        },
+        "evidenceId": "observation-sparse-03",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: passed; 0 mismatches among 512 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-sparse-03",
+            "sha256": "e9769233aea8af62d9b9113745ba9efd3e0b6344b4de54647d8982ee78369e37"
+          },
+          {
+            "id": "arrays-sparse-03",
+            "sha256": "7b16a5e87cec4459f023e5ae4eeb3d14bea177c45c6ed52c37f3d51c2b5109f5"
+          }
+        ]
+      },
+      {
+        "caseId": "sparse-04",
+        "status": "wrong_value",
+        "parameters": {
+          "rows": 2,
+          "width": 256,
+          "seed": 0,
+          "dtype": "float16",
+          "offset": -65504,
+          "distribution": "constant",
+          "atol": 0.002,
+          "rtol": 0.002
+        },
+        "evidenceId": "observation-sparse-04",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 512 mismatches among 512 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-sparse-04",
+            "sha256": "6255f0a570ad2788e0f0adbf2fdfdeda271921cdcc1a470840f616d6839366de"
+          },
+          {
+            "id": "arrays-sparse-04",
+            "sha256": "7e7818dbb5088520061beb135e85372a983d8789cc439b123a728f39be8c64ce"
+          }
+        ]
+      },
+      {
+        "caseId": "sparse-05",
+        "status": "wrong_value",
+        "parameters": {
+          "rows": 2,
+          "width": 256,
+          "seed": 0,
+          "dtype": "bfloat16",
+          "offset": 94370000,
+          "distribution": "constant",
+          "atol": 0.002,
+          "rtol": 0.002
+        },
+        "evidenceId": "observation-sparse-05",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 512 mismatches among 512 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-sparse-05",
+            "sha256": "dfb32e72979e306bf6d3862267af6f11f6054e95c8b0849380d1cf4a088fffbf"
+          },
+          {
+            "id": "arrays-sparse-05",
+            "sha256": "531cc9c33ae267ccdc0bcf4e08dfa23540bb765c713227f21a0d388774f645ee"
+          }
+        ]
+      }
+    ],
+    "scope": "Observed facts only; payload values remain available through read/case in both conditions."
+  },
+  "responseCharacters": 3260,
+  "responseSHA256": "2c40d67657ddf3f69e70d2611ba527aa41c89c0c4c745091f1705f6630f4160a",
+  "wallMilliseconds": 0.1701509952545166
+}

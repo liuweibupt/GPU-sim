@@ -1,0 +1,65 @@
+{
+  "id": "poly-16",
+  "family": "poly",
+  "partition": "hidden",
+  "parameters": {
+    "rows": 3,
+    "width": 1023,
+    "seed": 107,
+    "dtype": "float16",
+    "scale": 2.0,
+    "eps": 1e-05,
+    "weights": [
+      0.6,
+      -0.2,
+      0.3
+    ],
+    "bias": -0.25,
+    "atol": 0.002,
+    "rtol": 0.002
+  },
+  "actual_dtype": "float16",
+  "actual_shape": [
+    3,
+    1023
+  ],
+  "input_array_identities": [
+    {
+      "name": "bias",
+      "shape": [
+        1
+      ],
+      "dtype": "float32",
+      "sha256": "db175157bba7783d412368a69a8d3af289db3ec392f722a57223e09d1a73684d"
+    },
+    {
+      "name": "weights",
+      "shape": [
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "7bd36515eb42cf429be7fa8af3a4f16870255041e15222419cb023ce981a7b3d"
+    },
+    {
+      "name": "x",
+      "shape": [
+        3,
+        1023
+      ],
+      "dtype": "float32",
+      "sha256": "7f73acfffad12f4119b9f540d04cb3abdadc290792f475e9546fbb6a04506b8c"
+    }
+  ],
+  "passed": true,
+  "outputs": 3069,
+  "mismatches": 0,
+  "nonfinite": 0,
+  "inputs_unchanged": true,
+  "max_abs_error": 0.002771241338439978,
+  "artifact": {
+    "path": "poly-16.npz",
+    "sha256": "495b91c8eb19fdef582217ca3c4f566e8a6e1967a4f6727115373e8bf8a09d1f",
+    "bytes": 55729
+  },
+  "wall_seconds": 0.1179880959680304
+}

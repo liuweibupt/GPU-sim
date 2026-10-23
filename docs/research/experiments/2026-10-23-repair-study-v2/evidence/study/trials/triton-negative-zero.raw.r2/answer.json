@@ -1,0 +1,43 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "scalar_constant compares value == 0, which also matches -0.0, then constructs an all-zero null value and loses the floating-point sign bit. In negative-zero-00, all 32 float32 elements contain bytes [0,0,0,0] instead of [0,0,0,128]. The positive-zero control negative-zero-01 passes with 0/32 mismatches. Restrict the null shortcut to non-floating types so floating constants use the existing typed constructors (or the existing fp8 conversion). This preserves signed zero for float16, bfloat16, float32 and float64 while retaining the existing nonzero construction paths. Compilation and post-patch device results are unavailable; other precisions have no supplied observations inspected here.",
+  "locations": [
+    {
+      "source_id": "source-06",
+      "start_line": 601,
+      "end_line": 623
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "negative-zero-00",
+      "evidence_ids": [
+        "observation-negative-zero-00"
+      ]
+    },
+    {
+      "case_id": "negative-zero-01",
+      "evidence_ids": [
+        "observation-negative-zero-01"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-06",
+      "old": "        if value == 0:\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))",
+      "new": "        # Floating-point zeros must retain their sign through typed construction.\n        if value == 0 and not dtype.is_floating():\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))"
+    }
+  ]
+}

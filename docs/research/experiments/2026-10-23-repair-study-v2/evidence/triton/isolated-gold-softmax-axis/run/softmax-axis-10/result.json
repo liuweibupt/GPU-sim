@@ -1,0 +1,105 @@
+{
+  "case": {
+    "id": "softmax-axis-10",
+    "family": "softmax-axis",
+    "split": "hidden",
+    "shape": [
+      2,
+      2
+    ],
+    "dim": 1,
+    "pattern": "extreme"
+  },
+  "status": "pass",
+  "input_values": [
+    -50.0,
+    50.0,
+    49.0,
+    -49.0
+  ],
+  "observed": [
+    3.783505853677006e-44,
+    1.0,
+    1.0,
+    2.7465449900766415e-43
+  ],
+  "reference": [
+    3.783505853677006e-44,
+    1.0,
+    1.0,
+    2.7465449900766415e-43
+  ],
+  "observed_bytes": [
+    27,
+    0,
+    0,
+    0,
+    0,
+    0,
+    128,
+    63,
+    0,
+    0,
+    128,
+    63,
+    196,
+    0,
+    0,
+    0
+  ],
+  "reference_bytes": [
+    27,
+    0,
+    0,
+    0,
+    0,
+    0,
+    128,
+    63,
+    0,
+    0,
+    128,
+    63,
+    196,
+    0,
+    0,
+    0
+  ],
+  "elements": 4,
+  "output_dtype": "torch.float32",
+  "maximum_absolute_error": 0.0,
+  "wrong_elements": 0,
+  "assembly": {
+    "source": {
+      "sha256": "6617355e317c1ea4b53c417394fd7df985633ce7d581c0312819109e334986c6",
+      "file": "kernel.source",
+      "bytes": 8000
+    },
+    "ttir": {
+      "sha256": "3416e038607637ba01ab8a40c9eb8826403807a440ae8207e1969d5a073d2864",
+      "file": "kernel.ttir",
+      "bytes": 4999
+    },
+    "ttgir": {
+      "sha256": "8a58d7cda473f4ad9ad3a542a5458990950cf05693326acfab9e1e29ad3b31b7",
+      "file": "kernel.ttgir",
+      "bytes": 5752
+    },
+    "llir": {
+      "sha256": "489b6aaac40eedddd4476f6c7c49157e66bd81320a2201b639aad06e2883102a",
+      "file": "kernel.llir",
+      "bytes": 5511
+    },
+    "ptx": {
+      "sha256": "ba588cd38a325a43d6a0182fcc6dd24683cbf044c753912bd037b86352cc725c",
+      "file": "kernel.ptx",
+      "bytes": 12673
+    },
+    "cubin": {
+      "sha256": "2d6bd1e6fb6c5564ada85296bcecd96cb85f337341c424f1277b482d8529af54",
+      "bytes": 5928,
+      "omitted": "binary artifact represented by hash"
+    }
+  },
+  "execution_wall_seconds": 0.01544849993661046
+}

@@ -1,0 +1,120 @@
+{
+  "format": "repair-v2-reporting-independent-review-v1",
+  "reviewedAt": "2026-10-23T15:05:03.633967+00:00",
+  "status": "reporting-and-controls-publication-ready-final-combined-archive-roundtrip-pending",
+  "scope": "Only synthetic reporting traces and captured before/gold controls; no real model candidate answers, query logs or scores inspected.",
+  "modelCalls": 0,
+  "gpuCalls": 0,
+  "actualStudyCandidatesRead": 0,
+  "files": {
+    "tools/research/repair-study-v2/analyze.mjs": "aa35bff99561cce12f68006615d45b503d3bad3be431e4a00a189eab63d90e0b",
+    "tools/research/repair-study-v2/verify_archive.mjs": "f80bf2c719d2bef382efde5d0417a5c6915ae238def6b18bfaf02e08e85881ea",
+    "tools/research/liger-faults/publish.py": "7a6e79dfeceef79c49bce6f59c3c2811e4e1704dc420c267e52d8cefc74fe78e",
+    "tools/research/liger-faults/verify_publication.py": "aadfec59a7112257623a7cfe3a810fac72b907524da7ce0edc1b1836412e6fde",
+    "tools/research/liger-faults/run_study_candidates.py": "daabec6d96775f698d60e4b84fb300818799efc6c774a3f00f91a8de4f47ffe7",
+    "tools/research/liger-faults/test_publication.py": "7fcdb1d51a9156f077ed113a4004eaa64fe27e3fde3f62a802bf6a583a471566",
+    "out/research/repair-v2-audit/reporting_adapter_fixture.mjs": "01961210cae56a27d79786f9cdd20e1c031e842f54a672791e927b24cb16a148"
+  },
+  "controlsPublication": {
+    "path": "out/research/liger-faults/publication-review-controls/package",
+    "manifestSHA256": "3a53f5d251a5e22bbf147a94b68d4dbb2f3bc7deb95e34c3e5e7d6733e851c45",
+    "files": 3995,
+    "runs": 9,
+    "cases": 168,
+    "outputs": 921657,
+    "note": "Original controls-only package retained without rewrite. Publication tamper tests use the reviewed current external verify_publication.py against copies; frozen numerical verifier is loaded from the archived package."
+  },
+  "publicationTamperTests": {
+    "passed": 11,
+    "log": "out/research/repair-v2-audit/publication-tests.log",
+    "logSHA256": "b9f0b81614d1dc893ac0f040b7694eb3565326333742ae92f4f247ff42e9f582",
+    "cases": [
+      "complete nine controls",
+      "unmanifested file",
+      "changed complete output bytes",
+      "missing official gold family",
+      "declared candidates missing from directories",
+      "coherent false candidate-tree hash",
+      "wrong candidate before identity",
+      "runtime hidden status differs from verified case",
+      "wrong evaluator source identity",
+      "coherently changed actual/reference arrays",
+      "changed imported source"
+    ]
+  },
+  "reporterSyntheticTests": {
+    "format": "reporting-adapter-synthetic-integration-review-v1",
+    "unitTestOnly": true,
+    "modelCalls": 0,
+    "gpuCalls": 0,
+    "actualStudyAnswersRead": 0,
+    "assertions": [
+      "synthetic-four-trial denominator retained",
+      "both Liger boolean and Triton status schemas map hidden pass",
+      "null/empty usage stays missing",
+      "unsupported derived result not successful uptake",
+      "visible failing bug not mislabelled passing-control regression",
+      "hidden and all-case endpoints separated",
+      "full-output fields normalized",
+      "runtime-record mapping tamper rejected",
+      "evaluation-before-generation timestamp rejected"
+    ],
+    "passed": 9,
+    "reportingSourceSHA256": "aa35bff99561cce12f68006615d45b503d3bad3be431e4a00a189eab63d90e0b"
+  },
+  "findings": [
+    {
+      "id": "nested-gold-control-collection",
+      "status": "resolved",
+      "detail": "Initial collector glob stopped at parent gold-check directory; changed to descend family subdirectories and verifier now requires all three v3 controls."
+    },
+    {
+      "id": "silent-candidate-omission",
+      "status": "resolved",
+      "detail": "When execution summary is present, verifier requires 18 unique planned Liger trial records and exact executed-directory set; not-executed candidates remain explicit."
+    },
+    {
+      "id": "runtime-case-status-binding",
+      "status": "resolved",
+      "detail": "Report and publication verifier now bind runtime hidden/visible statuses to independently verified cases, normalizing Liger passed boolean and Triton status string."
+    },
+    {
+      "id": "candidate-source-identity",
+      "status": "resolved",
+      "detail": "Publication verifier recomputes exact JS tree identity, candidate file set/before hashes/roles/changed flags, text/applied hashes and evaluator source identity."
+    },
+    {
+      "id": "partial-and-null-usage",
+      "status": "resolved",
+      "detail": "Reporting handles undefined, null and empty usage records as missing; per-call completeness requires finite input/output token fields; partial token totals remain a lower bound."
+    },
+    {
+      "id": "tool-uptake",
+      "status": "resolved",
+      "detail": "Accepted response count separated from successful derived response count, excluding error/rejected responses from successful uptake."
+    },
+    {
+      "id": "visible-regression-label",
+      "status": "resolved",
+      "detail": "All visible failures separated from regressions of originally passing visible controls."
+    },
+    {
+      "id": "published-runtime-freeze-binding",
+      "status": "resolved-by-code-review-final-artifact-run-pending",
+      "detail": "verify_archive now binds packaged runtime/contract files directly to pre-generation runtime freeze hashes in addition to snapshot and per-package verification."
+    }
+  ],
+  "gateReview": {
+    "allPlannedResultsRequiredBeforeEvaluation": true,
+    "allFinishedAtRequired": true,
+    "runtimeFreezeRecheckedBeforeGate": true,
+    "candidateRegenerationOrRepairObservedInCode": false,
+    "limitation": "Code review only. Actual max generation finish / candidate execution start must be audited after all 36 trials finish."
+  },
+  "remainingChecks": [
+    "Build the final combined package after all actual candidates finish.",
+    "Execute verify_archive on a fresh extraction; this review does not claim that not-yet-produced package has passed.",
+    "Retain valid/invalid/timeouts and original runtime statuses; use fixed denominator and separate hidden/all-case outcomes.",
+    "No claims about actual treatment success, speed, or human understanding are made by these synthetic tests."
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "round": 5,
+  "request": {
+    "op": "case",
+    "scope": null,
+    "id": "softmax-axis-01",
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "case": {
+      "id": "softmax-axis-01",
+      "status": "passed",
+      "parameters": {
+        "shape": [
+          2,
+          2
+        ],
+        "dim": 0,
+        "pattern": "linear"
+      },
+      "evidenceRefs": [
+        "observation-softmax-axis-01"
+      ]
+    },
+    "evidence": [
+      {
+        "id": "observation-softmax-axis-01",
+        "kind": "device-output",
+        "caseIds": [
+          "softmax-axis-01"
+        ],
+        "observed": true,
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 4 elements differ. Floating-point signed zero uses byte equality where required.",
+        "payload": {
+          "case": {
+            "id": "softmax-axis-01",
+            "family": "softmax-axis",
+            "split": "visible",
+            "shape": [
+              2,
+              2
+            ],
+            "dim": 0,
+            "pattern": "linear"
+          },
+          "status": "pass",
+          "input_values": [
+            -2.25,
+            -0.5,
+            1.25,
+            -1.75
+          ],
+          "observed": [
+            0.02931222692131996,
+            0.7772998809814453,
+            0.970687747001648,
+            0.22270013391971588
+          ],
+          "reference": [
+            0.02931223064661026,
+            0.7772998809814453,
+            0.970687747001648,
+            0.22270013391971588
+          ],
+          "observed_bytes": [
+            50,
+            32,
+            240,
+            60,
+            32,
+            253,
+            70,
+            63,
+            254,
+            126,
+            120,
+            63,
+            129,
+            11,
+            100,
+            62
+          ],
+          "reference_bytes": [
+            52,
+            32,
+            240,
+            60,
+            32,
+            253,
+            70,
+            63,
+            254,
+            126,
+            120,
+            63,
+            129,
+            11,
+            100,
+            62
+          ],
+          "elements": 4,
+          "output_dtype": "torch.float32",
+          "maximum_absolute_error": 3.725290298461914e-9,
+          "wrong_elements": 0
+        },
+        "sourceId": "test-kernel",
+        "rawRefs": [
+          {
+            "id": "raw-softmax-axis-01",
+            "sha256": "f5442620b54db47f23d2fab9f08e99341a9ac5d55e1558db0254bee776967dee"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+          }
+        ]
+      }
+    ]
+  },
+  "responseCharacters": 1308,
+  "responseSHA256": "c8a6e7fd75ef34f7c60598b8eab1889a082528c537d767748549de96ebd4a320",
+  "wallMilliseconds": 0.12385106086730957
+}

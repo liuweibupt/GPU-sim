@@ -1,0 +1,54 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "The forward kernel computes prefix sums and subtracts the simplex mass at the input's original magnitude, losing essential precision. Observed sparse-04 has 512/512 mismatches: 0.0078125 instead of 0.00390625. Sparse-02 has 32/32 mismatches: 94371840 instead of 0.0625, consistent with an empty computed support after rounding erases the unit subtraction. The passing float32 control sparse-03 has 0/512 mismatches and maximum absolute error 1.1920928955078125e-7. Center both sorted and original values by the row maximum before computing the projection. Clamp centered values below -1: they cannot belong to the positive support, since the centered threshold lies in [-1, 0]. This also prevents extreme finite inputs from creating overflowing prefix sums. Input storage, output shape/dtype, and backward handling remain unchanged. Compilation and post-patch runtime correctness could not be verified through the supplied API; the observations describe the original implementation.",
+  "locations": [
+    {
+      "source_id": "source-34",
+      "start_line": 31,
+      "end_line": 61
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "sparse-04",
+      "evidence_ids": [
+        "observation-sparse-04"
+      ]
+    },
+    {
+      "case_id": "sparse-02",
+      "evidence_ids": [
+        "observation-sparse-02"
+      ]
+    },
+    {
+      "case_id": "sparse-03",
+      "evidence_ids": [
+        "observation-sparse-03"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-34",
+      "old": "    z_valid = tl.where(mask, z_sorted_block, 0.0)\n    cssv = tl.cumsum(z_valid, 0)",
+      "new": "    # Projection is invariant to a common shift of every row element.\n    row_max = tl.max(z_sorted_block, 0)\n    # The centered threshold is >= -1, so smaller values are inactive.\n    # Clipping also bounds prefix sums for extreme finite inputs.\n    z_sorted_block = tl.maximum(z_sorted_block - row_max, -1.0)\n    z_valid = tl.where(mask, z_sorted_block, 0.0)\n    cssv = tl.cumsum(z_valid, 0)"
+    },
+    {
+      "source_id": "source-34",
+      "old": "    y = tl.maximum(x_block - tau, 0.0)",
+      "new": "    x_block = tl.maximum(x_block - row_max, -1.0)\n    y = tl.maximum(x_block - tau, 0.0)"
+    }
+  ]
+}

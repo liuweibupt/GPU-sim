@@ -1,0 +1,75 @@
+{
+  "round": 1,
+  "request": {
+    "op": "search",
+    "scope": null,
+    "id": "source-18",
+    "text": "selective_log_softmax",
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "literal": "selective_log_softmax",
+    "totalMatches": 8,
+    "offset": 0,
+    "matches": [
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 25,
+        "text": "def _selective_log_softmax_kernel("
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 68,
+        "text": "def fused_selective_log_softmax(logits: torch.Tensor, input_ids: torch.Tensor, temperature: float = 0.9, mask=None):"
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 77,
+        "text": "    _selective_log_softmax_kernel[(B, L)]("
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 103,
+        "text": "    # constexpr for the fp64 reason in _selective_log_softmax_kernel above."
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 235,
+        "text": "    # constexpr for the fp64 reason in _selective_log_softmax_kernel above."
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 330,
+        "text": "    # constexpr for the fp64 reason in _selective_log_softmax_kernel above."
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 425,
+        "text": "    # constexpr for the fp64 reason in _selective_log_softmax_kernel above."
+      },
+      {
+        "source_id": "source-18",
+        "path": "src/liger_kernel/ops/grpo_loss.py",
+        "line": 696,
+        "text": "            per_token_logps = fused_selective_log_softmax(logits, completion_ids, temperature, completion_mask)"
+      }
+    ],
+    "nextOffset": null
+  },
+  "responseCharacters": 1413,
+  "responseSHA256": "81c020d7f419f9515988626636fac5a435328cc2b0cc6ec1f9a581198d5e1b99",
+  "wallMilliseconds": 0.17706191539764404
+}

@@ -1,0 +1,137 @@
+{
+  "round": 7,
+  "request": {
+    "op": "case",
+    "scope": null,
+    "id": "constexpr-filter-01",
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "case": {
+      "id": "constexpr-filter-01",
+      "status": "passed",
+      "parameters": {
+        "values": [
+          10,
+          20,
+          30,
+          40
+        ],
+        "cutoff": 0,
+        "even": false
+      },
+      "evidenceRefs": [
+        "observation-constexpr-filter-01"
+      ]
+    },
+    "evidence": [
+      {
+        "id": "observation-constexpr-filter-01",
+        "kind": "device-output",
+        "caseIds": [
+          "constexpr-filter-01"
+        ],
+        "observed": true,
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 5 elements differ. Floating-point signed zero uses byte equality where required.",
+        "payload": {
+          "case": {
+            "id": "constexpr-filter-01",
+            "family": "constexpr-filter",
+            "split": "visible",
+            "values": [
+              10,
+              20,
+              30,
+              40
+            ],
+            "cutoff": 0,
+            "even": false
+          },
+          "status": "pass",
+          "observed": [
+            4,
+            10,
+            20,
+            30,
+            40
+          ],
+          "reference": [
+            4,
+            10,
+            20,
+            30,
+            40
+          ],
+          "observed_bytes": [
+            4,
+            0,
+            0,
+            0,
+            10,
+            0,
+            0,
+            0,
+            20,
+            0,
+            0,
+            0,
+            30,
+            0,
+            0,
+            0,
+            40,
+            0,
+            0,
+            0
+          ],
+          "reference_bytes": [
+            4,
+            0,
+            0,
+            0,
+            10,
+            0,
+            0,
+            0,
+            20,
+            0,
+            0,
+            0,
+            30,
+            0,
+            0,
+            0,
+            40,
+            0,
+            0,
+            0
+          ],
+          "elements": 5,
+          "output_dtype": "torch.int32",
+          "wrong_elements": 0
+        },
+        "sourceId": "test-kernel",
+        "rawRefs": [
+          {
+            "id": "raw-constexpr-filter-01",
+            "sha256": "02fb39584e82ce036a96c4400d5959b9972e71348445147f5511c7502eaa1a6c"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "ac92f5244c13658b5f76f9309e92209157ac22fd7d701351fd7bf5bbc41d9c0a"
+          }
+        ]
+      }
+    ]
+  },
+  "responseCharacters": 1113,
+  "responseSHA256": "ebdf7412069517a5294988abb2d17669010d859068bbc5807f0bee023d621c13",
+  "wallMilliseconds": 0.18416202068328857
+}

@@ -1,0 +1,18 @@
+#loc = loc("/home/liuwei/GPU-sim/tools/research/natural-fault-expansion/run.py":16:1)
+#loc5 = loc("Y"(#loc))
+module {
+  tt.func public @constant_kernel(%Y: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("Y"(#loc))) attributes {noinline = false} {
+    %y = arith.constant dense<-0.000000e+00> : tensor<64xf16> loc(#loc6)
+    %offs = tt.make_range {end = 64 : i32, start = 0 : i32} : tensor<64xi32> loc(#loc7)
+    %0 = tt.splat %Y : !tt.ptr<f16> -> tensor<64x!tt.ptr<f16>> loc(#loc3)
+    %1 = tt.addptr %0, %offs : tensor<64x!tt.ptr<f16>>, tensor<64xi32> loc(#loc3)
+    tt.store %1, %y : tensor<64x!tt.ptr<f16>> loc(#loc4)
+    tt.return loc(#loc)
+  } loc(#loc)
+} loc(#loc)
+#loc1 = loc("/home/liuwei/GPU-sim/tools/research/natural-fault-expansion/run.py":18:7)
+#loc2 = loc("/home/liuwei/GPU-sim/tools/research/natural-fault-expansion/run.py":17:10)
+#loc3 = loc("/home/liuwei/GPU-sim/tools/research/natural-fault-expansion/run.py":19:14)
+#loc4 = loc("/home/liuwei/GPU-sim/tools/research/natural-fault-expansion/run.py":19:5)
+#loc6 = loc("y"(#loc1))
+#loc7 = loc("offs"(#loc2))

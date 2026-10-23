@@ -1,0 +1,175 @@
+{
+  "format": "human-task-rubric-draft-v2",
+  "status": "DRAFT — expert review and independent rater calibration pending",
+  "taskId": "liger-poly",
+  "rootCauseId": "linkedin/Liger-Kernel#1540",
+  "title": "低精度中间幂运算或归约导致溢出/精度失效",
+  "mechanismForFullCredit": "poly_norm 加载半精度 X 后在过窄 dtype 中形成高阶幂/相关归约；大隐藏维 FP16 失败而对应 FP32 和小维 FP16 控制通过。必须在高阶中间值形成前扩精度。",
+  "allowedEquivalentExplanationsAndRepairs": [
+    "加载 X 后转 FP32，再执行多项式/归约并保持契约输出 dtype",
+    "数值等价稳定缩放或足够精度的计算路径；仍需全部实机隐藏测试"
+  ],
+  "counterfactualPredictions": [
+    "固定 seed/shape，仅切 FP16 与 FP32，区分精度路径与索引问题",
+    "固定 dtype 改 width/scale，验证高阶量的动态范围预测"
+  ],
+  "insufficientOrWrongAnswers": [
+    "溢出发生之后才 cast",
+    "输出统一改 FP32 而违反原输出 dtype 契约",
+    "仅凭该证据断言某条硬件指令先后顺序"
+  ],
+  "localizationTargets": [
+    {
+      "source_id": "source-28",
+      "start_line": 24,
+      "end_line": 99,
+      "path": "src/liger_kernel/ops/poly_norm.py",
+      "sourceSha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2"
+    },
+    {
+      "source_id": "source-28",
+      "start_line": 205,
+      "end_line": 259,
+      "path": "src/liger_kernel/ops/poly_norm.py",
+      "sourceSha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2"
+    }
+  ],
+  "failureEvidence": [
+    {
+      "caseId": "poly-02",
+      "evidenceIds": [
+        "observation-poly-02"
+      ],
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 0,
+        "dtype": "float16",
+        "scale": 1,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1,
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    }
+  ],
+  "passingControls": [
+    {
+      "caseId": "poly-00",
+      "evidenceIds": [
+        "observation-poly-00"
+      ],
+      "parameters": {
+        "rows": 4,
+        "width": 128,
+        "seed": 0,
+        "dtype": "float16",
+        "scale": 1,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1,
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "caseId": "poly-01",
+      "evidenceIds": [
+        "observation-poly-01"
+      ],
+      "parameters": {
+        "rows": 4,
+        "width": 128,
+        "seed": 0,
+        "dtype": "float32",
+        "scale": 1,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    },
+    {
+      "caseId": "poly-03",
+      "evidenceIds": [
+        "observation-poly-03"
+      ],
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 0,
+        "dtype": "float32",
+        "scale": 1,
+        "eps": 1e-06,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1,
+        "atol": 2e-05,
+        "rtol": 2e-05
+      }
+    }
+  ],
+  "scoring": "Four 0/1/2 dimensions: mechanism, localization, evidence, counterfactual. Correct alternatives need not match gold text; unsupported causal certainty loses mechanism/evidence credit. Exact line targets are guides, not an automatic semantic correctness oracle.",
+  "repairExecutor": {
+    "taskId": "liger-poly",
+    "baseDirectory": "out/research/liger-faults",
+    "executor": "tools/research/liger-faults/evaluate_candidate.py",
+    "executorSha256": "0333c30fd71c396980a55488c21361feab941dc757dc4a2cddb2cd8e4aceee27",
+    "verifier": "tools/research/liger-faults/verify.py",
+    "verifierSha256": "c0d8a0cbf695550f03f33edfc6005ad8f0b21b9813bd5eaeb96a392e78424ac1",
+    "runner": "tools/research/liger-faults/run.py",
+    "runnerSha256": "5d6dba630ebd8255994eea2e7a84e30f2e2b4ee9320c0c55f83310fa65c5dd8c",
+    "hiddenPlan": "out/research/liger-faults/plan.json",
+    "hiddenSpecSHA256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+    "hiddenCaseIds": [
+      "poly-04",
+      "poly-05",
+      "poly-06",
+      "poly-07",
+      "poly-08",
+      "poly-09",
+      "poly-10",
+      "poly-11",
+      "poly-12",
+      "poly-13",
+      "poly-14",
+      "poly-15",
+      "poly-16",
+      "poly-17"
+    ],
+    "visibleCaseIds": [
+      "poly-00",
+      "poly-01",
+      "poly-02",
+      "poly-03"
+    ],
+    "command": [
+      "python3",
+      "tools/research/liger-faults/evaluate_candidate.py",
+      "--candidate",
+      "CANDIDATE_JSON",
+      "--output",
+      "NEW_OUTPUT_DIRECTORY",
+      "--base",
+      "out/research/liger-faults"
+    ],
+    "scope": "Existing actual-GPU executor. Not run on any human candidate; no human participant exists yet."
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "schema": "natural-fault-expansion-plan-v1",
+  "cases": [
+    {
+      "id": "softmax-axis-00",
+      "family": "softmax-axis",
+      "split": "visible",
+      "shape": [
+        2,
+        2
+      ],
+      "dim": 1,
+      "pattern": "linear"
+    },
+    {
+      "id": "softmax-axis-01",
+      "family": "softmax-axis",
+      "split": "visible",
+      "shape": [
+        2,
+        2
+      ],
+      "dim": 0,
+      "pattern": "linear"
+    },
+    {
+      "id": "softmax-axis-02",
+      "family": "softmax-axis",
+      "split": "visible",
+      "shape": [
+        128
+      ],
+      "dim": 0,
+      "pattern": "linear"
+    },
+    {
+      "id": "softmax-axis-03",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        4,
+        4
+      ],
+      "dim": 1,
+      "pattern": "linear"
+    },
+    {
+      "id": "softmax-axis-04",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        8,
+        8
+      ],
+      "dim": 1,
+      "pattern": "wave"
+    },
+    {
+      "id": "softmax-axis-05",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        16,
+        16
+      ],
+      "dim": 1,
+      "pattern": "linear"
+    },
+    {
+      "id": "softmax-axis-06",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        4,
+        16
+      ],
+      "dim": 0,
+      "pattern": "wave"
+    },
+    {
+      "id": "softmax-axis-07",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        8,
+        8
+      ],
+      "dim": -1,
+      "pattern": "wave"
+    },
+    {
+      "id": "softmax-axis-08",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        2,
+        2
+      ],
+      "dim": 1,
+      "pattern": "constant"
+    },
+    {
+      "id": "softmax-axis-09",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        32
+      ],
+      "dim": 0,
+      "pattern": "wave"
+    },
+    {
+      "id": "softmax-axis-10",
+      "family": "softmax-axis",
+      "split": "hidden",
+      "shape": [
+        2,
+        2
+      ],
+      "dim": 1,
+      "pattern": "extreme"
+    },
+    {
+      "id": "negative-zero-00",
+      "family": "negative-zero",
+      "split": "visible",
+      "dtype": "float32",
+      "value": -0.0,
+      "n": 32
+    },
+    {
+      "id": "negative-zero-01",
+      "family": "negative-zero",
+      "split": "visible",
+      "dtype": "float32",
+      "value": 0.0,
+      "n": 32
+    },
+    {
+      "id": "negative-zero-02",
+      "family": "negative-zero",
+      "split": "visible",
+      "dtype": "float32",
+      "value": 1.0,
+      "n": 32
+    },
+    {
+      "id": "negative-zero-03",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "float16",
+      "value": -0.0,
+      "n": 64
+    },
+    {
+      "id": "negative-zero-04",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "float16",
+      "value": 0.0,
+      "n": 64
+    },
+    {
+      "id": "negative-zero-05",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "bfloat16",
+      "value": -0.0,
+      "n": 128
+    },
+    {
+      "id": "negative-zero-06",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "bfloat16",
+      "value": 0.0,
+      "n": 128
+    },
+    {
+      "id": "negative-zero-07",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "float64",
+      "value": -0.0,
+      "n": 32
+    },
+    {
+      "id": "negative-zero-08",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "float64",
+      "value": 0.0,
+      "n": 32
+    },
+    {
+      "id": "negative-zero-09",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "float32",
+      "value": -0.0,
+      "n": 256
+    },
+    {
+      "id": "negative-zero-10",
+      "family": "negative-zero",
+      "split": "hidden",
+      "dtype": "float32",
+      "value": -1.0,
+      "n": 64
+    },
+    {
+      "id": "constexpr-filter-00",
+      "family": "constexpr-filter",
+      "split": "visible",
+      "values": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "cutoff": 30,
+      "even": false
+    },
+    {
+      "id": "constexpr-filter-01",
+      "family": "constexpr-filter",
+      "split": "visible",
+      "values": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "cutoff": 0,
+      "even": false
+    },
+    {
+      "id": "constexpr-filter-02",
+      "family": "constexpr-filter",
+      "split": "visible",
+      "values": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "cutoff": 2,
+      "even": true
+    },
+    {
+      "id": "constexpr-filter-03",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        -5,
+        -4,
+        -3,
+        0,
+        1,
+        2
+      ],
+      "cutoff": -3,
+      "even": false
+    },
+    {
+      "id": "constexpr-filter-04",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        -5,
+        -4,
+        -3,
+        0,
+        1,
+        2
+      ],
+      "cutoff": -4,
+      "even": true
+    },
+    {
+      "id": "constexpr-filter-05",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        2,
+        4,
+        6
+      ],
+      "cutoff": 7,
+      "even": false
+    },
+    {
+      "id": "constexpr-filter-06",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        7,
+        7,
+        7
+      ],
+      "cutoff": 7,
+      "even": false
+    },
+    {
+      "id": "constexpr-filter-07",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "cutoff": 3,
+      "even": true
+    },
+    {
+      "id": "constexpr-filter-08",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        0
+      ],
+      "cutoff": 0,
+      "even": true
+    },
+    {
+      "id": "constexpr-filter-09",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        -9,
+        -7,
+        -5,
+        -3
+      ],
+      "cutoff": -10,
+      "even": true
+    },
+    {
+      "id": "constexpr-filter-10",
+      "family": "constexpr-filter",
+      "split": "hidden",
+      "values": [
+        32,
+        4,
+        16,
+        8,
+        64
+      ],
+      "cutoff": 8,
+      "even": false
+    }
+  ]
+}

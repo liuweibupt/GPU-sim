@@ -1,0 +1,122 @@
+{
+  "format": "human-task-rubric-draft-v2",
+  "status": "DRAFT — expert review and independent rater calibration pending",
+  "taskId": "triton-constexpr-filter",
+  "rootCauseId": "triton-pr-10888",
+  "title": "编译期列表推导式忽略 if 谓词",
+  "mechanismForFullCredit": "visit_ListComp 遍历元素后无条件 append，未评估 comp.ifs；过滤本应丢弃的项仍进入常量序列，GPU 输出长度与元素均随之错误。",
+  "allowedEquivalentExplanationsAndRepairs": [
+    "在 append 前逐项求所有编译期谓词的合取",
+    "等价、保留求值语义的编译期过滤实现；无 if 时结果不变"
+  ],
+  "counterfactualPredictions": [
+    "对同一 tuple 比较不过滤、部分过滤、全过滤",
+    "使用两个 if 验证 AND 及短路语义，不仅验证单一 cutoff"
+  ],
+  "insufficientOrWrongAnswers": [
+    "改运行时输出以掩盖编译期错误",
+    "硬编码示例 tuple 或只修测试 wrapper"
+  ],
+  "localizationTargets": [
+    {
+      "source_id": "source-01",
+      "start_line": 528,
+      "end_line": 541,
+      "path": "triton/compiler/code_generator.py",
+      "sourceSha256": "e7b75e513fb868674fd2adc660c6527e4ad9e74f01120d8e2b1ad243329a0c92"
+    }
+  ],
+  "failureEvidence": [
+    {
+      "caseId": "constexpr-filter-00",
+      "evidenceIds": [
+        "observation-constexpr-filter-00"
+      ],
+      "parameters": {
+        "values": [
+          10,
+          20,
+          30,
+          40
+        ],
+        "cutoff": 30,
+        "even": false
+      }
+    },
+    {
+      "caseId": "constexpr-filter-02",
+      "evidenceIds": [
+        "observation-constexpr-filter-02"
+      ],
+      "parameters": {
+        "values": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "cutoff": 2,
+        "even": true
+      }
+    }
+  ],
+  "passingControls": [
+    {
+      "caseId": "constexpr-filter-01",
+      "evidenceIds": [
+        "observation-constexpr-filter-01"
+      ],
+      "parameters": {
+        "values": [
+          10,
+          20,
+          30,
+          40
+        ],
+        "cutoff": 0,
+        "even": false
+      }
+    }
+  ],
+  "scoring": "Four 0/1/2 dimensions: mechanism, localization, evidence, counterfactual. Correct alternatives need not match gold text; unsupported causal certainty loses mechanism/evidence credit. Exact line targets are guides, not an automatic semantic correctness oracle.",
+  "repairExecutor": {
+    "taskId": "triton-constexpr-filter",
+    "baseDirectory": "out/research/natural-fault-expansion",
+    "executor": "tools/research/natural-fault-expansion/evaluate_candidate.py",
+    "executorSha256": "678488bbdda7b1c3839d9ddb1012b1cd62e809eca6438fb895db47b9533f0fb9",
+    "verifier": "tools/research/natural-fault-expansion/verify.py",
+    "verifierSha256": "c94d119a0e6902c9ad97c8ec3ec7b4c585afafe6786f4fd23153ba8097c28ad1",
+    "runner": "tools/research/natural-fault-expansion/run.py",
+    "runnerSha256": "085bb656e534163698d8bb3f2fd9712c27e803c7658e8539129365fc6e830408",
+    "hiddenPlan": "out/research/natural-fault-expansion/plan.json",
+    "hiddenSpecSHA256": "a3215870aaaf47801a448c7b4da727ca80da29b65a0c852d999d564827e38d85",
+    "hiddenCaseIds": [
+      "constexpr-filter-03",
+      "constexpr-filter-04",
+      "constexpr-filter-05",
+      "constexpr-filter-06",
+      "constexpr-filter-07",
+      "constexpr-filter-08",
+      "constexpr-filter-09",
+      "constexpr-filter-10"
+    ],
+    "visibleCaseIds": [
+      "constexpr-filter-00",
+      "constexpr-filter-01",
+      "constexpr-filter-02"
+    ],
+    "command": [
+      "python3",
+      "tools/research/natural-fault-expansion/evaluate_candidate.py",
+      "--candidate",
+      "CANDIDATE_JSON",
+      "--output",
+      "NEW_OUTPUT_DIRECTORY",
+      "--base",
+      "out/research/natural-fault-expansion"
+    ],
+    "scope": "Existing actual-GPU executor. Not run on any human candidate; no human participant exists yet."
+  }
+}

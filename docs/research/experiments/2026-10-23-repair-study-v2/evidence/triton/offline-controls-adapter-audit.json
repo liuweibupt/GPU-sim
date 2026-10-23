@@ -1,0 +1,136 @@
+{
+  "schema": "natural-fault-expansion-offline-verification-v1",
+  "publication_manifest_sha256": "5c6ac88242d65d97cc2ceb784a33314bd9bfa58d9be0d057a6391824846a053d",
+  "files_checked": 1352,
+  "verifier_sha256": "c94d119a0e6902c9ad97c8ec3ec7b4c585afafe6786f4fd23153ba8097c28ad1",
+  "plan_sha256": "a3215870aaaf47801a448c7b4da727ca80da29b65a0c852d999d564827e38d85",
+  "runs": [
+    {
+      "directory": "run-before",
+      "category": "screening-confounded",
+      "status": "verified",
+      "case_count": 33,
+      "counts": {
+        "wrong_value": 19,
+        "passed": 14
+      },
+      "output_elements": 1565,
+      "wrong_elements": 967
+    },
+    {
+      "directory": "run-gold",
+      "category": "screening-confounded",
+      "status": "verified",
+      "case_count": 33,
+      "counts": {
+        "passed": 29,
+        "wrong_value": 4
+      },
+      "output_elements": 1565,
+      "wrong_elements": 256
+    },
+    {
+      "directory": "run-before-v2",
+      "category": "final-before-control",
+      "status": "verified",
+      "case_count": 33,
+      "counts": {
+        "wrong_value": 19,
+        "passed": 14
+      },
+      "output_elements": 1565,
+      "wrong_elements": 967
+    },
+    {
+      "directory": "run-gold-v2",
+      "category": "combined-upstream-gold-control",
+      "status": "verified",
+      "case_count": 33,
+      "counts": {
+        "passed": 33
+      },
+      "output_elements": 1565,
+      "wrong_elements": 0
+    },
+    {
+      "directory": "isolated-gold-constexpr-filter",
+      "category": "single-root-upstream-gold-control",
+      "status": "verified",
+      "case_count": 11,
+      "counts": {
+        "passed": 11
+      },
+      "output_elements": 61,
+      "wrong_elements": 0,
+      "candidateTreeSHA256": "796d5e4a34b9720112c8cfe3cd6f2c87b597a384dbe423530793183388293c61"
+    },
+    {
+      "directory": "isolated-gold-core-constexpr-filter",
+      "category": "single-root-core-applyEdits-gold-control",
+      "status": "verified",
+      "case_count": 11,
+      "counts": {
+        "passed": 11
+      },
+      "output_elements": 61,
+      "wrong_elements": 0,
+      "candidateTreeSHA256": "796d5e4a34b9720112c8cfe3cd6f2c87b597a384dbe423530793183388293c61"
+    },
+    {
+      "directory": "isolated-gold-core-negative-zero",
+      "category": "single-root-core-applyEdits-gold-control",
+      "status": "verified",
+      "case_count": 11,
+      "counts": {
+        "passed": 11
+      },
+      "output_elements": 864,
+      "wrong_elements": 0,
+      "candidateTreeSHA256": "74167c99d79ba60df6c398d7abceef3c9cc31c83b5ccfdbc4d0829384c016567"
+    },
+    {
+      "directory": "isolated-gold-core-softmax-axis",
+      "category": "single-root-core-applyEdits-gold-control",
+      "status": "verified",
+      "case_count": 11,
+      "counts": {
+        "passed": 11
+      },
+      "output_elements": 640,
+      "wrong_elements": 0,
+      "candidateTreeSHA256": "8965a1520d943556515ccd84d1c046bb06ee3d05d08b44a8eeac57c1f555e89a"
+    },
+    {
+      "directory": "isolated-gold-negative-zero",
+      "category": "single-root-upstream-gold-control",
+      "status": "verified",
+      "case_count": 11,
+      "counts": {
+        "passed": 11
+      },
+      "output_elements": 864,
+      "wrong_elements": 0,
+      "candidateTreeSHA256": "74167c99d79ba60df6c398d7abceef3c9cc31c83b5ccfdbc4d0829384c016567"
+    },
+    {
+      "directory": "isolated-gold-softmax-axis",
+      "category": "single-root-upstream-gold-control",
+      "status": "verified",
+      "case_count": 11,
+      "counts": {
+        "passed": 11
+      },
+      "output_elements": 640,
+      "wrong_elements": 0,
+      "candidateTreeSHA256": "8965a1520d943556515ccd84d1c046bb06ee3d05d08b44a8eeac57c1f555e89a"
+    }
+  ],
+  "run_categories": {
+    "screening-confounded": 2,
+    "final-before-control": 1,
+    "combined-upstream-gold-control": 1,
+    "single-root-upstream-gold-control": 3,
+    "single-root-core-applyEdits-gold-control": 3
+  },
+  "scope": "Offline numerical/bitwise oracle, complete output lengths, source and artifact identities; no GPU execution, download, runtime wheel or native binary needed."
+}

@@ -1,0 +1,253 @@
+{
+  "round": 6,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-28",
+    "text": null,
+    "start": 205,
+    "end": 260,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-28",
+    "path": "src/liger_kernel/ops/poly_norm.py",
+    "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+    "start": 205,
+    "end": 260,
+    "totalLines": 388,
+    "lines": [
+      {
+        "line": 205,
+        "text": "def poly_norm_forward(X, W, B, eps=1e-6):"
+      },
+      {
+        "line": 206,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 207,
+        "text": "    PolyNorm Forward Pass"
+      },
+      {
+        "line": 208,
+        "text": ""
+      },
+      {
+        "line": 209,
+        "text": "    Args:"
+      },
+      {
+        "line": 210,
+        "text": "        X: input tensor of shape (*, H) where H is hidden dimension"
+      },
+      {
+        "line": 211,
+        "text": "        W: weight tensor of shape (3,) for [w0, w1, w2]"
+      },
+      {
+        "line": 212,
+        "text": "        B: bias scalar tensor"
+      },
+      {
+        "line": 213,
+        "text": "        eps: epsilon for numerical stability"
+      },
+      {
+        "line": 214,
+        "text": ""
+      },
+      {
+        "line": 215,
+        "text": "    Returns:"
+      },
+      {
+        "line": 216,
+        "text": "        Y: output tensor of same shape as X"
+      },
+      {
+        "line": 217,
+        "text": "        X: reshaped input (for backward)"
+      },
+      {
+        "line": 218,
+        "text": "        RSTD: cached rstd values (for backward)"
+      },
+      {
+        "line": 219,
+        "text": "        BLOCK_SIZE: block size used"
+      },
+      {
+        "line": 220,
+        "text": "        num_warps: number of warps used"
+      },
+      {
+        "line": 221,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 222,
+        "text": "    shape = X.shape"
+      },
+      {
+        "line": 223,
+        "text": "    dim = shape[-1]"
+      },
+      {
+        "line": 224,
+        "text": "    X = X.view(-1, dim)"
+      },
+      {
+        "line": 225,
+        "text": "    n_rows, n_cols = X.shape"
+      },
+      {
+        "line": 226,
+        "text": "    BLOCK_SIZE, num_warps = calculate_settings(n_cols)"
+      },
+      {
+        "line": 227,
+        "text": ""
+      },
+      {
+        "line": 228,
+        "text": "    # RSTD is to cache rstd for each row"
+      },
+      {
+        "line": 229,
+        "text": "    Y = torch.empty((n_rows, n_cols), dtype=X.dtype, device=X.device)"
+      },
+      {
+        "line": 230,
+        "text": "    RSTD = torch.empty((n_rows, 3), dtype=torch.float32, device=X.device)"
+      },
+      {
+        "line": 231,
+        "text": ""
+      },
+      {
+        "line": 232,
+        "text": "    # Check constraints"
+      },
+      {
+        "line": 233,
+        "text": "    assert W.shape[0] == 3, \"Weight tensor must have shape (3,)\""
+      },
+      {
+        "line": 234,
+        "text": "    assert B.numel() == 1, \"Bias must be a scalar\""
+      },
+      {
+        "line": 235,
+        "text": ""
+      },
+      {
+        "line": 236,
+        "text": "    # XPU-specific optimization"
+      },
+      {
+        "line": 237,
+        "text": "    kernel_args = {}"
+      },
+      {
+        "line": 238,
+        "text": "    if X.device.type == \"xpu\":"
+      },
+      {
+        "line": 239,
+        "text": "        set_large_grf_mode(kernel_args)"
+      },
+      {
+        "line": 240,
+        "text": ""
+      },
+      {
+        "line": 241,
+        "text": "    # Launch kernel"
+      },
+      {
+        "line": 242,
+        "text": "    _poly_norm_forward_kernel[(n_rows,)]("
+      },
+      {
+        "line": 243,
+        "text": "        Y,"
+      },
+      {
+        "line": 244,
+        "text": "        Y.stride(0),"
+      },
+      {
+        "line": 245,
+        "text": "        X,"
+      },
+      {
+        "line": 246,
+        "text": "        X.stride(0),"
+      },
+      {
+        "line": 247,
+        "text": "        W,"
+      },
+      {
+        "line": 248,
+        "text": "        B,"
+      },
+      {
+        "line": 249,
+        "text": "        RSTD,"
+      },
+      {
+        "line": 250,
+        "text": "        RSTD.stride(0),"
+      },
+      {
+        "line": 251,
+        "text": "        n_cols,"
+      },
+      {
+        "line": 252,
+        "text": "        eps,"
+      },
+      {
+        "line": 253,
+        "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+      },
+      {
+        "line": 254,
+        "text": "        num_warps=num_warps,"
+      },
+      {
+        "line": 255,
+        "text": "        **kernel_args,"
+      },
+      {
+        "line": 256,
+        "text": "    )"
+      },
+      {
+        "line": 257,
+        "text": ""
+      },
+      {
+        "line": 258,
+        "text": "    return Y.view(*shape), X, RSTD, BLOCK_SIZE, num_warps"
+      },
+      {
+        "line": 259,
+        "text": ""
+      },
+      {
+        "line": 260,
+        "text": ""
+      }
+    ]
+  },
+  "responseCharacters": 2913,
+  "responseSHA256": "3b626cf8c445e01ed2fefa95aa7f61f078787e4c4cd8eef7e17719ed476e5388",
+  "wallMilliseconds": 0.11577093601226807
+}

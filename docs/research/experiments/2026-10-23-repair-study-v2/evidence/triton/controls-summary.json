@@ -1,0 +1,37 @@
+{
+  "roots": [
+    {
+      "root": "softmax-axis",
+      "case_count": 11,
+      "visible": 3,
+      "hidden": 8,
+      "before_pass": 5,
+      "before_wrong_elements": 406,
+      "outputs": 640,
+      "isolated_gold_pass": 11
+    },
+    {
+      "root": "negative-zero",
+      "case_count": 11,
+      "visible": 3,
+      "hidden": 8,
+      "before_pass": 6,
+      "before_wrong_elements": 512,
+      "outputs": 864,
+      "isolated_gold_pass": 11
+    },
+    {
+      "root": "constexpr-filter",
+      "case_count": 11,
+      "visible": 3,
+      "hidden": 8,
+      "before_pass": 3,
+      "before_wrong_elements": 49,
+      "outputs": 61,
+      "isolated_gold_pass": 11
+    }
+  ],
+  "native_sha256": "c3306b024133cf76abba389ac00c6dc9cb9127be6a0796aef2acf2134e5f082f",
+  "source_comparison": "Official Triton 3.8.0 wheel plus exact merged Python source patch hunks; native compiler shared unchanged.",
+  "scope": "GPU correctness only; known upstream control patches, not model-generated repairs"
+}

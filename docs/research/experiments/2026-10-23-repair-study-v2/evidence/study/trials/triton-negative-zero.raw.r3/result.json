@@ -1,0 +1,1850 @@
+{
+  "format": "repair-study-trial-v2",
+  "id": "triton-negative-zero.raw.r3",
+  "taskId": "triton-negative-zero",
+  "condition": "raw",
+  "repetition": 3,
+  "split": "holdout",
+  "startedAt": "2026-10-23T15:07:14.986Z",
+  "calls": [
+    {
+      "round": 1,
+      "startedAt": "2026-10-23T15:07:14.987Z",
+      "finishedAt": "2026-10-23T15:07:25.704Z",
+      "wallSeconds": 10.717309360027313,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-ao1Pv9/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-ao1Pv9/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-ao1Pv9/answer.json",
+        "-"
+      ],
+      "promptSHA256": "12e6b7580a79134ae82920559e4aa4a4a13863f3500ecbddfeef675f6eeb6e13",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "search",
+          "scope": null,
+          "id": null,
+          "text": "def full",
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "I will trace scalar-constant construction and compare the failing signed-zero observation with passing controls.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694d-4906-7e22-b87b-92bb7381ca07"
+      },
+      "usage": [
+        {
+          "input_tokens": 16767,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 88,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "startedAt": "2026-10-23T15:07:25.707Z",
+      "finishedAt": "2026-10-23T15:07:36.362Z",
+      "wallSeconds": 10.654397807955743,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-363xrv/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-363xrv/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-363xrv/answer.json",
+        "-"
+      ],
+      "promptSHA256": "fb73cecba212f9360e18cd455acee537a3beb6ba21776a42d56f0513cd1f963c",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "source-06",
+          "text": null,
+          "start": 550,
+          "end": 665,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "Inspect scalar construction and zero-specific fast paths in semantic.full.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694d-72eb-7e60-879d-5b2740d0155a"
+      },
+      "usage": [
+        {
+          "input_tokens": 16956,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 83,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "startedAt": "2026-10-23T15:07:36.365Z",
+      "finishedAt": "2026-10-23T15:07:46.854Z",
+      "wallSeconds": 10.488912376999854,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-f4Tnq9/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-f4Tnq9/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-f4Tnq9/answer.json",
+        "-"
+      ],
+      "promptSHA256": "9a94119d4da9aa9587f5f006caed2544497a931e366a2d78e903714fc36486c5",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "list",
+          "scope": "evidence",
+          "id": null,
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "scalar_constant uses value == 0 to select an all-zero constant, which also matches -0.0 and discards its sign. I will inspect actual failure and control observations before finalizing the repair.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694d-9ca3-7341-887a-9c9e8ed549c2"
+      },
+      "usage": [
+        {
+          "input_tokens": 19227,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 111,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "startedAt": "2026-10-23T15:07:46.856Z",
+      "finishedAt": "2026-10-23T15:07:57.959Z",
+      "wallSeconds": 11.10318510210514,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-I5Ox1E/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-I5Ox1E/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-I5Ox1E/answer.json",
+        "-"
+      ],
+      "promptSHA256": "3091306c2e2c9ab17498767e885c9b89caae69557a081bbe149d4f4bb2cbe065",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "observation-negative-zero-00",
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "The zero shortcut in scalar_constant matches both signs of floating-point zero. I am checking the observed byte mismatch before restricting that shortcut to non-floating dtypes.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694d-c585-7ad1-a7fc-3caab7df5143"
+      },
+      "usage": [
+        {
+          "input_tokens": 19445,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 105,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "startedAt": "2026-10-23T15:07:57.962Z",
+      "finishedAt": "2026-10-23T15:08:09.783Z",
+      "wallSeconds": 11.820712271928787,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-4kQCMY/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-4kQCMY/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-4kQCMY/answer.json",
+        "-"
+      ],
+      "promptSHA256": "5e072c7bb281a0cdc05aa59111c5e96aae5e8ac4823cddeeeddf5710e5e7003f",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "observation-negative-zero-01",
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "The failing float32 observation contains 32 positive-zero bit patterns (0x00000000), while the reference requires negative zero (0x80000000). Restricting the null-value shortcut to non-floating dtypes will route floating zeros through the existing typed floating constant constructors. I am checking the positive-zero control.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694d-f103-7110-8735-15ac5d632cf4"
+      },
+      "usage": [
+        {
+          "input_tokens": 20432,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 138,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "startedAt": "2026-10-23T15:08:09.786Z",
+      "finishedAt": "2026-10-23T15:08:31.136Z",
+      "wallSeconds": 21.3497475399971,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-ELJgKS/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-ELJgKS/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-ELJgKS/answer.json",
+        "-"
+      ],
+      "promptSHA256": "d91df70a8a1cc28c89cb108c05590e40084519b6325224116fe9a769fafd6ceb",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "final",
+        "query": {
+          "op": "none",
+          "scope": null,
+          "id": null,
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "scalar_constant compares value == 0, which also matches -0.0, and then constructs an all-zero bit pattern, losing the floating-point sign. In negative-zero-00, all 32 float32 outputs were 0x00000000 instead of the required 0x80000000. The positive-zero control negative-zero-01 passed with exact byte equality. Restrict the null-value shortcut to non-floating dtypes so float16, bfloat16, float32 and float64 zeros use the existing typed constant constructors, preserving their signs. Nonzero construction and integer-zero handling remain unchanged. Compilation and post-repair device results are unavailable; other floating dtypes have no inspected device observations.",
+        "locations": [
+          {
+            "source_id": "source-06",
+            "start_line": 601,
+            "end_line": 623
+          }
+        ],
+        "citations": [
+          {
+            "case_id": "negative-zero-00",
+            "evidence_ids": [
+              "observation-negative-zero-00"
+            ]
+          },
+          {
+            "case_id": "negative-zero-01",
+            "evidence_ids": [
+              "observation-negative-zero-01"
+            ]
+          }
+        ],
+        "edits": [
+          {
+            "source_id": "source-06",
+            "old": "        if value == 0:\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))\n        elif dtype.is_fp8():",
+            "new": "        # Floating-point zeros must retain their sign in typed constructors.\n        if value == 0 and not dtype.is_floating():\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))\n        elif dtype.is_fp8():"
+          }
+        ]
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694e-1f40-7e40-a5dd-18b5c1b83d82"
+      },
+      "usage": [
+        {
+          "input_tokens": 21442,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 402,
+          "reasoning_output_tokens": 33
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "round": 1,
+      "request": {
+        "op": "search",
+        "scope": null,
+        "id": null,
+        "text": "def full",
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "literal": "def full",
+        "totalMatches": 2,
+        "offset": 0,
+        "matches": [
+          {
+            "source_id": "source-04",
+            "path": "triton/language/core.py",
+            "line": 2012,
+            "text": "def full(shape, value, dtype, _semantic=None):"
+          },
+          {
+            "source_id": "source-06",
+            "path": "triton/language/semantic.py",
+            "line": 622,
+            "text": "    def full(self, shape: List[int], value, dtype: tl.dtype) -> TensorTy:"
+          }
+        ],
+        "nextOffset": null
+      },
+      "responseCharacters": 364,
+      "responseSHA256": "c81b7ee5afe9b4a88411189011d82cfc98d5c586313a1f011b533b21a3187056",
+      "wallMilliseconds": 0.9866299629211426
+    },
+    {
+      "round": 2,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "source-06",
+        "text": null,
+        "start": 550,
+        "end": 665,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "source-06",
+        "path": "triton/language/semantic.py",
+        "sha256": "0d99c1f30bdb86bd718c98bf026ced2a84a878f79630fa9b3fe099ce46e86ebd",
+        "start": 550,
+        "end": 665,
+        "totalLines": 1892,
+        "lines": [
+          {
+            "line": 550,
+            "text": "        elif scalar_ty.is_int():"
+          },
+          {
+            "line": 551,
+            "text": "            if scalar_ty.is_int_signed():"
+          },
+          {
+            "line": 552,
+            "text": "                return self.tensor(self.builder.create_icmpSLE(input.handle, other.handle), self._bool_like(input))"
+          },
+          {
+            "line": 553,
+            "text": "            else:"
+          },
+          {
+            "line": 554,
+            "text": "                return self.tensor(self.builder.create_icmpULE(input.handle, other.handle), self._bool_like(input))"
+          },
+          {
+            "line": 555,
+            "text": "        raise TypeError(f\"unexpected type {scalar_ty}\")"
+          },
+          {
+            "line": 556,
+            "text": ""
+          },
+          {
+            "line": 557,
+            "text": "    def equal(self, input: TensorTy, other: TensorTy) -> TensorTy:"
+          },
+          {
+            "line": 558,
+            "text": "        input, other = self.binary_op_type_checking_impl(input, other)"
+          },
+          {
+            "line": 559,
+            "text": "        scalar_ty = input.type.scalar"
+          },
+          {
+            "line": 560,
+            "text": "        # float == float"
+          },
+          {
+            "line": 561,
+            "text": "        if scalar_ty.is_floating():"
+          },
+          {
+            "line": 562,
+            "text": "            return self.tensor(self.builder.create_fcmpOEQ(input.handle, other.handle), self._bool_like(input))"
+          },
+          {
+            "line": 563,
+            "text": "        # == int"
+          },
+          {
+            "line": 564,
+            "text": "        elif scalar_ty.is_int():"
+          },
+          {
+            "line": 565,
+            "text": "            return self.tensor(self.builder.create_icmpEQ(input.handle, other.handle), self._bool_like(input))"
+          },
+          {
+            "line": 566,
+            "text": "        raise TypeError(f\"unexpected type {scalar_ty}\")"
+          },
+          {
+            "line": 567,
+            "text": ""
+          },
+          {
+            "line": 568,
+            "text": "    def not_equal(self, input: TensorTy, other: TensorTy) -> TensorTy:"
+          },
+          {
+            "line": 569,
+            "text": "        input, other = self.binary_op_type_checking_impl(input, other)"
+          },
+          {
+            "line": 570,
+            "text": "        scalar_ty = input.type.scalar"
+          },
+          {
+            "line": 571,
+            "text": "        # float == float"
+          },
+          {
+            "line": 572,
+            "text": "        if scalar_ty.is_floating():"
+          },
+          {
+            "line": 573,
+            "text": "            return self.tensor(self.builder.create_fcmpUNE(input.handle, other.handle), self._bool_like(input))"
+          },
+          {
+            "line": 574,
+            "text": "        # == int"
+          },
+          {
+            "line": 575,
+            "text": "        elif scalar_ty.is_int():"
+          },
+          {
+            "line": 576,
+            "text": "            return self.tensor(self.builder.create_icmpNE(input.handle, other.handle), self._bool_like(input))"
+          },
+          {
+            "line": 577,
+            "text": "        raise TypeError(f\"unexpected type {scalar_ty}\")"
+          },
+          {
+            "line": 578,
+            "text": ""
+          },
+          {
+            "line": 579,
+            "text": "# ===----------------------------------------------------------------------===//"
+          },
+          {
+            "line": 580,
+            "text": "#                               Block Creation"
+          },
+          {
+            "line": 581,
+            "text": "# ===----------------------------------------------------------------------===//"
+          },
+          {
+            "line": 582,
+            "text": ""
+          },
+          {
+            "line": 583,
+            "text": "    def arange(self, start: int, end: int, *, ret_ty: tl.block_type = None) -> TensorTy:"
+          },
+          {
+            "line": 584,
+            "text": "        if not isinstance(start, int) or not isinstance(end, int):"
+          },
+          {
+            "line": 585,
+            "text": "            raise ValueError(\"arange's arguments must be of type tl.constexpr\")"
+          },
+          {
+            "line": 586,
+            "text": "        is_start_int64 = bool(start >> 32)"
+          },
+          {
+            "line": 587,
+            "text": "        is_end_int64 = bool(end >> 32)"
+          },
+          {
+            "line": 588,
+            "text": "        if is_start_int64 or is_end_int64:"
+          },
+          {
+            "line": 589,
+            "text": "            raise ValueError(\"arange must fit in int32\")"
+          },
+          {
+            "line": 590,
+            "text": "        if end <= start:"
+          },
+          {
+            "line": 591,
+            "text": "            raise ValueError(\"arange's end argument must be greater than the start argument\")"
+          },
+          {
+            "line": 592,
+            "text": "        range = end - start"
+          },
+          {
+            "line": 593,
+            "text": "        if (range & (range - 1)) != 0:"
+          },
+          {
+            "line": 594,
+            "text": "            raise ValueError(\"arange's range must be a power of 2\")"
+          },
+          {
+            "line": 595,
+            "text": "        shape = [range]"
+          },
+          {
+            "line": 596,
+            "text": "        if ret_ty is None:"
+          },
+          {
+            "line": 597,
+            "text": "            ret_ty = tl.block_type(tl.int32, shape)"
+          },
+          {
+            "line": 598,
+            "text": "        ret_ty_ir = ret_ty.to_ir(self.builder)"
+          },
+          {
+            "line": 599,
+            "text": "        return self.tensor(self.builder.create_make_range(ret_ty_ir, start, end), ret_ty)"
+          },
+          {
+            "line": 600,
+            "text": ""
+          },
+          {
+            "line": 601,
+            "text": "    def scalar_constant(self, value, dtype: tl.dtype) -> TensorTy:"
+          },
+          {
+            "line": 602,
+            "text": "        # scalar"
+          },
+          {
+            "line": 603,
+            "text": "        if dtype is None:"
+          },
+          {
+            "line": 604,
+            "text": "            raise ValueError(\"dtype must be specified when value is not a tensor\")"
+          },
+          {
+            "line": 605,
+            "text": "        if value == 0:"
+          },
+          {
+            "line": 606,
+            "text": "            value = self.builder.get_null_value(dtype.to_ir(self.builder))"
+          },
+          {
+            "line": 607,
+            "text": "        elif dtype.is_fp8():"
+          },
+          {
+            "line": 608,
+            "text": "            value = self.builder.get_fp32(value)"
+          },
+          {
+            "line": 609,
+            "text": "            value = self.builder.create_fp_trunc(value, dtype.to_ir(self.builder))"
+          },
+          {
+            "line": 610,
+            "text": "        else:"
+          },
+          {
+            "line": 611,
+            "text": "            get_value_fn = getattr(self.builder, f\"get_{dtype.name}\")"
+          },
+          {
+            "line": 612,
+            "text": "            value = get_value_fn(value)"
+          },
+          {
+            "line": 613,
+            "text": "        return self.tensor(value, dtype)"
+          },
+          {
+            "line": 614,
+            "text": ""
+          },
+          {
+            "line": 615,
+            "text": "    def make_scalar(self, value, dtype: tl.dtype) -> TensorTy:"
+          },
+          {
+            "line": 616,
+            "text": "        if isinstance(value, tl.tensor):"
+          },
+          {
+            "line": 617,
+            "text": "            assert value.numel.value == 1, \"only accepts size-1 tensor\""
+          },
+          {
+            "line": 618,
+            "text": "            return self.cast(value, dtype)"
+          },
+          {
+            "line": 619,
+            "text": "        # scalar"
+          },
+          {
+            "line": 620,
+            "text": "        return self.scalar_constant(value, dtype)"
+          },
+          {
+            "line": 621,
+            "text": ""
+          },
+          {
+            "line": 622,
+            "text": "    def full(self, shape: List[int], value, dtype: tl.dtype) -> TensorTy:"
+          },
+          {
+            "line": 623,
+            "text": "        return self.splat(self.make_scalar(value, dtype), shape)"
+          },
+          {
+            "line": 624,
+            "text": ""
+          },
+          {
+            "line": 625,
+            "text": "# ===----------------------------------------------------------------------===//"
+          },
+          {
+            "line": 626,
+            "text": "#                               Shape Manipulation"
+          },
+          {
+            "line": 627,
+            "text": "# ===----------------------------------------------------------------------===//"
+          },
+          {
+            "line": 628,
+            "text": ""
+          },
+          {
+            "line": 629,
+            "text": "    def splat(self, value: TensorTy, shape: List[int]) -> TensorTy:"
+          },
+          {
+            "line": 630,
+            "text": "        assert not value.type.is_block(), \"Cannot splat a block tensor\""
+          },
+          {
+            "line": 631,
+            "text": "        if len(shape) == 0:"
+          },
+          {
+            "line": 632,
+            "text": "            return value"
+          },
+          {
+            "line": 633,
+            "text": "        ret_ty = tl.block_type(value.dtype, shape)"
+          },
+          {
+            "line": 634,
+            "text": "        return self.tensor(self.builder.create_splat(ret_ty.to_ir(self.builder), value.handle), ret_ty)"
+          },
+          {
+            "line": 635,
+            "text": ""
+          },
+          {
+            "line": 636,
+            "text": "    def unsplat(self, value: TensorTy) -> TensorTy:"
+          },
+          {
+            "line": 637,
+            "text": "        return self.tensor(self.builder.create_unsplat(value.handle), value.dtype)"
+          },
+          {
+            "line": 638,
+            "text": ""
+          },
+          {
+            "line": 639,
+            "text": "    def reshape(self, input: TensorTy, dst_shape: List[int], can_reorder: bool) -> TensorTy:"
+          },
+          {
+            "line": 640,
+            "text": "        numel = 1"
+          },
+          {
+            "line": 641,
+            "text": "        for s in dst_shape:"
+          },
+          {
+            "line": 642,
+            "text": "            numel *= s"
+          },
+          {
+            "line": 643,
+            "text": "        if input.type.numel != numel:"
+          },
+          {
+            "line": 644,
+            "text": "            raise ValueError(\"reshape() cannot change total number of elements in tensor\")"
+          },
+          {
+            "line": 645,
+            "text": "        ret_ty = tl.block_type(input.type.scalar, dst_shape)"
+          },
+          {
+            "line": 646,
+            "text": "        return self.tensor(self.builder.create_reshape(input.handle, dst_shape, can_reorder), ret_ty)"
+          },
+          {
+            "line": 647,
+            "text": ""
+          },
+          {
+            "line": 648,
+            "text": "    def expand_dims(self, input: TensorTy, axis: int) -> TensorTy:"
+          },
+          {
+            "line": 649,
+            "text": "        dst_shape = [tl._unwrap_if_constexpr(x) for x in input.shape]"
+          },
+          {
+            "line": 650,
+            "text": "        dst_shape.insert(axis, 1)"
+          },
+          {
+            "line": 651,
+            "text": ""
+          },
+          {
+            "line": 652,
+            "text": "        if not input.type.is_block():"
+          },
+          {
+            "line": 653,
+            "text": "            return self.splat(input, shape=dst_shape)"
+          },
+          {
+            "line": 654,
+            "text": ""
+          },
+          {
+            "line": 655,
+            "text": "        ret_ty = tl.block_type(input.type.scalar, dst_shape)"
+          },
+          {
+            "line": 656,
+            "text": "        return self.tensor(self.builder.create_expand_dims(input.handle, axis), ret_ty)"
+          },
+          {
+            "line": 657,
+            "text": ""
+          },
+          {
+            "line": 658,
+            "text": "    def cat(self, lhs: TensorTy, rhs: TensorTy, can_reorder: bool) -> TensorTy:"
+          },
+          {
+            "line": 659,
+            "text": "        assert can_reorder, \"current implementation of `cat` always may reorder elements\""
+          },
+          {
+            "line": 660,
+            "text": "        assert len(lhs.shape) == 1, f\"expected 1D input for cat, got {len(lhs.shape)}D\""
+          },
+          {
+            "line": 661,
+            "text": "        ret_type = tl.block_type(lhs.type.scalar, [lhs.shape[0] + rhs.shape[0]])"
+          },
+          {
+            "line": 662,
+            "text": "        return self.tensor(self.builder.create_cat(lhs.handle, rhs.handle), ret_type)"
+          },
+          {
+            "line": 663,
+            "text": ""
+          },
+          {
+            "line": 664,
+            "text": "    def join(self, a: TensorTy, b: TensorTy) -> TensorTy:"
+          },
+          {
+            "line": 665,
+            "text": "        a, b = self.broadcast_impl_value(a, b)"
+          }
+        ]
+      },
+      "responseCharacters": 8549,
+      "responseSHA256": "8c59f4a7226c5bb79b7386ff31af514748138ff2ce5464fc8aef7eeb9c98115e",
+      "wallMilliseconds": 1.0197700262069702
+    },
+    {
+      "round": 3,
+      "request": {
+        "op": "list",
+        "scope": "evidence",
+        "id": null,
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "evidence": [
+          {
+            "id": "observation-negative-zero-00",
+            "kind": "device-output",
+            "caseIds": [
+              "negative-zero-00"
+            ],
+            "observed": true,
+            "sourceId": "test-kernel"
+          },
+          {
+            "id": "observation-negative-zero-01",
+            "kind": "device-output",
+            "caseIds": [
+              "negative-zero-01"
+            ],
+            "observed": true,
+            "sourceId": "test-kernel"
+          },
+          {
+            "id": "observation-negative-zero-02",
+            "kind": "device-output",
+            "caseIds": [
+              "negative-zero-02"
+            ],
+            "observed": true,
+            "sourceId": "test-kernel"
+          }
+        ]
+      },
+      "responseCharacters": 413,
+      "responseSHA256": "7a764b38c75e000ce472560eb9dffecb98bc6b8a922d73b97edbe61dec51642f",
+      "wallMilliseconds": 0.06256103515625
+    },
+    {
+      "round": 4,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "observation-negative-zero-00",
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "observation-negative-zero-00",
+        "kind": "device-output",
+        "caseIds": [
+          "negative-zero-00"
+        ],
+        "observed": true,
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 32 / 32 elements differ. Floating-point signed zero uses byte equality where required.",
+        "payload": {
+          "case": {
+            "id": "negative-zero-00",
+            "family": "negative-zero",
+            "split": "visible",
+            "dtype": "float32",
+            "value": 0,
+            "n": 32
+          },
+          "status": "wrong-result",
+          "observed": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "reference": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "observed_bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "reference_bytes": [
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128,
+            0,
+            0,
+            0,
+            128
+          ],
+          "elements": 32,
+          "output_dtype": "torch.float32",
+          "wrong_elements": 32
+        },
+        "sourceId": "test-kernel",
+        "rawRefs": [
+          {
+            "id": "raw-negative-zero-00",
+            "sha256": "e69d5d7c5e4e9be2dbd4bb7b0573bb3c1a689a9bff3d227e075a60c1d28fafda"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "2b80407c58179e4597a1ca11559754068bbca4d60583be5ea321e9c3965df30b"
+          }
+        ]
+      },
+      "responseCharacters": 1506,
+      "responseSHA256": "40b925ea65ac7df8cbe5e0850941e31aa3bcab660bcbae857e5fb8066845a556",
+      "wallMilliseconds": 0.10600101947784424
+    },
+    {
+      "round": 5,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "observation-negative-zero-01",
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "observation-negative-zero-01",
+        "kind": "device-output",
+        "caseIds": [
+          "negative-zero-01"
+        ],
+        "observed": true,
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 32 elements differ. Floating-point signed zero uses byte equality where required.",
+        "payload": {
+          "case": {
+            "id": "negative-zero-01",
+            "family": "negative-zero",
+            "split": "visible",
+            "dtype": "float32",
+            "value": 0,
+            "n": 32
+          },
+          "status": "pass",
+          "observed": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "reference": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "observed_bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "reference_bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "elements": 32,
+          "output_dtype": "torch.float32",
+          "wrong_elements": 0
+        },
+        "sourceId": "test-kernel",
+        "rawRefs": [
+          {
+            "id": "raw-negative-zero-01",
+            "sha256": "776772357c48c7469f7c27704c919c0e3dc3919c7f57f96a5e9d9871d128b36e"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "2b80407c58179e4597a1ca11559754068bbca4d60583be5ea321e9c3965df30b"
+          }
+        ]
+      },
+      "responseCharacters": 1432,
+      "responseSHA256": "a55db36953a26fbaed10353df542dc5a790cdfa37c0cb93febe57fce9708c2e6",
+      "wallMilliseconds": 0.1714019775390625
+    }
+  ],
+  "valid": true,
+  "failure": null,
+  "finishedAt": "2026-10-23T15:08:31.142Z",
+  "wallSeconds": 76.15625855004788,
+  "modelWallSeconds": 76.13426445901393,
+  "queryWallMilliseconds": 2.3463640213012695,
+  "budget": {
+    "queries": 5,
+    "responseCharacters": 12264
+  },
+  "localization": {
+    "locationHit": true,
+    "allLocationsValid": true,
+    "referencesValid": true,
+    "failureObserved": true,
+    "passingControlObserved": true,
+    "supportedLocalization": true,
+    "invalidLocations": [],
+    "invalidCitations": [],
+    "scope": "Declared source-region hit and valid observed references; not semantic proof of a correct explanation."
+  },
+  "patchApplicable": true,
+  "candidateTreeSHA256": "8e46bc4a072a544870a6a8006c42af3b852bf90b36d6cc8e5e127340cd19b84e",
+  "usage": {
+    "input_tokens": 114269,
+    "cached_input_tokens": 73600,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 927,
+    "reasoning_output_tokens": 33
+  }
+}

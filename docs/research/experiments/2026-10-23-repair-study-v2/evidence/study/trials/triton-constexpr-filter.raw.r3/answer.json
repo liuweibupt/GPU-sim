@@ -1,0 +1,53 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "visit_ListComp ignores comp.ifs and unconditionally appends every input element. Actual device evidence for constexpr-filter-02 is [6,0,1,2,3,4,5], whereas the reference is [2,2,4,-777,-777,-777,-777]. The passing control constexpr-filter-01 produces [4,10,20,30,40], matching its reference because all entries qualify. Evaluate predicates in source order with short-circuit AND, unwrap constexpr conditions, and append the element only when all predicates pass. This preserves input order and unfiltered comprehensions; the kernel then writes the correct count and accepted prefix, leaving unused sentinel capacity untouched. Reject conditions that cannot be evaluated at compile time using the compiler's existing condition-type convention. Compilation and post-repair device results are unavailable; held-out correctness remains unverified.",
+  "locations": [
+    {
+      "source_id": "source-01",
+      "start_line": 528,
+      "end_line": 541
+    },
+    {
+      "source_id": "source-01",
+      "start_line": 986,
+      "end_line": 995
+    },
+    {
+      "source_id": "test-kernel",
+      "start_line": 5,
+      "end_line": 12
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "constexpr-filter-02",
+      "evidence_ids": [
+        "observation-constexpr-filter-02"
+      ]
+    },
+    {
+      "case_id": "constexpr-filter-01",
+      "evidence_ids": [
+        "observation-constexpr-filter-01"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-01",
+      "old": "        results = []\n        for item in iter:\n            self.set_value(comp.target.id, item)\n            results.append(self.visit(node.elt))\n        return tl_tuple(results)",
+      "new": "        results = []\n        for item in iter:\n            self.set_value(comp.target.id, item)\n            for predicate in comp.ifs:\n                cond = _unwrap_if_constexpr(self.visit(predicate))\n                if type(cond) not in _condition_types:\n                    raise self._unsupported(\n                        predicate, \"comprehension conditions must be compile-time values of type {{{}}}, \"\n                        \"not objects of type {}\".format(\n                            ', '.join(_.__name__ for _ in _condition_types),\n                            type(cond).__name__))\n                if not cond:\n                    break\n            else:\n                results.append(self.visit(node.elt))\n        return tl_tuple(results)"
+    }
+  ]
+}

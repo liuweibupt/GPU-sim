@@ -1,0 +1,33 @@
+{
+  "format": "repair-study-protocol-v2",
+  "model": "gpt-6-astra",
+  "reasoning": "low",
+  "repetitions": 3,
+  "conditions": [
+    "raw",
+    "diagnostic"
+  ],
+  "maxQueries": 8,
+  "maxCalls": 9,
+  "maxResponseCharacters": 16000,
+  "maxTotalResponseCharacters": 64000,
+  "maxSourceLines": 120,
+  "maxSearchMatches": 40,
+  "maxLocationLines": 40,
+  "timeoutSecondsPerCall": 90,
+  "timeoutSecondsPerTrial": 600,
+  "maxConcurrency": 2,
+  "feedbackRounds": 0,
+  "rawOps": [
+    "list",
+    "search",
+    "read",
+    "case"
+  ],
+  "diagnosticExtraOps": [
+    "derived"
+  ],
+  "firstQuery": "optional; no condition is required to invoke any tool",
+  "primaryEndpoint": "Unmodified candidate applies, actually compiles, and passes every frozen hidden case; invalid calls, missing outputs, build failures and timeouts stay in the denominator.",
+  "comparisonUnit": "independent root cause; repetitions are repeated model draws, not new defects or people"
+}

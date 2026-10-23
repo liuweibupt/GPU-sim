@@ -1,0 +1,48 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "softmax drops the reduced axis from both its maximum and denominator when keep_dims=False. Subsequent broadcasting aligns remaining dimensions from the right rather than restoring the requested axis. For shape [2,2], dim=1, this applies row statistics across columns: the actual device output is [0.49999997, 0.02993836, 16.55772781, 0.00857748], with all four elements incorrect and maximum absolute error 15.605154. The dim=0 control passes all four elements because right-aligned broadcasting happens to restore that leading axis correctly. Keep the reduced axis as a singleton in both internal reductions so subtraction and division broadcast along the requested axis and preserve the input shape. Retain the public signature and division rounding option. Compilation and post-repair device results are unavailable; the repair is supported by the source and before-repair observations.",
+  "locations": [
+    {
+      "source_id": "source-07",
+      "start_line": 53,
+      "end_line": 64
+    },
+    {
+      "source_id": "test-kernel",
+      "start_line": 4,
+      "end_line": 9
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "softmax-axis-00",
+      "evidence_ids": [
+        "observation-softmax-axis-00"
+      ]
+    },
+    {
+      "case_id": "softmax-axis-01",
+      "evidence_ids": [
+        "observation-softmax-axis-01"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-07",
+      "old": "    z = x - max(x, _dim, keep_dims=keep_dims)\n    num = math.exp(z)\n    den = sum(num, _dim, keep_dims=keep_dims)\n    return math.fdiv(num, den, ieee_rounding)",
+      "new": "    # Retain the reduction axis so statistics broadcast along that axis.\n    z = x - max(x, _dim, keep_dims=True)\n    num = math.exp(z)\n    den = sum(num, _dim, keep_dims=True)\n    return math.fdiv(num, den, ieee_rounding)"
+    }
+  ]
+}

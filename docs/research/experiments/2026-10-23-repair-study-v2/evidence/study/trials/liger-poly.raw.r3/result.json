@@ -1,0 +1,894 @@
+{
+  "format": "repair-study-trial-v2",
+  "id": "liger-poly.raw.r3",
+  "taskId": "liger-poly",
+  "condition": "raw",
+  "repetition": 3,
+  "split": "holdout",
+  "startedAt": "2026-10-23T15:10:20.925Z",
+  "finishedAt": "2026-10-23T15:13:33.681Z",
+  "calls": [
+    {
+      "round": 1,
+      "startedAt": "2026-10-23T15:10:20.925Z",
+      "finishedAt": "2026-10-23T15:10:31.046Z",
+      "wallSeconds": 10.121002705931664,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-umMmFC/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-umMmFC/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-umMmFC/answer.json",
+        "-"
+      ],
+      "promptSHA256": "07a433882a2090bddd985edba11fb8abd83636ca2dca312bfa036a5dedd06e0f",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "source-28",
+          "text": null,
+          "start": 1,
+          "end": 120,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a16950-1f73-7262-a84c-b162de853684"
+      },
+      "usage": [
+        {
+          "input_tokens": 17987,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 71,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "startedAt": "2026-10-23T15:10:31.052Z",
+      "finishedAt": "2026-10-23T15:10:39.442Z",
+      "wallSeconds": 8.390945927977562,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-SfVViT/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-SfVViT/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-SfVViT/answer.json",
+        "-"
+      ],
+      "promptSHA256": "3112f1caa3f92da4b96d6414766758748934483b90c11ba4434b8dc8648b0170",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "case",
+          "scope": null,
+          "id": "poly-02",
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a16950-46ec-7163-8992-3d7461a2b571"
+      },
+      "usage": [
+        {
+          "input_tokens": 20011,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 71,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "round": 1,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "source-28",
+        "text": null,
+        "start": 1,
+        "end": 120,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "source-28",
+        "path": "src/liger_kernel/ops/poly_norm.py",
+        "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+        "start": 1,
+        "end": 120,
+        "totalLines": 388,
+        "lines": [
+          {
+            "line": 1,
+            "text": "import operator"
+          },
+          {
+            "line": 2,
+            "text": ""
+          },
+          {
+            "line": 3,
+            "text": "import torch"
+          },
+          {
+            "line": 4,
+            "text": "import triton"
+          },
+          {
+            "line": 5,
+            "text": "import triton.language as tl"
+          },
+          {
+            "line": 6,
+            "text": ""
+          },
+          {
+            "line": 7,
+            "text": "from liger_kernel.ops.utils import calculate_settings"
+          },
+          {
+            "line": 8,
+            "text": "from liger_kernel.ops.utils import compare_version"
+          },
+          {
+            "line": 9,
+            "text": "from liger_kernel.ops.utils import ensure_contiguous"
+          },
+          {
+            "line": 10,
+            "text": "from liger_kernel.ops.utils import get_npu_core_count"
+          },
+          {
+            "line": 11,
+            "text": "from liger_kernel.ops.utils import set_large_grf_mode"
+          },
+          {
+            "line": 12,
+            "text": "from liger_kernel.utils import is_npu_available"
+          },
+          {
+            "line": 13,
+            "text": ""
+          },
+          {
+            "line": 14,
+            "text": "if compare_version(\"triton\", operator.ge, \"3.0.0\") and not is_npu_available():"
+          },
+          {
+            "line": 15,
+            "text": "    try:"
+          },
+          {
+            "line": 16,
+            "text": "        from triton.language.extra.libdevice import rsqrt"
+          },
+          {
+            "line": 17,
+            "text": "    except ModuleNotFoundError:"
+          },
+          {
+            "line": 18,
+            "text": "        from triton.language.extra.cuda.libdevice import rsqrt"
+          },
+          {
+            "line": 19,
+            "text": "else:"
+          },
+          {
+            "line": 20,
+            "text": "    from triton.language.math import rsqrt"
+          },
+          {
+            "line": 21,
+            "text": ""
+          },
+          {
+            "line": 22,
+            "text": ""
+          },
+          {
+            "line": 23,
+            "text": "@triton.jit"
+          },
+          {
+            "line": 24,
+            "text": "def _poly_norm_forward_kernel("
+          },
+          {
+            "line": 25,
+            "text": "    Y_ptr,"
+          },
+          {
+            "line": 26,
+            "text": "    Y_row_stride,"
+          },
+          {
+            "line": 27,
+            "text": "    X_ptr,"
+          },
+          {
+            "line": 28,
+            "text": "    X_row_stride,"
+          },
+          {
+            "line": 29,
+            "text": "    W_ptr,  # weight: [3] for [w0, w1, w2]"
+          },
+          {
+            "line": 30,
+            "text": "    B_ptr,  # bias: scalar"
+          },
+          {
+            "line": 31,
+            "text": "    RSTD_ptr,  # cache rstd for backward: shape (n_rows, 3)"
+          },
+          {
+            "line": 32,
+            "text": "    RSTD_row_stride,"
+          },
+          {
+            "line": 33,
+            "text": "    n_cols,"
+          },
+          {
+            "line": 34,
+            "text": "    eps,"
+          },
+          {
+            "line": 35,
+            "text": "    BLOCK_SIZE: tl.constexpr,"
+          },
+          {
+            "line": 36,
+            "text": "):"
+          },
+          {
+            "line": 37,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 38,
+            "text": "    PolyNorm formula:"
+          },
+          {
+            "line": 39,
+            "text": "        y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+          },
+          {
+            "line": 40,
+            "text": "        where norm(u) = u / sqrt(mean(u²) + ε)"
+          },
+          {
+            "line": 41,
+            "text": ""
+          },
+          {
+            "line": 42,
+            "text": "    Reference:"
+          },
+          {
+            "line": 43,
+            "text": "    1. https://github.com/BryceZhuo/PolyCom/"
+          },
+          {
+            "line": 44,
+            "text": "    2. https://arxiv.org/pdf/2411.03884"
+          },
+          {
+            "line": 45,
+            "text": ""
+          },
+          {
+            "line": 46,
+            "text": "    Cache rstd values for backward pass"
+          },
+          {
+            "line": 47,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 48,
+            "text": "    row_idx = tl.program_id(0).to(tl.int64)"
+          },
+          {
+            "line": 49,
+            "text": "    col_offsets = tl.arange(0, BLOCK_SIZE)"
+          },
+          {
+            "line": 50,
+            "text": "    mask = col_offsets < n_cols"
+          },
+          {
+            "line": 51,
+            "text": ""
+          },
+          {
+            "line": 52,
+            "text": "    # Load pointers"
+          },
+          {
+            "line": 53,
+            "text": "    Y_ptr += row_idx * Y_row_stride"
+          },
+          {
+            "line": 54,
+            "text": "    X_ptr += row_idx * X_row_stride"
+          },
+          {
+            "line": 55,
+            "text": "    RSTD_ptr += row_idx * RSTD_row_stride"
+          },
+          {
+            "line": 56,
+            "text": ""
+          },
+          {
+            "line": 57,
+            "text": "    # Load input row"
+          },
+          {
+            "line": 58,
+            "text": "    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0)"
+          },
+          {
+            "line": 59,
+            "text": ""
+          },
+          {
+            "line": 60,
+            "text": "    # Load weights and bias"
+          },
+          {
+            "line": 61,
+            "text": "    w0 = tl.load(W_ptr + 0)"
+          },
+          {
+            "line": 62,
+            "text": "    w1 = tl.load(W_ptr + 1)"
+          },
+          {
+            "line": 63,
+            "text": "    w2 = tl.load(W_ptr + 2)"
+          },
+          {
+            "line": 64,
+            "text": "    b = tl.load(B_ptr)"
+          },
+          {
+            "line": 65,
+            "text": ""
+          },
+          {
+            "line": 66,
+            "text": "    # Compute x³, x², x"
+          },
+          {
+            "line": 67,
+            "text": "    X_pow3 = X_row * X_row * X_row"
+          },
+          {
+            "line": 68,
+            "text": "    X_pow2 = X_row * X_row"
+          },
+          {
+            "line": 69,
+            "text": "    X_pow1 = X_row"
+          },
+          {
+            "line": 70,
+            "text": ""
+          },
+          {
+            "line": 71,
+            "text": "    # Compute norm(x³): norm(u) = u * rsqrt(mean(u²) + eps)"
+          },
+          {
+            "line": 72,
+            "text": "    # Force fp32 eps: Inductor may use fp64 under torch.compile and tank throughput."
+          },
+          {
+            "line": 73,
+            "text": "    eps = eps.to(tl.float32)"
+          },
+          {
+            "line": 74,
+            "text": ""
+          },
+          {
+            "line": 75,
+            "text": "    mean_square_3 = tl.sum(X_pow3 * X_pow3, axis=0) / n_cols"
+          },
+          {
+            "line": 76,
+            "text": "    rstd_3 = rsqrt(mean_square_3 + eps)"
+          },
+          {
+            "line": 77,
+            "text": "    norm_x3 = X_pow3 * rstd_3"
+          },
+          {
+            "line": 78,
+            "text": ""
+          },
+          {
+            "line": 79,
+            "text": "    # Compute norm(x²)"
+          },
+          {
+            "line": 80,
+            "text": "    mean_square_2 = tl.sum(X_pow2 * X_pow2, axis=0) / n_cols"
+          },
+          {
+            "line": 81,
+            "text": "    rstd_2 = rsqrt(mean_square_2 + eps)"
+          },
+          {
+            "line": 82,
+            "text": "    norm_x2 = X_pow2 * rstd_2"
+          },
+          {
+            "line": 83,
+            "text": ""
+          },
+          {
+            "line": 84,
+            "text": "    # Compute norm(x)"
+          },
+          {
+            "line": 85,
+            "text": "    mean_square_1 = tl.sum(X_pow1 * X_pow1, axis=0) / n_cols"
+          },
+          {
+            "line": 86,
+            "text": "    rstd_1 = rsqrt(mean_square_1 + eps)"
+          },
+          {
+            "line": 87,
+            "text": "    norm_x1 = X_pow1 * rstd_1"
+          },
+          {
+            "line": 88,
+            "text": ""
+          },
+          {
+            "line": 89,
+            "text": "    # Cache rstd values for backward"
+          },
+          {
+            "line": 90,
+            "text": "    tl.store(RSTD_ptr + 0, rstd_3)"
+          },
+          {
+            "line": 91,
+            "text": "    tl.store(RSTD_ptr + 1, rstd_2)"
+          },
+          {
+            "line": 92,
+            "text": "    tl.store(RSTD_ptr + 2, rstd_1)"
+          },
+          {
+            "line": 93,
+            "text": ""
+          },
+          {
+            "line": 94,
+            "text": "    # Compute output: y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+          },
+          {
+            "line": 95,
+            "text": "    Y_row = w0 * norm_x3 + w1 * norm_x2 + w2 * norm_x1 + b"
+          },
+          {
+            "line": 96,
+            "text": ""
+          },
+          {
+            "line": 97,
+            "text": "    # Store output"
+          },
+          {
+            "line": 98,
+            "text": "    tl.store(Y_ptr + col_offsets, Y_row, mask=mask)"
+          },
+          {
+            "line": 99,
+            "text": ""
+          },
+          {
+            "line": 100,
+            "text": ""
+          },
+          {
+            "line": 101,
+            "text": "@triton.jit"
+          },
+          {
+            "line": 102,
+            "text": "def _poly_norm_backward_kernel("
+          },
+          {
+            "line": 103,
+            "text": "    dY_ptr,"
+          },
+          {
+            "line": 104,
+            "text": "    dY_row_stride,"
+          },
+          {
+            "line": 105,
+            "text": "    dX_ptr,"
+          },
+          {
+            "line": 106,
+            "text": "    dX_row_stride,"
+          },
+          {
+            "line": 107,
+            "text": "    X_ptr,"
+          },
+          {
+            "line": 108,
+            "text": "    X_row_stride,"
+          },
+          {
+            "line": 109,
+            "text": "    W_ptr,"
+          },
+          {
+            "line": 110,
+            "text": "    RSTD_ptr,"
+          },
+          {
+            "line": 111,
+            "text": "    RSTD_row_stride,"
+          },
+          {
+            "line": 112,
+            "text": "    dW_ptr,  # shape: (n_programs, 3)"
+          },
+          {
+            "line": 113,
+            "text": "    dW_row_stride,"
+          },
+          {
+            "line": 114,
+            "text": "    dB_ptr,  # shape: (n_programs,)"
+          },
+          {
+            "line": 115,
+            "text": "    n_rows,"
+          },
+          {
+            "line": 116,
+            "text": "    n_cols,"
+          },
+          {
+            "line": 117,
+            "text": "    rows_per_program: tl.constexpr,"
+          },
+          {
+            "line": 118,
+            "text": "    BLOCK_SIZE: tl.constexpr,"
+          },
+          {
+            "line": 119,
+            "text": "):"
+          },
+          {
+            "line": 120,
+            "text": "    \"\"\""
+          }
+        ]
+      },
+      "responseCharacters": 5916,
+      "responseSHA256": "c28dadf648c070f66961dfb69c4661fab574d477b3ecf477a42bcf9726e63b94",
+      "wallMilliseconds": 0.44893503189086914
+    },
+    {
+      "round": 2,
+      "request": {
+        "op": "case",
+        "scope": null,
+        "id": "poly-02",
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "case": {
+          "id": "poly-02",
+          "status": "wrong_value",
+          "parameters": {
+            "rows": 4,
+            "width": 8192,
+            "seed": 0,
+            "dtype": "float16",
+            "scale": 1,
+            "eps": 0.000001,
+            "weights": [
+              0.3333333333333333,
+              0.3333333333333333,
+              0.3333333333333333
+            ],
+            "bias": 1,
+            "atol": 0.002,
+            "rtol": 0.002
+          },
+          "evidenceRefs": [
+            "observation-poly-02"
+          ]
+        },
+        "evidence": [
+          {
+            "id": "observation-poly-02",
+            "kind": "device-output",
+            "observed": true,
+            "caseIds": [
+              "poly-02"
+            ],
+            "text": "Actual GPU invocation: wrong_value; 23541 mismatches among 32768 outputs.",
+            "payload": {
+              "outputs": 32768,
+              "mismatches": 23541,
+              "nonfinite": 0,
+              "max_abs_error": 6.927851837797153,
+              "inputs_unchanged": true,
+              "input_array_identities": [
+                {
+                  "name": "bias",
+                  "shape": [
+                    1
+                  ],
+                  "dtype": "float32",
+                  "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+                },
+                {
+                  "name": "weights",
+                  "shape": [
+                    3
+                  ],
+                  "dtype": "float32",
+                  "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+                },
+                {
+                  "name": "x",
+                  "shape": [
+                    4,
+                    8192
+                  ],
+                  "dtype": "float32",
+                  "sha256": "fef2d3b0b9a939a842baa35288174bb3c7b1b5759beffe2b2e5907586ed82f56"
+                }
+              ],
+              "actual_dtype": "float16",
+              "actual_shape": [
+                4,
+                8192
+              ],
+              "input_strides": null,
+              "sample": [
+                {
+                  "flat_index": 0,
+                  "actual": 0.86572265625,
+                  "reference": 0.7484879958189852
+                },
+                {
+                  "flat_index": 1,
+                  "actual": 0.86865234375,
+                  "reference": 0.7426683180712066
+                },
+                {
+                  "flat_index": 3,
+                  "actual": 0.8916015625,
+                  "reference": 0.8846648951142795
+                },
+                {
+                  "flat_index": 4,
+                  "actual": 1.4189453125,
+                  "reference": 1.4690620420116205
+                },
+                {
+                  "flat_index": 5,
+                  "actual": 1.3212890625,
+                  "reference": 1.3481343204845908
+                },
+                {
+                  "flat_index": 7,
+                  "actual": 1.14453125,
+                  "reference": 0.36670606666891303
+                },
+                {
+                  "flat_index": 9,
+                  "actual": 0.88232421875,
+                  "reference": 0.7165392580290251
+                },
+                {
+                  "flat_index": 13,
+                  "actual": 1.7021484375,
+                  "reference": 1.8575310194056822
+                },
+                {
+                  "flat_index": 14,
+                  "actual": 1.6083984375,
+                  "reference": 1.7228666661350092
+                },
+                {
+                  "flat_index": 16,
+                  "actual": 0.89697265625,
+                  "reference": 0.6935433961940638
+                },
+                {
+                  "flat_index": 17,
+                  "actual": 0.9814453125,
+                  "reference": 0.5800675000228313
+                },
+                {
+                  "flat_index": 18,
+                  "actual": 1.2490234375,
+                  "reference": 1.264471556618305
+                },
+                {
+                  "flat_index": 19,
+                  "actual": 1.3828125,
+                  "reference": 1.4243548553359395
+                },
+                {
+                  "flat_index": 20,
+                  "actual": 1.2666015625,
+                  "reference": 1.2847009090546826
+                },
+                {
+                  "flat_index": 21,
+                  "actual": 0.94140625,
+                  "reference": 0.632217230705195
+                },
+                {
+                  "flat_index": 23,
+                  "actual": 2.267578125,
+                  "reference": 2.789512171096622
+                }
+              ],
+              "sample_scope": "At most 16 mismatching positions, or first 16 positions in a passing case. Full-array comparison counts above; complete arrays retained outside the bounded agent packet."
+            },
+            "rawRefs": [
+              {
+                "id": "record-poly-02",
+                "sha256": "75d1ef5634d5c5a0c034ce4e2b09a905888724ac41e4d6118639392fd30a0b8a"
+              },
+              {
+                "id": "arrays-poly-02",
+                "sha256": "1266deb8d052a58a56d7ddb97a4da20a35a0e3662e34c0c1fa56d1e78edf3f7a"
+              }
+            ]
+          }
+        ]
+      },
+      "responseCharacters": 2586,
+      "responseSHA256": "8e456bc2a7c6451ea4fb8188aed54328c420aba15cc17c3907e1f25ae1c38aaf",
+      "wallMilliseconds": 0.19617199897766113
+    }
+  ],
+  "valid": false,
+  "failure": "external-runner-interruption",
+  "budget": {
+    "queries": 2,
+    "responseCharacters": 8502
+  },
+  "wallSeconds": 192.756,
+  "modelWallSeconds": 18.511948633909228,
+  "queryWallMilliseconds": 0.6451070308685303,
+  "localization": {
+    "locationHit": false,
+    "allLocationsValid": false,
+    "referencesValid": false,
+    "failureObserved": false,
+    "passingControlObserved": false,
+    "supportedLocalization": false,
+    "invalidLocations": [],
+    "invalidCitations": [],
+    "scope": "Declared source-region hit and valid observed references; not semantic proof of a correct explanation."
+  },
+  "patchApplicable": false,
+  "candidateTreeSHA256": null,
+  "usage": {
+    "input_tokens": 37998,
+    "cached_input_tokens": 29440,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 142,
+    "reasoning_output_tokens": 0
+  },
+  "interruption": {
+    "observedShellExitCode": 143,
+    "inFlightCallMayBeUnrecorded": true,
+    "callCountAndTokensAreRetainedLowerBounds": true,
+    "trialWallScope": "First retained call start through administrative interruption observation, including unobserved gap; not a completed trial latency.",
+    "originalCallFilesUnchanged": true,
+    "modelResampled": false
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "format": "human-task-rubric-draft-v2",
+  "status": "DRAFT — expert review and independent rater calibration pending",
+  "taskId": "triton-negative-zero",
+  "rootCauseId": "triton-pr-11426",
+  "title": "浮点零常量丢失符号位",
+  "mechanismForFullCredit": "scalar_constant 对 value == 0 统一构造 null，-0.0 与 +0.0 数值相等但符号位不同，浮点负零错误地变为正零。",
+  "allowedEquivalentExplanationsAndRepairs": [
+    "按浮点 dtype 构造保留符号的常量，整数零仍按整数规则处理",
+    "显式检测负零并生成正确浮点位型，覆盖目标浮点 dtype"
+  ],
+  "counterfactualPredictions": [
+    "比较同 dtype 的 -0.0/+0.0 和非零控制的输出字节",
+    "跨 float16/float32/float64 检查符号位；数值 allclose 不足以验证"
+  ],
+  "insufficientOrWrongAnswers": [
+    "只用 == 或 allclose 宣告修复",
+    "将此前单独发现的缓存键碰撞当成本任务已冻结 wrapper 的唯一根因"
+  ],
+  "localizationTargets": [
+    {
+      "source_id": "source-06",
+      "start_line": 601,
+      "end_line": 613,
+      "path": "triton/language/semantic.py",
+      "sourceSha256": "0d99c1f30bdb86bd718c98bf026ced2a84a878f79630fa9b3fe099ce46e86ebd"
+    }
+  ],
+  "failureEvidence": [
+    {
+      "caseId": "negative-zero-00",
+      "evidenceIds": [
+        "observation-negative-zero-00"
+      ],
+      "parameters": {
+        "dtype": "float32",
+        "value": 0,
+        "n": 32
+      }
+    }
+  ],
+  "passingControls": [
+    {
+      "caseId": "negative-zero-01",
+      "evidenceIds": [
+        "observation-negative-zero-01"
+      ],
+      "parameters": {
+        "dtype": "float32",
+        "value": 0,
+        "n": 32
+      }
+    },
+    {
+      "caseId": "negative-zero-02",
+      "evidenceIds": [
+        "observation-negative-zero-02"
+      ],
+      "parameters": {
+        "dtype": "float32",
+        "value": 1,
+        "n": 32
+      }
+    }
+  ],
+  "scoring": "Four 0/1/2 dimensions: mechanism, localization, evidence, counterfactual. Correct alternatives need not match gold text; unsupported causal certainty loses mechanism/evidence credit. Exact line targets are guides, not an automatic semantic correctness oracle.",
+  "repairExecutor": {
+    "taskId": "triton-negative-zero",
+    "baseDirectory": "out/research/natural-fault-expansion",
+    "executor": "tools/research/natural-fault-expansion/evaluate_candidate.py",
+    "executorSha256": "678488bbdda7b1c3839d9ddb1012b1cd62e809eca6438fb895db47b9533f0fb9",
+    "verifier": "tools/research/natural-fault-expansion/verify.py",
+    "verifierSha256": "c94d119a0e6902c9ad97c8ec3ec7b4c585afafe6786f4fd23153ba8097c28ad1",
+    "runner": "tools/research/natural-fault-expansion/run.py",
+    "runnerSha256": "085bb656e534163698d8bb3f2fd9712c27e803c7658e8539129365fc6e830408",
+    "hiddenPlan": "out/research/natural-fault-expansion/plan.json",
+    "hiddenSpecSHA256": "a3215870aaaf47801a448c7b4da727ca80da29b65a0c852d999d564827e38d85",
+    "hiddenCaseIds": [
+      "negative-zero-03",
+      "negative-zero-04",
+      "negative-zero-05",
+      "negative-zero-06",
+      "negative-zero-07",
+      "negative-zero-08",
+      "negative-zero-09",
+      "negative-zero-10"
+    ],
+    "visibleCaseIds": [
+      "negative-zero-00",
+      "negative-zero-01",
+      "negative-zero-02"
+    ],
+    "command": [
+      "python3",
+      "tools/research/natural-fault-expansion/evaluate_candidate.py",
+      "--candidate",
+      "CANDIDATE_JSON",
+      "--output",
+      "NEW_OUTPUT_DIRECTORY",
+      "--base",
+      "out/research/natural-fault-expansion"
+    ],
+    "scope": "Existing actual-GPU executor. Not run on any human candidate; no human participant exists yet."
+  }
+}

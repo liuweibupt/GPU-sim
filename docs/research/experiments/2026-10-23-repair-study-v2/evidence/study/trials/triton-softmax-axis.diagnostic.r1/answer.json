@@ -1,0 +1,48 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "softmax incorrectly lets keep_dims=False remove the normalization axis from its internal max and sum reductions. Broadcasting aligns the remaining dimensions from the right, so dim=1 on a 2×2 input uses incorrect maxima and denominators. The actual failing output has 4/4 incorrect elements and maximum absolute error 15.605154; the dim=0 control passes with maximum absolute error 3.72529e-9 because trailing-dimension alignment happens to be correct. Retaining the reduced axis in both internal reductions ensures broadcasting along the requested axis and preserves the input shape regardless of keep_dims. The public signature and rounding option remain compatible. Compilation and post-repair device correctness cannot be verified through the supplied API.",
+  "locations": [
+    {
+      "source_id": "source-07",
+      "start_line": 53,
+      "end_line": 64
+    },
+    {
+      "source_id": "test-kernel",
+      "start_line": 4,
+      "end_line": 9
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "softmax-axis-00",
+      "evidence_ids": [
+        "observation-softmax-axis-00"
+      ]
+    },
+    {
+      "case_id": "softmax-axis-01",
+      "evidence_ids": [
+        "observation-softmax-axis-01"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-07",
+      "old": "    z = x - max(x, _dim, keep_dims=keep_dims)\n    num = math.exp(z)\n    den = sum(num, _dim, keep_dims=keep_dims)\n",
+      "new": "    # Keep the normalization axis for broadcasting back to the input shape.\n    z = x - max(x, _dim, keep_dims=True)\n    num = math.exp(z)\n    den = sum(num, _dim, keep_dims=True)\n"
+    }
+  ]
+}

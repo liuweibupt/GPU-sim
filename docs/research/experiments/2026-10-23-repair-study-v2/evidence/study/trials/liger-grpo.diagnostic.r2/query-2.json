@@ -1,0 +1,509 @@
+{
+  "round": 2,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-18",
+    "text": null,
+    "start": 1,
+    "end": 120,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-18",
+    "path": "src/liger_kernel/ops/grpo_loss.py",
+    "sha256": "6d4c0ec16d9db2ea8ae1b3072222b8f3371cc1c89fdf46d19e79ed4b907c10ec",
+    "start": 1,
+    "end": 120,
+    "totalLines": 1015,
+    "lines": [
+      {
+        "line": 1,
+        "text": "import torch"
+      },
+      {
+        "line": 2,
+        "text": "import triton"
+      },
+      {
+        "line": 3,
+        "text": "import triton.language as tl"
+      },
+      {
+        "line": 4,
+        "text": ""
+      },
+      {
+        "line": 5,
+        "text": "# Loss type constants for Triton constexpr branching"
+      },
+      {
+        "line": 6,
+        "text": "# GRPO/DAPO/BNPO/DR_GRPO all use the same per-token loss computation (standard PPO clipping)"
+      },
+      {
+        "line": 7,
+        "text": "_LOSS_TYPE_GRPO: tl.constexpr = tl.constexpr(0)"
+      },
+      {
+        "line": 8,
+        "text": "_LOSS_TYPE_CISPO: tl.constexpr = tl.constexpr(1)"
+      },
+      {
+        "line": 9,
+        "text": "_LOSS_TYPE_SAPO: tl.constexpr = tl.constexpr(2)"
+      },
+      {
+        "line": 10,
+        "text": "_LOSS_TYPE_VESPO: tl.constexpr = tl.constexpr(3)"
+      },
+      {
+        "line": 11,
+        "text": ""
+      },
+      {
+        "line": 12,
+        "text": "_str_to_loss_type = {"
+      },
+      {
+        "line": 13,
+        "text": "    \"grpo\": _LOSS_TYPE_GRPO.value,"
+      },
+      {
+        "line": 14,
+        "text": "    \"dapo\": _LOSS_TYPE_GRPO.value,"
+      },
+      {
+        "line": 15,
+        "text": "    \"bnpo\": _LOSS_TYPE_GRPO.value,"
+      },
+      {
+        "line": 16,
+        "text": "    \"dr_grpo\": _LOSS_TYPE_GRPO.value,"
+      },
+      {
+        "line": 17,
+        "text": "    \"luspo\": _LOSS_TYPE_GRPO.value,"
+      },
+      {
+        "line": 18,
+        "text": "    \"cispo\": _LOSS_TYPE_CISPO.value,"
+      },
+      {
+        "line": 19,
+        "text": "    \"sapo\": _LOSS_TYPE_SAPO.value,"
+      },
+      {
+        "line": 20,
+        "text": "    \"vespo\": _LOSS_TYPE_VESPO.value,"
+      },
+      {
+        "line": 21,
+        "text": "}"
+      },
+      {
+        "line": 22,
+        "text": ""
+      },
+      {
+        "line": 23,
+        "text": ""
+      },
+      {
+        "line": 24,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 25,
+        "text": "def _selective_log_softmax_kernel("
+      },
+      {
+        "line": 26,
+        "text": "    LOGITS,"
+      },
+      {
+        "line": 27,
+        "text": "    INPUT_IDS,"
+      },
+      {
+        "line": 28,
+        "text": "    LOG_P,"
+      },
+      {
+        "line": 29,
+        "text": "    MASK,"
+      },
+      {
+        "line": 30,
+        "text": "    TEMPERATURE: tl.constexpr,"
+      },
+      {
+        "line": 31,
+        "text": "    stride_input_ids_b,"
+      },
+      {
+        "line": 32,
+        "text": "    L: tl.constexpr,"
+      },
+      {
+        "line": 33,
+        "text": "    N: tl.constexpr,"
+      },
+      {
+        "line": 34,
+        "text": "    BLOCK_N: tl.constexpr = 4096,"
+      },
+      {
+        "line": 35,
+        "text": "):"
+      },
+      {
+        "line": 36,
+        "text": "    off_b = tl.program_id(0).cast(tl.int64)"
+      },
+      {
+        "line": 37,
+        "text": "    off_l = tl.program_id(1).cast(tl.int64)"
+      },
+      {
+        "line": 38,
+        "text": ""
+      },
+      {
+        "line": 39,
+        "text": "    LOGITS += off_b * (L + 1) * N + off_l * N"
+      },
+      {
+        "line": 40,
+        "text": "    INPUT_IDS += off_b * stride_input_ids_b + off_l"
+      },
+      {
+        "line": 41,
+        "text": "    LOG_P += off_b * L + off_l"
+      },
+      {
+        "line": 42,
+        "text": ""
+      },
+      {
+        "line": 43,
+        "text": "    if MASK is not None:"
+      },
+      {
+        "line": 44,
+        "text": "        MASK += off_b * stride_input_ids_b + off_l"
+      },
+      {
+        "line": 45,
+        "text": "        not_skip = tl.load(MASK)"
+      },
+      {
+        "line": 46,
+        "text": "        if not_skip == 0:"
+      },
+      {
+        "line": 47,
+        "text": "            return"
+      },
+      {
+        "line": 48,
+        "text": ""
+      },
+      {
+        "line": 49,
+        "text": "    m_i = float(\"-inf\")"
+      },
+      {
+        "line": 50,
+        "text": "    l_i = 0.0"
+      },
+      {
+        "line": 51,
+        "text": "    for start in range(0, N, BLOCK_N):"
+      },
+      {
+        "line": 52,
+        "text": "        cols = start + tl.arange(0, BLOCK_N)"
+      },
+      {
+        "line": 53,
+        "text": "        logits = tl.load(LOGITS + cols, mask=cols < N, other=float(\"-inf\")).to(tl.float32) / TEMPERATURE"
+      },
+      {
+        "line": 54,
+        "text": "        new_m_i = tl.maximum(m_i, tl.max(logits))"
+      },
+      {
+        "line": 55,
+        "text": "        alpha = tl.exp(m_i - new_m_i)"
+      },
+      {
+        "line": 56,
+        "text": "        l_i = l_i * alpha + tl.sum(tl.exp(logits - new_m_i))"
+      },
+      {
+        "line": 57,
+        "text": "        m_i = new_m_i"
+      },
+      {
+        "line": 58,
+        "text": "    lse = m_i + tl.log(l_i)"
+      },
+      {
+        "line": 59,
+        "text": ""
+      },
+      {
+        "line": 60,
+        "text": "    ids = tl.load(INPUT_IDS)"
+      },
+      {
+        "line": 61,
+        "text": "    x = tl.load(LOGITS + ids).to(tl.float32) / TEMPERATURE"
+      },
+      {
+        "line": 62,
+        "text": "    logp = x - lse"
+      },
+      {
+        "line": 63,
+        "text": "    tl.store(LOG_P, logp)"
+      },
+      {
+        "line": 64,
+        "text": ""
+      },
+      {
+        "line": 65,
+        "text": ""
+      },
+      {
+        "line": 66,
+        "text": "# compue old_logp and ref_logp, it reduce 10G peak Memory. it does not requires grad"
+      },
+      {
+        "line": 67,
+        "text": "@torch.no_grad"
+      },
+      {
+        "line": 68,
+        "text": "def fused_selective_log_softmax(logits: torch.Tensor, input_ids: torch.Tensor, temperature: float = 0.9, mask=None):"
+      },
+      {
+        "line": 69,
+        "text": "    assert logits.is_contiguous()"
+      },
+      {
+        "line": 70,
+        "text": "    B, L_ADD_1, N = logits.shape"
+      },
+      {
+        "line": 71,
+        "text": "    L = L_ADD_1 - 1"
+      },
+      {
+        "line": 72,
+        "text": "    input_ids = input_ids[:, -L:]"
+      },
+      {
+        "line": 73,
+        "text": "    if mask is not None:"
+      },
+      {
+        "line": 74,
+        "text": "        mask = mask[:, -L:]"
+      },
+      {
+        "line": 75,
+        "text": "    log_p = torch.zeros(B, L, dtype=torch.float32, device=logits.device)"
+      },
+      {
+        "line": 76,
+        "text": "    kwargs = {\"BLOCK_N\": 2048, \"num_stages\": 4, \"num_warps\": 1}"
+      },
+      {
+        "line": 77,
+        "text": "    _selective_log_softmax_kernel[(B, L)]("
+      },
+      {
+        "line": 78,
+        "text": "        logits, input_ids, log_p, mask, temperature, input_ids.stride(0), L, N, **kwargs"
+      },
+      {
+        "line": 79,
+        "text": "    )"
+      },
+      {
+        "line": 80,
+        "text": "    return log_p"
+      },
+      {
+        "line": 81,
+        "text": ""
+      },
+      {
+        "line": 82,
+        "text": ""
+      },
+      {
+        "line": 83,
+        "text": "# @triton.autotune([triton.Config({\"BLOCK_N\":BLOCK_N}, num_stages=ns, num_warps=nw)"
+      },
+      {
+        "line": 84,
+        "text": "#                   for BLOCK_N in [2048, 4096, 8192]"
+      },
+      {
+        "line": 85,
+        "text": "#                   for ns in [1, 2, 4]"
+      },
+      {
+        "line": 86,
+        "text": "#                   for nw in [1, 2, 4, 8, 16]],"
+      },
+      {
+        "line": 87,
+        "text": "#                   key=['N'])"
+      },
+      {
+        "line": 88,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 89,
+        "text": "def _grpo_loss_fwd_kernel("
+      },
+      {
+        "line": 90,
+        "text": "    LOGITS,"
+      },
+      {
+        "line": 91,
+        "text": "    OLD_LOGP,"
+      },
+      {
+        "line": 92,
+        "text": "    REF_LOGP,"
+      },
+      {
+        "line": 93,
+        "text": "    INPUT_IDS,"
+      },
+      {
+        "line": 94,
+        "text": "    COMPLETION_MASK,"
+      },
+      {
+        "line": 95,
+        "text": "    ADVANTAGES,"
+      },
+      {
+        "line": 96,
+        "text": "    VLLM_IS_RATIO,"
+      },
+      {
+        "line": 97,
+        "text": "    VLLM_IS_RATIO_STRIDE,"
+      },
+      {
+        "line": 98,
+        "text": "    PHI_SEQ,  # VESPO gamma weight per sequence (B,) or None"
+      },
+      {
+        "line": 99,
+        "text": "    LOSS,"
+      },
+      {
+        "line": 100,
+        "text": "    LSE,"
+      },
+      {
+        "line": 101,
+        "text": "    KL,"
+      },
+      {
+        "line": 102,
+        "text": "    IS_CLIPPED,"
+      },
+      {
+        "line": 103,
+        "text": "    # constexpr for the fp64 reason in _selective_log_softmax_kernel above."
+      },
+      {
+        "line": 104,
+        "text": "    TEMPERATURE: tl.constexpr,"
+      },
+      {
+        "line": 105,
+        "text": "    BETA: tl.constexpr,"
+      },
+      {
+        "line": 106,
+        "text": "    EPS_LOW: tl.constexpr,"
+      },
+      {
+        "line": 107,
+        "text": "    EPS_HIGH: tl.constexpr,"
+      },
+      {
+        "line": 108,
+        "text": "    LOSS_TYPE: tl.constexpr,"
+      },
+      {
+        "line": 109,
+        "text": "    SAPO_TEMP_POS: tl.constexpr,"
+      },
+      {
+        "line": 110,
+        "text": "    SAPO_TEMP_NEG: tl.constexpr,"
+      },
+      {
+        "line": 111,
+        "text": "    DELTA: tl.constexpr,"
+      },
+      {
+        "line": 112,
+        "text": "    USE_BIAS_CORRECTION_KL: tl.constexpr,"
+      },
+      {
+        "line": 113,
+        "text": "    L: tl.constexpr,"
+      },
+      {
+        "line": 114,
+        "text": "    N: tl.constexpr,"
+      },
+      {
+        "line": 115,
+        "text": "    BLOCK_N: tl.constexpr = 4096,"
+      },
+      {
+        "line": 116,
+        "text": "):"
+      },
+      {
+        "line": 117,
+        "text": "    off_b = tl.program_id(0).cast(tl.int64)"
+      },
+      {
+        "line": 118,
+        "text": "    off_l = tl.program_id(1).cast(tl.int64)"
+      },
+      {
+        "line": 119,
+        "text": ""
+      },
+      {
+        "line": 120,
+        "text": "    if COMPLETION_MASK is not None:"
+      }
+    ]
+  },
+  "responseCharacters": 6397,
+  "responseSHA256": "b49149514dcfaa8e008c0bc76aa6aacae5212739a0c7170bd6220ae3e1913d48",
+  "wallMilliseconds": 0.21503210067749023
+}

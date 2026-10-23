@@ -1,0 +1,59 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "visit_ListComp binds each input item and unconditionally appends its expression, ignoring comp.ifs entirely. This explains the observed device failures: constexpr-filter-00 differs in 5/5 elements and constexpr-filter-02 in 7/7 elements. The passing control constexpr-filter-01 differs in 0/5 elements because its predicate accepts every input. Evaluate predicates in source order after binding each item, short-circuit on the first false predicate, and evaluate/append the element only when all predicates pass. Preserve existing compile-time conditional type rules and reject runtime predicates, whose variable-length results cannot form a compile-time tuple. This preserves order and leaves unused output capacity untouched through the kernel's existing length-bounded stores. No post-patch compilation or device execution was available; held-out correctness remains unverified.",
+  "locations": [
+    {
+      "source_id": "source-01",
+      "start_line": 528,
+      "end_line": 541
+    },
+    {
+      "source_id": "source-01",
+      "start_line": 986,
+      "end_line": 996
+    },
+    {
+      "source_id": "test-kernel",
+      "start_line": 5,
+      "end_line": 12
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "constexpr-filter-00",
+      "evidence_ids": [
+        "observation-constexpr-filter-00"
+      ]
+    },
+    {
+      "case_id": "constexpr-filter-01",
+      "evidence_ids": [
+        "observation-constexpr-filter-01"
+      ]
+    },
+    {
+      "case_id": "constexpr-filter-02",
+      "evidence_ids": [
+        "observation-constexpr-filter-02"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-01",
+      "old": "        results = []\n        for item in iter:\n            self.set_value(comp.target.id, item)\n            results.append(self.visit(node.elt))\n        return tl_tuple(results)",
+      "new": "        results = []\n        for item in iter:\n            self.set_value(comp.target.id, item)\n            for predicate in comp.ifs:\n                cond = _unwrap_if_constexpr(self.visit(predicate))\n                if type(cond) not in _condition_types:\n                    raise self._unsupported(\n                        predicate, \"comprehension filters must be compile-time conditionals of type {{{}}}, \"\n                        \"not objects of type {}\".format(\n                            ', '.join(_.__name__ for _ in _condition_types), type(cond).__name__))\n                if not cond:\n                    break\n            else:\n                results.append(self.visit(node.elt))\n        return tl_tuple(results)"
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+{
+  "round": 4,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-34",
+    "text": null,
+    "start": 120,
+    "end": 178,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-34",
+    "path": "src/liger_kernel/ops/sparsemax.py",
+    "sha256": "4851488a4247bb843eec2c4587d791a382e94a27a38b6f4fc42b3611f3dc4c73",
+    "start": 120,
+    "end": 178,
+    "totalLines": 178,
+    "lines": [
+      {
+        "line": 120,
+        "text": "    _sparsemax_forward_kernel[grid]("
+      },
+      {
+        "line": 121,
+        "text": "        x_flat,"
+      },
+      {
+        "line": 122,
+        "text": "        x_flat.stride(0),"
+      },
+      {
+        "line": 123,
+        "text": "        x_sorted_flat,"
+      },
+      {
+        "line": 124,
+        "text": "        x_sorted_flat.stride(0),"
+      },
+      {
+        "line": 125,
+        "text": "        out_flat,"
+      },
+      {
+        "line": 126,
+        "text": "        out_flat.stride(0),"
+      },
+      {
+        "line": 127,
+        "text": "        n_cols,"
+      },
+      {
+        "line": 128,
+        "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+      },
+      {
+        "line": 129,
+        "text": "        num_warps=num_warps,"
+      },
+      {
+        "line": 130,
+        "text": "    )"
+      },
+      {
+        "line": 131,
+        "text": ""
+      },
+      {
+        "line": 132,
+        "text": "    y = out_flat.view_as(x_sw).transpose(dim, -1)"
+      },
+      {
+        "line": 133,
+        "text": "    return y, out_flat"
+      },
+      {
+        "line": 134,
+        "text": ""
+      },
+      {
+        "line": 135,
+        "text": ""
+      },
+      {
+        "line": 136,
+        "text": "def _sparsemax_backward("
+      },
+      {
+        "line": 137,
+        "text": "    grad_out: torch.Tensor,"
+      },
+      {
+        "line": 138,
+        "text": "    out_flat: torch.Tensor,"
+      },
+      {
+        "line": 139,
+        "text": "    dim: int,"
+      },
+      {
+        "line": 140,
+        "text": ") -> torch.Tensor:"
+      },
+      {
+        "line": 141,
+        "text": "    grad_sw = grad_out.transpose(dim, -1).contiguous()"
+      },
+      {
+        "line": 142,
+        "text": "    n_cols = grad_sw.size(-1)"
+      },
+      {
+        "line": 143,
+        "text": "    n_rows = grad_sw.numel() // n_cols"
+      },
+      {
+        "line": 144,
+        "text": "    go_flat = grad_sw.view(n_rows, n_cols)"
+      },
+      {
+        "line": 145,
+        "text": ""
+      },
+      {
+        "line": 146,
+        "text": "    BLOCK_SIZE, num_warps = calculate_settings(n_cols)"
+      },
+      {
+        "line": 147,
+        "text": "    dx_flat = torch.empty_like(go_flat)"
+      },
+      {
+        "line": 148,
+        "text": "    grid = (n_rows,)"
+      },
+      {
+        "line": 149,
+        "text": "    _sparsemax_backward_kernel[grid]("
+      },
+      {
+        "line": 150,
+        "text": "        out_flat,"
+      },
+      {
+        "line": 151,
+        "text": "        go_flat,"
+      },
+      {
+        "line": 152,
+        "text": "        dx_flat,"
+      },
+      {
+        "line": 153,
+        "text": "        out_flat.stride(0),"
+      },
+      {
+        "line": 154,
+        "text": "        n_cols,"
+      },
+      {
+        "line": 155,
+        "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+      },
+      {
+        "line": 156,
+        "text": "        num_warps=num_warps,"
+      },
+      {
+        "line": 157,
+        "text": "    )"
+      },
+      {
+        "line": 158,
+        "text": ""
+      },
+      {
+        "line": 159,
+        "text": "    dx = dx_flat.view_as(grad_sw).transpose(dim, -1)"
+      },
+      {
+        "line": 160,
+        "text": "    return dx"
+      },
+      {
+        "line": 161,
+        "text": ""
+      },
+      {
+        "line": 162,
+        "text": ""
+      },
+      {
+        "line": 163,
+        "text": "class LigerSparsemaxFunction(torch.autograd.Function):"
+      },
+      {
+        "line": 164,
+        "text": "    @staticmethod"
+      },
+      {
+        "line": 165,
+        "text": "    @ensure_contiguous"
+      },
+      {
+        "line": 166,
+        "text": "    def forward(ctx, x: torch.Tensor, dim: int):"
+      },
+      {
+        "line": 167,
+        "text": "        y, out_flat = _sparsemax_forward(x, dim)"
+      },
+      {
+        "line": 168,
+        "text": "        ctx.save_for_backward(out_flat)"
+      },
+      {
+        "line": 169,
+        "text": "        ctx.dim = dim"
+      },
+      {
+        "line": 170,
+        "text": "        return y"
+      },
+      {
+        "line": 171,
+        "text": ""
+      },
+      {
+        "line": 172,
+        "text": "    @staticmethod"
+      },
+      {
+        "line": 173,
+        "text": "    @ensure_contiguous"
+      },
+      {
+        "line": 174,
+        "text": "    def backward(ctx, grad_out: torch.Tensor):"
+      },
+      {
+        "line": 175,
+        "text": "        (out_flat,) = ctx.saved_tensors"
+      },
+      {
+        "line": 176,
+        "text": "        dx = _sparsemax_backward(grad_out, out_flat, ctx.dim)"
+      },
+      {
+        "line": 177,
+        "text": "        return dx, None"
+      },
+      {
+        "line": 178,
+        "text": ""
+      }
+    ]
+  },
+  "responseCharacters": 2980,
+  "responseSHA256": "35790a800e6398da84cbcc7aa285862007806c0749c392345790d46cfb3762a5",
+  "wallMilliseconds": 0.1314610242843628
+}

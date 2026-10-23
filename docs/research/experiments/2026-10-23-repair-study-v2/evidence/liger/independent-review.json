@@ -1,0 +1,1523 @@
+{
+  "format": "liger-independent-prestudy-review-v1",
+  "reviewed_at": "2026-10-23T14:43:00.052035+00:00",
+  "status": "ready-for-frozen-bounded-study",
+  "reviewer": "separate protocol/review agent; not a human-subject study",
+  "model_calls_made_by_reviewer": 0,
+  "gpu_calls_made_by_reviewer": 0,
+  "files": {
+    "tools/research/liger-faults/prepare.py": "0f3688784e33b4021748d6b60c8cdce35b4c5e2fa5b090206b8c13204ab745c5",
+    "tools/research/liger-faults/run.py": "5d6dba630ebd8255994eea2e7a84e30f2e2b4ee9320c0c55f83310fa65c5dd8c",
+    "tools/research/liger-faults/verify.py": "c0d8a0cbf695550f03f33edfc6005ad8f0b21b9813bd5eaeb96a392e78424ac1",
+    "tools/research/liger-faults/catalog.py": "847ce9fd0724ff3c480d1673e5f8ca3318669125b5456430e71c5fd609f55275",
+    "tools/research/liger-faults/evaluate_candidate.py": "0333c30fd71c396980a55488c21361feab941dc757dc4a2cddb2cd8e4aceee27",
+    "tools/research/liger-faults/candidate_identity.mjs": "91e89007f361a28491ba48593163c65546f13d529c13d4049d05cb6532200349",
+    "tools/research/liger-faults/test_liger_evidence.py": "56c5a7a57040799575932faf9cf375582e0e17c509b39fd4095638a7c57f6831",
+    "out/research/liger-faults/plan.json": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+    "out/research/liger-faults/input-manifest.json": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d",
+    "out/research/liger-faults/catalog.json": "ce904a21360f2a39d3062c6e72d296e5186170a110db181baed4b28291c7e8b0",
+    "out/research/liger-faults/private-plan.json": "4171d7c29d0956e56cb1e08b13847d8d68229aa21080fbae53db892a96f51127",
+    "out/research/liger-faults/source-manifest.json": "f82ab11264e5f943304c9b3927f5bebe03ade5498b36792801d7927e08547181"
+  },
+  "controls_and_executor_receipts": [
+    {
+      "group": "controls-v2",
+      "family": "poly",
+      "version": "before",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "c9243a88724008786dec1f4a14e4ad14a8159689010e9ee674ed9c29afaab577",
+      "expected_cases": 18,
+      "completed_cases": 18,
+      "passed_cases": 12,
+      "all_passed": false,
+      "outputs": 273418,
+      "cases": [
+        {
+          "id": "poly-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-02",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 32768,
+          "mismatches": 23541
+        },
+        {
+          "id": "poly-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-04",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-05",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-08",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 16384,
+          "mismatches": 2882
+        },
+        {
+          "id": "poly-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-10",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 16384,
+          "mismatches": 5853
+        },
+        {
+          "id": "poly-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-12",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 32768,
+          "mismatches": 23449
+        },
+        {
+          "id": "poly-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-14",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 32768,
+          "mismatches": 23485
+        },
+        {
+          "id": "poly-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-16",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 3069,
+          "mismatches": 2451
+        },
+        {
+          "id": "poly-17",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 3069,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "controls-v2",
+      "family": "poly",
+      "version": "gold",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "eecd40ba67cada5a3956b180f3540d762b9eabb08ae0ea9c10fb90aa65577e42",
+      "expected_cases": 18,
+      "completed_cases": 18,
+      "passed_cases": 18,
+      "all_passed": true,
+      "outputs": 273418,
+      "cases": [
+        {
+          "id": "poly-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-02",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-04",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-05",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-08",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 3069,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-17",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 3069,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "controls-v2",
+      "family": "sparse",
+      "version": "before",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "2057690bb16eadc94df3b8adfc9ba813982f3056063f6ceb4808781c7db68c90",
+      "expected_cases": 17,
+      "completed_cases": 17,
+      "passed_cases": 9,
+      "all_passed": false,
+      "outputs": 33300,
+      "cases": [
+        {
+          "id": "sparse-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-02",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 32,
+          "mismatches": 32
+        },
+        {
+          "id": "sparse-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-04",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 512,
+          "mismatches": 512
+        },
+        {
+          "id": "sparse-05",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 512,
+          "mismatches": 512
+        },
+        {
+          "id": "sparse-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-08",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 62,
+          "mismatches": 62
+        },
+        {
+          "id": "sparse-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-11",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 256,
+          "mismatches": 256
+        },
+        {
+          "id": "sparse-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-13",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 2046,
+          "mismatches": 2046
+        },
+        {
+          "id": "sparse-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-15",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 12288,
+          "mismatches": 1
+        },
+        {
+          "id": "sparse-16",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 12288,
+          "mismatches": 1
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "controls-v2",
+      "family": "sparse",
+      "version": "gold",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "f88e4c7c26d6ff04ccd6246d05cd9940e48daa783725096c1383587e917737a3",
+      "expected_cases": 17,
+      "completed_cases": 17,
+      "passed_cases": 17,
+      "all_passed": true,
+      "outputs": 33300,
+      "cases": [
+        {
+          "id": "sparse-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-02",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-04",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-05",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-08",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 12288,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 12288,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "controls-v2",
+      "family": "grpo",
+      "version": "before",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "2ec6434fcee47305cea6f3a3b835693a34865ff4e70e125d7b46307aec308fec",
+      "expected_cases": 21,
+      "completed_cases": 21,
+      "passed_cases": 6,
+      "all_passed": false,
+      "outputs": 501,
+      "cases": [
+        {
+          "id": "grpo-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-01",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 21,
+          "mismatches": 7
+        },
+        {
+          "id": "grpo-02",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 21,
+          "mismatches": 12
+        },
+        {
+          "id": "grpo-03",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 21,
+          "mismatches": 13
+        },
+        {
+          "id": "grpo-04",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 21,
+          "mismatches": 9
+        },
+        {
+          "id": "grpo-05",
+          "partition": "visible",
+          "passed": false,
+          "outputs": 21,
+          "mismatches": 10
+        },
+        {
+          "id": "grpo-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-07",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 10,
+          "mismatches": 3
+        },
+        {
+          "id": "grpo-08",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 10,
+          "mismatches": 6
+        },
+        {
+          "id": "grpo-09",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 10,
+          "mismatches": 7
+        },
+        {
+          "id": "grpo-10",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 10,
+          "mismatches": 3
+        },
+        {
+          "id": "grpo-11",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 10,
+          "mismatches": 4
+        },
+        {
+          "id": "grpo-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-13",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 36,
+          "mismatches": 8
+        },
+        {
+          "id": "grpo-14",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 36,
+          "mismatches": 23
+        },
+        {
+          "id": "grpo-15",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 36,
+          "mismatches": 24
+        },
+        {
+          "id": "grpo-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-17",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 36,
+          "mismatches": 18
+        },
+        {
+          "id": "grpo-18",
+          "partition": "hidden",
+          "passed": false,
+          "outputs": 33,
+          "mismatches": 29
+        },
+        {
+          "id": "grpo-19",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-20",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "controls-v2",
+      "family": "grpo",
+      "version": "gold",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "9b13f8533813688106f9b291a6ec5a5914aaca6157494af69788e921dbc4b66e",
+      "expected_cases": 21,
+      "completed_cases": 21,
+      "passed_cases": 21,
+      "all_passed": true,
+      "outputs": 501,
+      "cases": [
+        {
+          "id": "grpo-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-02",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-04",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-05",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-08",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-17",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-18",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-19",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-20",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "gold-evaluator-check-v3",
+      "family": "poly",
+      "version": "run",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "5dcc1fa2e0c1197806a656d11065749da18db1999d071a6a6551d95ddf247393",
+      "expected_cases": 18,
+      "completed_cases": 18,
+      "passed_cases": 18,
+      "all_passed": true,
+      "outputs": 273418,
+      "cases": [
+        {
+          "id": "poly-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-02",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-04",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-05",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 1028,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-08",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 16384,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 32768,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 3069,
+          "mismatches": 0
+        },
+        {
+          "id": "poly-17",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 3069,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "gold-evaluator-check-v3",
+      "family": "sparse",
+      "version": "run",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "7bc0ec2131ac597ff69e2d5994381854b57c98724046fa5e6bf3be2ca88ccbfb",
+      "expected_cases": 17,
+      "completed_cases": 17,
+      "passed_cases": 17,
+      "all_passed": true,
+      "outputs": 33300,
+      "cases": [
+        {
+          "id": "sparse-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-02",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 32,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-04",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-05",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 512,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-08",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 62,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 256,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 2046,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 12288,
+          "mismatches": 0
+        },
+        {
+          "id": "sparse-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 12288,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    },
+    {
+      "group": "gold-evaluator-check-v3",
+      "family": "grpo",
+      "version": "run",
+      "format": "liger-retained-array-verification-v1",
+      "status": "verified",
+      "plan_sha256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+      "summary_sha256": "29a8352e119a2cd6337e7fd3ad025d5737628a4185fe2c26c48f32ea54d0eb41",
+      "expected_cases": 21,
+      "completed_cases": 21,
+      "passed_cases": 21,
+      "all_passed": true,
+      "outputs": 501,
+      "cases": [
+        {
+          "id": "grpo-00",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-01",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-02",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-03",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-04",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-05",
+          "partition": "visible",
+          "passed": true,
+          "outputs": 21,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-06",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-07",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-08",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-09",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-10",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-11",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 10,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-12",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-13",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-14",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-15",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-16",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-17",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 36,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-18",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-19",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        },
+        {
+          "id": "grpo-20",
+          "partition": "hidden",
+          "passed": true,
+          "outputs": 33,
+          "mismatches": 0
+        }
+      ],
+      "input_binding": "frozen-control-input-manifest",
+      "input_manifest_sha256": "b9e5737df838d2a7bfd9bac04cc65491a024063ae9c9ed2758efd71f68ccbe4d"
+    }
+  ],
+  "independent_oracle_checks": [
+    {
+      "group": "controls-v2",
+      "family": "poly",
+      "version": "before",
+      "elements": 273418,
+      "max_saved_reference_difference": 3.552713678800501e-15,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "controls-v2",
+      "family": "poly",
+      "version": "gold",
+      "elements": 273418,
+      "max_saved_reference_difference": 3.552713678800501e-15,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "controls-v2",
+      "family": "sparse",
+      "version": "before",
+      "elements": 33300,
+      "max_saved_reference_difference": 1.1102230246251565e-16,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "controls-v2",
+      "family": "sparse",
+      "version": "gold",
+      "elements": 33300,
+      "max_saved_reference_difference": 1.1102230246251565e-16,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "controls-v2",
+      "family": "grpo",
+      "version": "before",
+      "elements": 501,
+      "max_saved_reference_difference": 1.4210854715202004e-14,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "controls-v2",
+      "family": "grpo",
+      "version": "gold",
+      "elements": 501,
+      "max_saved_reference_difference": 1.4210854715202004e-14,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "gold-evaluator-check-v3",
+      "family": "poly",
+      "version": "run",
+      "elements": 273418,
+      "max_saved_reference_difference": 3.552713678800501e-15,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "gold-evaluator-check-v3",
+      "family": "sparse",
+      "version": "run",
+      "elements": 33300,
+      "max_saved_reference_difference": 1.1102230246251565e-16,
+      "mismatch_counts_match": true
+    },
+    {
+      "group": "gold-evaluator-check-v3",
+      "family": "grpo",
+      "version": "run",
+      "elements": 501,
+      "max_saved_reference_difference": 1.4210854715202004e-14,
+      "mismatch_counts_match": true
+    }
+  ],
+  "independent_oracle_methods": {
+    "poly": "float64 powers normalized by np.linalg.norm, then weighted sum plus bias",
+    "sparse": "80-step bisection of simplex threshold on translation-normalized inputs, independently of sorted-support implementation",
+    "grpo": "np.logaddexp.reduce normalizer, independently of captured max-shift/exp/sum reference"
+  },
+  "catalog_checks": [
+    {
+      "task": "liger-poly",
+      "files": 42,
+      "visible_cases": 4,
+      "hidden_cases": 14,
+      "passing_visible_controls": 3,
+      "samples_max_16": true,
+      "references_bound_to_controls_v2_before": true,
+      "all_catalog_implementation_files_editable": true
+    },
+    {
+      "task": "liger-sparse",
+      "files": 42,
+      "visible_cases": 6,
+      "hidden_cases": 11,
+      "passing_visible_controls": 3,
+      "samples_max_16": true,
+      "references_bound_to_controls_v2_before": true,
+      "all_catalog_implementation_files_editable": true
+    },
+    {
+      "task": "liger-grpo",
+      "files": 41,
+      "visible_cases": 6,
+      "hidden_cases": 15,
+      "passing_visible_controls": 1,
+      "samples_max_16": true,
+      "references_bound_to_controls_v2_before": true,
+      "all_catalog_implementation_files_editable": true
+    }
+  ],
+  "before_after_commit_strings_absent_from_public_packet": true,
+  "tests": {
+    "command": [
+      "/opt/miniconda3/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/research/liger-faults",
+      "-p",
+      "test_liger_evidence.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "test_changed_archive_bytes_are_rejected (test_liger_evidence.RetainedEvidenceTests.test_changed_archive_bytes_are_rejected) ... ok\ntest_changed_output_cannot_hide_behind_matching_saved_reference (test_liger_evidence.RetainedEvidenceTests.test_changed_output_cannot_hide_behind_matching_saved_reference) ... ok\ntest_changed_stride_with_same_values_is_rejected (test_liger_evidence.RetainedEvidenceTests.test_changed_stride_with_same_values_is_rejected) ... ok\ntest_coherent_replacement_of_inputs_oracle_and_self_hash_is_rejected (test_liger_evidence.RetainedEvidenceTests.test_coherent_replacement_of_inputs_oracle_and_self_hash_is_rejected) ... ok\ntest_complete_arrays_for_three_mathematical_oracles (test_liger_evidence.RetainedEvidenceTests.test_complete_arrays_for_three_mathematical_oracles) ... ok\ntest_duplicate_case_is_rejected (test_liger_evidence.RetainedEvidenceTests.test_duplicate_case_is_rejected) ... ok\ntest_input_mutation_rejected_despite_correct_output (test_liger_evidence.RetainedEvidenceTests.test_input_mutation_rejected_despite_correct_output) ... ok\ntest_missing_case_stays_in_denominator (test_liger_evidence.RetainedEvidenceTests.test_missing_case_stays_in_denominator) ... ok\ntest_nonfinite_output_is_not_a_success (test_liger_evidence.RetainedEvidenceTests.test_nonfinite_output_is_not_a_success) ... ok\ntest_shape_truncation_rejected_even_with_updated_counts_and_hashes (test_liger_evidence.RetainedEvidenceTests.test_shape_truncation_rejected_even_with_updated_counts_and_hashes) ... ok\ntest_wrong_output_dtype_fails_despite_equal_values (test_liger_evidence.RetainedEvidenceTests.test_wrong_output_dtype_fails_despite_equal_values) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.023s\n\nOK\n",
+    "passed": 11
+  },
+  "findings": [
+    {
+      "id": "output-dtype",
+      "severity": "blocking-before-resolution",
+      "status": "resolved",
+      "finding": "Original float32 serialization discarded original result dtype; candidate with wrong dtype could pass.",
+      "resolution": "controls-v2 recaptured actual_dtype/actual_shape; verifier and runtime endpoint enforce declared dtype."
+    },
+    {
+      "id": "input-identity",
+      "severity": "blocking-before-resolution",
+      "status": "resolved",
+      "finding": "Self-consistent archived input hashes alone did not bind generated candidate inputs to frozen controls.",
+      "resolution": "input-manifest.json binds per-case complete array identities and strides; evaluator checks both control data and standalone verifier manifest."
+    },
+    {
+      "id": "snapshot-consistency",
+      "severity": "additional-integrity-check",
+      "status": "resolved",
+      "finding": "Before/after preservation snapshots and nonfinite metadata should bind to archived actual inputs and values.",
+      "resolution": "Final verifier checks before snapshots against x/logits/weights/bias/selected IDs/mask and recomputes nonfinite count."
+    }
+  ],
+  "limitations": [
+    "Six new study tasks are planned separately; this review covers only the three Liger root causes and their input variants.",
+    "The 112 control cases and 56 executor-check cases are repeated configurations of three independent bugs, not 168 independent bugs.",
+    "These are forward-correctness contracts; backward training correctness, race freedom, performance optimality and general population repair ability are not established.",
+    "The supplied source packages contain 41 or 42 real ops/subsystem files and named public entry points; this is not full-repository blind localization.",
+    "Visible packets expose at most 16 sampled output positions and full-output mismatch counts; complete NPZ arrays are retained separately, equally unavailable to both bounded agent conditions.",
+    "Hash/API checks are auditable isolation, not a formal security sandbox or proof of training-data exclusion.",
+    "Model comparison has not yet been executed or reviewed here; no tool-benefit or human-understanding conclusion follows from this review."
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "round": 5,
+  "startedAt": "2026-10-23T14:59:33.472Z",
+  "finishedAt": "2026-10-23T15:00:07.166Z",
+  "wallSeconds": 33.69417104899883,
+  "timeoutSeconds": 90,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/repair-study-v2-0je7CP/empty",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/repair-study-v2-0je7CP/schema.json",
+    "-o",
+    "/tmp/repair-study-v2-0je7CP/answer.json",
+    "-"
+  ],
+  "promptSHA256": "544da17f691317b5a856a5b6db3f00fce596ddabb0472413027ed84bf49c9971",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "reasons": [],
+  "finalMatches": true,
+  "answer": {
+    "action": "query",
+    "query": {
+      "op": "case",
+      "scope": null,
+      "id": "poly-02",
+      "text": null,
+      "start": null,
+      "end": null,
+      "offset": null,
+      "derived_op": null,
+      "groupBy": null
+    },
+    "diagnosis": "The wide fp16 invocation fails while its fp32 control passes. I am checking the raw case evidence to distinguish overflow in individual powers from overflow during reduction; the earlier raw-reference ID was not directly readable.",
+    "locations": [],
+    "citations": [],
+    "edits": []
+  },
+  "audit": {
+    "forbidden": [],
+    "parseErrors": [],
+    "failed": [],
+    "threadId": "01a16946-3e3f-7db2-9f7a-b77df37a66e0"
+  },
+  "usage": [
+    {
+      "input_tokens": 23299,
+      "cached_input_tokens": 14720,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 362,
+      "reasoning_output_tokens": 248
+    }
+  ]
+}

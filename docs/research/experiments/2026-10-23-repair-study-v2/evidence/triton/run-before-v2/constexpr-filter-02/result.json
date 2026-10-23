@@ -1,0 +1,132 @@
+{
+  "case": {
+    "id": "constexpr-filter-02",
+    "family": "constexpr-filter",
+    "split": "visible",
+    "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "cutoff": 2,
+    "even": true
+  },
+  "status": "wrong-result",
+  "observed": [
+    6.0,
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+  ],
+  "reference": [
+    2.0,
+    2.0,
+    4.0,
+    -777.0,
+    -777.0,
+    -777.0,
+    -777.0
+  ],
+  "observed_bytes": [
+    6,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0,
+    4,
+    0,
+    0,
+    0,
+    5,
+    0,
+    0,
+    0
+  ],
+  "reference_bytes": [
+    2,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    4,
+    0,
+    0,
+    0,
+    247,
+    252,
+    255,
+    255,
+    247,
+    252,
+    255,
+    255,
+    247,
+    252,
+    255,
+    255,
+    247,
+    252,
+    255,
+    255
+  ],
+  "elements": 7,
+  "output_dtype": "torch.int32",
+  "wrong_elements": 7,
+  "assembly": {
+    "source": {
+      "sha256": "5d2b6b0e2c4fb86100d0b2b849496a79416a907af66049ff2ee6fe40c82c565a",
+      "file": "kernel.source",
+      "bytes": 2625
+    },
+    "ttir": {
+      "sha256": "0ddcbc1cdf659293dfc3356af6ce419a312053045b69d569b8a6285dfac48596",
+      "file": "kernel.ttir",
+      "bytes": 1642
+    },
+    "ttgir": {
+      "sha256": "dcfc2a9494b73322eddb42e3b750ae5e6e1152b016fe7389171ef2e65d69bd33",
+      "file": "kernel.ttgir",
+      "bytes": 1766
+    },
+    "llir": {
+      "sha256": "daf8f9e7cb8b34bdd6431ccdf9478d10dbd1b4d227d79c2c0c292ed561456118",
+      "file": "kernel.llir",
+      "bytes": 3385
+    },
+    "ptx": {
+      "sha256": "25d2dcb7aeb27255ca91fb50d95e7a26e6a262f544eb5d36244662032a42263d",
+      "file": "kernel.ptx",
+      "bytes": 4755
+    },
+    "cubin": {
+      "sha256": "d8455b52fbe176a980adec3ba756e5a7b9461186c6c6ad33aa36e026811556f0",
+      "bytes": 5352,
+      "omitted": "binary artifact represented by hash"
+    }
+  },
+  "execution_wall_seconds": 0.031025180011056364
+}

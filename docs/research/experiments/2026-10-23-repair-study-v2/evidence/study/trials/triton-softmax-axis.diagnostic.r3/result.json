@@ -1,0 +1,1113 @@
+{
+  "format": "repair-study-trial-v2",
+  "id": "triton-softmax-axis.diagnostic.r3",
+  "taskId": "triton-softmax-axis",
+  "condition": "diagnostic",
+  "repetition": 3,
+  "split": "holdout",
+  "startedAt": "2026-10-23T15:06:01.201Z",
+  "calls": [
+    {
+      "round": 1,
+      "startedAt": "2026-10-23T15:06:01.206Z",
+      "finishedAt": "2026-10-23T15:06:11.492Z",
+      "wallSeconds": 10.28547965300083,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-HerETg/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-HerETg/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-HerETg/answer.json",
+        "-"
+      ],
+      "promptSHA256": "fc921dfde567c3acf4a0ab28370c44a7c3ef111529dfbe4cc4909af9900fa007",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "search",
+          "scope": null,
+          "id": null,
+          "text": "def softmax",
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694c-28e5-7710-b912-65306f383c34"
+      },
+      "usage": [
+        {
+          "input_tokens": 16911,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 82,
+          "reasoning_output_tokens": 9
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "startedAt": "2026-10-23T15:06:11.494Z",
+      "finishedAt": "2026-10-23T15:06:20.705Z",
+      "wallSeconds": 9.210783179998398,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-STksCj/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-STksCj/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-STksCj/answer.json",
+        "-"
+      ],
+      "promptSHA256": "2bdf0f51c1afe56e0b9d6f0d068b3e3a41447cb20bcd799bedd65012040ac966",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "source-07",
+          "text": null,
+          "start": 1,
+          "end": 120,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694c-5113-78f3-831f-cddb61ba0889"
+      },
+      "usage": [
+        {
+          "input_tokens": 17138,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 71,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "startedAt": "2026-10-23T15:06:20.707Z",
+      "finishedAt": "2026-10-23T15:06:31.049Z",
+      "wallSeconds": 10.341724920988083,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-ziT1MS/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-ziT1MS/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-ziT1MS/answer.json",
+        "-"
+      ],
+      "promptSHA256": "65d0cf522690dbb1b781780385e57cb3adfacf5f1a6660a30776b2fdf919ad55",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "derived",
+          "scope": null,
+          "id": null,
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": "observed",
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694c-750c-7d42-bee6-7376d7c62d71"
+      },
+      "usage": [
+        {
+          "input_tokens": 18965,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 70,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "startedAt": "2026-10-23T15:06:31.052Z",
+      "finishedAt": "2026-10-23T15:06:42.508Z",
+      "wallSeconds": 11.456441670894623,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-qDlt5Z/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-qDlt5Z/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-qDlt5Z/answer.json",
+        "-"
+      ],
+      "promptSHA256": "81a93f22b244b4dee4255e1423821971bd71a6fa44c3437b8f031e059a5c72d7",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "raw-softmax-axis-00",
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694c-9da8-7882-a81a-fdbfeb4046e9"
+      },
+      "usage": [
+        {
+          "input_tokens": 19604,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 114,
+          "reasoning_output_tokens": 38
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "startedAt": "2026-10-23T15:06:42.510Z",
+      "finishedAt": "2026-10-23T15:07:02.445Z",
+      "wallSeconds": 19.934069555997848,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-JXTuvW/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-JXTuvW/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-JXTuvW/answer.json",
+        "-"
+      ],
+      "promptSHA256": "e3bdd0589af451cb95c3705dea51ab44b0c1e1b1d7991c6c773352a5dce7e6ed",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "final",
+        "query": {
+          "op": "none",
+          "scope": null,
+          "id": null,
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "Softmax drops the reduced axis in both internal reductions when keep_dims=False. Broadcasting then aligns the reduced tensors with trailing dimensions instead of the requested axis. For square inputs this silently produces incorrect values; other shapes may fail broadcasting. Both reductions must retain the axis so subtraction and division preserve the input shape and normalize each requested slice. Keep the public keep_dims argument for compatibility; softmax's internal reductions always need singleton dimensions. Actual device evidence reports 4/4 differing elements for shape [2,2], dim=1, versus passing controls with 0/4 differences for dim=0 and 0/128 for the vector. These controls are consistent with broadcasting working incidentally for the leading axis in two dimensions and scalar reductions for vectors. Raw values were unavailable through the attempted raw evidence ID. Compilation and post-patch correctness have not been tested in this bounded interface.",
+        "locations": [
+          {
+            "source_id": "source-07",
+            "start_line": 53,
+            "end_line": 64
+          }
+        ],
+        "citations": [
+          {
+            "case_id": "softmax-axis-00",
+            "evidence_ids": [
+              "observation-softmax-axis-00"
+            ]
+          },
+          {
+            "case_id": "softmax-axis-01",
+            "evidence_ids": [
+              "observation-softmax-axis-01"
+            ]
+          },
+          {
+            "case_id": "softmax-axis-02",
+            "evidence_ids": [
+              "observation-softmax-axis-02"
+            ]
+          }
+        ],
+        "edits": [
+          {
+            "source_id": "source-07",
+            "old": "    z = x - max(x, _dim, keep_dims=keep_dims)\n    num = math.exp(z)\n    den = sum(num, _dim, keep_dims=keep_dims)\n    return math.fdiv(num, den, ieee_rounding)",
+            "new": "    # Retain the reduced axis to broadcast within each softmax slice.\n    z = x - max(x, _dim, keep_dims=True)\n    num = math.exp(z)\n    den = sum(num, _dim, keep_dims=True)\n    return math.fdiv(num, den, ieee_rounding)"
+          }
+        ]
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1694c-ca2e-79d1-b74e-46e3f0f692f7"
+      },
+      "usage": [
+        {
+          "input_tokens": 19683,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 465,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "round": 1,
+      "request": {
+        "op": "search",
+        "scope": null,
+        "id": null,
+        "text": "def softmax",
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "literal": "def softmax",
+        "totalMatches": 3,
+        "offset": 0,
+        "matches": [
+          {
+            "source_id": "source-04",
+            "path": "triton/language/core.py",
+            "line": 1234,
+            "text": "    def softmax(self, dim=None, keep_dims=False, ieee_rounding=False) -> tensor:"
+          },
+          {
+            "source_id": "source-07",
+            "path": "triton/language/standard.py",
+            "line": 56,
+            "text": "def softmax(x, dim=None, keep_dims=False, ieee_rounding=False):"
+          },
+          {
+            "source_id": "test-kernel",
+            "path": "tests/visible_kernel.py",
+            "line": 5,
+            "text": "def softmax_kernel(X,Y,N:tl.constexpr,SHAPE:tl.constexpr,DIM:tl.constexpr):"
+          }
+        ],
+        "nextOffset": null
+      },
+      "responseCharacters": 545,
+      "responseSHA256": "cb7ab8ce642d1197310bcb9761a5637a00b9bc275f405bc392c76fee8117c602",
+      "wallMilliseconds": 1.1731420755386353
+    },
+    {
+      "round": 2,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "source-07",
+        "text": null,
+        "start": 1,
+        "end": 120,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "source-07",
+        "path": "triton/language/standard.py",
+        "sha256": "113296c74fb8b8dcf67a1b82f71926842eb66d0c77fe2c4f8d0f315715a38fd4",
+        "start": 1,
+        "end": 120,
+        "totalLines": 571,
+        "lines": [
+          {
+            "line": 1,
+            "text": "from __future__ import annotations"
+          },
+          {
+            "line": 2,
+            "text": ""
+          },
+          {
+            "line": 3,
+            "text": "from ..runtime.jit import jit, constexpr_function"
+          },
+          {
+            "line": 4,
+            "text": "from . import core"
+          },
+          {
+            "line": 5,
+            "text": "from . import math"
+          },
+          {
+            "line": 6,
+            "text": ""
+          },
+          {
+            "line": 7,
+            "text": "# constexpr utilities"
+          },
+          {
+            "line": 8,
+            "text": ""
+          },
+          {
+            "line": 9,
+            "text": ""
+          },
+          {
+            "line": 10,
+            "text": "@constexpr_function"
+          },
+          {
+            "line": 11,
+            "text": "def _log2(i):"
+          },
+          {
+            "line": 12,
+            "text": "    log2 = 0"
+          },
+          {
+            "line": 13,
+            "text": "    n = i"
+          },
+          {
+            "line": 14,
+            "text": "    while n > 1:"
+          },
+          {
+            "line": 15,
+            "text": "        n >>= 1"
+          },
+          {
+            "line": 16,
+            "text": "        log2 += 1"
+          },
+          {
+            "line": 17,
+            "text": "    return log2"
+          },
+          {
+            "line": 18,
+            "text": ""
+          },
+          {
+            "line": 19,
+            "text": ""
+          },
+          {
+            "line": 20,
+            "text": "@constexpr_function"
+          },
+          {
+            "line": 21,
+            "text": "def _is_power_of_two(i):"
+          },
+          {
+            "line": 22,
+            "text": "    return (i & (i - 1)) == 0 and i != 0"
+          },
+          {
+            "line": 23,
+            "text": ""
+          },
+          {
+            "line": 24,
+            "text": ""
+          },
+          {
+            "line": 25,
+            "text": "_get_int_dtype = constexpr_function(core.get_int_dtype)"
+          },
+          {
+            "line": 26,
+            "text": ""
+          },
+          {
+            "line": 27,
+            "text": "# -----------------------"
+          },
+          {
+            "line": 28,
+            "text": "# Standard library"
+          },
+          {
+            "line": 29,
+            "text": "# -----------------------"
+          },
+          {
+            "line": 30,
+            "text": ""
+          },
+          {
+            "line": 31,
+            "text": ""
+          },
+          {
+            "line": 32,
+            "text": "@core._tensor_member_fn"
+          },
+          {
+            "line": 33,
+            "text": "@jit"
+          },
+          {
+            "line": 34,
+            "text": "def cdiv(x, div):"
+          },
+          {
+            "line": 35,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 36,
+            "text": "    Computes the ceiling division of :code:`x` by :code:`div`"
+          },
+          {
+            "line": 37,
+            "text": ""
+          },
+          {
+            "line": 38,
+            "text": "    :param x: the input number"
+          },
+          {
+            "line": 39,
+            "text": "    :type x: Block"
+          },
+          {
+            "line": 40,
+            "text": "    :param div: the divisor"
+          },
+          {
+            "line": 41,
+            "text": "    :type div: Block"
+          },
+          {
+            "line": 42,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 43,
+            "text": "    return (x + (div - 1)) // div"
+          },
+          {
+            "line": 44,
+            "text": ""
+          },
+          {
+            "line": 45,
+            "text": ""
+          },
+          {
+            "line": 46,
+            "text": "@core._tensor_member_fn"
+          },
+          {
+            "line": 47,
+            "text": "@jit"
+          },
+          {
+            "line": 48,
+            "text": "@math._add_math_1arg_docstr(\"sigmoid\")"
+          },
+          {
+            "line": 49,
+            "text": "def sigmoid(x):"
+          },
+          {
+            "line": 50,
+            "text": "    return 1 / (1 + math.exp(-x))"
+          },
+          {
+            "line": 51,
+            "text": ""
+          },
+          {
+            "line": 52,
+            "text": ""
+          },
+          {
+            "line": 53,
+            "text": "@core._tensor_member_fn"
+          },
+          {
+            "line": 54,
+            "text": "@jit"
+          },
+          {
+            "line": 55,
+            "text": "@math._add_math_1arg_docstr(\"softmax\")"
+          },
+          {
+            "line": 56,
+            "text": "def softmax(x, dim=None, keep_dims=False, ieee_rounding=False):"
+          },
+          {
+            "line": 57,
+            "text": "    if dim is None:"
+          },
+          {
+            "line": 58,
+            "text": "        _dim: core.constexpr = 0"
+          },
+          {
+            "line": 59,
+            "text": "    else:"
+          },
+          {
+            "line": 60,
+            "text": "        _dim: core.constexpr = dim"
+          },
+          {
+            "line": 61,
+            "text": "    z = x - max(x, _dim, keep_dims=keep_dims)"
+          },
+          {
+            "line": 62,
+            "text": "    num = math.exp(z)"
+          },
+          {
+            "line": 63,
+            "text": "    den = sum(num, _dim, keep_dims=keep_dims)"
+          },
+          {
+            "line": 64,
+            "text": "    return math.fdiv(num, den, ieee_rounding)"
+          },
+          {
+            "line": 65,
+            "text": ""
+          },
+          {
+            "line": 66,
+            "text": ""
+          },
+          {
+            "line": 67,
+            "text": "@core._tensor_member_fn"
+          },
+          {
+            "line": 68,
+            "text": "@jit"
+          },
+          {
+            "line": 69,
+            "text": "def ravel(x, can_reorder=False):"
+          },
+          {
+            "line": 70,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 71,
+            "text": "    Returns a contiguous flattened view of :code:`x`."
+          },
+          {
+            "line": 72,
+            "text": ""
+          },
+          {
+            "line": 73,
+            "text": "    :param x: the input tensor"
+          },
+          {
+            "line": 74,
+            "text": "    :type x: Block"
+          },
+          {
+            "line": 75,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 76,
+            "text": "    return core.reshape(x, [x.numel], can_reorder=can_reorder)"
+          },
+          {
+            "line": 77,
+            "text": ""
+          },
+          {
+            "line": 78,
+            "text": ""
+          },
+          {
+            "line": 79,
+            "text": "@jit"
+          },
+          {
+            "line": 80,
+            "text": "def swizzle2d(i, j, size_i, size_j, size_g):"
+          },
+          {
+            "line": 81,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 82,
+            "text": "    Transforms the indices of a row-major `size_i * size_j` matrix into"
+          },
+          {
+            "line": 83,
+            "text": "    the indices of a column-major matrix for each group of `size_g` rows."
+          },
+          {
+            "line": 84,
+            "text": ""
+          },
+          {
+            "line": 85,
+            "text": "    For example, for :code:`size_i = size_j = 4` and :code:`size_g = 2`, it will"
+          },
+          {
+            "line": 86,
+            "text": "    transform ::"
+          },
+          {
+            "line": 87,
+            "text": ""
+          },
+          {
+            "line": 88,
+            "text": "        [[0 , 1 , 2 , 3 ],"
+          },
+          {
+            "line": 89,
+            "text": "         [4 , 5 , 6 , 7 ],"
+          },
+          {
+            "line": 90,
+            "text": "         [8 , 9 , 10, 11],"
+          },
+          {
+            "line": 91,
+            "text": "         [12, 13, 14, 15]]"
+          },
+          {
+            "line": 92,
+            "text": ""
+          },
+          {
+            "line": 93,
+            "text": "    into ::"
+          },
+          {
+            "line": 94,
+            "text": ""
+          },
+          {
+            "line": 95,
+            "text": "        [[0, 2,  4 , 6 ],"
+          },
+          {
+            "line": 96,
+            "text": "         [1, 3,  5 , 7 ],"
+          },
+          {
+            "line": 97,
+            "text": "         [8, 10, 12, 14],"
+          },
+          {
+            "line": 98,
+            "text": "         [9, 11, 13, 15]]"
+          },
+          {
+            "line": 99,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 100,
+            "text": "    # \"unrolled index in array\""
+          },
+          {
+            "line": 101,
+            "text": "    ij = i * size_j + j"
+          },
+          {
+            "line": 102,
+            "text": "    # number of elements in `size_g` groups"
+          },
+          {
+            "line": 103,
+            "text": "    # of `size_j` columns"
+          },
+          {
+            "line": 104,
+            "text": "    size_gj = size_g * size_j"
+          },
+          {
+            "line": 105,
+            "text": "    # index of the group in which (i,j) is"
+          },
+          {
+            "line": 106,
+            "text": "    group_id = ij // size_gj"
+          },
+          {
+            "line": 107,
+            "text": "    # row-index of the first element of this group"
+          },
+          {
+            "line": 108,
+            "text": "    off_i = group_id * size_g"
+          },
+          {
+            "line": 109,
+            "text": "    # last group may have fewer rows"
+          },
+          {
+            "line": 110,
+            "text": "    size_g = core.minimum(size_i - off_i, size_g)"
+          },
+          {
+            "line": 111,
+            "text": "    # linear index with respect to the first element in this group"
+          },
+          {
+            "line": 112,
+            "text": "    ij = ij % size_gj"
+          },
+          {
+            "line": 113,
+            "text": "    # new row and column indices"
+          },
+          {
+            "line": 114,
+            "text": "    new_i = off_i + ij % size_g"
+          },
+          {
+            "line": 115,
+            "text": "    new_j = ij // size_g"
+          },
+          {
+            "line": 116,
+            "text": "    return new_i, new_j"
+          },
+          {
+            "line": 117,
+            "text": ""
+          },
+          {
+            "line": 118,
+            "text": ""
+          },
+          {
+            "line": 119,
+            "text": "@jit"
+          },
+          {
+            "line": 120,
+            "text": "def zeros(shape, dtype):"
+          }
+        ]
+      },
+      "responseCharacters": 5417,
+      "responseSHA256": "e3f890d01e61fd0ce419bef166185de2814a6a7dbb6511a44e482c99228b8829",
+      "wallMilliseconds": 0.13030099868774414
+    },
+    {
+      "round": 3,
+      "request": {
+        "op": "derived",
+        "scope": null,
+        "id": null,
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": "observed",
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "observations": [
+          {
+            "caseId": "softmax-axis-00",
+            "status": "wrong_value",
+            "parameters": {
+              "shape": [
+                2,
+                2
+              ],
+              "dim": 1,
+              "pattern": "linear"
+            },
+            "evidenceId": "observation-softmax-axis-00",
+            "kind": "device-output",
+            "text": "Complete actual RTX 4090 output compared against independent declared reference: 4 / 4 elements differ. Floating-point signed zero uses byte equality where required.",
+            "rawRefs": [
+              {
+                "id": "raw-softmax-axis-00",
+                "sha256": "72fc33b8cd62252e56454781faceab3beabc8a1bec24db44f8088a1bf74c35d3"
+              },
+              {
+                "id": "test-kernel",
+                "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+              }
+            ]
+          },
+          {
+            "caseId": "softmax-axis-01",
+            "status": "passed",
+            "parameters": {
+              "shape": [
+                2,
+                2
+              ],
+              "dim": 0,
+              "pattern": "linear"
+            },
+            "evidenceId": "observation-softmax-axis-01",
+            "kind": "device-output",
+            "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 4 elements differ. Floating-point signed zero uses byte equality where required.",
+            "rawRefs": [
+              {
+                "id": "raw-softmax-axis-01",
+                "sha256": "f5442620b54db47f23d2fab9f08e99341a9ac5d55e1558db0254bee776967dee"
+              },
+              {
+                "id": "test-kernel",
+                "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+              }
+            ]
+          },
+          {
+            "caseId": "softmax-axis-02",
+            "status": "passed",
+            "parameters": {
+              "shape": [
+                128
+              ],
+              "dim": 0,
+              "pattern": "linear"
+            },
+            "evidenceId": "observation-softmax-axis-02",
+            "kind": "device-output",
+            "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 128 elements differ. Floating-point signed zero uses byte equality where required.",
+            "rawRefs": [
+              {
+                "id": "raw-softmax-axis-02",
+                "sha256": "27d96a630019d0add299ca2dfb08c7e170f0eb85113208dc734a2bfbc72ffacd"
+              },
+              {
+                "id": "test-kernel",
+                "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+              }
+            ]
+          }
+        ],
+        "scope": "Observed facts only; payload values remain available through read/case in both conditions."
+      },
+      "responseCharacters": 1800,
+      "responseSHA256": "e20ddf4fafd83ffc715e232b26ad59f34cbebb988477158adc6586a641e9a82d",
+      "wallMilliseconds": 0.8633490800857544
+    },
+    {
+      "round": 4,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "raw-softmax-axis-00",
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "error": "unknown source/evidence ID"
+      },
+      "responseCharacters": 38,
+      "responseSHA256": "1bbe5abdf1437534808f9f64e652d5d5462b7884b0e6f8e196ccc5fe04ed0c96",
+      "wallMilliseconds": 0.13139104843139648
+    }
+  ],
+  "valid": true,
+  "failure": null,
+  "finishedAt": "2026-10-23T15:07:02.450Z",
+  "wallSeconds": 61.249141014933585,
+  "modelWallSeconds": 61.22849898087979,
+  "queryWallMilliseconds": 2.2981832027435303,
+  "budget": {
+    "queries": 4,
+    "responseCharacters": 7800
+  },
+  "localization": {
+    "locationHit": true,
+    "allLocationsValid": true,
+    "referencesValid": true,
+    "failureObserved": true,
+    "passingControlObserved": true,
+    "supportedLocalization": true,
+    "invalidLocations": [],
+    "invalidCitations": [],
+    "scope": "Declared source-region hit and valid observed references; not semantic proof of a correct explanation."
+  },
+  "patchApplicable": true,
+  "candidateTreeSHA256": "90daa2b54db8d75398ce0ffbed5585871de8859834f1977317388a8389c891fd",
+  "usage": {
+    "input_tokens": 92301,
+    "cached_input_tokens": 44160,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 802,
+    "reasoning_output_tokens": 47
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "format": "human-task-rubric-draft-v2",
+  "status": "DRAFT — expert review and independent rater calibration pending",
+  "taskId": "liger-sparse",
+  "rootCauseId": "linkedin/Liger-Kernel#1545",
+  "title": "大公共偏移使 sparsemax 阈值计算失稳",
+  "mechanismForFullCredit": "sparsemax 应平移不变，但直接在大偏移值上 cumsum 及计算含 -1 的阈值会丢失小差量；实际传入的量化数组为 oracle 输入。按有限 row max 先平移、再一致计算阈值与输出可避开该问题。",
+  "allowedEquivalentExplanationsAndRepairs": [
+    "有限 row max 平移，阈值和 x-tau 使用同一坐标系",
+    "数学等价且保持投影/阈值契约的稳定实现"
+  ],
+  "counterfactualPredictions": [
+    "同一相对行加入公共偏移，输出应不变（按实际表示的输入比较）",
+    "常量行应均匀 1/width；比较不同宽度及大正负偏移"
+  ],
+  "insufficientOrWrongAnswers": [
+    "只在最终输出处减 max，阈值仍使用原坐标",
+    "任意重归一化或 hardcode 常量行而未证明一般 sparsemax 等价",
+    "把所有错误都归为输入量化而忽略参考也使用实际输入"
+  ],
+  "localizationTargets": [
+    {
+      "source_id": "source-34",
+      "start_line": 12,
+      "end_line": 70,
+      "path": "src/liger_kernel/ops/sparsemax.py",
+      "sourceSha256": "4851488a4247bb843eec2c4587d791a382e94a27a38b6f4fc42b3611f3dc4c73"
+    },
+    {
+      "source_id": "source-34",
+      "start_line": 108,
+      "end_line": 134,
+      "path": "src/liger_kernel/ops/sparsemax.py",
+      "sourceSha256": "4851488a4247bb843eec2c4587d791a382e94a27a38b6f4fc42b3611f3dc4c73"
+    }
+  ],
+  "failureEvidence": [
+    {
+      "caseId": "sparse-02",
+      "evidenceIds": [
+        "observation-sparse-02"
+      ],
+      "parameters": {
+        "rows": 2,
+        "width": 16,
+        "seed": 0,
+        "dtype": "bfloat16",
+        "offset": 94370000,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "caseId": "sparse-04",
+      "evidenceIds": [
+        "observation-sparse-04"
+      ],
+      "parameters": {
+        "rows": 2,
+        "width": 256,
+        "seed": 0,
+        "dtype": "float16",
+        "offset": -65504,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "caseId": "sparse-05",
+      "evidenceIds": [
+        "observation-sparse-05"
+      ],
+      "parameters": {
+        "rows": 2,
+        "width": 256,
+        "seed": 0,
+        "dtype": "bfloat16",
+        "offset": 94370000,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    }
+  ],
+  "passingControls": [
+    {
+      "caseId": "sparse-00",
+      "evidenceIds": [
+        "observation-sparse-00"
+      ],
+      "parameters": {
+        "rows": 2,
+        "width": 16,
+        "seed": 0,
+        "dtype": "float32",
+        "offset": 0,
+        "distribution": "normal",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "caseId": "sparse-01",
+      "evidenceIds": [
+        "observation-sparse-01"
+      ],
+      "parameters": {
+        "rows": 2,
+        "width": 16,
+        "seed": 0,
+        "dtype": "float16",
+        "offset": -65504,
+        "distribution": "constant",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    },
+    {
+      "caseId": "sparse-03",
+      "evidenceIds": [
+        "observation-sparse-03"
+      ],
+      "parameters": {
+        "rows": 2,
+        "width": 256,
+        "seed": 0,
+        "dtype": "float32",
+        "offset": 0,
+        "distribution": "normal",
+        "atol": 0.002,
+        "rtol": 0.002
+      }
+    }
+  ],
+  "scoring": "Four 0/1/2 dimensions: mechanism, localization, evidence, counterfactual. Correct alternatives need not match gold text; unsupported causal certainty loses mechanism/evidence credit. Exact line targets are guides, not an automatic semantic correctness oracle.",
+  "repairExecutor": {
+    "taskId": "liger-sparse",
+    "baseDirectory": "out/research/liger-faults",
+    "executor": "tools/research/liger-faults/evaluate_candidate.py",
+    "executorSha256": "0333c30fd71c396980a55488c21361feab941dc757dc4a2cddb2cd8e4aceee27",
+    "verifier": "tools/research/liger-faults/verify.py",
+    "verifierSha256": "c0d8a0cbf695550f03f33edfc6005ad8f0b21b9813bd5eaeb96a392e78424ac1",
+    "runner": "tools/research/liger-faults/run.py",
+    "runnerSha256": "5d6dba630ebd8255994eea2e7a84e30f2e2b4ee9320c0c55f83310fa65c5dd8c",
+    "hiddenPlan": "out/research/liger-faults/plan.json",
+    "hiddenSpecSHA256": "8c942498bf187339623c453c253c3991275392d3a86b8b7579f30717a9568e7d",
+    "hiddenCaseIds": [
+      "sparse-06",
+      "sparse-07",
+      "sparse-08",
+      "sparse-09",
+      "sparse-10",
+      "sparse-11",
+      "sparse-12",
+      "sparse-13",
+      "sparse-14",
+      "sparse-15",
+      "sparse-16"
+    ],
+    "visibleCaseIds": [
+      "sparse-00",
+      "sparse-01",
+      "sparse-02",
+      "sparse-03",
+      "sparse-04",
+      "sparse-05"
+    ],
+    "command": [
+      "python3",
+      "tools/research/liger-faults/evaluate_candidate.py",
+      "--candidate",
+      "CANDIDATE_JSON",
+      "--output",
+      "NEW_OUTPUT_DIRECTORY",
+      "--base",
+      "out/research/liger-faults"
+    ],
+    "scope": "Existing actual-GPU executor. Not run on any human candidate; no human participant exists yet."
+  }
+}

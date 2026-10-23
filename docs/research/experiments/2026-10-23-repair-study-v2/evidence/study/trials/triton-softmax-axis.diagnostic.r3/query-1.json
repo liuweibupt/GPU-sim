@@ -1,0 +1,45 @@
+{
+  "round": 1,
+  "request": {
+    "op": "search",
+    "scope": null,
+    "id": null,
+    "text": "def softmax",
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "literal": "def softmax",
+    "totalMatches": 3,
+    "offset": 0,
+    "matches": [
+      {
+        "source_id": "source-04",
+        "path": "triton/language/core.py",
+        "line": 1234,
+        "text": "    def softmax(self, dim=None, keep_dims=False, ieee_rounding=False) -> tensor:"
+      },
+      {
+        "source_id": "source-07",
+        "path": "triton/language/standard.py",
+        "line": 56,
+        "text": "def softmax(x, dim=None, keep_dims=False, ieee_rounding=False):"
+      },
+      {
+        "source_id": "test-kernel",
+        "path": "tests/visible_kernel.py",
+        "line": 5,
+        "text": "def softmax_kernel(X,Y,N:tl.constexpr,SHAPE:tl.constexpr,DIM:tl.constexpr):"
+      }
+    ],
+    "nextOffset": null
+  },
+  "responseCharacters": 545,
+  "responseSHA256": "cb7ab8ce642d1197310bcb9761a5637a00b9bc275f405bc392c76fee8117c602",
+  "wallMilliseconds": 1.1731420755386353
+}

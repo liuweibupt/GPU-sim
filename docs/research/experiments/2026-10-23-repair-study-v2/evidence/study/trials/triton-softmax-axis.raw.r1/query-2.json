@@ -1,0 +1,509 @@
+{
+  "round": 2,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-07",
+    "text": null,
+    "start": 1,
+    "end": 120,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-07",
+    "path": "triton/language/standard.py",
+    "sha256": "113296c74fb8b8dcf67a1b82f71926842eb66d0c77fe2c4f8d0f315715a38fd4",
+    "start": 1,
+    "end": 120,
+    "totalLines": 571,
+    "lines": [
+      {
+        "line": 1,
+        "text": "from __future__ import annotations"
+      },
+      {
+        "line": 2,
+        "text": ""
+      },
+      {
+        "line": 3,
+        "text": "from ..runtime.jit import jit, constexpr_function"
+      },
+      {
+        "line": 4,
+        "text": "from . import core"
+      },
+      {
+        "line": 5,
+        "text": "from . import math"
+      },
+      {
+        "line": 6,
+        "text": ""
+      },
+      {
+        "line": 7,
+        "text": "# constexpr utilities"
+      },
+      {
+        "line": 8,
+        "text": ""
+      },
+      {
+        "line": 9,
+        "text": ""
+      },
+      {
+        "line": 10,
+        "text": "@constexpr_function"
+      },
+      {
+        "line": 11,
+        "text": "def _log2(i):"
+      },
+      {
+        "line": 12,
+        "text": "    log2 = 0"
+      },
+      {
+        "line": 13,
+        "text": "    n = i"
+      },
+      {
+        "line": 14,
+        "text": "    while n > 1:"
+      },
+      {
+        "line": 15,
+        "text": "        n >>= 1"
+      },
+      {
+        "line": 16,
+        "text": "        log2 += 1"
+      },
+      {
+        "line": 17,
+        "text": "    return log2"
+      },
+      {
+        "line": 18,
+        "text": ""
+      },
+      {
+        "line": 19,
+        "text": ""
+      },
+      {
+        "line": 20,
+        "text": "@constexpr_function"
+      },
+      {
+        "line": 21,
+        "text": "def _is_power_of_two(i):"
+      },
+      {
+        "line": 22,
+        "text": "    return (i & (i - 1)) == 0 and i != 0"
+      },
+      {
+        "line": 23,
+        "text": ""
+      },
+      {
+        "line": 24,
+        "text": ""
+      },
+      {
+        "line": 25,
+        "text": "_get_int_dtype = constexpr_function(core.get_int_dtype)"
+      },
+      {
+        "line": 26,
+        "text": ""
+      },
+      {
+        "line": 27,
+        "text": "# -----------------------"
+      },
+      {
+        "line": 28,
+        "text": "# Standard library"
+      },
+      {
+        "line": 29,
+        "text": "# -----------------------"
+      },
+      {
+        "line": 30,
+        "text": ""
+      },
+      {
+        "line": 31,
+        "text": ""
+      },
+      {
+        "line": 32,
+        "text": "@core._tensor_member_fn"
+      },
+      {
+        "line": 33,
+        "text": "@jit"
+      },
+      {
+        "line": 34,
+        "text": "def cdiv(x, div):"
+      },
+      {
+        "line": 35,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 36,
+        "text": "    Computes the ceiling division of :code:`x` by :code:`div`"
+      },
+      {
+        "line": 37,
+        "text": ""
+      },
+      {
+        "line": 38,
+        "text": "    :param x: the input number"
+      },
+      {
+        "line": 39,
+        "text": "    :type x: Block"
+      },
+      {
+        "line": 40,
+        "text": "    :param div: the divisor"
+      },
+      {
+        "line": 41,
+        "text": "    :type div: Block"
+      },
+      {
+        "line": 42,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 43,
+        "text": "    return (x + (div - 1)) // div"
+      },
+      {
+        "line": 44,
+        "text": ""
+      },
+      {
+        "line": 45,
+        "text": ""
+      },
+      {
+        "line": 46,
+        "text": "@core._tensor_member_fn"
+      },
+      {
+        "line": 47,
+        "text": "@jit"
+      },
+      {
+        "line": 48,
+        "text": "@math._add_math_1arg_docstr(\"sigmoid\")"
+      },
+      {
+        "line": 49,
+        "text": "def sigmoid(x):"
+      },
+      {
+        "line": 50,
+        "text": "    return 1 / (1 + math.exp(-x))"
+      },
+      {
+        "line": 51,
+        "text": ""
+      },
+      {
+        "line": 52,
+        "text": ""
+      },
+      {
+        "line": 53,
+        "text": "@core._tensor_member_fn"
+      },
+      {
+        "line": 54,
+        "text": "@jit"
+      },
+      {
+        "line": 55,
+        "text": "@math._add_math_1arg_docstr(\"softmax\")"
+      },
+      {
+        "line": 56,
+        "text": "def softmax(x, dim=None, keep_dims=False, ieee_rounding=False):"
+      },
+      {
+        "line": 57,
+        "text": "    if dim is None:"
+      },
+      {
+        "line": 58,
+        "text": "        _dim: core.constexpr = 0"
+      },
+      {
+        "line": 59,
+        "text": "    else:"
+      },
+      {
+        "line": 60,
+        "text": "        _dim: core.constexpr = dim"
+      },
+      {
+        "line": 61,
+        "text": "    z = x - max(x, _dim, keep_dims=keep_dims)"
+      },
+      {
+        "line": 62,
+        "text": "    num = math.exp(z)"
+      },
+      {
+        "line": 63,
+        "text": "    den = sum(num, _dim, keep_dims=keep_dims)"
+      },
+      {
+        "line": 64,
+        "text": "    return math.fdiv(num, den, ieee_rounding)"
+      },
+      {
+        "line": 65,
+        "text": ""
+      },
+      {
+        "line": 66,
+        "text": ""
+      },
+      {
+        "line": 67,
+        "text": "@core._tensor_member_fn"
+      },
+      {
+        "line": 68,
+        "text": "@jit"
+      },
+      {
+        "line": 69,
+        "text": "def ravel(x, can_reorder=False):"
+      },
+      {
+        "line": 70,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 71,
+        "text": "    Returns a contiguous flattened view of :code:`x`."
+      },
+      {
+        "line": 72,
+        "text": ""
+      },
+      {
+        "line": 73,
+        "text": "    :param x: the input tensor"
+      },
+      {
+        "line": 74,
+        "text": "    :type x: Block"
+      },
+      {
+        "line": 75,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 76,
+        "text": "    return core.reshape(x, [x.numel], can_reorder=can_reorder)"
+      },
+      {
+        "line": 77,
+        "text": ""
+      },
+      {
+        "line": 78,
+        "text": ""
+      },
+      {
+        "line": 79,
+        "text": "@jit"
+      },
+      {
+        "line": 80,
+        "text": "def swizzle2d(i, j, size_i, size_j, size_g):"
+      },
+      {
+        "line": 81,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 82,
+        "text": "    Transforms the indices of a row-major `size_i * size_j` matrix into"
+      },
+      {
+        "line": 83,
+        "text": "    the indices of a column-major matrix for each group of `size_g` rows."
+      },
+      {
+        "line": 84,
+        "text": ""
+      },
+      {
+        "line": 85,
+        "text": "    For example, for :code:`size_i = size_j = 4` and :code:`size_g = 2`, it will"
+      },
+      {
+        "line": 86,
+        "text": "    transform ::"
+      },
+      {
+        "line": 87,
+        "text": ""
+      },
+      {
+        "line": 88,
+        "text": "        [[0 , 1 , 2 , 3 ],"
+      },
+      {
+        "line": 89,
+        "text": "         [4 , 5 , 6 , 7 ],"
+      },
+      {
+        "line": 90,
+        "text": "         [8 , 9 , 10, 11],"
+      },
+      {
+        "line": 91,
+        "text": "         [12, 13, 14, 15]]"
+      },
+      {
+        "line": 92,
+        "text": ""
+      },
+      {
+        "line": 93,
+        "text": "    into ::"
+      },
+      {
+        "line": 94,
+        "text": ""
+      },
+      {
+        "line": 95,
+        "text": "        [[0, 2,  4 , 6 ],"
+      },
+      {
+        "line": 96,
+        "text": "         [1, 3,  5 , 7 ],"
+      },
+      {
+        "line": 97,
+        "text": "         [8, 10, 12, 14],"
+      },
+      {
+        "line": 98,
+        "text": "         [9, 11, 13, 15]]"
+      },
+      {
+        "line": 99,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 100,
+        "text": "    # \"unrolled index in array\""
+      },
+      {
+        "line": 101,
+        "text": "    ij = i * size_j + j"
+      },
+      {
+        "line": 102,
+        "text": "    # number of elements in `size_g` groups"
+      },
+      {
+        "line": 103,
+        "text": "    # of `size_j` columns"
+      },
+      {
+        "line": 104,
+        "text": "    size_gj = size_g * size_j"
+      },
+      {
+        "line": 105,
+        "text": "    # index of the group in which (i,j) is"
+      },
+      {
+        "line": 106,
+        "text": "    group_id = ij // size_gj"
+      },
+      {
+        "line": 107,
+        "text": "    # row-index of the first element of this group"
+      },
+      {
+        "line": 108,
+        "text": "    off_i = group_id * size_g"
+      },
+      {
+        "line": 109,
+        "text": "    # last group may have fewer rows"
+      },
+      {
+        "line": 110,
+        "text": "    size_g = core.minimum(size_i - off_i, size_g)"
+      },
+      {
+        "line": 111,
+        "text": "    # linear index with respect to the first element in this group"
+      },
+      {
+        "line": 112,
+        "text": "    ij = ij % size_gj"
+      },
+      {
+        "line": 113,
+        "text": "    # new row and column indices"
+      },
+      {
+        "line": 114,
+        "text": "    new_i = off_i + ij % size_g"
+      },
+      {
+        "line": 115,
+        "text": "    new_j = ij // size_g"
+      },
+      {
+        "line": 116,
+        "text": "    return new_i, new_j"
+      },
+      {
+        "line": 117,
+        "text": ""
+      },
+      {
+        "line": 118,
+        "text": ""
+      },
+      {
+        "line": 119,
+        "text": "@jit"
+      },
+      {
+        "line": 120,
+        "text": "def zeros(shape, dtype):"
+      }
+    ]
+  },
+  "responseCharacters": 5417,
+  "responseSHA256": "e3f890d01e61fd0ce419bef166185de2814a6a7dbb6511a44e482c99228b8829",
+  "wallMilliseconds": 0.17360198497772217
+}

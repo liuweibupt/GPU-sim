@@ -1,0 +1,58 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "The kernel incorrectly assumes unit token strides and uses the ID batch stride to address the mask. In grpo-01, IDs have strides [10,1] while the mask has strides [16,1]: the actual GPU invocation produced 7/21 mismatches, with maximum absolute error 5.350447. The dense control grpo-00, with both strides [7,1], passed with 0/21 mismatches and maximum absolute error 3.244e-7. Both observations report unchanged inputs. Pass independent batch and token strides for the sliced ID and mask views, supporting zero strides for broadcasts and preserving their existing storage offsets. Mask=None retains its existing kernel branch, with unused mask strides set to zero. Numerical computation and zero-initialized masked outputs remain unchanged. Compilation and post-patch correctness have not been verified; no execution feedback is available.",
+  "locations": [
+    {
+      "source_id": "source-18",
+      "start_line": 25,
+      "end_line": 47
+    },
+    {
+      "source_id": "source-18",
+      "start_line": 68,
+      "end_line": 80
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "grpo-01",
+      "evidence_ids": [
+        "observation-grpo-01"
+      ]
+    },
+    {
+      "case_id": "grpo-00",
+      "evidence_ids": [
+        "observation-grpo-00"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-18",
+      "old": "def _selective_log_softmax_kernel(\n    LOGITS,\n    INPUT_IDS,\n    LOG_P,\n    MASK,\n    TEMPERATURE: tl.constexpr,\n    stride_input_ids_b,\n    L: tl.constexpr,\n    N: tl.constexpr,\n    BLOCK_N: tl.constexpr = 4096,\n):",
+      "new": "def _selective_log_softmax_kernel(\n    LOGITS,\n    INPUT_IDS,\n    LOG_P,\n    MASK,\n    TEMPERATURE: tl.constexpr,\n    stride_input_ids_b,\n    stride_input_ids_l,\n    stride_mask_b,\n    stride_mask_l,\n    L: tl.constexpr,\n    N: tl.constexpr,\n    BLOCK_N: tl.constexpr = 4096,\n):"
+    },
+    {
+      "source_id": "source-18",
+      "old": "    INPUT_IDS += off_b * stride_input_ids_b + off_l\n    LOG_P += off_b * L + off_l\n\n    if MASK is not None:\n        MASK += off_b * stride_input_ids_b + off_l",
+      "new": "    INPUT_IDS += off_b * stride_input_ids_b + off_l * stride_input_ids_l\n    LOG_P += off_b * L + off_l\n\n    if MASK is not None:\n        MASK += off_b * stride_mask_b + off_l * stride_mask_l"
+    },
+    {
+      "source_id": "source-18",
+      "old": "    _selective_log_softmax_kernel[(B, L)](\n        logits, input_ids, log_p, mask, temperature, input_ids.stride(0), L, N, **kwargs\n    )",
+      "new": "    _selective_log_softmax_kernel[(B, L)](\n        logits,\n        input_ids,\n        log_p,\n        mask,\n        temperature,\n        input_ids.stride(0),\n        input_ids.stride(1),\n        mask.stride(0) if mask is not None else 0,\n        mask.stride(1) if mask is not None else 0,\n        L,\n        N,\n        **kwargs,\n    )"
+    }
+  ]
+}

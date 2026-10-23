@@ -1,0 +1,188 @@
+{
+  "round": 4,
+  "request": {
+    "op": "case",
+    "scope": null,
+    "id": "poly-03",
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "case": {
+      "id": "poly-03",
+      "status": "passed",
+      "parameters": {
+        "rows": 4,
+        "width": 8192,
+        "seed": 0,
+        "dtype": "float32",
+        "scale": 1,
+        "eps": 0.000001,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bias": 1,
+        "atol": 0.00002,
+        "rtol": 0.00002
+      },
+      "evidenceRefs": [
+        "observation-poly-03"
+      ]
+    },
+    "evidence": [
+      {
+        "id": "observation-poly-03",
+        "kind": "device-output",
+        "observed": true,
+        "caseIds": [
+          "poly-03"
+        ],
+        "text": "Actual GPU invocation: passed; 0 mismatches among 32768 outputs.",
+        "payload": {
+          "outputs": 32768,
+          "mismatches": 0,
+          "nonfinite": 0,
+          "max_abs_error": 8.726738318642902e-7,
+          "inputs_unchanged": true,
+          "input_array_identities": [
+            {
+              "name": "bias",
+              "shape": [
+                1
+              ],
+              "dtype": "float32",
+              "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+            },
+            {
+              "name": "weights",
+              "shape": [
+                3
+              ],
+              "dtype": "float32",
+              "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+            },
+            {
+              "name": "x",
+              "shape": [
+                4,
+                8192
+              ],
+              "dtype": "float32",
+              "sha256": "314e575b52e5779b8478bcbf344af70f0453ca8d19810daefef634a731ee32ed"
+            }
+          ],
+          "actual_dtype": "float32",
+          "actual_shape": [
+            4,
+            8192
+          ],
+          "input_strides": null,
+          "sample": [
+            {
+              "flat_index": 0,
+              "actual": 0.7484593391418457,
+              "reference": 0.7484593922244155
+            },
+            {
+              "flat_index": 1,
+              "actual": 0.7426049709320068,
+              "reference": 0.7426049753725791
+            },
+            {
+              "flat_index": 2,
+              "actual": 0.9272438883781433,
+              "reference": 0.9272439111865612
+            },
+            {
+              "flat_index": 3,
+              "actual": 0.8846283555030823,
+              "reference": 0.8846283845201381
+            },
+            {
+              "flat_index": 4,
+              "actual": 1.4692357778549194,
+              "reference": 1.4692357569724508
+            },
+            {
+              "flat_index": 5,
+              "actual": 1.3482975959777832,
+              "reference": 1.3482975633448577
+            },
+            {
+              "flat_index": 6,
+              "actual": 0.9112029671669006,
+              "reference": 0.9112029557927783
+            },
+            {
+              "flat_index": 7,
+              "actual": 0.36658310890197754,
+              "reference": 0.36658298018767776
+            },
+            {
+              "flat_index": 8,
+              "actual": 1.1296716928482056,
+              "reference": 1.1296717364164068
+            },
+            {
+              "flat_index": 9,
+              "actual": 0.7165576219558716,
+              "reference": 0.7165576031682499
+            },
+            {
+              "flat_index": 10,
+              "actual": 1.1431955099105835,
+              "reference": 1.1431955466248471
+            },
+            {
+              "flat_index": 11,
+              "actual": 1.1229298114776611,
+              "reference": 1.122929749328065
+            },
+            {
+              "flat_index": 12,
+              "actual": 1.042737364768982,
+              "reference": 1.0427374028716505
+            },
+            {
+              "flat_index": 13,
+              "actual": 1.858144760131836,
+              "reference": 1.8581446845753176
+            },
+            {
+              "flat_index": 14,
+              "actual": 1.7225966453552246,
+              "reference": 1.7225967274461147
+            },
+            {
+              "flat_index": 15,
+              "actual": 0.9280808568000793,
+              "reference": 0.9280808386884962
+            }
+          ],
+          "sample_scope": "At most 16 mismatching positions, or first 16 positions in a passing case. Full-array comparison counts above; complete arrays retained outside the bounded agent packet."
+        },
+        "rawRefs": [
+          {
+            "id": "record-poly-03",
+            "sha256": "14524a3a7ee2d79a6de48dddf70495db3dade8986006df16d8349fbc05834eeb"
+          },
+          {
+            "id": "arrays-poly-03",
+            "sha256": "054f8fa1b5ea5e3e50feeb7cfa365e28302d4ebbb4dd19b1417daf333027511e"
+          }
+        ]
+      }
+    ]
+  },
+  "responseCharacters": 2673,
+  "responseSHA256": "8b59e0357e83a425f58fef337e57fc06f67d25d5cc458b0d602b8ad433d16b61",
+  "wallMilliseconds": 0.15816104412078857
+}

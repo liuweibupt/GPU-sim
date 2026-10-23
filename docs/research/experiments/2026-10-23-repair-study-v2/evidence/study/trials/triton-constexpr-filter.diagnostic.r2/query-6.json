@@ -1,0 +1,265 @@
+{
+  "round": 6,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-01",
+    "text": null,
+    "start": 967,
+    "end": 1025,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-01",
+    "path": "triton/compiler/code_generator.py",
+    "sha256": "e7b75e513fb868674fd2adc660c6527e4ad9e74f01120d8e2b1ad243329a0c92",
+    "start": 967,
+    "end": 1025,
+    "totalLines": 1708,
+    "lines": [
+      {
+        "line": 967,
+        "text": "    def visit_If(self, node):"
+      },
+      {
+        "line": 968,
+        "text": "        cond = self.visit(node.test)"
+      },
+      {
+        "line": 969,
+        "text": ""
+      },
+      {
+        "line": 970,
+        "text": "        if _is_triton_tensor(cond):"
+      },
+      {
+        "line": 971,
+        "text": "            if _is_non_scalar_tensor(cond):"
+      },
+      {
+        "line": 972,
+        "text": "                raise self._unsupported(node, \"Boolean value of Tensor with more than one value is ambiguous\")"
+      },
+      {
+        "line": 973,
+        "text": "            if cond.type.is_block():"
+      },
+      {
+        "line": 974,
+        "text": "                warnings.warn("
+      },
+      {
+        "line": 975,
+        "text": "                    \"If conditional called with multidimensional Tensor instead of scalar; please use \\\"if (%s).item()\\\" instead\""
+      },
+      {
+        "line": 976,
+        "text": "                    % ast.unparse(node.test))"
+      },
+      {
+        "line": 977,
+        "text": "                cond = language.core._unsplat(cond, _semantic=self.semantic, _generator=self)"
+      },
+      {
+        "line": 978,
+        "text": "            cond = cond.to(language.int1, _semantic=self.semantic)"
+      },
+      {
+        "line": 979,
+        "text": "            if ContainsReturnChecker(self.gscope).visit(node):"
+      },
+      {
+        "line": 980,
+        "text": "                if self.scf_stack:"
+      },
+      {
+        "line": 981,
+        "text": "                    raise self._unsupported("
+      },
+      {
+        "line": 982,
+        "text": "                        node, \"Cannot have `return` statements inside `while` or `for` statements in triton.\")"
+      },
+      {
+        "line": 983,
+        "text": "                self.visit_if_top_level(cond, node)"
+      },
+      {
+        "line": 984,
+        "text": "            else:"
+      },
+      {
+        "line": 985,
+        "text": "                self.visit_if_scf(cond, node)"
+      },
+      {
+        "line": 986,
+        "text": "        else:"
+      },
+      {
+        "line": 987,
+        "text": "            cond = _unwrap_if_constexpr(cond)"
+      },
+      {
+        "line": 988,
+        "text": "            # not isinstance - we insist the real thing, no subclasses and no ducks"
+      },
+      {
+        "line": 989,
+        "text": "            if type(cond) not in _condition_types:"
+      },
+      {
+        "line": 990,
+        "text": "                raise self._unsupported("
+      },
+      {
+        "line": 991,
+        "text": "                    node, \"`if` conditionals can only accept values of type {{{}}}, not objects of type {}\".format("
+      },
+      {
+        "line": 992,
+        "text": "                        ', '.join(_.__name__ for _ in _condition_types),"
+      },
+      {
+        "line": 993,
+        "text": "                        type(cond).__name__))"
+      },
+      {
+        "line": 994,
+        "text": ""
+      },
+      {
+        "line": 995,
+        "text": "            active_block = node.body if cond else node.orelse"
+      },
+      {
+        "line": 996,
+        "text": "            self.visit_compound_statement(active_block)"
+      },
+      {
+        "line": 997,
+        "text": ""
+      },
+      {
+        "line": 998,
+        "text": "    def visit_IfExp(self, node):"
+      },
+      {
+        "line": 999,
+        "text": "        cond = self.visit(node.test)"
+      },
+      {
+        "line": 1000,
+        "text": "        if _is_triton_tensor(cond):"
+      },
+      {
+        "line": 1001,
+        "text": "            cond = cond.to(language.int1, _semantic=self.semantic)"
+      },
+      {
+        "line": 1002,
+        "text": "            # TODO: Deal w/ more complicated return types (e.g tuple)"
+      },
+      {
+        "line": 1003,
+        "text": "            with enter_sub_region(self):"
+      },
+      {
+        "line": 1004,
+        "text": "                ip, last_loc = self._get_insertion_point_and_loc()"
+      },
+      {
+        "line": 1005,
+        "text": ""
+      },
+      {
+        "line": 1006,
+        "text": "                then_block = self.builder.create_block()"
+      },
+      {
+        "line": 1007,
+        "text": "                self.builder.set_insertion_point_to_start(then_block)"
+      },
+      {
+        "line": 1008,
+        "text": "                then_val = self.semantic.to_tensor(self.visit(node.body))"
+      },
+      {
+        "line": 1009,
+        "text": "                then_block = self.builder.get_insertion_block()"
+      },
+      {
+        "line": 1010,
+        "text": ""
+      },
+      {
+        "line": 1011,
+        "text": "                else_block = self.builder.create_block()"
+      },
+      {
+        "line": 1012,
+        "text": "                self.builder.set_insertion_point_to_start(else_block)"
+      },
+      {
+        "line": 1013,
+        "text": "                # do not need to reset lscope since"
+      },
+      {
+        "line": 1014,
+        "text": "                # ternary expressions cannot define new variables"
+      },
+      {
+        "line": 1015,
+        "text": "                else_val = self.semantic.to_tensor(self.visit(node.orelse))"
+      },
+      {
+        "line": 1016,
+        "text": "                else_block = self.builder.get_insertion_block()"
+      },
+      {
+        "line": 1017,
+        "text": ""
+      },
+      {
+        "line": 1018,
+        "text": "                self._set_insertion_point_and_loc(ip, last_loc)"
+      },
+      {
+        "line": 1019,
+        "text": ""
+      },
+      {
+        "line": 1020,
+        "text": "                assert then_val.type == else_val.type, \\"
+      },
+      {
+        "line": 1021,
+        "text": "                    f'Ternary expression with dynamic condition has inconsistent types {then_val.type} and {else_val.type}'"
+      },
+      {
+        "line": 1022,
+        "text": "                ret_type = then_val.type"
+      },
+      {
+        "line": 1023,
+        "text": ""
+      },
+      {
+        "line": 1024,
+        "text": "                ret_type_ir = [ret_type.to_ir(self.builder)] if ret_type != language.void else []"
+      },
+      {
+        "line": 1025,
+        "text": "                if_op = self.builder.create_if_op(ret_type_ir, cond.handle, True)"
+      }
+    ]
+  },
+  "responseCharacters": 4622,
+  "responseSHA256": "c7dfe784dcca7d9ea03b97db59ac65428b6730d51e32260824feda0129412779",
+  "wallMilliseconds": 0.16686201095581055
+}

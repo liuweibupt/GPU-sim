@@ -1,0 +1,509 @@
+{
+  "round": 4,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "source-28",
+    "text": null,
+    "start": 250,
+    "end": 369,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "source-28",
+    "path": "src/liger_kernel/ops/poly_norm.py",
+    "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+    "start": 250,
+    "end": 369,
+    "totalLines": 388,
+    "lines": [
+      {
+        "line": 250,
+        "text": "        RSTD.stride(0),"
+      },
+      {
+        "line": 251,
+        "text": "        n_cols,"
+      },
+      {
+        "line": 252,
+        "text": "        eps,"
+      },
+      {
+        "line": 253,
+        "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+      },
+      {
+        "line": 254,
+        "text": "        num_warps=num_warps,"
+      },
+      {
+        "line": 255,
+        "text": "        **kernel_args,"
+      },
+      {
+        "line": 256,
+        "text": "    )"
+      },
+      {
+        "line": 257,
+        "text": ""
+      },
+      {
+        "line": 258,
+        "text": "    return Y.view(*shape), X, RSTD, BLOCK_SIZE, num_warps"
+      },
+      {
+        "line": 259,
+        "text": ""
+      },
+      {
+        "line": 260,
+        "text": ""
+      },
+      {
+        "line": 261,
+        "text": "def poly_norm_backward(dY, X, W, RSTD, BLOCK_SIZE, num_warps, in_place):"
+      },
+      {
+        "line": 262,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 263,
+        "text": "    PolyNorm Backward Pass"
+      },
+      {
+        "line": 264,
+        "text": ""
+      },
+      {
+        "line": 265,
+        "text": "    Args:"
+      },
+      {
+        "line": 266,
+        "text": "        dY: gradient of output"
+      },
+      {
+        "line": 267,
+        "text": "        X: input tensor (already reshaped to 2D)"
+      },
+      {
+        "line": 268,
+        "text": "        W: weight tensor"
+      },
+      {
+        "line": 269,
+        "text": "        RSTD: cached rstd values from forward"
+      },
+      {
+        "line": 270,
+        "text": "        BLOCK_SIZE: block size from forward"
+      },
+      {
+        "line": 271,
+        "text": "        num_warps: number of warps from forward"
+      },
+      {
+        "line": 272,
+        "text": "        in_place: whether to in-place modify dY to store dX (saves memory)"
+      },
+      {
+        "line": 273,
+        "text": ""
+      },
+      {
+        "line": 274,
+        "text": "    Returns:"
+      },
+      {
+        "line": 275,
+        "text": "        dX: gradient w.r.t. input"
+      },
+      {
+        "line": 276,
+        "text": "        dW: gradient w.r.t. weight"
+      },
+      {
+        "line": 277,
+        "text": "        dB: gradient w.r.t. bias"
+      },
+      {
+        "line": 278,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 279,
+        "text": "    shape = dY.shape"
+      },
+      {
+        "line": 280,
+        "text": "    dim = shape[-1]"
+      },
+      {
+        "line": 281,
+        "text": "    dY = dY.view(-1, dim)"
+      },
+      {
+        "line": 282,
+        "text": "    n_rows, n_cols = dY.shape"
+      },
+      {
+        "line": 283,
+        "text": ""
+      },
+      {
+        "line": 284,
+        "text": "    # Get number of SMs for parallelization"
+      },
+      {
+        "line": 285,
+        "text": "    import math"
+      },
+      {
+        "line": 286,
+        "text": ""
+      },
+      {
+        "line": 287,
+        "text": "    sm_count = 1"
+      },
+      {
+        "line": 288,
+        "text": "    if X.device.type == \"cuda\":"
+      },
+      {
+        "line": 289,
+        "text": "        sm_count = torch.cuda.get_device_properties(X.device).multi_processor_count"
+      },
+      {
+        "line": 290,
+        "text": "    elif X.device.type == \"xpu\":"
+      },
+      {
+        "line": 291,
+        "text": "        sm_count = torch.xpu.get_device_properties(X.device).gpu_eu_count"
+      },
+      {
+        "line": 292,
+        "text": "    elif X.device.type == \"npu\":"
+      },
+      {
+        "line": 293,
+        "text": "        sm_count = get_npu_core_count()"
+      },
+      {
+        "line": 294,
+        "text": ""
+      },
+      {
+        "line": 295,
+        "text": "    # Allocate or reuse gradients"
+      },
+      {
+        "line": 296,
+        "text": "    if in_place is True:"
+      },
+      {
+        "line": 297,
+        "text": "        dX = dY"
+      },
+      {
+        "line": 298,
+        "text": "    else:"
+      },
+      {
+        "line": 299,
+        "text": "        dX = torch.zeros_like(dY)"
+      },
+      {
+        "line": 300,
+        "text": ""
+      },
+      {
+        "line": 301,
+        "text": "    _dW = torch.empty((sm_count, 3), dtype=torch.float32, device=W.device)"
+      },
+      {
+        "line": 302,
+        "text": "    _dB = torch.empty((sm_count,), dtype=torch.float32, device=W.device)"
+      },
+      {
+        "line": 303,
+        "text": ""
+      },
+      {
+        "line": 304,
+        "text": "    rows_per_program = math.ceil(n_rows / sm_count)"
+      },
+      {
+        "line": 305,
+        "text": "    grid = (sm_count,)"
+      },
+      {
+        "line": 306,
+        "text": ""
+      },
+      {
+        "line": 307,
+        "text": "    # XPU-specific optimization"
+      },
+      {
+        "line": 308,
+        "text": "    kernel_args = {}"
+      },
+      {
+        "line": 309,
+        "text": "    if X.device.type == \"xpu\":"
+      },
+      {
+        "line": 310,
+        "text": "        set_large_grf_mode(kernel_args)"
+      },
+      {
+        "line": 311,
+        "text": ""
+      },
+      {
+        "line": 312,
+        "text": "    # Launch backward kernel"
+      },
+      {
+        "line": 313,
+        "text": "    _poly_norm_backward_kernel[grid]("
+      },
+      {
+        "line": 314,
+        "text": "        dY,"
+      },
+      {
+        "line": 315,
+        "text": "        dY.stride(0),"
+      },
+      {
+        "line": 316,
+        "text": "        dX,"
+      },
+      {
+        "line": 317,
+        "text": "        dX.stride(0),"
+      },
+      {
+        "line": 318,
+        "text": "        X,"
+      },
+      {
+        "line": 319,
+        "text": "        X.stride(0),"
+      },
+      {
+        "line": 320,
+        "text": "        W,"
+      },
+      {
+        "line": 321,
+        "text": "        RSTD,"
+      },
+      {
+        "line": 322,
+        "text": "        RSTD.stride(0),"
+      },
+      {
+        "line": 323,
+        "text": "        _dW,"
+      },
+      {
+        "line": 324,
+        "text": "        _dW.stride(0),"
+      },
+      {
+        "line": 325,
+        "text": "        _dB,"
+      },
+      {
+        "line": 326,
+        "text": "        n_rows,"
+      },
+      {
+        "line": 327,
+        "text": "        n_cols,"
+      },
+      {
+        "line": 328,
+        "text": "        rows_per_program,"
+      },
+      {
+        "line": 329,
+        "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+      },
+      {
+        "line": 330,
+        "text": "        num_warps=num_warps,"
+      },
+      {
+        "line": 331,
+        "text": "        **kernel_args,"
+      },
+      {
+        "line": 332,
+        "text": "    )"
+      },
+      {
+        "line": 333,
+        "text": ""
+      },
+      {
+        "line": 334,
+        "text": "    # Reduce gradients across SMs"
+      },
+      {
+        "line": 335,
+        "text": "    dX = dX.view(*shape)"
+      },
+      {
+        "line": 336,
+        "text": "    dW = _dW.sum(dim=0).to(W.dtype)"
+      },
+      {
+        "line": 337,
+        "text": "    dB = _dB.sum().to(W.dtype)"
+      },
+      {
+        "line": 338,
+        "text": ""
+      },
+      {
+        "line": 339,
+        "text": "    return dX, dW, dB"
+      },
+      {
+        "line": 340,
+        "text": ""
+      },
+      {
+        "line": 341,
+        "text": ""
+      },
+      {
+        "line": 342,
+        "text": "class LigerPolyNormFunction(torch.autograd.Function):"
+      },
+      {
+        "line": 343,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 344,
+        "text": "    PolyNorm Function with forward and backward pass"
+      },
+      {
+        "line": 345,
+        "text": ""
+      },
+      {
+        "line": 346,
+        "text": "    PolyNorm formula:"
+      },
+      {
+        "line": 347,
+        "text": "        y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+      },
+      {
+        "line": 348,
+        "text": "        where norm(u) = u / sqrt(mean(u²) + ε)"
+      },
+      {
+        "line": 349,
+        "text": ""
+      },
+      {
+        "line": 350,
+        "text": "    Backward uses closed-form gradient:"
+      },
+      {
+        "line": 351,
+        "text": "        ∂L/∂x_i = Σ_p w_p * [p*x_i^(p-1) * grad_i/D_p - (p/d)*x_i^(2p-1) * S_p/(D_p³)]"
+      },
+      {
+        "line": 352,
+        "text": "    \"\"\""
+      },
+      {
+        "line": 353,
+        "text": ""
+      },
+      {
+        "line": 354,
+        "text": "    @staticmethod"
+      },
+      {
+        "line": 355,
+        "text": "    @ensure_contiguous"
+      },
+      {
+        "line": 356,
+        "text": "    def forward(ctx, X, W, B, eps=1e-6, in_place=True):"
+      },
+      {
+        "line": 357,
+        "text": "        \"\"\""
+      },
+      {
+        "line": 358,
+        "text": "        Args:"
+      },
+      {
+        "line": 359,
+        "text": "            X: input tensor of shape (B, T, H) or (BxT, H)"
+      },
+      {
+        "line": 360,
+        "text": "            W: weight tensor of shape (3,) for [w0, w1, w2]"
+      },
+      {
+        "line": 361,
+        "text": "            B: bias scalar"
+      },
+      {
+        "line": 362,
+        "text": "            eps: epsilon for numerical stability"
+      },
+      {
+        "line": 363,
+        "text": "            in_place: whether to in-place modify grad_output in backward (saves memory)"
+      },
+      {
+        "line": 364,
+        "text": ""
+      },
+      {
+        "line": 365,
+        "text": "        Returns:"
+      },
+      {
+        "line": 366,
+        "text": "            Y: output tensor of same shape as X"
+      },
+      {
+        "line": 367,
+        "text": "        \"\"\""
+      },
+      {
+        "line": 368,
+        "text": "        Y, X, RSTD, BLOCK_SIZE, num_warps = poly_norm_forward(X, W, B, eps)"
+      },
+      {
+        "line": 369,
+        "text": "        ctx.BLOCK_SIZE = BLOCK_SIZE"
+      }
+    ]
+  },
+  "responseCharacters": 6096,
+  "responseSHA256": "6d2da204f12cdbd8dc9b13edbf4775837e3db9ee1dbbf35be12b118f46584689",
+  "wallMilliseconds": 0.18134009838104248
+}

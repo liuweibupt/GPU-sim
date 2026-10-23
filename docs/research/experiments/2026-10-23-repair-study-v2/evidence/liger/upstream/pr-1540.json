@@ -1,0 +1,61 @@
+{
+  "url": "https://github.com/linkedin/Liger-Kernel/pull/1540",
+  "number": 1540,
+  "state": "closed",
+  "merged": true,
+  "mergeable": false,
+  "draft": false,
+  "body": "Fixes #1536\n\n## Summary\n`_poly_norm_forward_kernel` computed `x^3 * x^3` and its row sum in the input dtype. For unit-variance fp16 input, `sum(x^6)` is about `15 * H`, which passes the fp16 max (65504) at hidden size ~4096. `mean(x^6)` then becomes inf, `rstd_3` becomes 0, and the cubic term silently drops out of the output. Nothing becomes NaN, so nothing flags it. This PR loads the row as fp32 in the forward kernel, as `_poly_norm_backward_kernel` already does (one line). The output is still stored in the input dtype.\n\n## Details\n- fp16 `randn(8, 4096)` / `randn(8, 8192)` with default parameters: on `main`, 2/8 and 8/8 rows have an error above 0.1x the output RMS (the largest is ~6 to 10 in absolute terms). At the 2048 x 8192 activation shape of Motif-2.6B (PolyNorm as the MLP activation), all 2048 rows are wrong. With this change, 0 rows are.\n- The fp16 backward is fixed as well, because it uses the rstd values cached by the forward.\n- bf16 is not affected by the overflow (8-bit exponent), and fp32 output is unchanged.\n- Performance and register use of the fp32 row were not measured.\n\n## Testing Done\nNew test `test_correctness_fp16_large_hidden` in `test/transformers/test_poly_norm.py`. It runs fp16 `randn` of shapes (8, 4096), (8, 8192) and (2048, 8192) with default parameters, and checks that the output is finite and close to the file's `NaivePolyNorm` evaluated in fp32 on the upcast input.\n\nMeasured smallest `atol = rtol` that passes against that fp32 reference:\n\n| shape | this PR | fp32 reference rounded to fp16 (floor) | main |\n|---|---|---|---|\n| (8, 4096) | 5.4e-4 | 3.8e-4 | 1.49 |\n| (8, 8192) | 5.3e-4 | 4.3e-4 | 1.52 |\n| (2048, 8192) | 6.5e-4 | 4.3e-4 | 1.53 |\n\nThe test uses `atol = rtol = 2e-3`: about 3x the fixed kernel's error, about 4-5x the fp16 output-rounding floor, and roughly 750x below the error on `main`.\n\nResults (`python -m pytest test/transformers/test_poly_norm.py -v`):\n\n| | main (`23ba106`) | this PR |\n|---|---|---|\n| new test (3 shapes) | 3 failed | 3 passed |\n| whole file | 4 failed (3 new + 1 pre-existing), 16 passed | 1 failed (pre-existing), 19 passed |\n\nThe one failure in both runs, `test_correctness[dtype1-0.6-0.05-2-128-512]`, is pre-existing and unrelated to this change. It is a bf16 case where one element of `weight.grad` is off: reference -20.0 vs -15.94 on main and -16.75 with this PR, with atol 0.6. It is marked `@pytest.mark.flaky(reruns=3)`. With `pytest-rerunfailures` installed (it is in the `dev` extras), it failed on all 4 attempts both before and after this change. It fails the same way on every attempt, likely because the file sets `torch.use_deterministic_algorithms(True)` and a fixed seed. It is a bf16 weight-gradient reduction-order case, and this change does not touch it.\n\n- Hardware Type: NVIDIA GeForce RTX 5080 Laptop GPU (sm_120), driver 595.99.02, CUDA 12.8, torch 2.11.0+cu128, triton 3.6.0, Python 3.12.3\n- [ ] run `make test` to ensure correctness. Only `test/transformers/test_poly_norm.py` was run (whole file), not the full `make test` suite.\n- [x] run `make checkstyle` to ensure code style. Ran `ruff check` + `ruff format --check` (ruff 0.15.22) and `prek run --files` on the changed files; all clean.\n- [ ] run `make test-convergence` to ensure convergence. Not run: PolyNorm is not used by the convergence mini-models.\n\n",
+  "title": "fix(poly_norm): compute the forward in fp32 for fp16/bf16 inputs",
+  "base": "main",
+  "base_sha": "88ad0c6901a6076e61af1fdd9adfa5d9fe6bec72",
+  "head": "fix/poly-norm-fp32-forward",
+  "head_sha": "e724d9c14f2f171e41f383af5131d4b575455a3a",
+  "head_repo_id": 1420021424,
+  "head_repo_full_name": "jayden1711/Liger-Kernel",
+  "merge_commit_sha": "6ce504c3286178ba6537624252f0a1ee88423b53",
+  "user": {
+    "login": "jayden1711",
+    "name": "jayden1711",
+    "email": null,
+    "avatar_url": "https://avatars.githubusercontent.com/u/173734205?v=4",
+    "id": 173734205
+  },
+  "requested_reviewers": null,
+  "requested_team_reviewers": null,
+  "diff": "@@ -54,8 +54,8 @@ def _poly_norm_forward_kernel(\n     X_ptr += row_idx * X_row_stride\n     RSTD_ptr += row_idx * RSTD_row_stride\n \n-    # Load input row\n-    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0)\n+    # Load input row; compute in fp32 (sum(x^6) overflows fp16 at hidden size ~4096)\n+    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0).to(tl.float32)\n \n     # Load weights and bias\n     w0 = tl.load(W_ptr + 0)\n@@ -152,6 +152,34 @@ def test_correctness(bs, sl, hd, dtype, atol, rtol):\n     assert_verbose_allclose(x1.grad, x2.grad, atol=atol, rtol=rtol, max_print=20)\n \n \n+@pytest.mark.parametrize(\n+    \"shape\",\n+    [\n+        (8, 4096),\n+        (8, 8192),\n+        (2048, 8192),  # MLP activation shape of a 2.6B model using PolyNorm\n+    ],\n+)\n+def test_correctness_fp16_large_hidden(shape):\n+    \"\"\"\n+    For unit-variance fp16 input, sum(x^6) exceeds the fp16 max (65504) at hidden size ~4096,\n+    so the forward must accumulate in fp32. Compare against the naive implementation in fp32.\n+    \"\"\"\n+    torch.manual_seed(0)\n+    x = torch.randn(*shape, device=device, dtype=torch.float16)\n+\n+    naive_poly_norm = NaivePolyNorm(eps=1e-6).to(device)\n+    liger_poly_norm = LigerPolyNorm(eps=1e-6).to(device).to(torch.float16)\n+    with torch.no_grad():\n+        liger_poly_norm.weight.copy_(naive_poly_norm.weight)\n+        liger_poly_norm.bias.copy_(naive_poly_norm.bias)\n+        ref_output = naive_poly_norm(x.float())\n+        triton_output = liger_poly_norm(x)\n+\n+    assert torch.isfinite(triton_output).all()\n+    assert_verbose_allclose(ref_output, triton_output.float(), atol=2e-3, rtol=2e-3)\n+\n+\n @pytest.mark.parametrize(\n     \"bs, sl, hd\",\n     [",
+  "comments": [
+    {
+      "url": "https://github.com/linkedin/Liger-Kernel/pull/1540#pullrequestreview-5620002698",
+      "body": "Thanks for the contribution!",
+      "user": {
+        "login": "vaibhavjindal",
+        "name": "vaibhavjindal",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/32337828?v=4",
+        "id": 32337828
+      },
+      "id": 5620002698,
+      "pull_request_review_id": null,
+      "in_reply_to_id": null,
+      "created_at": "2026-10-22T19:51:21Z",
+      "updated_at": null,
+      "review": "APPROVED",
+      "side": null,
+      "line": null,
+      "start_line": null,
+      "path": null,
+      "body_html": "<p dir=\"auto\">Thanks for the contribution!</p>"
+    }
+  ],
+  "created_at": "2026-10-15T09:55:56Z",
+  "updated_at": "2026-10-22T19:57:48Z",
+  "closed_at": "2026-10-22T19:57:48Z",
+  "merged_at": "2026-10-22T19:57:48Z",
+  "commits": 2,
+  "changed_files": 2,
+  "additions": 30,
+  "deletions": 2,
+  "display_url": "https://github.com/linkedin/Liger-Kernel/pull/1540",
+  "display_title": "fix(poly_norm): compute the forward in fp32 for fp16/bf16 inputs"
+}

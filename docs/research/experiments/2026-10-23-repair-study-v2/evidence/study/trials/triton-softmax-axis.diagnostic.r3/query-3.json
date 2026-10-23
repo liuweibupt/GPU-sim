@@ -1,0 +1,98 @@
+{
+  "round": 3,
+  "request": {
+    "op": "derived",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": "observed",
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "observations": [
+      {
+        "caseId": "softmax-axis-00",
+        "status": "wrong_value",
+        "parameters": {
+          "shape": [
+            2,
+            2
+          ],
+          "dim": 1,
+          "pattern": "linear"
+        },
+        "evidenceId": "observation-softmax-axis-00",
+        "kind": "device-output",
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 4 / 4 elements differ. Floating-point signed zero uses byte equality where required.",
+        "rawRefs": [
+          {
+            "id": "raw-softmax-axis-00",
+            "sha256": "72fc33b8cd62252e56454781faceab3beabc8a1bec24db44f8088a1bf74c35d3"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+          }
+        ]
+      },
+      {
+        "caseId": "softmax-axis-01",
+        "status": "passed",
+        "parameters": {
+          "shape": [
+            2,
+            2
+          ],
+          "dim": 0,
+          "pattern": "linear"
+        },
+        "evidenceId": "observation-softmax-axis-01",
+        "kind": "device-output",
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 4 elements differ. Floating-point signed zero uses byte equality where required.",
+        "rawRefs": [
+          {
+            "id": "raw-softmax-axis-01",
+            "sha256": "f5442620b54db47f23d2fab9f08e99341a9ac5d55e1558db0254bee776967dee"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+          }
+        ]
+      },
+      {
+        "caseId": "softmax-axis-02",
+        "status": "passed",
+        "parameters": {
+          "shape": [
+            128
+          ],
+          "dim": 0,
+          "pattern": "linear"
+        },
+        "evidenceId": "observation-softmax-axis-02",
+        "kind": "device-output",
+        "text": "Complete actual RTX 4090 output compared against independent declared reference: 0 / 128 elements differ. Floating-point signed zero uses byte equality where required.",
+        "rawRefs": [
+          {
+            "id": "raw-softmax-axis-02",
+            "sha256": "27d96a630019d0add299ca2dfb08c7e170f0eb85113208dc734a2bfbc72ffacd"
+          },
+          {
+            "id": "test-kernel",
+            "sha256": "b3684d903dd9c0c498abe566063116e816d2c49a7dba78a07d0081ba8d2d76a8"
+          }
+        ]
+      }
+    ],
+    "scope": "Observed facts only; payload values remain available through read/case in both conditions."
+  },
+  "responseCharacters": 1800,
+  "responseSHA256": "e20ddf4fafd83ffc715e232b26ad59f34cbebb988477158adc6586a641e9a82d",
+  "wallMilliseconds": 0.8633490800857544
+}

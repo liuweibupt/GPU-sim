@@ -1,0 +1,72 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "The forward kernel computes prefix sums and the simplex threshold from uncentered values. Large common offsets cause float32 rounding to erase the unit subtraction or the final probability-sized difference. Actual GPU observations report 512/512 mismatches for sparse-04 and sparse-05 and 32/32 for sparse-02; controls sparse-00 and sparse-01 each have 0/32 mismatches, and sparse-03 has 0/512. Repair by subtracting the row maximum in float32 before threshold computation and output subtraction. Clamp centered values below -1: the centered simplex threshold is at least -1, so these values cannot belong to the support. This also prevents overflow in prefix sums for extreme finite inputs without altering the projection. Input storage, output shape and dtype are preserved. Exact failing output values were unavailable because the advertised array reference could not be read. Compilation and post-patch correctness have not been run in this bounded interface.",
+  "locations": [
+    {
+      "source_id": "source-34",
+      "start_line": 31,
+      "end_line": 61
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "sparse-00",
+      "evidence_ids": [
+        "observation-sparse-00"
+      ]
+    },
+    {
+      "case_id": "sparse-01",
+      "evidence_ids": [
+        "observation-sparse-01"
+      ]
+    },
+    {
+      "case_id": "sparse-02",
+      "evidence_ids": [
+        "observation-sparse-02"
+      ]
+    },
+    {
+      "case_id": "sparse-03",
+      "evidence_ids": [
+        "observation-sparse-03"
+      ]
+    },
+    {
+      "case_id": "sparse-04",
+      "evidence_ids": [
+        "observation-sparse-04"
+      ]
+    },
+    {
+      "case_id": "sparse-05",
+      "evidence_ids": [
+        "observation-sparse-05"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-34",
+      "old": "    z_valid = tl.where(mask, z_sorted_block, 0.0)\n    cssv = tl.cumsum(z_valid, 0)",
+      "new": "    # Sparsemax is invariant to a common shift. Center before computing\n    # the threshold so large offsets cannot erase the unit simplex mass.\n    row_max = tl.max(z_sorted_block, 0)\n    # The centered threshold is >= -1; smaller values are never active.\n    # Clipping also bounds prefix sums for extreme finite input values.\n    z_sorted_block = tl.where(mask, tl.maximum(z_sorted_block - row_max, -1.0), -float(\"inf\"))\n    z_valid = tl.where(mask, z_sorted_block, 0.0)\n    cssv = tl.cumsum(z_valid, 0)"
+    },
+    {
+      "source_id": "source-34",
+      "old": "    y = tl.maximum(x_block - tau, 0.0)",
+      "new": "    x_centered = tl.maximum(x_block - row_max, -1.0)\n    y = tl.maximum(x_centered - tau, 0.0)"
+    }
+  ]
+}

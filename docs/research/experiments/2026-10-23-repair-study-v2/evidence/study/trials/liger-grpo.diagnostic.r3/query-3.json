@@ -1,0 +1,198 @@
+{
+  "round": 3,
+  "request": {
+    "op": "derived",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": "observed",
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "observations": [
+      {
+        "caseId": "grpo-00",
+        "status": "passed",
+        "parameters": {
+          "batch": 3,
+          "length": 7,
+          "vocab": 17,
+          "seed": 83,
+          "dtype": "float32",
+          "layout": "dense",
+          "temperature": 1,
+          "masked": true,
+          "atol": 0.00002,
+          "rtol": 0.00002
+        },
+        "evidenceId": "observation-grpo-00",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: passed; 0 mismatches among 21 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-grpo-00",
+            "sha256": "fed323adca8c39dd5fb912a7905f439511c39898f5e7cb487468195b2473e846"
+          },
+          {
+            "id": "arrays-grpo-00",
+            "sha256": "1d51c7305fd54f4e7b06b4f30efb772cb45323951c79922365299a1f36832ca0"
+          }
+        ]
+      },
+      {
+        "caseId": "grpo-01",
+        "status": "wrong_value",
+        "parameters": {
+          "batch": 3,
+          "length": 7,
+          "vocab": 17,
+          "seed": 83,
+          "dtype": "float32",
+          "layout": "different_prefixes",
+          "temperature": 1,
+          "masked": true,
+          "atol": 0.00002,
+          "rtol": 0.00002
+        },
+        "evidenceId": "observation-grpo-01",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 7 mismatches among 21 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-grpo-01",
+            "sha256": "7842fd0dd324dff8c159e3589fd929c5e991b4e734ae43937ad78f7aa9eed9a4"
+          },
+          {
+            "id": "arrays-grpo-01",
+            "sha256": "6fca368acd4b8886761b90bd4acd8e76a91c33694e1b33e04bfd2b86c4f3ae33"
+          }
+        ]
+      },
+      {
+        "caseId": "grpo-02",
+        "status": "wrong_value",
+        "parameters": {
+          "batch": 3,
+          "length": 7,
+          "vocab": 17,
+          "seed": 83,
+          "dtype": "float32",
+          "layout": "strided_ids",
+          "temperature": 1,
+          "masked": true,
+          "atol": 0.00002,
+          "rtol": 0.00002
+        },
+        "evidenceId": "observation-grpo-02",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 12 mismatches among 21 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-grpo-02",
+            "sha256": "5f5ac38800acd2e467b804298484763927d32cfbba445dc7feca4185fe5bd973"
+          },
+          {
+            "id": "arrays-grpo-02",
+            "sha256": "95c27e1f855b68f239e03b4cc806e4f619d07cf4413107a77f7f21fe5193e57a"
+          }
+        ]
+      },
+      {
+        "caseId": "grpo-03",
+        "status": "wrong_value",
+        "parameters": {
+          "batch": 3,
+          "length": 7,
+          "vocab": 17,
+          "seed": 83,
+          "dtype": "float32",
+          "layout": "strided_mask",
+          "temperature": 1,
+          "masked": true,
+          "atol": 0.00002,
+          "rtol": 0.00002
+        },
+        "evidenceId": "observation-grpo-03",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 13 mismatches among 21 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-grpo-03",
+            "sha256": "9056f3a4559bacde5308c884b74f3446a84c689908e7712bc9a53efc2d684d6a"
+          },
+          {
+            "id": "arrays-grpo-03",
+            "sha256": "e60b7fc53ff254c154b7345f677d7730190125d7122fda45f6679f419c8db703"
+          }
+        ]
+      },
+      {
+        "caseId": "grpo-04",
+        "status": "wrong_value",
+        "parameters": {
+          "batch": 3,
+          "length": 7,
+          "vocab": 17,
+          "seed": 83,
+          "dtype": "float32",
+          "layout": "broadcast_ids",
+          "temperature": 1,
+          "masked": true,
+          "atol": 0.00002,
+          "rtol": 0.00002
+        },
+        "evidenceId": "observation-grpo-04",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 9 mismatches among 21 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-grpo-04",
+            "sha256": "be65355fa7a50fdff50a29323aea6165473e6fcfd7f23e8a26aeaef6d9bdd062"
+          },
+          {
+            "id": "arrays-grpo-04",
+            "sha256": "d82ec191a1e95dc2c2cc34cc0ee05db9900317d0d8a52a24bdab4b316df04634"
+          }
+        ]
+      },
+      {
+        "caseId": "grpo-05",
+        "status": "wrong_value",
+        "parameters": {
+          "batch": 3,
+          "length": 7,
+          "vocab": 17,
+          "seed": 83,
+          "dtype": "float32",
+          "layout": "broadcast_mask",
+          "temperature": 1,
+          "masked": true,
+          "atol": 0.00002,
+          "rtol": 0.00002
+        },
+        "evidenceId": "observation-grpo-05",
+        "kind": "device-output",
+        "text": "Actual GPU invocation: wrong_value; 10 mismatches among 21 outputs.",
+        "rawRefs": [
+          {
+            "id": "record-grpo-05",
+            "sha256": "66e9406212884dbba8bb20928a3dafc08327d5b4fa9bb05d261f8cd8eb85ccd8"
+          },
+          {
+            "id": "arrays-grpo-05",
+            "sha256": "5627c5cd076354679c0762999e8a1eb6750cd56aaa644608aa7ba2441964b4e2"
+          }
+        ]
+      }
+    ],
+    "scope": "Observed facts only; payload values remain available through read/case in both conditions."
+  },
+  "responseCharacters": 3407,
+  "responseSHA256": "e63219549fbe6873ec504e58942535cfadede97115ecfa99527447a3e0c55766",
+  "wallMilliseconds": 0.1833120584487915
+}

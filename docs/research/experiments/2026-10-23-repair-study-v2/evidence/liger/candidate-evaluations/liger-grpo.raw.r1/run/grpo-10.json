@@ -1,0 +1,76 @@
+{
+  "id": "grpo-10",
+  "family": "grpo",
+  "partition": "hidden",
+  "parameters": {
+    "batch": 2,
+    "length": 5,
+    "vocab": 37,
+    "seed": 97,
+    "dtype": "float32",
+    "layout": "broadcast_ids",
+    "temperature": 0.7,
+    "masked": true,
+    "atol": 2e-05,
+    "rtol": 2e-05
+  },
+  "input_strides": {
+    "ids": [
+      0,
+      1
+    ],
+    "mask": [
+      5,
+      1
+    ],
+    "ids_offset": 0,
+    "mask_offset": 0
+  },
+  "actual_dtype": "float32",
+  "actual_shape": [
+    2,
+    5
+  ],
+  "input_array_identities": [
+    {
+      "name": "ids",
+      "shape": [
+        2,
+        5
+      ],
+      "dtype": "int64",
+      "sha256": "bfe25265a795b6d5bef7d5d91768b31695e50200a3b092fa666cffdd28099c3b"
+    },
+    {
+      "name": "logits",
+      "shape": [
+        2,
+        6,
+        37
+      ],
+      "dtype": "float32",
+      "sha256": "b72f65fe3d49df441cf43150d41cab0a3980baa88ab8bd711a3830a48d94fab9"
+    },
+    {
+      "name": "mask",
+      "shape": [
+        2,
+        5
+      ],
+      "dtype": "bool",
+      "sha256": "089914723539f904d7e589a28b907427ed7b3832cde7f3d907748837024cb632"
+    }
+  ],
+  "passed": true,
+  "outputs": 10,
+  "mismatches": 0,
+  "nonfinite": 0,
+  "inputs_unchanged": true,
+  "max_abs_error": 2.575410746885609e-07,
+  "artifact": {
+    "path": "grpo-10.npz",
+    "sha256": "5289e4abb9d950de5c0a6da2edfd673f1e9cf80f7d7e06cc7ca6ed5405da3d6f",
+    "bytes": 7452
+  },
+  "wall_seconds": 0.15752093400806189
+}

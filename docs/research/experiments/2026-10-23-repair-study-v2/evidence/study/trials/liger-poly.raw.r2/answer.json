@@ -1,0 +1,63 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "PolyNorm forms powers and squared powers in the input dtype before reduction. This permits fp16 overflow and premature rounding; an infinite mean square suppresses the corresponding normalized term. The observed fp16 case poly-02 has 23,541/32,768 mismatches, maximum absolute error 6.92785184, and unchanged inputs. The same-width fp32 control poly-03 passes with zero mismatches and maximum absolute error 8.73e-7. Intermediate overflow is inferred from source and this dtype-dependent behavior; intermediate values were not observed. Widening before arithmetic repairs the precision loss. FP64 also accommodates sixth powers throughout the finite fp32/bf16 range, unlike a simple FP32 promotion. Output allocation and final storage retain the input shape and dtype, and inputs remain read-only. The backward cache retains its existing FP32 contract; backward numerical robustness is outside this repair. Compilation, held-out correctness, and performance could not be tested through the supplied API; FP64 throughput and device support remain limitations.",
+  "locations": [
+    {
+      "source_id": "source-28",
+      "start_line": 57,
+      "end_line": 87
+    },
+    {
+      "source_id": "source-28",
+      "start_line": 89,
+      "end_line": 98
+    },
+    {
+      "source_id": "source-28",
+      "start_line": 224,
+      "end_line": 230
+    },
+    {
+      "source_id": "source-28",
+      "start_line": 354,
+      "end_line": 373
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "poly-02",
+      "evidence_ids": [
+        "observation-poly-02"
+      ]
+    },
+    {
+      "case_id": "poly-03",
+      "evidence_ids": [
+        "observation-poly-03"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-28",
+      "old": "    # Load input row\n    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0)\n\n    # Load weights and bias\n    w0 = tl.load(W_ptr + 0)\n    w1 = tl.load(W_ptr + 1)\n    w2 = tl.load(W_ptr + 2)\n    b = tl.load(B_ptr)",
+      "new": "    # Widen before forming powers: even finite fp32 inputs can overflow\n    # fp32 when raised to the sixth power for the cubic RMS reduction.\n    # FP64 covers these intermediates for fp16, bf16, and fp32 inputs.\n    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0).to(tl.float64)\n\n    # Keep the weighted sum wide until the final output store.\n    w0 = tl.load(W_ptr + 0).to(tl.float64)\n    w1 = tl.load(W_ptr + 1).to(tl.float64)\n    w2 = tl.load(W_ptr + 2).to(tl.float64)\n    b = tl.load(B_ptr).to(tl.float64)"
+    },
+    {
+      "source_id": "source-28",
+      "old": "    # Force fp32 eps: Inductor may use fp64 under torch.compile and tank throughput.\n    eps = eps.to(tl.float32)",
+      "new": "    # Match the precision of the polynomial moments.\n    eps = eps.to(tl.float64)"
+    }
+  ]
+}

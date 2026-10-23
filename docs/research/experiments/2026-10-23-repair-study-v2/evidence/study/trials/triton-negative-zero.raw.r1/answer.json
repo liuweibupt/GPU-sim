@@ -1,0 +1,48 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "scalar_constant treats every value equal to zero as a null constant. Python considers -0.0 equal to 0, so this shortcut discards the floating-point sign before splatting. In negative-zero-00, all 32 float32 outputs have bytes 00 00 00 00 instead of the required 00 00 00 80. The positive-zero control negative-zero-01 passes with all-zero bytes. Restrict null construction to non-floating dtypes; floating constants then use the existing dtype-specific constructors (or the existing fp8 conversion), preserving signed zero without changing nonzero construction. The visible kernel directly exercises this path through tl.full. Compilation and post-patch device results are unavailable; float16, bfloat16, and float64 correctness remains unverified by supplied observations.",
+  "locations": [
+    {
+      "source_id": "source-06",
+      "start_line": 601,
+      "end_line": 623
+    },
+    {
+      "source_id": "test-kernel",
+      "start_line": 5,
+      "end_line": 11
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "negative-zero-00",
+      "evidence_ids": [
+        "observation-negative-zero-00"
+      ]
+    },
+    {
+      "case_id": "negative-zero-01",
+      "evidence_ids": [
+        "observation-negative-zero-01"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-06",
+      "old": "        if value == 0:\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))\n        elif dtype.is_fp8():",
+      "new": "        # Floating-point zeros must retain their sign in constant construction.\n        if value == 0 and not dtype.is_floating():\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))\n        elif dtype.is_fp8():"
+    }
+  ]
+}

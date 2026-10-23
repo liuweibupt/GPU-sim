@@ -1,0 +1,49 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "scalar_constant compares value == 0 before constructing a typed constant. Python considers -0.0 equal to zero, so this branch creates a null value and loses the floating-point sign bit. Restrict the null shortcut to non-floating types; floating zeros then use the existing typed constructors (or the existing fp8 conversion). This preserves signed zero for float16, bfloat16, float32 and float64 without hardcoding outputs, while retaining integer-zero handling and nonzero construction. The actual float32 failing observation reports 32/32 byte mismatches; both supplied controls report 0/32 mismatches. Raw payload retrieval was unavailable, so exact observed bytes were not inspected. No post-patch compilation or device results are available, and the other floating types lack supplied device observations.",
+  "locations": [
+    {
+      "source_id": "source-06",
+      "start_line": 601,
+      "end_line": 623
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "negative-zero-00",
+      "evidence_ids": [
+        "observation-negative-zero-00"
+      ]
+    },
+    {
+      "case_id": "negative-zero-01",
+      "evidence_ids": [
+        "observation-negative-zero-01"
+      ]
+    },
+    {
+      "case_id": "negative-zero-02",
+      "evidence_ids": [
+        "observation-negative-zero-02"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-06",
+      "old": "        if value == 0:\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))\n        elif dtype.is_fp8():",
+      "new": "        if value == 0 and not dtype.is_floating():\n            value = self.builder.get_null_value(dtype.to_ir(self.builder))\n        elif dtype.is_fp8():"
+    }
+  ]
+}

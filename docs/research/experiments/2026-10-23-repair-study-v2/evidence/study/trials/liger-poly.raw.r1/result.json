@@ -1,0 +1,2262 @@
+{
+  "format": "repair-study-trial-v2",
+  "id": "liger-poly.raw.r1",
+  "taskId": "liger-poly",
+  "condition": "raw",
+  "repetition": 1,
+  "split": "holdout",
+  "startedAt": "2026-10-23T14:50:58.133Z",
+  "calls": [
+    {
+      "round": 1,
+      "startedAt": "2026-10-23T14:50:58.134Z",
+      "finishedAt": "2026-10-23T14:51:07.352Z",
+      "wallSeconds": 9.217672387957572,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-ikGUzT/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-ikGUzT/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-ikGUzT/answer.json",
+        "-"
+      ],
+      "promptSHA256": "07a433882a2090bddd985edba11fb8abd83636ca2dca312bfa036a5dedd06e0f",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "source-28",
+          "text": null,
+          "start": 1,
+          "end": 120,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "I will inspect the forward implementation and the recorded numerical failures, then provide an exact patch.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693e-6130-70e0-a8fb-cfcebf0f6b4f"
+      },
+      "usage": [
+        {
+          "input_tokens": 17989,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 89,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "startedAt": "2026-10-23T14:51:07.355Z",
+      "finishedAt": "2026-10-23T14:51:17.283Z",
+      "wallSeconds": 9.928350775957108,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-HApDoi/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-HApDoi/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-HApDoi/answer.json",
+        "-"
+      ],
+      "promptSHA256": "8f43e51c60c73de75978cafb1c2b7cdde035aa580559c055407e57642b52794a",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "list",
+          "scope": "evidence",
+          "id": null,
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "The forward kernel computes powers in the input dtype, so fp16 intermediate products may overflow before normalization. I will inspect the numerical observations and public entry point before choosing the repair.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693e-852d-7231-b6d1-b54ee080a175"
+      },
+      "usage": [
+        {
+          "input_tokens": 20027,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 105,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "startedAt": "2026-10-23T14:51:17.286Z",
+      "finishedAt": "2026-10-23T14:51:26.552Z",
+      "wallSeconds": 9.26626836001873,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-orhzts/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-orhzts/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-orhzts/answer.json",
+        "-"
+      ],
+      "promptSHA256": "d1379de209f6dd1de07e8246334ea710ebd25d3762de76da3147e8dfc9edd07b",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "observation-poly-02",
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "I will check the actual failing output to distinguish intermediate overflow from rounding error.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693e-abff-7322-89bc-47d47021ee2f"
+      },
+      "usage": [
+        {
+          "input_tokens": 20238,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 88,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "startedAt": "2026-10-23T14:51:26.554Z",
+      "finishedAt": "2026-10-23T14:51:36.564Z",
+      "wallSeconds": 10.009815987944602,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-CKd0gy/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-CKd0gy/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-CKd0gy/answer.json",
+        "-"
+      ],
+      "promptSHA256": "593c08a9a9f47eb088019974ee3069bdd116c85011d9b2c355f0afe9e2bc7d98",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "source-28",
+          "text": null,
+          "start": 250,
+          "end": 369,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "The observed fp16 failure has 23,541 mismatches and maximum absolute error 6.92785, with finite outputs and unchanged inputs. Low-precision powers can overflow and suppress an entire normalized term. I will inspect the launch and cache handling to make the forward repair compatible with the public entry point.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693e-d02f-7800-8eff-d9d824a19e95"
+      },
+      "usage": [
+        {
+          "input_tokens": 21150,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 133,
+          "reasoning_output_tokens": 0
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "startedAt": "2026-10-23T14:51:36.567Z",
+      "finishedAt": "2026-10-23T14:51:59.580Z",
+      "wallSeconds": 23.013665161013602,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-cGzjoK/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-cGzjoK/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-cGzjoK/answer.json",
+        "-"
+      ],
+      "promptSHA256": "89af1fef6d3f681492f02e010eacd3e5e8c239f314e305920e53bf929d792d8c",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "observation-poly-03",
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "The failure is consistent with fp16 overflow in squared polynomial terms. I will inspect the same-width fp32 passing control; the repair must also avoid overflow for larger finite bf16/fp32 inputs, where simply promoting to fp32 is insufficient.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693e-f74a-7ab0-bb4e-b5eb66bf3acd"
+      },
+      "usage": [
+        {
+          "input_tokens": 23158,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 376,
+          "reasoning_output_tokens": 252
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "startedAt": "2026-10-23T14:51:59.583Z",
+      "finishedAt": "2026-10-23T14:52:24.733Z",
+      "wallSeconds": 25.149811420083047,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-iGNhg9/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-iGNhg9/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-iGNhg9/answer.json",
+        "-"
+      ],
+      "promptSHA256": "7dd49a709f824f5d624c1bcc60afe5cef78d951d72ef01f5d3b9c41a2ebda085",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "query",
+        "query": {
+          "op": "read",
+          "scope": null,
+          "id": "source-28",
+          "text": null,
+          "start": 198,
+          "end": 258,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "The same-width fp32 control passes with zero mismatches and maximum absolute error 8.73e-7, whereas fp16 fails at 23,541 positions. I am checking output allocation before widening forward arithmetic. Using fp64 for powers and moments also accommodates the full finite fp32/bf16 input range without overflowing x^6.",
+        "locations": [],
+        "citations": [],
+        "edits": []
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693f-5138-7f21-95ed-2a245573c758"
+      },
+      "usage": [
+        {
+          "input_tokens": 24117,
+          "cached_input_tokens": 14720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 331,
+          "reasoning_output_tokens": 189
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "startedAt": "2026-10-23T14:52:24.735Z",
+      "finishedAt": "2026-10-23T14:52:57.853Z",
+      "wallSeconds": 33.11799441802502,
+      "timeoutSeconds": 90,
+      "command": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--json",
+        "--color",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-C",
+        "/tmp/repair-study-v2-k6KIbm/empty",
+        "-m",
+        "gpt-6-astra",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "features.shell_tool=false",
+        "--output-schema",
+        "/tmp/repair-study-v2-k6KIbm/schema.json",
+        "-o",
+        "/tmp/repair-study-v2-k6KIbm/answer.json",
+        "-"
+      ],
+      "promptSHA256": "ae4cf26a9e63ab891dd0d276dc9b1e7f51e54e03ca9425298df4d90f6841c2ff",
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "spawnError": null,
+      "valid": true,
+      "reasons": [],
+      "finalMatches": true,
+      "answer": {
+        "action": "final",
+        "query": {
+          "op": "none",
+          "scope": null,
+          "id": null,
+          "text": null,
+          "start": null,
+          "end": null,
+          "offset": null,
+          "derived_op": null,
+          "groupBy": null
+        },
+        "diagnosis": "Forward computes polynomial powers and their squares in the input dtype. For fp16, these intermediates can overflow before reduction, making a reciprocal RMS zero and suppressing a polynomial term. The recorded width-8192 fp16 invocation has 23,541/32,768 mismatches, maximum absolute error 6.9278518, and no nonfinite outputs. The same-width fp32 control passes with zero mismatches and maximum absolute error 8.73e-7; both preserve inputs. Promote input values before any arithmetic and retain fp64 through normalization and weighted accumulation. Unlike fp32 promotion alone, fp64 accommodates x^6 across the entire finite fp16/bf16/fp32 range. The existing output allocation and masked store preserve shape and dtype. Observations do not expose intermediate values, so the exact overflowing operation is inferred from source. Compilation and held-out tests were unavailable; fp64 throughput and non-CUDA backend support remain unverified. Backward and its existing fp32 cache are unchanged.",
+        "locations": [
+          {
+            "source_id": "source-28",
+            "start_line": 57,
+            "end_line": 87
+          },
+          {
+            "source_id": "source-28",
+            "start_line": 89,
+            "end_line": 98
+          },
+          {
+            "source_id": "source-28",
+            "start_line": 222,
+            "end_line": 230
+          }
+        ],
+        "citations": [
+          {
+            "case_id": "poly-02",
+            "evidence_ids": [
+              "observation-poly-02"
+            ]
+          },
+          {
+            "case_id": "poly-03",
+            "evidence_ids": [
+              "observation-poly-03"
+            ]
+          }
+        ],
+        "edits": [
+          {
+            "source_id": "source-28",
+            "old": "    # Load input row\n    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0)\n\n    # Load weights and bias",
+            "new": "    # Widen before forming powers or squared moments. Even finite fp32\n    # inputs can overflow x^6 in fp32; fp64 covers their full range.\n    # Keep normalization and output accumulation wide until the final store.\n    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0).to(tl.float64)\n\n    # Load weights and bias"
+          },
+          {
+            "source_id": "source-28",
+            "old": "    # Force fp32 eps: Inductor may use fp64 under torch.compile and tank throughput.\n    eps = eps.to(tl.float32)",
+            "new": "    # Match the precision of the polynomial moments.\n    eps = eps.to(tl.float64)"
+          }
+        ]
+      },
+      "audit": {
+        "forbidden": [],
+        "parseErrors": [],
+        "failed": [],
+        "threadId": "01a1693f-b372-7dd3-9145-a3a3a3c0b09d"
+      },
+      "usage": [
+        {
+          "input_tokens": 25277,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 724,
+          "reasoning_output_tokens": 159
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "round": 1,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "source-28",
+        "text": null,
+        "start": 1,
+        "end": 120,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "source-28",
+        "path": "src/liger_kernel/ops/poly_norm.py",
+        "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+        "start": 1,
+        "end": 120,
+        "totalLines": 388,
+        "lines": [
+          {
+            "line": 1,
+            "text": "import operator"
+          },
+          {
+            "line": 2,
+            "text": ""
+          },
+          {
+            "line": 3,
+            "text": "import torch"
+          },
+          {
+            "line": 4,
+            "text": "import triton"
+          },
+          {
+            "line": 5,
+            "text": "import triton.language as tl"
+          },
+          {
+            "line": 6,
+            "text": ""
+          },
+          {
+            "line": 7,
+            "text": "from liger_kernel.ops.utils import calculate_settings"
+          },
+          {
+            "line": 8,
+            "text": "from liger_kernel.ops.utils import compare_version"
+          },
+          {
+            "line": 9,
+            "text": "from liger_kernel.ops.utils import ensure_contiguous"
+          },
+          {
+            "line": 10,
+            "text": "from liger_kernel.ops.utils import get_npu_core_count"
+          },
+          {
+            "line": 11,
+            "text": "from liger_kernel.ops.utils import set_large_grf_mode"
+          },
+          {
+            "line": 12,
+            "text": "from liger_kernel.utils import is_npu_available"
+          },
+          {
+            "line": 13,
+            "text": ""
+          },
+          {
+            "line": 14,
+            "text": "if compare_version(\"triton\", operator.ge, \"3.0.0\") and not is_npu_available():"
+          },
+          {
+            "line": 15,
+            "text": "    try:"
+          },
+          {
+            "line": 16,
+            "text": "        from triton.language.extra.libdevice import rsqrt"
+          },
+          {
+            "line": 17,
+            "text": "    except ModuleNotFoundError:"
+          },
+          {
+            "line": 18,
+            "text": "        from triton.language.extra.cuda.libdevice import rsqrt"
+          },
+          {
+            "line": 19,
+            "text": "else:"
+          },
+          {
+            "line": 20,
+            "text": "    from triton.language.math import rsqrt"
+          },
+          {
+            "line": 21,
+            "text": ""
+          },
+          {
+            "line": 22,
+            "text": ""
+          },
+          {
+            "line": 23,
+            "text": "@triton.jit"
+          },
+          {
+            "line": 24,
+            "text": "def _poly_norm_forward_kernel("
+          },
+          {
+            "line": 25,
+            "text": "    Y_ptr,"
+          },
+          {
+            "line": 26,
+            "text": "    Y_row_stride,"
+          },
+          {
+            "line": 27,
+            "text": "    X_ptr,"
+          },
+          {
+            "line": 28,
+            "text": "    X_row_stride,"
+          },
+          {
+            "line": 29,
+            "text": "    W_ptr,  # weight: [3] for [w0, w1, w2]"
+          },
+          {
+            "line": 30,
+            "text": "    B_ptr,  # bias: scalar"
+          },
+          {
+            "line": 31,
+            "text": "    RSTD_ptr,  # cache rstd for backward: shape (n_rows, 3)"
+          },
+          {
+            "line": 32,
+            "text": "    RSTD_row_stride,"
+          },
+          {
+            "line": 33,
+            "text": "    n_cols,"
+          },
+          {
+            "line": 34,
+            "text": "    eps,"
+          },
+          {
+            "line": 35,
+            "text": "    BLOCK_SIZE: tl.constexpr,"
+          },
+          {
+            "line": 36,
+            "text": "):"
+          },
+          {
+            "line": 37,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 38,
+            "text": "    PolyNorm formula:"
+          },
+          {
+            "line": 39,
+            "text": "        y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+          },
+          {
+            "line": 40,
+            "text": "        where norm(u) = u / sqrt(mean(u²) + ε)"
+          },
+          {
+            "line": 41,
+            "text": ""
+          },
+          {
+            "line": 42,
+            "text": "    Reference:"
+          },
+          {
+            "line": 43,
+            "text": "    1. https://github.com/BryceZhuo/PolyCom/"
+          },
+          {
+            "line": 44,
+            "text": "    2. https://arxiv.org/pdf/2411.03884"
+          },
+          {
+            "line": 45,
+            "text": ""
+          },
+          {
+            "line": 46,
+            "text": "    Cache rstd values for backward pass"
+          },
+          {
+            "line": 47,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 48,
+            "text": "    row_idx = tl.program_id(0).to(tl.int64)"
+          },
+          {
+            "line": 49,
+            "text": "    col_offsets = tl.arange(0, BLOCK_SIZE)"
+          },
+          {
+            "line": 50,
+            "text": "    mask = col_offsets < n_cols"
+          },
+          {
+            "line": 51,
+            "text": ""
+          },
+          {
+            "line": 52,
+            "text": "    # Load pointers"
+          },
+          {
+            "line": 53,
+            "text": "    Y_ptr += row_idx * Y_row_stride"
+          },
+          {
+            "line": 54,
+            "text": "    X_ptr += row_idx * X_row_stride"
+          },
+          {
+            "line": 55,
+            "text": "    RSTD_ptr += row_idx * RSTD_row_stride"
+          },
+          {
+            "line": 56,
+            "text": ""
+          },
+          {
+            "line": 57,
+            "text": "    # Load input row"
+          },
+          {
+            "line": 58,
+            "text": "    X_row = tl.load(X_ptr + col_offsets, mask=mask, other=0.0)"
+          },
+          {
+            "line": 59,
+            "text": ""
+          },
+          {
+            "line": 60,
+            "text": "    # Load weights and bias"
+          },
+          {
+            "line": 61,
+            "text": "    w0 = tl.load(W_ptr + 0)"
+          },
+          {
+            "line": 62,
+            "text": "    w1 = tl.load(W_ptr + 1)"
+          },
+          {
+            "line": 63,
+            "text": "    w2 = tl.load(W_ptr + 2)"
+          },
+          {
+            "line": 64,
+            "text": "    b = tl.load(B_ptr)"
+          },
+          {
+            "line": 65,
+            "text": ""
+          },
+          {
+            "line": 66,
+            "text": "    # Compute x³, x², x"
+          },
+          {
+            "line": 67,
+            "text": "    X_pow3 = X_row * X_row * X_row"
+          },
+          {
+            "line": 68,
+            "text": "    X_pow2 = X_row * X_row"
+          },
+          {
+            "line": 69,
+            "text": "    X_pow1 = X_row"
+          },
+          {
+            "line": 70,
+            "text": ""
+          },
+          {
+            "line": 71,
+            "text": "    # Compute norm(x³): norm(u) = u * rsqrt(mean(u²) + eps)"
+          },
+          {
+            "line": 72,
+            "text": "    # Force fp32 eps: Inductor may use fp64 under torch.compile and tank throughput."
+          },
+          {
+            "line": 73,
+            "text": "    eps = eps.to(tl.float32)"
+          },
+          {
+            "line": 74,
+            "text": ""
+          },
+          {
+            "line": 75,
+            "text": "    mean_square_3 = tl.sum(X_pow3 * X_pow3, axis=0) / n_cols"
+          },
+          {
+            "line": 76,
+            "text": "    rstd_3 = rsqrt(mean_square_3 + eps)"
+          },
+          {
+            "line": 77,
+            "text": "    norm_x3 = X_pow3 * rstd_3"
+          },
+          {
+            "line": 78,
+            "text": ""
+          },
+          {
+            "line": 79,
+            "text": "    # Compute norm(x²)"
+          },
+          {
+            "line": 80,
+            "text": "    mean_square_2 = tl.sum(X_pow2 * X_pow2, axis=0) / n_cols"
+          },
+          {
+            "line": 81,
+            "text": "    rstd_2 = rsqrt(mean_square_2 + eps)"
+          },
+          {
+            "line": 82,
+            "text": "    norm_x2 = X_pow2 * rstd_2"
+          },
+          {
+            "line": 83,
+            "text": ""
+          },
+          {
+            "line": 84,
+            "text": "    # Compute norm(x)"
+          },
+          {
+            "line": 85,
+            "text": "    mean_square_1 = tl.sum(X_pow1 * X_pow1, axis=0) / n_cols"
+          },
+          {
+            "line": 86,
+            "text": "    rstd_1 = rsqrt(mean_square_1 + eps)"
+          },
+          {
+            "line": 87,
+            "text": "    norm_x1 = X_pow1 * rstd_1"
+          },
+          {
+            "line": 88,
+            "text": ""
+          },
+          {
+            "line": 89,
+            "text": "    # Cache rstd values for backward"
+          },
+          {
+            "line": 90,
+            "text": "    tl.store(RSTD_ptr + 0, rstd_3)"
+          },
+          {
+            "line": 91,
+            "text": "    tl.store(RSTD_ptr + 1, rstd_2)"
+          },
+          {
+            "line": 92,
+            "text": "    tl.store(RSTD_ptr + 2, rstd_1)"
+          },
+          {
+            "line": 93,
+            "text": ""
+          },
+          {
+            "line": 94,
+            "text": "    # Compute output: y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+          },
+          {
+            "line": 95,
+            "text": "    Y_row = w0 * norm_x3 + w1 * norm_x2 + w2 * norm_x1 + b"
+          },
+          {
+            "line": 96,
+            "text": ""
+          },
+          {
+            "line": 97,
+            "text": "    # Store output"
+          },
+          {
+            "line": 98,
+            "text": "    tl.store(Y_ptr + col_offsets, Y_row, mask=mask)"
+          },
+          {
+            "line": 99,
+            "text": ""
+          },
+          {
+            "line": 100,
+            "text": ""
+          },
+          {
+            "line": 101,
+            "text": "@triton.jit"
+          },
+          {
+            "line": 102,
+            "text": "def _poly_norm_backward_kernel("
+          },
+          {
+            "line": 103,
+            "text": "    dY_ptr,"
+          },
+          {
+            "line": 104,
+            "text": "    dY_row_stride,"
+          },
+          {
+            "line": 105,
+            "text": "    dX_ptr,"
+          },
+          {
+            "line": 106,
+            "text": "    dX_row_stride,"
+          },
+          {
+            "line": 107,
+            "text": "    X_ptr,"
+          },
+          {
+            "line": 108,
+            "text": "    X_row_stride,"
+          },
+          {
+            "line": 109,
+            "text": "    W_ptr,"
+          },
+          {
+            "line": 110,
+            "text": "    RSTD_ptr,"
+          },
+          {
+            "line": 111,
+            "text": "    RSTD_row_stride,"
+          },
+          {
+            "line": 112,
+            "text": "    dW_ptr,  # shape: (n_programs, 3)"
+          },
+          {
+            "line": 113,
+            "text": "    dW_row_stride,"
+          },
+          {
+            "line": 114,
+            "text": "    dB_ptr,  # shape: (n_programs,)"
+          },
+          {
+            "line": 115,
+            "text": "    n_rows,"
+          },
+          {
+            "line": 116,
+            "text": "    n_cols,"
+          },
+          {
+            "line": 117,
+            "text": "    rows_per_program: tl.constexpr,"
+          },
+          {
+            "line": 118,
+            "text": "    BLOCK_SIZE: tl.constexpr,"
+          },
+          {
+            "line": 119,
+            "text": "):"
+          },
+          {
+            "line": 120,
+            "text": "    \"\"\""
+          }
+        ]
+      },
+      "responseCharacters": 5916,
+      "responseSHA256": "c28dadf648c070f66961dfb69c4661fab574d477b3ecf477a42bcf9726e63b94",
+      "wallMilliseconds": 0.4891219139099121
+    },
+    {
+      "round": 2,
+      "request": {
+        "op": "list",
+        "scope": "evidence",
+        "id": null,
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "evidence": [
+          {
+            "id": "observation-poly-00",
+            "kind": "device-output",
+            "caseIds": [
+              "poly-00"
+            ],
+            "observed": true
+          },
+          {
+            "id": "observation-poly-01",
+            "kind": "device-output",
+            "caseIds": [
+              "poly-01"
+            ],
+            "observed": true
+          },
+          {
+            "id": "observation-poly-02",
+            "kind": "device-output",
+            "caseIds": [
+              "poly-02"
+            ],
+            "observed": true
+          },
+          {
+            "id": "observation-poly-03",
+            "kind": "device-output",
+            "caseIds": [
+              "poly-03"
+            ],
+            "observed": true
+          }
+        ]
+      },
+      "responseCharacters": 374,
+      "responseSHA256": "5ded21bc34a8184093469fc715cd21749b76cd6f088152dbafc67d2fa670fe3c",
+      "wallMilliseconds": 0.5099120140075684
+    },
+    {
+      "round": 3,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "observation-poly-02",
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "observation-poly-02",
+        "kind": "device-output",
+        "observed": true,
+        "caseIds": [
+          "poly-02"
+        ],
+        "text": "Actual GPU invocation: wrong_value; 23541 mismatches among 32768 outputs.",
+        "payload": {
+          "outputs": 32768,
+          "mismatches": 23541,
+          "nonfinite": 0,
+          "max_abs_error": 6.927851837797153,
+          "inputs_unchanged": true,
+          "input_array_identities": [
+            {
+              "name": "bias",
+              "shape": [
+                1
+              ],
+              "dtype": "float32",
+              "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+            },
+            {
+              "name": "weights",
+              "shape": [
+                3
+              ],
+              "dtype": "float32",
+              "sha256": "4242348106c7d7fb5a4a505ff80a897076b843edc8032ef69b0d23a9196d55c4"
+            },
+            {
+              "name": "x",
+              "shape": [
+                4,
+                8192
+              ],
+              "dtype": "float32",
+              "sha256": "fef2d3b0b9a939a842baa35288174bb3c7b1b5759beffe2b2e5907586ed82f56"
+            }
+          ],
+          "actual_dtype": "float16",
+          "actual_shape": [
+            4,
+            8192
+          ],
+          "input_strides": null,
+          "sample": [
+            {
+              "flat_index": 0,
+              "actual": 0.86572265625,
+              "reference": 0.7484879958189852
+            },
+            {
+              "flat_index": 1,
+              "actual": 0.86865234375,
+              "reference": 0.7426683180712066
+            },
+            {
+              "flat_index": 3,
+              "actual": 0.8916015625,
+              "reference": 0.8846648951142795
+            },
+            {
+              "flat_index": 4,
+              "actual": 1.4189453125,
+              "reference": 1.4690620420116205
+            },
+            {
+              "flat_index": 5,
+              "actual": 1.3212890625,
+              "reference": 1.3481343204845908
+            },
+            {
+              "flat_index": 7,
+              "actual": 1.14453125,
+              "reference": 0.36670606666891303
+            },
+            {
+              "flat_index": 9,
+              "actual": 0.88232421875,
+              "reference": 0.7165392580290251
+            },
+            {
+              "flat_index": 13,
+              "actual": 1.7021484375,
+              "reference": 1.8575310194056822
+            },
+            {
+              "flat_index": 14,
+              "actual": 1.6083984375,
+              "reference": 1.7228666661350092
+            },
+            {
+              "flat_index": 16,
+              "actual": 0.89697265625,
+              "reference": 0.6935433961940638
+            },
+            {
+              "flat_index": 17,
+              "actual": 0.9814453125,
+              "reference": 0.5800675000228313
+            },
+            {
+              "flat_index": 18,
+              "actual": 1.2490234375,
+              "reference": 1.264471556618305
+            },
+            {
+              "flat_index": 19,
+              "actual": 1.3828125,
+              "reference": 1.4243548553359395
+            },
+            {
+              "flat_index": 20,
+              "actual": 1.2666015625,
+              "reference": 1.2847009090546826
+            },
+            {
+              "flat_index": 21,
+              "actual": 0.94140625,
+              "reference": 0.632217230705195
+            },
+            {
+              "flat_index": 23,
+              "actual": 2.267578125,
+              "reference": 2.789512171096622
+            }
+          ],
+          "sample_scope": "At most 16 mismatching positions, or first 16 positions in a passing case. Full-array comparison counts above; complete arrays retained outside the bounded agent packet."
+        },
+        "rawRefs": [
+          {
+            "id": "record-poly-02",
+            "sha256": "75d1ef5634d5c5a0c034ce4e2b09a905888724ac41e4d6118639392fd30a0b8a"
+          },
+          {
+            "id": "arrays-poly-02",
+            "sha256": "1266deb8d052a58a56d7ddb97a4da20a35a0e3662e34c0c1fa56d1e78edf3f7a"
+          }
+        ]
+      },
+      "responseCharacters": 2292,
+      "responseSHA256": "ad7bd0f09e75b22bfed13eb90a9cac996b9bedb9f78662ffe45a6ffb4109e78f",
+      "wallMilliseconds": 0.2577810287475586
+    },
+    {
+      "round": 4,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "source-28",
+        "text": null,
+        "start": 250,
+        "end": 369,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "source-28",
+        "path": "src/liger_kernel/ops/poly_norm.py",
+        "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+        "start": 250,
+        "end": 369,
+        "totalLines": 388,
+        "lines": [
+          {
+            "line": 250,
+            "text": "        RSTD.stride(0),"
+          },
+          {
+            "line": 251,
+            "text": "        n_cols,"
+          },
+          {
+            "line": 252,
+            "text": "        eps,"
+          },
+          {
+            "line": 253,
+            "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+          },
+          {
+            "line": 254,
+            "text": "        num_warps=num_warps,"
+          },
+          {
+            "line": 255,
+            "text": "        **kernel_args,"
+          },
+          {
+            "line": 256,
+            "text": "    )"
+          },
+          {
+            "line": 257,
+            "text": ""
+          },
+          {
+            "line": 258,
+            "text": "    return Y.view(*shape), X, RSTD, BLOCK_SIZE, num_warps"
+          },
+          {
+            "line": 259,
+            "text": ""
+          },
+          {
+            "line": 260,
+            "text": ""
+          },
+          {
+            "line": 261,
+            "text": "def poly_norm_backward(dY, X, W, RSTD, BLOCK_SIZE, num_warps, in_place):"
+          },
+          {
+            "line": 262,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 263,
+            "text": "    PolyNorm Backward Pass"
+          },
+          {
+            "line": 264,
+            "text": ""
+          },
+          {
+            "line": 265,
+            "text": "    Args:"
+          },
+          {
+            "line": 266,
+            "text": "        dY: gradient of output"
+          },
+          {
+            "line": 267,
+            "text": "        X: input tensor (already reshaped to 2D)"
+          },
+          {
+            "line": 268,
+            "text": "        W: weight tensor"
+          },
+          {
+            "line": 269,
+            "text": "        RSTD: cached rstd values from forward"
+          },
+          {
+            "line": 270,
+            "text": "        BLOCK_SIZE: block size from forward"
+          },
+          {
+            "line": 271,
+            "text": "        num_warps: number of warps from forward"
+          },
+          {
+            "line": 272,
+            "text": "        in_place: whether to in-place modify dY to store dX (saves memory)"
+          },
+          {
+            "line": 273,
+            "text": ""
+          },
+          {
+            "line": 274,
+            "text": "    Returns:"
+          },
+          {
+            "line": 275,
+            "text": "        dX: gradient w.r.t. input"
+          },
+          {
+            "line": 276,
+            "text": "        dW: gradient w.r.t. weight"
+          },
+          {
+            "line": 277,
+            "text": "        dB: gradient w.r.t. bias"
+          },
+          {
+            "line": 278,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 279,
+            "text": "    shape = dY.shape"
+          },
+          {
+            "line": 280,
+            "text": "    dim = shape[-1]"
+          },
+          {
+            "line": 281,
+            "text": "    dY = dY.view(-1, dim)"
+          },
+          {
+            "line": 282,
+            "text": "    n_rows, n_cols = dY.shape"
+          },
+          {
+            "line": 283,
+            "text": ""
+          },
+          {
+            "line": 284,
+            "text": "    # Get number of SMs for parallelization"
+          },
+          {
+            "line": 285,
+            "text": "    import math"
+          },
+          {
+            "line": 286,
+            "text": ""
+          },
+          {
+            "line": 287,
+            "text": "    sm_count = 1"
+          },
+          {
+            "line": 288,
+            "text": "    if X.device.type == \"cuda\":"
+          },
+          {
+            "line": 289,
+            "text": "        sm_count = torch.cuda.get_device_properties(X.device).multi_processor_count"
+          },
+          {
+            "line": 290,
+            "text": "    elif X.device.type == \"xpu\":"
+          },
+          {
+            "line": 291,
+            "text": "        sm_count = torch.xpu.get_device_properties(X.device).gpu_eu_count"
+          },
+          {
+            "line": 292,
+            "text": "    elif X.device.type == \"npu\":"
+          },
+          {
+            "line": 293,
+            "text": "        sm_count = get_npu_core_count()"
+          },
+          {
+            "line": 294,
+            "text": ""
+          },
+          {
+            "line": 295,
+            "text": "    # Allocate or reuse gradients"
+          },
+          {
+            "line": 296,
+            "text": "    if in_place is True:"
+          },
+          {
+            "line": 297,
+            "text": "        dX = dY"
+          },
+          {
+            "line": 298,
+            "text": "    else:"
+          },
+          {
+            "line": 299,
+            "text": "        dX = torch.zeros_like(dY)"
+          },
+          {
+            "line": 300,
+            "text": ""
+          },
+          {
+            "line": 301,
+            "text": "    _dW = torch.empty((sm_count, 3), dtype=torch.float32, device=W.device)"
+          },
+          {
+            "line": 302,
+            "text": "    _dB = torch.empty((sm_count,), dtype=torch.float32, device=W.device)"
+          },
+          {
+            "line": 303,
+            "text": ""
+          },
+          {
+            "line": 304,
+            "text": "    rows_per_program = math.ceil(n_rows / sm_count)"
+          },
+          {
+            "line": 305,
+            "text": "    grid = (sm_count,)"
+          },
+          {
+            "line": 306,
+            "text": ""
+          },
+          {
+            "line": 307,
+            "text": "    # XPU-specific optimization"
+          },
+          {
+            "line": 308,
+            "text": "    kernel_args = {}"
+          },
+          {
+            "line": 309,
+            "text": "    if X.device.type == \"xpu\":"
+          },
+          {
+            "line": 310,
+            "text": "        set_large_grf_mode(kernel_args)"
+          },
+          {
+            "line": 311,
+            "text": ""
+          },
+          {
+            "line": 312,
+            "text": "    # Launch backward kernel"
+          },
+          {
+            "line": 313,
+            "text": "    _poly_norm_backward_kernel[grid]("
+          },
+          {
+            "line": 314,
+            "text": "        dY,"
+          },
+          {
+            "line": 315,
+            "text": "        dY.stride(0),"
+          },
+          {
+            "line": 316,
+            "text": "        dX,"
+          },
+          {
+            "line": 317,
+            "text": "        dX.stride(0),"
+          },
+          {
+            "line": 318,
+            "text": "        X,"
+          },
+          {
+            "line": 319,
+            "text": "        X.stride(0),"
+          },
+          {
+            "line": 320,
+            "text": "        W,"
+          },
+          {
+            "line": 321,
+            "text": "        RSTD,"
+          },
+          {
+            "line": 322,
+            "text": "        RSTD.stride(0),"
+          },
+          {
+            "line": 323,
+            "text": "        _dW,"
+          },
+          {
+            "line": 324,
+            "text": "        _dW.stride(0),"
+          },
+          {
+            "line": 325,
+            "text": "        _dB,"
+          },
+          {
+            "line": 326,
+            "text": "        n_rows,"
+          },
+          {
+            "line": 327,
+            "text": "        n_cols,"
+          },
+          {
+            "line": 328,
+            "text": "        rows_per_program,"
+          },
+          {
+            "line": 329,
+            "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+          },
+          {
+            "line": 330,
+            "text": "        num_warps=num_warps,"
+          },
+          {
+            "line": 331,
+            "text": "        **kernel_args,"
+          },
+          {
+            "line": 332,
+            "text": "    )"
+          },
+          {
+            "line": 333,
+            "text": ""
+          },
+          {
+            "line": 334,
+            "text": "    # Reduce gradients across SMs"
+          },
+          {
+            "line": 335,
+            "text": "    dX = dX.view(*shape)"
+          },
+          {
+            "line": 336,
+            "text": "    dW = _dW.sum(dim=0).to(W.dtype)"
+          },
+          {
+            "line": 337,
+            "text": "    dB = _dB.sum().to(W.dtype)"
+          },
+          {
+            "line": 338,
+            "text": ""
+          },
+          {
+            "line": 339,
+            "text": "    return dX, dW, dB"
+          },
+          {
+            "line": 340,
+            "text": ""
+          },
+          {
+            "line": 341,
+            "text": ""
+          },
+          {
+            "line": 342,
+            "text": "class LigerPolyNormFunction(torch.autograd.Function):"
+          },
+          {
+            "line": 343,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 344,
+            "text": "    PolyNorm Function with forward and backward pass"
+          },
+          {
+            "line": 345,
+            "text": ""
+          },
+          {
+            "line": 346,
+            "text": "    PolyNorm formula:"
+          },
+          {
+            "line": 347,
+            "text": "        y = w₀·norm(x³) + w₁·norm(x²) + w₂·norm(x) + b"
+          },
+          {
+            "line": 348,
+            "text": "        where norm(u) = u / sqrt(mean(u²) + ε)"
+          },
+          {
+            "line": 349,
+            "text": ""
+          },
+          {
+            "line": 350,
+            "text": "    Backward uses closed-form gradient:"
+          },
+          {
+            "line": 351,
+            "text": "        ∂L/∂x_i = Σ_p w_p * [p*x_i^(p-1) * grad_i/D_p - (p/d)*x_i^(2p-1) * S_p/(D_p³)]"
+          },
+          {
+            "line": 352,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 353,
+            "text": ""
+          },
+          {
+            "line": 354,
+            "text": "    @staticmethod"
+          },
+          {
+            "line": 355,
+            "text": "    @ensure_contiguous"
+          },
+          {
+            "line": 356,
+            "text": "    def forward(ctx, X, W, B, eps=1e-6, in_place=True):"
+          },
+          {
+            "line": 357,
+            "text": "        \"\"\""
+          },
+          {
+            "line": 358,
+            "text": "        Args:"
+          },
+          {
+            "line": 359,
+            "text": "            X: input tensor of shape (B, T, H) or (BxT, H)"
+          },
+          {
+            "line": 360,
+            "text": "            W: weight tensor of shape (3,) for [w0, w1, w2]"
+          },
+          {
+            "line": 361,
+            "text": "            B: bias scalar"
+          },
+          {
+            "line": 362,
+            "text": "            eps: epsilon for numerical stability"
+          },
+          {
+            "line": 363,
+            "text": "            in_place: whether to in-place modify grad_output in backward (saves memory)"
+          },
+          {
+            "line": 364,
+            "text": ""
+          },
+          {
+            "line": 365,
+            "text": "        Returns:"
+          },
+          {
+            "line": 366,
+            "text": "            Y: output tensor of same shape as X"
+          },
+          {
+            "line": 367,
+            "text": "        \"\"\""
+          },
+          {
+            "line": 368,
+            "text": "        Y, X, RSTD, BLOCK_SIZE, num_warps = poly_norm_forward(X, W, B, eps)"
+          },
+          {
+            "line": 369,
+            "text": "        ctx.BLOCK_SIZE = BLOCK_SIZE"
+          }
+        ]
+      },
+      "responseCharacters": 6096,
+      "responseSHA256": "6d2da204f12cdbd8dc9b13edbf4775837e3db9ee1dbbf35be12b118f46584689",
+      "wallMilliseconds": 0.18134009838104248
+    },
+    {
+      "round": 5,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "observation-poly-03",
+        "text": null,
+        "start": null,
+        "end": null,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "observation-poly-03",
+        "kind": "device-output",
+        "observed": true,
+        "caseIds": [
+          "poly-03"
+        ],
+        "text": "Actual GPU invocation: passed; 0 mismatches among 32768 outputs.",
+        "payload": {
+          "outputs": 32768,
+          "mismatches": 0,
+          "nonfinite": 0,
+          "max_abs_error": 8.726738318642902e-7,
+          "inputs_unchanged": true,
+          "input_array_identities": [
+            {
+              "name": "bias",
+              "shape": [
+                1
+              ],
+              "dtype": "float32",
+              "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+            },
+            {
+              "name": "weights",
+              "shape": [
+                3
+              ],
+              "dtype": "float32",
+              "sha256": "243fc92316ed345bb0378dd51299c87d07fe5a2a173fee2bb0ea3809cf12a51b"
+            },
+            {
+              "name": "x",
+              "shape": [
+                4,
+                8192
+              ],
+              "dtype": "float32",
+              "sha256": "314e575b52e5779b8478bcbf344af70f0453ca8d19810daefef634a731ee32ed"
+            }
+          ],
+          "actual_dtype": "float32",
+          "actual_shape": [
+            4,
+            8192
+          ],
+          "input_strides": null,
+          "sample": [
+            {
+              "flat_index": 0,
+              "actual": 0.7484593391418457,
+              "reference": 0.7484593922244155
+            },
+            {
+              "flat_index": 1,
+              "actual": 0.7426049709320068,
+              "reference": 0.7426049753725791
+            },
+            {
+              "flat_index": 2,
+              "actual": 0.9272438883781433,
+              "reference": 0.9272439111865612
+            },
+            {
+              "flat_index": 3,
+              "actual": 0.8846283555030823,
+              "reference": 0.8846283845201381
+            },
+            {
+              "flat_index": 4,
+              "actual": 1.4692357778549194,
+              "reference": 1.4692357569724508
+            },
+            {
+              "flat_index": 5,
+              "actual": 1.3482975959777832,
+              "reference": 1.3482975633448577
+            },
+            {
+              "flat_index": 6,
+              "actual": 0.9112029671669006,
+              "reference": 0.9112029557927783
+            },
+            {
+              "flat_index": 7,
+              "actual": 0.36658310890197754,
+              "reference": 0.36658298018767776
+            },
+            {
+              "flat_index": 8,
+              "actual": 1.1296716928482056,
+              "reference": 1.1296717364164068
+            },
+            {
+              "flat_index": 9,
+              "actual": 0.7165576219558716,
+              "reference": 0.7165576031682499
+            },
+            {
+              "flat_index": 10,
+              "actual": 1.1431955099105835,
+              "reference": 1.1431955466248471
+            },
+            {
+              "flat_index": 11,
+              "actual": 1.1229298114776611,
+              "reference": 1.122929749328065
+            },
+            {
+              "flat_index": 12,
+              "actual": 1.042737364768982,
+              "reference": 1.0427374028716505
+            },
+            {
+              "flat_index": 13,
+              "actual": 1.858144760131836,
+              "reference": 1.8581446845753176
+            },
+            {
+              "flat_index": 14,
+              "actual": 1.7225966453552246,
+              "reference": 1.7225967274461147
+            },
+            {
+              "flat_index": 15,
+              "actual": 0.9280808568000793,
+              "reference": 0.9280808386884962
+            }
+          ],
+          "sample_scope": "At most 16 mismatching positions, or first 16 positions in a passing case. Full-array comparison counts above; complete arrays retained outside the bounded agent packet."
+        },
+        "rawRefs": [
+          {
+            "id": "record-poly-03",
+            "sha256": "14524a3a7ee2d79a6de48dddf70495db3dade8986006df16d8349fbc05834eeb"
+          },
+          {
+            "id": "arrays-poly-03",
+            "sha256": "054f8fa1b5ea5e3e50feeb7cfa365e28302d4ebbb4dd19b1417daf333027511e"
+          }
+        ]
+      },
+      "responseCharacters": 2380,
+      "responseSHA256": "d074af5d8ebc6b28ea8a73816a45f266b5f2073d39659980dd7c353566374f4d",
+      "wallMilliseconds": 0.30938100814819336
+    },
+    {
+      "round": 6,
+      "request": {
+        "op": "read",
+        "scope": null,
+        "id": "source-28",
+        "text": null,
+        "start": 198,
+        "end": 258,
+        "offset": null,
+        "derived_op": null,
+        "groupBy": null
+      },
+      "accepted": true,
+      "rejected": false,
+      "response": {
+        "id": "source-28",
+        "path": "src/liger_kernel/ops/poly_norm.py",
+        "sha256": "35f7dcfc0765a0f43b7281495a2bc2be86ce504d2351eddd2c8f2d762e266da2",
+        "start": 198,
+        "end": 258,
+        "totalLines": 388,
+        "lines": [
+          {
+            "line": 198,
+            "text": "    # Store accumulated gradients (scalars)"
+          },
+          {
+            "line": 199,
+            "text": "    tl.store(dW_ptr + row_block_id * dW_row_stride + 0, dW0_acc)"
+          },
+          {
+            "line": 200,
+            "text": "    tl.store(dW_ptr + row_block_id * dW_row_stride + 1, dW1_acc)"
+          },
+          {
+            "line": 201,
+            "text": "    tl.store(dW_ptr + row_block_id * dW_row_stride + 2, dW2_acc)"
+          },
+          {
+            "line": 202,
+            "text": "    tl.store(dB_ptr + row_block_id, dB_acc)"
+          },
+          {
+            "line": 203,
+            "text": ""
+          },
+          {
+            "line": 204,
+            "text": ""
+          },
+          {
+            "line": 205,
+            "text": "def poly_norm_forward(X, W, B, eps=1e-6):"
+          },
+          {
+            "line": 206,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 207,
+            "text": "    PolyNorm Forward Pass"
+          },
+          {
+            "line": 208,
+            "text": ""
+          },
+          {
+            "line": 209,
+            "text": "    Args:"
+          },
+          {
+            "line": 210,
+            "text": "        X: input tensor of shape (*, H) where H is hidden dimension"
+          },
+          {
+            "line": 211,
+            "text": "        W: weight tensor of shape (3,) for [w0, w1, w2]"
+          },
+          {
+            "line": 212,
+            "text": "        B: bias scalar tensor"
+          },
+          {
+            "line": 213,
+            "text": "        eps: epsilon for numerical stability"
+          },
+          {
+            "line": 214,
+            "text": ""
+          },
+          {
+            "line": 215,
+            "text": "    Returns:"
+          },
+          {
+            "line": 216,
+            "text": "        Y: output tensor of same shape as X"
+          },
+          {
+            "line": 217,
+            "text": "        X: reshaped input (for backward)"
+          },
+          {
+            "line": 218,
+            "text": "        RSTD: cached rstd values (for backward)"
+          },
+          {
+            "line": 219,
+            "text": "        BLOCK_SIZE: block size used"
+          },
+          {
+            "line": 220,
+            "text": "        num_warps: number of warps used"
+          },
+          {
+            "line": 221,
+            "text": "    \"\"\""
+          },
+          {
+            "line": 222,
+            "text": "    shape = X.shape"
+          },
+          {
+            "line": 223,
+            "text": "    dim = shape[-1]"
+          },
+          {
+            "line": 224,
+            "text": "    X = X.view(-1, dim)"
+          },
+          {
+            "line": 225,
+            "text": "    n_rows, n_cols = X.shape"
+          },
+          {
+            "line": 226,
+            "text": "    BLOCK_SIZE, num_warps = calculate_settings(n_cols)"
+          },
+          {
+            "line": 227,
+            "text": ""
+          },
+          {
+            "line": 228,
+            "text": "    # RSTD is to cache rstd for each row"
+          },
+          {
+            "line": 229,
+            "text": "    Y = torch.empty((n_rows, n_cols), dtype=X.dtype, device=X.device)"
+          },
+          {
+            "line": 230,
+            "text": "    RSTD = torch.empty((n_rows, 3), dtype=torch.float32, device=X.device)"
+          },
+          {
+            "line": 231,
+            "text": ""
+          },
+          {
+            "line": 232,
+            "text": "    # Check constraints"
+          },
+          {
+            "line": 233,
+            "text": "    assert W.shape[0] == 3, \"Weight tensor must have shape (3,)\""
+          },
+          {
+            "line": 234,
+            "text": "    assert B.numel() == 1, \"Bias must be a scalar\""
+          },
+          {
+            "line": 235,
+            "text": ""
+          },
+          {
+            "line": 236,
+            "text": "    # XPU-specific optimization"
+          },
+          {
+            "line": 237,
+            "text": "    kernel_args = {}"
+          },
+          {
+            "line": 238,
+            "text": "    if X.device.type == \"xpu\":"
+          },
+          {
+            "line": 239,
+            "text": "        set_large_grf_mode(kernel_args)"
+          },
+          {
+            "line": 240,
+            "text": ""
+          },
+          {
+            "line": 241,
+            "text": "    # Launch kernel"
+          },
+          {
+            "line": 242,
+            "text": "    _poly_norm_forward_kernel[(n_rows,)]("
+          },
+          {
+            "line": 243,
+            "text": "        Y,"
+          },
+          {
+            "line": 244,
+            "text": "        Y.stride(0),"
+          },
+          {
+            "line": 245,
+            "text": "        X,"
+          },
+          {
+            "line": 246,
+            "text": "        X.stride(0),"
+          },
+          {
+            "line": 247,
+            "text": "        W,"
+          },
+          {
+            "line": 248,
+            "text": "        B,"
+          },
+          {
+            "line": 249,
+            "text": "        RSTD,"
+          },
+          {
+            "line": 250,
+            "text": "        RSTD.stride(0),"
+          },
+          {
+            "line": 251,
+            "text": "        n_cols,"
+          },
+          {
+            "line": 252,
+            "text": "        eps,"
+          },
+          {
+            "line": 253,
+            "text": "        BLOCK_SIZE=BLOCK_SIZE,"
+          },
+          {
+            "line": 254,
+            "text": "        num_warps=num_warps,"
+          },
+          {
+            "line": 255,
+            "text": "        **kernel_args,"
+          },
+          {
+            "line": 256,
+            "text": "    )"
+          },
+          {
+            "line": 257,
+            "text": ""
+          },
+          {
+            "line": 258,
+            "text": "    return Y.view(*shape), X, RSTD, BLOCK_SIZE, num_warps"
+          }
+        ]
+      },
+      "responseCharacters": 3306,
+      "responseSHA256": "bc7cbc6ac166bd2f0aa7ade25802c8f037d37296f538c281bcad0a7af53c7657",
+      "wallMilliseconds": 0.13733994960784912
+    }
+  ],
+  "valid": true,
+  "failure": null,
+  "finishedAt": "2026-10-23T14:52:57.863Z",
+  "wallSeconds": 119.7298651959896,
+  "modelWallSeconds": 119.70357851099969,
+  "queryWallMilliseconds": 1.884876012802124,
+  "budget": {
+    "queries": 6,
+    "responseCharacters": 20364
+  },
+  "localization": {
+    "locationHit": true,
+    "allLocationsValid": true,
+    "referencesValid": true,
+    "failureObserved": true,
+    "passingControlObserved": true,
+    "supportedLocalization": true,
+    "invalidLocations": [],
+    "invalidCitations": [],
+    "scope": "Declared source-region hit and valid observed references; not semantic proof of a correct explanation."
+  },
+  "patchApplicable": true,
+  "candidateTreeSHA256": "8ea4b6d7f8e4c8e29a3f0899b94af07d6a89cd912e112cd3313b7a3eee9869c0",
+  "usage": {
+    "input_tokens": 151956,
+    "cached_input_tokens": 44160,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1846,
+    "reasoning_output_tokens": 600
+  }
+}

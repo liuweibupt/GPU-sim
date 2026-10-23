@@ -1,0 +1,113 @@
+{
+  "format": "human-task-rubric-draft-v2",
+  "status": "DRAFT — expert review and independent rater calibration pending",
+  "taskId": "triton-softmax-axis",
+  "rootCauseId": "triton-pr-11409",
+  "title": "归约轴被删去后广播错位",
+  "mechanismForFullCredit": "max/sum 在指定 dim 归约时丢失轴，x 减 max 和 num 除 sum 按错误维度广播；二维 dim=1 暴露问题，dim=0/一维对照通过。",
+  "allowedEquivalentExplanationsAndRepairs": [
+    "保持归约轴维度 keep_dims=True",
+    "显式 expand_dims/reshape，在每个指定归约轴恢复广播语义"
+  ],
+  "counterfactualPredictions": [
+    "将同一非对称二维输入从 dim=1 改 dim=0，比较沿目标轴的和是否约为 1",
+    "增加非方形/多轴输入，区分广播错位与 exp 数值误差"
+  ],
+  "insufficientOrWrongAnswers": [
+    "只修 dim=1 或硬编码方形数据",
+    "将问题归为 GPU 调度或实测内存竞态"
+  ],
+  "localizationTargets": [
+    {
+      "source_id": "source-07",
+      "start_line": 56,
+      "end_line": 64,
+      "path": "triton/language/standard.py",
+      "sourceSha256": "113296c74fb8b8dcf67a1b82f71926842eb66d0c77fe2c4f8d0f315715a38fd4"
+    }
+  ],
+  "failureEvidence": [
+    {
+      "caseId": "softmax-axis-00",
+      "evidenceIds": [
+        "observation-softmax-axis-00"
+      ],
+      "parameters": {
+        "shape": [
+          2,
+          2
+        ],
+        "dim": 1,
+        "pattern": "linear"
+      }
+    }
+  ],
+  "passingControls": [
+    {
+      "caseId": "softmax-axis-01",
+      "evidenceIds": [
+        "observation-softmax-axis-01"
+      ],
+      "parameters": {
+        "shape": [
+          2,
+          2
+        ],
+        "dim": 0,
+        "pattern": "linear"
+      }
+    },
+    {
+      "caseId": "softmax-axis-02",
+      "evidenceIds": [
+        "observation-softmax-axis-02"
+      ],
+      "parameters": {
+        "shape": [
+          128
+        ],
+        "dim": 0,
+        "pattern": "linear"
+      }
+    }
+  ],
+  "scoring": "Four 0/1/2 dimensions: mechanism, localization, evidence, counterfactual. Correct alternatives need not match gold text; unsupported causal certainty loses mechanism/evidence credit. Exact line targets are guides, not an automatic semantic correctness oracle.",
+  "repairExecutor": {
+    "taskId": "triton-softmax-axis",
+    "baseDirectory": "out/research/natural-fault-expansion",
+    "executor": "tools/research/natural-fault-expansion/evaluate_candidate.py",
+    "executorSha256": "678488bbdda7b1c3839d9ddb1012b1cd62e809eca6438fb895db47b9533f0fb9",
+    "verifier": "tools/research/natural-fault-expansion/verify.py",
+    "verifierSha256": "c94d119a0e6902c9ad97c8ec3ec7b4c585afafe6786f4fd23153ba8097c28ad1",
+    "runner": "tools/research/natural-fault-expansion/run.py",
+    "runnerSha256": "085bb656e534163698d8bb3f2fd9712c27e803c7658e8539129365fc6e830408",
+    "hiddenPlan": "out/research/natural-fault-expansion/plan.json",
+    "hiddenSpecSHA256": "a3215870aaaf47801a448c7b4da727ca80da29b65a0c852d999d564827e38d85",
+    "hiddenCaseIds": [
+      "softmax-axis-03",
+      "softmax-axis-04",
+      "softmax-axis-05",
+      "softmax-axis-06",
+      "softmax-axis-07",
+      "softmax-axis-08",
+      "softmax-axis-09",
+      "softmax-axis-10"
+    ],
+    "visibleCaseIds": [
+      "softmax-axis-00",
+      "softmax-axis-01",
+      "softmax-axis-02"
+    ],
+    "command": [
+      "python3",
+      "tools/research/natural-fault-expansion/evaluate_candidate.py",
+      "--candidate",
+      "CANDIDATE_JSON",
+      "--output",
+      "NEW_OUTPUT_DIRECTORY",
+      "--base",
+      "out/research/natural-fault-expansion"
+    ],
+    "scope": "Existing actual-GPU executor. Not run on any human candidate; no human participant exists yet."
+  }
+}

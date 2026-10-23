@@ -1,0 +1,81 @@
+{
+  "round": 5,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "test-kernel",
+    "text": null,
+    "start": 1,
+    "end": 13,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "test-kernel",
+    "path": "tests/visible_kernel.py",
+    "sha256": "ac92f5244c13658b5f76f9309e92209157ac22fd7d701351fd7bf5bbc41d9c0a",
+    "start": 1,
+    "end": 13,
+    "totalLines": 13,
+    "lines": [
+      {
+        "line": 1,
+        "text": "import triton"
+      },
+      {
+        "line": 2,
+        "text": "import triton.language as tl"
+      },
+      {
+        "line": 3,
+        "text": ""
+      },
+      {
+        "line": 4,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 5,
+        "text": "def filter_kernel(Y,VALUES:tl.constexpr,CUTOFF:tl.constexpr,EVEN:tl.constexpr):"
+      },
+      {
+        "line": 6,
+        "text": "    if EVEN:"
+      },
+      {
+        "line": 7,
+        "text": "        vals:tl.constexpr=[x for x in VALUES if x>=CUTOFF if x%2==0]"
+      },
+      {
+        "line": 8,
+        "text": "    else:"
+      },
+      {
+        "line": 9,
+        "text": "        vals:tl.constexpr=[x for x in VALUES if x>=CUTOFF]"
+      },
+      {
+        "line": 10,
+        "text": "    tl.store(Y,len(vals))"
+      },
+      {
+        "line": 11,
+        "text": "    for i in tl.static_range(len(vals)):"
+      },
+      {
+        "line": 12,
+        "text": "        tl.store(Y+1+i,vals[i])"
+      },
+      {
+        "line": 13,
+        "text": ""
+      }
+    ]
+  },
+  "responseCharacters": 825,
+  "responseSHA256": "3d2dbcb991c385672b7dc8a6e9df64b611db2018d33d42002fc02c730d23eb3e",
+  "wallMilliseconds": 0.0608600378036499
+}

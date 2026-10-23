@@ -1,0 +1,130 @@
+{
+  "round": 4,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "observation-grpo-01",
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "observation-grpo-01",
+    "kind": "device-output",
+    "observed": true,
+    "caseIds": [
+      "grpo-01"
+    ],
+    "text": "Actual GPU invocation: wrong_value; 7 mismatches among 21 outputs.",
+    "payload": {
+      "outputs": 21,
+      "mismatches": 7,
+      "nonfinite": 0,
+      "max_abs_error": 5.350447025464057,
+      "inputs_unchanged": true,
+      "input_array_identities": [
+        {
+          "name": "ids",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "int64",
+          "sha256": "1ee10347c6a3f8262fe77efba31921141cb75ccb20e743c87031d7d64e883cdd"
+        },
+        {
+          "name": "logits",
+          "shape": [
+            3,
+            8,
+            17
+          ],
+          "dtype": "float32",
+          "sha256": "17be1d7dd807d603ce8740e0d15ccf093246dd4cdddd30f63053d2410fd2e7dc"
+        },
+        {
+          "name": "mask",
+          "shape": [
+            3,
+            7
+          ],
+          "dtype": "bool",
+          "sha256": "324fd3a96b8a3beee9b8542bf2109922dbd8428860cd9a8ff5b3f3fdc9777bfe"
+        }
+      ],
+      "actual_dtype": "float32",
+      "actual_shape": [
+        3,
+        7
+      ],
+      "input_strides": {
+        "ids": [
+          10,
+          1
+        ],
+        "mask": [
+          16,
+          1
+        ],
+        "ids_offset": 3,
+        "mask_offset": 9
+      },
+      "sample": [
+        {
+          "flat_index": 8,
+          "actual": 0,
+          "reference": -2.007413097178229
+        },
+        {
+          "flat_index": 9,
+          "actual": 0,
+          "reference": -1.9425813719486495
+        },
+        {
+          "flat_index": 11,
+          "actual": 0,
+          "reference": -2.642164264923651
+        },
+        {
+          "flat_index": 12,
+          "actual": 0,
+          "reference": -3.0758920776037106
+        },
+        {
+          "flat_index": 17,
+          "actual": 0,
+          "reference": -4.18425902449783
+        },
+        {
+          "flat_index": 18,
+          "actual": 0,
+          "reference": -3.289154773167361
+        },
+        {
+          "flat_index": 20,
+          "actual": 0,
+          "reference": -5.350447025464057
+        }
+      ],
+      "sample_scope": "At most 16 mismatching positions, or first 16 positions in a passing case. Full-array comparison counts above; complete arrays retained outside the bounded agent packet."
+    },
+    "rawRefs": [
+      {
+        "id": "record-grpo-01",
+        "sha256": "7842fd0dd324dff8c159e3589fd929c5e991b4e734ae43937ad78f7aa9eed9a4"
+      },
+      {
+        "id": "arrays-grpo-01",
+        "sha256": "6fca368acd4b8886761b90bd4acd8e76a91c33694e1b33e04bfd2b86c4f3ae33"
+      }
+    ]
+  },
+  "responseCharacters": 1626,
+  "responseSHA256": "39720d788fc8fe31bb7b13b4250533a9592719df27ac8af30211eb1eb14f373f",
+  "wallMilliseconds": 0.10710203647613525
+}

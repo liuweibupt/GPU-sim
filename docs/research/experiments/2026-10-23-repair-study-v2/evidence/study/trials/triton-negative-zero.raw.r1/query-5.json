@@ -1,0 +1,77 @@
+{
+  "round": 5,
+  "request": {
+    "op": "read",
+    "scope": null,
+    "id": "test-kernel",
+    "text": null,
+    "start": 1,
+    "end": 12,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "accepted": true,
+  "rejected": false,
+  "response": {
+    "id": "test-kernel",
+    "path": "tests/visible_kernel.py",
+    "sha256": "2b80407c58179e4597a1ca11559754068bbca4d60583be5ea321e9c3965df30b",
+    "start": 1,
+    "end": 12,
+    "totalLines": 12,
+    "lines": [
+      {
+        "line": 1,
+        "text": "import triton"
+      },
+      {
+        "line": 2,
+        "text": "import triton.language as tl"
+      },
+      {
+        "line": 3,
+        "text": ""
+      },
+      {
+        "line": 4,
+        "text": "@triton.jit"
+      },
+      {
+        "line": 5,
+        "text": "def constant_kernel(Y,N:tl.constexpr,VALUE:tl.constexpr,DTYPE:tl.constexpr,NEGATIVE_ZERO:tl.constexpr):"
+      },
+      {
+        "line": 6,
+        "text": "    offs=tl.arange(0,N)"
+      },
+      {
+        "line": 7,
+        "text": "    if NEGATIVE_ZERO:"
+      },
+      {
+        "line": 8,
+        "text": "        y=tl.full((N,),-0.0,DTYPE)"
+      },
+      {
+        "line": 9,
+        "text": "    else:"
+      },
+      {
+        "line": 10,
+        "text": "        y=tl.full((N,),VALUE,DTYPE)"
+      },
+      {
+        "line": 11,
+        "text": "    tl.store(Y+offs,y)"
+      },
+      {
+        "line": 12,
+        "text": ""
+      }
+    ]
+  },
+  "responseCharacters": 728,
+  "responseSHA256": "dc7d61fe7c42f38867c6d09887a289c484be33a7a5b93d03ef1630630b557136",
+  "wallMilliseconds": 0.1267409324645996
+}

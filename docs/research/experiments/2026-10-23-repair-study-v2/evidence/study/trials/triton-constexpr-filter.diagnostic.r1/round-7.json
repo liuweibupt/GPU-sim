@@ -1,0 +1,73 @@
+{
+  "round": 7,
+  "startedAt": "2026-10-23T14:50:13.185Z",
+  "finishedAt": "2026-10-23T14:50:24.892Z",
+  "wallSeconds": 11.7071448969841,
+  "timeoutSeconds": 90,
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--json",
+    "--color",
+    "never",
+    "--sandbox",
+    "read-only",
+    "-C",
+    "/tmp/repair-study-v2-qm5cEK/empty",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "-c",
+    "features.shell_tool=false",
+    "--output-schema",
+    "/tmp/repair-study-v2-qm5cEK/schema.json",
+    "-o",
+    "/tmp/repair-study-v2-qm5cEK/answer.json",
+    "-"
+  ],
+  "promptSHA256": "028fdf649e7066c8d07a4a2fee8bf51bcd46d5c85768bc9798419f165b015b85",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "spawnError": null,
+  "valid": true,
+  "reasons": [],
+  "finalMatches": true,
+  "answer": {
+    "action": "query",
+    "query": {
+      "op": "read",
+      "scope": null,
+      "id": "test-kernel",
+      "text": null,
+      "start": 1,
+      "end": 13,
+      "offset": null,
+      "derived_op": null,
+      "groupBy": null
+    },
+    "diagnosis": "",
+    "locations": [],
+    "citations": [],
+    "edits": []
+  },
+  "audit": {
+    "forbidden": [],
+    "parseErrors": [],
+    "failed": [],
+    "threadId": "01a1693d-b1a1-7811-a4e0-24a4afa17b63"
+  },
+  "usage": [
+    {
+      "input_tokens": 20968,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 117,
+      "reasoning_output_tokens": 44
+    }
+  ]
+}

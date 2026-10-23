@@ -1,0 +1,48 @@
+{
+  "action": "final",
+  "query": {
+    "op": "none",
+    "scope": null,
+    "id": null,
+    "text": null,
+    "start": null,
+    "end": null,
+    "offset": null,
+    "derived_op": null,
+    "groupBy": null
+  },
+  "diagnosis": "The forward kernel computes prefix sums, support and the threshold directly from uncentered values. Large common offsets erase the unit simplex mass in float32 arithmetic and cause cancellation in the final subtraction. Observed sparse-04 has 512/512 mismatches: outputs are 0.0078125 instead of 0.00390625, with inputs unchanged. The passing sparse-00 control has 0/32 mismatches and maximum absolute error 7.95e-8. Repair by subtracting the row maximum in float32 before both threshold computation and output evaluation. Clamp centered values below -1: the centered simplex threshold lies in [-1,0], so these entries cannot contribute positive output. This also prevents extreme finite inputs from producing overflowing prefix sums after subtraction. Masked sorted lanes remain excluded. Input storage, output dtype and shape are preserved. Compilation and post-patch correctness could not be verified through the supplied API; the other catalog failures were not inspected as raw observations.",
+  "locations": [
+    {
+      "source_id": "source-34",
+      "start_line": 31,
+      "end_line": 61
+    }
+  ],
+  "citations": [
+    {
+      "case_id": "sparse-04",
+      "evidence_ids": [
+        "observation-sparse-04"
+      ]
+    },
+    {
+      "case_id": "sparse-00",
+      "evidence_ids": [
+        "observation-sparse-00"
+      ]
+    }
+  ],
+  "edits": [
+    {
+      "source_id": "source-34",
+      "old": "    z_valid = tl.where(mask, z_sorted_block, 0.0)\n    cssv = tl.cumsum(z_valid, 0)",
+      "new": "    # Sparsemax is invariant to a common shift. Center before summing so\n    # large offsets cannot erase the unit simplex mass in float32.\n    row_max = tl.max(z_sorted_block, 0)\n    # The centered threshold is in [-1, 0]; smaller values are inactive.\n    # Clipping also bounds sums when finite inputs span the float32 range.\n    z_sorted_block = tl.where(mask, tl.maximum(z_sorted_block - row_max, -1.0), -float(\"inf\"))\n    z_valid = tl.where(mask, z_sorted_block, 0.0)\n    cssv = tl.cumsum(z_valid, 0)"
+    },
+    {
+      "source_id": "source-34",
+      "old": "    y = tl.maximum(x_block - tau, 0.0)",
+      "new": "    x_centered = tl.maximum(x_block - row_max, -1.0)\n    y = tl.maximum(x_centered - tau, 0.0)"
+    }
+  ]
+}
