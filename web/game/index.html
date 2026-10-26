@@ -14,8 +14,8 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23c7f58a'/%3E%3Cpath d='M10 10h20v20H10zm5 5v10h10V15z' fill='%23151d13' fill-rule='evenodd'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="./game.css?v=narrative-branches-1" />
-    <script type="module" src="./game.js?v=narrative-branches-1"></script>
+    <link rel="stylesheet" href="./game.css?v=workshop-merged-2" />
+    <script type="module" src="./game.js?v=workshop-merged-2"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到游戏</a>
@@ -120,9 +120,12 @@
               一颗 ALU，一个车库。下一个计算时代，由你建造。
             </p>
           </div>
+          <div class="workshop-heading-actions">
+          <button id="restart-button" class="outline-button" type="button">重启工坊 ↻</button>
           <div class="open-badge">
             <span class="status-dot"></span>营业中 <span class="divider">/</span
             ><span id="play-time">00:00:00</span>
+          </div>
           </div>
         </div>
         <nav class="view-tabs" aria-label="游戏页面">
@@ -156,7 +159,7 @@
           </article>
           <article class="stat-card">
             <div class="stat-label">
-              <span>计算吞吐</span
+              <span>当前任务速度</span
               ><svg viewBox="0 0 20 20">
                 <path d="m3 13 5-5 4 3 5-7M13 4h4v4" />
               </svg>
@@ -214,6 +217,26 @@
             <section id="narrative-ending" class="narrative-ending" aria-label="工坊的这一页" hidden></section>
             <details id="narrative-history" class="narrative-history" hidden><summary>翻开往来信件</summary><ol id="narrative-events"></ol></details>
           </section>
+          <section class="chapter-strip">
+            <div class="chapter-symbol">⌘</div>
+            <div class="chapter-info">
+              <span class="tiny-label"
+                >APPLICATION CONTRACT
+                <span>应用委托 · 与研发独立推进</span></span
+              >
+              <h2 id="next-chapter-title">起步 · 小数事务所</h2>
+              <p id="next-chapter-copy">
+                从一笔小小的浮点计算，交付第一份客户委托。
+              </p>
+            </div>
+            <div class="chapter-goal" id="chapter-requirements">
+              一颗 ALU 就能开始
+            </div>
+            <button id="chapter-start-button" class="primary-button" type="button">接下委托 →</button>
+            <button id="chapter-button" class="outline-button">
+              查看委托 <span>↗</span>
+            </button>
+          </section>
           <div class="workshop-grid">
             <section
               class="panel hardware-panel"
@@ -252,6 +275,12 @@
                   解析模型 · 查看周期分解
                 </summary>
                 <p id="service-model-summary"></p>
+                <div>
+                  <span class="tiny-label">当前瓶颈</span>
+                  <p id="bottleneck">算力有限，先让这颗 ALU 忙起来。</p>
+                  <p id="resource-evidence" class="resource-evidence"></p>
+                  <p id="upgrade-advice" class="resource-evidence"></p>
+                </div>
                 <p id="service-model-description">
                   依据计算量、工作集、缓存容量、带宽、延迟隐藏与搬运重叠推导性能。参数为未实测校准的教学假设。
                 </p>
@@ -274,11 +303,7 @@
                 >
               </div>
               <div class="hardware-footer">
-                <div>
-                  <span class="tiny-label">当前瓶颈</span>
-                  <p id="bottleneck">算力有限，先让这颗 ALU 忙起来。</p>
-                  <p id="resource-evidence" class="resource-evidence"></p>
-                </div>
+
                 <button id="compute-button" class="primary-button">
                   <svg viewBox="0 0 20 20">
                     <path d="m11 2-7 9h5l-1 7 8-10h-5z" /></svg
@@ -326,25 +351,7 @@
             </aside>
           </div>
 
-          <section class="chapter-strip">
-            <div class="chapter-symbol">⌘</div>
-            <div class="chapter-info">
-              <span class="tiny-label"
-                >APPLICATION CONTRACT
-                <span>应用委托 · 与研发独立推进</span></span
-              >
-              <h2 id="next-chapter-title">起步 · 小数事务所</h2>
-              <p id="next-chapter-copy">
-                从一笔小小的浮点计算，交付第一份客户委托。
-              </p>
-            </div>
-            <div class="chapter-goal" id="chapter-requirements">
-              一颗 ALU 就能开始
-            </div>
-            <button id="chapter-button" class="outline-button">
-              查看委托 <span>↗</span>
-            </button>
-          </section>
+
 
           <section class="upgrade-section" aria-labelledby="upgrades-title">
             <div class="section-heading">
@@ -492,6 +499,17 @@
       role="status"
       aria-live="polite"
     ></div>
+    <dialog id="restart-dialog">
+      <form method="dialog">
+        <p class="eyebrow">BACK TO THE GARAGE</p>
+        <h2>重新开始算力工坊？</h2>
+        <p>将清空工坊的资金、硬件、订单和委托进度，从一颗 ALU 重新开始。创业竞赛存档不受影响。</p>
+        <div class="dialog-buttons">
+          <button class="outline-button" value="cancel">继续经营</button>
+          <button id="restart-confirm" class="primary-button" type="button">确认重启工坊 →</button>
+        </div>
+      </form>
+    </dialog>
     <dialog id="settings-dialog">
       <form method="dialog">
         <div class="dialog-heading">

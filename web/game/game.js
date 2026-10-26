@@ -5,6 +5,7 @@ import {
   getStats,
   getUpgradeCost,
   getUpgradePreview,
+  getUpgradeRecommendations,
   canBuyUpgrade,
   buyUpgrade,
   tickGame,
@@ -14,14 +15,14 @@ import {
   serializeGame,
   chooseGameNarrative,
   buyGameBusinessUpgrade,
-} from "../../lib/idle-game.js?v=narrative-branches-1";
+} from "../../lib/idle-game.js?v=workshop-merged-2";
 
 import {
   BUSINESS_UPGRADES,
   getBusinessStats,
   getBusinessUpgradeStatus,
-} from "../../lib/business-game.js?v=narrative-branches-1";
-import { getNarrativeView } from "../../lib/game-narrative.js?v=narrative-branches-1";
+} from "../../lib/business-game.js?v=workshop-merged-2";
+import { getNarrativeView } from "../../lib/game-narrative.js?v=workshop-merged-2";
 
 const SAVE_KEY = "huang-sir-workshop-v1";
 const PREF_KEY = "huang-sir-workshop-preferences";
@@ -508,6 +509,11 @@ function renderMentor(stats) {
     `${stats.workloadName}：${labels[perf.bottleneck]}受限（解析估算）。`;
   $("resource-evidence").textContent =
     `计算 ${perf.computeCycles.toFixed(1)} · 搬运 ${perf.memoryCycles.toFixed(1)} · 延迟 ${perf.latencyCycles.toFixed(1)} · 重叠抵扣 ${perf.overlapCycles.toFixed(1)} · 总计 ${perf.cycles.toFixed(1)} 逻辑周期。`;
+  const recommendations = getUpgradeRecommendations(state);
+  $("upgrade-advice").textContent = recommendations.length
+    ? "按当前任务单次升级提速排序：" + recommendations.map(item => `${item.name} +${(item.gain*100).toFixed(1)}%（${cash(item.cost)}${item.affordable ? '，可购买' : '，需攒资金'}）`).join("；") + "。各项独立估算，不相加。"
+    : "当前已解锁组件暂无能提升此任务速度的升级，可继续接单解锁新组件。";
+
 }
 
 function renderOrders() {
@@ -561,14 +567,18 @@ function renderChapters() {
     : next
       ? next.subtitle
       : "车库的故事还在继续，新的订单永远在路上。";
-  $("chapter-requirements").textContent = next
-    ? Object.entries(next.requires)
-        .map(([id, minimum]) => requirementText(id, minimum))
-        .join(" + ") || "一颗 ALU 就能开始"
-    : "自由经营 · 无限可能";
-  $("chapter-button").innerHTML = active
-    ? "查看进度 <span>↗</span>"
-    : "查看委托 <span>↗</span>";
+  const target = active || next;
+  const ready = next && !active && (!next.previous || state.won.includes(next.previous)) &&
+    Object.entries(next.requires).every(([id,minimum]) => state.levels[id] >= minimum);
+  $("chapter-requirements").textContent = target
+    ? (Object.entries(target.requires).map(([id,minimum]) =>
+        `${state.levels[id]>=minimum ? '✓' : '未满足'} ${requirementText(id,minimum)}（当前 ${id==='alu' ? state.levels[id]+1 : state.levels[id]}${id==='alu' ? ' 个' : ' 级'}）`).join(" · ") || "✓ 初始 ALU 即可接取") + ` · 交付奖金 ${cash(target.reward)}`
+    : "全部委托已交付 · 可继续自由经营";
+  $("chapter-start-button").hidden = !next || Boolean(active);
+  $("chapter-start-button").disabled = !ready;
+  $("chapter-start-button").textContent = ready ? "接下委托 →" : "需补齐硬件";
+  $("chapter-button").hidden = !target;
+  $("chapter-button").textContent = active ? "查看进度 ↗" : "查看委托详情 ↗";
   const signature = JSON.stringify([
     state.won,
     state.levels,
@@ -630,7 +640,7 @@ function render() {
   $("money").textContent = format(state.money, state.money < 10000 ? 2 : 0);
   $("income").textContent = `+${cash(stats.incomeRate)} / s 预计`;
   $("throughput").textContent = compact(
-    stats.throughput * (stats.boosted ? 1.55 : 1),
+    stats.effectiveThroughput,
   );
   $("completed").textContent = format(state.completed);
   $("total-earned").textContent = cash(state.totalEarned);
@@ -660,7 +670,7 @@ function render() {
   renderNarrative();
   const service = stats.performance;
   $("service-model-summary").textContent =
-    `${service.kind.toUpperCase()} · 工作集 ${format(service.features.workingSetBytes / 1024, 1)} KiB · ${format(service.cycles, 1)} 逻辑周期 · 估算缓存命中 ${format(service.hitRate * 100, 1)}%`;
+    `${stats.workloadName} · 规模 Lv.${service.tier} · 工作集 ${format(service.features.workingSetBytes / 1024,1)} KiB · L1 / L2 命中 ${format(service.l1HitRate*100,1)}% / ${format(service.l2HitRate*100,1)}% · 基础速度 ${format(stats.throughput,1)} · 实际分配 ${format(stats.effectiveThroughput,1)} 工作量/s（含超频、委托分配及适用的系统交付收益）`;
 
   renderOrders();
   renderChapters();
@@ -822,6 +832,13 @@ $("chapter-button").addEventListener("click", () => {
       block: "center",
     });
 });
+$("chapter-start-button").addEventListener("click", () => {
+  const next = nextChapter();
+  if (!next) return;
+  const result = startChallenge(state,next.id);
+  if (!result.ok) toast(result.reason,"error");
+  else { save(); render(); toast(`已接取：${next.title}，日常订单继续经营。`); }
+});
 $("chapter-list").addEventListener("click", (event) => {
   const button = event.target.closest("[data-challenge]");
   if (!button) return;
@@ -852,20 +869,27 @@ $("reset-confirm").addEventListener(
 );
 $("reset-button").addEventListener("click", () => {
   if ($("reset-confirm").value !== "重新开始") return;
+  restartWorkshop();
+});
+function restartWorkshop() {
   state = createGame();
   deliveryLog = [];
   hardwareSignature = "";
   chapterSignature = "";
   storySignature = "";
+  narrativeSignature = "";
   lastFrame = Date.now();
   save();
   render();
   $("settings-dialog").close();
+  $("restart-dialog").close();
   $("reset-confirm").value = "";
   $("reset-button").disabled = true;
   setView("workshop");
   toast("车库重新开门。这一次，梦想还在。");
-});
+}
+$("restart-button").addEventListener("click", () => $("restart-dialog").showModal());
+$("restart-confirm").addEventListener("click", restartWorkshop);
 $("export-button").addEventListener("click", () => {
   const blob = new Blob([serializeGame(state)], { type: "application/json" });
   const url = URL.createObjectURL(blob);

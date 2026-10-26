@@ -298,7 +298,7 @@ test('chronological chapters evolve from Tensor Core through TMA and TMEM to an 
   }
   assert.equal(getStats(state).chapterIndex, CHAPTERS.length);
   const before = state.completed;
-  tickGame(state, (state.activeJob.work - state.activeJob.progress) / getWorkloadPerformance(state.levels,state.activeJob.kind).throughput + 1);
+  tickGame(state, (state.activeJob.work - state.activeJob.progress) / getWorkloadPerformance(state.levels,state.activeJob.kind,state.activeJob.tier).throughput + 1);
   assert.ok(state.completed > before);
 });
 
@@ -509,4 +509,20 @@ test('event stepping is stable across animation-sized ticks and long offline spa
   assert.ok(Math.abs(one.activeJob.progress - many.activeJob.progress) < 1e-6);
   assert.ok(Math.abs(one.elapsed - many.elapsed) < 1e-6);
   assert.equal(one.rng, many.rng);
+});
+
+test('ALU purchases remain affordable through the cap and charge the quoted price', () => {
+  const state = createGame(0);
+  for (const [level, price] of [[0,18],[9,100],[19,267],[62,1910]]) {
+    state.levels.alu = level;
+    state.money = price - 1;
+    assert.equal(getUpgradeCost(state,'alu'),price);
+    assert.equal(buyUpgrade(state,'alu'),false);
+    state.money = price;
+    assert.equal(buyUpgrade(state,'alu'),true);
+    assert.equal(state.money,0);
+    assert.equal(state.levels.alu,level+1);
+  }
+  assert.equal(getUpgradeCost(state,'alu'),Infinity);
+  assert.equal(buyUpgrade(state,'alu'),false);
 });
